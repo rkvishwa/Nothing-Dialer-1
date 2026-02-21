@@ -1,0 +1,126 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ─── Permissions ─── -->
+    <!-- Required to use InCallService as Default Dialer -->
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+    <!-- Read call state/log for monitoring outgoing calls -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <!-- Place phone calls from the dial pad -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- Read phone state (fallback monitoring) -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Keep CPU alive while call is in progress -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Foreground service for background InCallService resilience -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <!-- Bluetooth audio routing (Android 12+) -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- Read phone contacts for Contacts tab -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <!-- Show ongoing call notification on Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:label="Nothing Dialer"
+        android:name="${applicationName}"
+        android:icon="@mipmap/launcher_icon">
+
+        <!-- ─── Nothing Glyph API Key (use "test" for local debug) ─── -->
+        <meta-data
+            android:name="NothingKey"
+            android:value="test" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+
+            <!-- App launcher -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Required for Default Dialer role -->
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tel" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tel" />
+            </intent-filter>
+        </activity>
+
+        <!-- ─── In-Call Screen (native Kotlin) ─── -->
+        <!-- Required because IN_CALL_SERVICE_UI=true means WE provide the call UI. -->
+        <activity
+            android:name=".InCallActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:taskAffinity=".InCall"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+        <!-- ─── Glyph InCallService ─── -->
+        <!-- This service is granted access to Call.State.DIALING vs ACTIVE
+             only because the app is registered as the Default Dialer. -->
+        <service
+            android:name=".GlyphInCallService"
+            android:permission="android.permission.BIND_INCALL_SERVICE"
+            android:exported="true"
+            android:foregroundServiceType="phoneCall">
+            <intent-filter>
+                <action android:name="android.telecom.InCallService" />
+            </intent-filter>
+            <!-- Marks this as a full in-call UI replacement -->
+            <meta-data
+                android:name="android.telecom.IN_CALL_SERVICE_UI"
+                android:value="true" />
+        </service>
+
+        <receiver
+            android:name=".CallActionReceiver"
+            android:exported="false" />
+
+        <!-- Flutter embedding meta-data -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="sms" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+    </queries>
+</manifest>

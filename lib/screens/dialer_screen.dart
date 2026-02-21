@@ -1,0 +1,188 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+/// A minimal but functional dial-pad screen.
+/// Required for Default Dialer apps – otherwise the system will not grant
+/// the Default Dialer role.
+class DialerScreen extends StatefulWidget {
+  const DialerScreen({super.key});
+
+  @override
+  State<DialerScreen> createState() => _DialerScreenState();
+}
+
+class _DialerScreenState extends State<DialerScreen> {
+  String _digits = '';
+
+  static const _dialPadKeys = [
+    ['1', '2', '3'],
+    ['4', '5', '6'],
+    ['7', '8', '9'],
+    ['*', '0', '#'],
+  ];
+
+  void _onKey(String key) {
+    HapticFeedback.lightImpact();
+    setState(() => _digits += key);
+  }
+
+  void _onDelete() {
+    if (_digits.isEmpty) return;
+    HapticFeedback.lightImpact();
+    setState(() => _digits = _digits.substring(0, _digits.length - 1));
+  }
+
+  Future<void> _placeCall() async {
+    if (_digits.isEmpty) return;
+    HapticFeedback.mediumImpact();
+
+    // Permission is handled natively in MainActivity.kt.
+    // This just fires the MethodChannel call — Kotlin takes care of
+    // CALL_PHONE permission, TelecomManager, and fallback.
+    try {
+      await const MethodChannel('nothing_dialer/control')
+          .invokeMethod('placeCall', _digits);
+    } on PlatformException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Call error: ${e.message}'),
+            backgroundColor: const Color(0xFF333333),
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF0D0D0D),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 24),
+            _buildDisplay(),
+            const SizedBox(height: 32),
+            _buildDialPad(),
+            const SizedBox(height: 24),
+            _buildActions(),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDisplay() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Text(
+              _digits.isEmpty ? 'Enter number' : _digits,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: _digits.isEmpty
+                    ? const Color(0xFF444444)
+                    : Colors.white,
+                fontSize: _digits.length > 12 ? 24 : 36,
+                fontWeight: FontWeight.w300,
+                letterSpacing: 2,
+              ),
+            ),
+          ),
+          if (_digits.isNotEmpty)
+            GestureDetector(
+              onTap: _onDelete,
+              onLongPress: () => setState(() => _digits = ''),
+              child: const Padding(
+                padding: EdgeInsets.all(8),
+                child: Icon(Icons.backspace_outlined, color: Color(0xFF666666), size: 22),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDialPad() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Column(
+        children: _dialPadKeys.map((row) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              children: row.map((key) {
+                return Expanded(
+                  child: _DialKey(
+                    label: key,
+                    onTap: () => _onKey(key),
+                  ),
+                );
+              }).toList(),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildActions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(width: 80),
+        // Call button
+        GestureDetector(
+          onTap: _placeCall,
+          child: Container(
+            width: 72,
+            height: 72,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.call, color: Colors.black, size: 32),
+          ),
+        ),
+        const SizedBox(width: 80),
+      ],
+    );
+  }
+}
+
+class _DialKey extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+
+  const _DialKey({required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 72,
+        margin: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: const Color(0xFF161616),
+          borderRadius: BorderRadius.circular(36),
+          border: Border.all(color: const Color(0xFF222222)),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+      ),
+    );
+  }
+}
