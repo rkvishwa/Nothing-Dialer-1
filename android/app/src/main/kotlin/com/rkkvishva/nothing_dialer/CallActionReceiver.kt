@@ -9,8 +9,8 @@ import android.util.Log
 class CallActionReceiver : BroadcastReceiver() {
     companion object {
         const val TAG = "CallActionReceiver"
-        const val ACTION_ANSWER = "com.rkkvishva.ACTION_ANSWER"
-        const val ACTION_DECLINE = "com.rkkvishva.ACTION_DECLINE"
+        const val ACTION_ANSWER = "com.nothing.dialer.ACTION_ANSWER"
+        const val ACTION_DECLINE = "com.nothing.dialer.ACTION_DECLINE"
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -38,3 +38,15 @@ class CallActionReceiver : BroadcastReceiver() {
                     context.startActivity(inCallIntent)
                 }
             }
+            ACTION_DECLINE -> {
+                Log.d(TAG, "Declining call via notification action")
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                    currentCall.reject(android.telecom.Call.REJECT_REASON_DECLINED)
+                } else {
+                    @Suppress("DEPRECATION")
+                    currentCall.reject(false, null)
+                }
+            }
+        }
+    }
+}
