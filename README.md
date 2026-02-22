@@ -10,9 +10,9 @@ Nothing Dialer is a next-generation dialer app built exclusively for Nothing Pho
 ## Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/settings.png" width="30%" />
-  <img src="assets/screenshots/style.png" width="30%" />
-  <img src="assets/screenshots/speed.png" width="30%" />
+  <img src="assets/screenshots/settings.jpg" width="30%" />
+  <img src="assets/screenshots/style.jpg" width="30%" />
+  <img src="assets/screenshots/speed.jpg" width="30%" />
 </p>
 
 ---
