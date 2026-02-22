@@ -5,12 +5,16 @@ import 'package:flutter/services.dart';
 ///
 /// Returns the selected SIM index (0-based), or `null` if cancelled.
 /// If there's only one SIM, it auto-selects it and returns 0.
-Future<int?> showSimPicker(BuildContext context, {bool allowAlwaysAsk = false}) async {
+Future<int?> showSimPicker(
+  BuildContext context, {
+  bool allowAlwaysAsk = false,
+}) async {
   const channel = MethodChannel('nothing_dialer/control');
 
   // Fetch available SIMs from native side
-  final List<dynamic>? raw =
-      await channel.invokeMethod<List<dynamic>>('getSimCards');
+  final List<dynamic>? raw = await channel.invokeMethod<List<dynamic>>(
+    'getSimCards',
+  );
 
   if (raw == null || raw.isEmpty) {
     // No SIMs — fall back to default (index 0)
@@ -28,7 +32,6 @@ Future<int?> showSimPicker(BuildContext context, {bool allowAlwaysAsk = false}) 
   return showModalBottomSheet<int>(
     context: context,
     backgroundColor: Colors.transparent,
-    barrierColor: Colors.black.withValues(alpha: 0.55),
     isScrollControlled: true,
     builder: (_) => _SimPickerSheet(sims: sims, allowAlwaysAsk: allowAlwaysAsk),
   );
@@ -45,8 +48,8 @@ class _SimPickerSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFF1C1B1F),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       child: SafeArea(
@@ -62,7 +65,7 @@ class _SimPickerSheet extends StatelessWidget {
                   width: 32,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF49454F),
+                    color: Theme.of(context).colorScheme.outlineVariant,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -70,12 +73,12 @@ class _SimPickerSheet extends StatelessWidget {
             ),
 
             // Title
-            const Padding(
-              padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Text(
                 'Choose SIM for this call',
                 style: TextStyle(
-                  color: Color(0xFFE6E1E5),
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 24,
                   fontWeight: FontWeight.w400,
                 ),
@@ -136,12 +139,14 @@ class _SimOption extends StatelessWidget {
   Widget build(BuildContext context) {
     // M3 accent colors for SIMs
     final colors = [
-      const Color(0xFFD0BCFF), // Primary Purple
+      Theme.of(context).colorScheme.primary, // Primary Purple
       const Color(0xFF81C784), // Light Green
-      const Color(0xFF4FC3F7), // Light Blue
+      Color(0xFF4FC3F7), // Light Blue
     ];
     // simSlot 0 (Always ask) gets a special color
-    final color = simSlot == 0 ? const Color(0xFFCAC4D0) : colors[(simSlot - 1) % colors.length];
+    final color = simSlot == 0
+        ? Theme.of(context).colorScheme.onSurfaceVariant
+        : colors[(simSlot - 1) % colors.length];
 
     return Material(
       color: Colors.transparent,
@@ -155,14 +160,13 @@ class _SimOption extends StatelessWidget {
               Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
                 alignment: Alignment.center,
                 child: Icon(
                   icon ?? Icons.sim_card,
-                  color: const Color(0xFF141218), // Dark icon color
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary, // Dark icon color
                   size: 20,
                 ),
               ),
@@ -175,8 +179,8 @@ class _SimOption extends StatelessWidget {
                   children: [
                     Text(
                       label,
-                      style: const TextStyle(
-                        color: Color(0xFFE6E1E5),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -185,8 +189,8 @@ class _SimOption extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         'SIM $simSlot',
-                        style: const TextStyle(
-                          color: Color(0xFFCAC4D0),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                         ),

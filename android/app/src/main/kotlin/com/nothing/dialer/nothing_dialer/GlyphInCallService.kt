@@ -100,13 +100,19 @@ class GlyphInCallService : InCallService() {
         // Handle the initial state immediately.
         handleCallState(call.state)
 
-        // Launch the in-call screen only if the user is already in our app,
-        // or if they are the one initiating the call (outgoing).
-        if (call.state == Call.STATE_DIALING || MainActivity.isAppInForeground) {
+        // Launch the in-call screen if:
+        // 1. User is initiating the call (outgoing).
+        // 2. The app is already in foreground.
+        // 3. The phone is locked (we want full screen UI on lockscreen).
+        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as android.app.KeyguardManager
+        val isLocked = keyguardManager.isKeyguardLocked
+        
+        if (call.state == Call.STATE_DIALING || MainActivity.isAppInForeground || isLocked) {
             launchInCallActivity()
         } else {
-            Log.d(TAG, "App is in background and it's an incoming call. Showing notification only.")
+            Log.d(TAG, "App is in background, phone is unlocked, and it's an incoming call. Showing notification only (heads-up).")
         }
+
 
         // Start Foreground Notification so user can answer/decline or return to call
         updateForegroundNotification(call.state)
@@ -260,6 +266,7 @@ class GlyphInCallService : InCallService() {
         updateForegroundNotification(state)
 
         when (state) {
+            Call.STATE_CONNECTING,
             Call.STATE_DIALING -> {
                 Log.d(TAG, "handleCallState: state=$state -> lightsOnOutgoing")
                 sendGlyphCommand("lightsOnOutgoing")
@@ -269,7 +276,11 @@ class GlyphInCallService : InCallService() {
                 sendGlyphCommand("lightsOnIncoming")
             }
 
-            Call.STATE_ACTIVE,
+            Call.STATE_ACTIVE -> {
+                Log.d(TAG, "handleCallState: state=$state -> lightsOnActiveCall")
+                sendGlyphCommand("lightsOnActiveCall")
+            }
+
             Call.STATE_DISCONNECTED,
             Call.STATE_DISCONNECTING -> {
                 Log.d(TAG, "handleCallState: state=$state -> lightsOff")

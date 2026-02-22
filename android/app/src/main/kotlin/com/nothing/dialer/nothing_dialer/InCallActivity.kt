@@ -7,7 +7,9 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Build
 import android.telecom.Call
+
 import android.telecom.CallAudioState
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
@@ -17,6 +19,12 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.os.PowerManager
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.ImageView
@@ -79,6 +87,7 @@ class InCallActivity : Activity() {
     private var btnAnswerLayout: LinearLayout? = null
 
     // State
+    private lateinit var themeColors: ThemeColors
     private val handler = Handler(Looper.getMainLooper())
     private var callStartTime: Long = 0
     private var timerRunning = false
@@ -87,6 +96,24 @@ class InCallActivity : Activity() {
     private var isCallActive = false
     private var selectedSimLabel: String? = null
     private var isChangingSim = false
+
+    // Proximity sensor
+    private var proximityWakeLock: PowerManager.WakeLock? = null
+    private var sensorManager: SensorManager? = null
+    private var proximitySensor: Sensor? = null
+
+    private val proximityListener = object : SensorEventListener {
+        override fun onSensorChanged(event: SensorEvent) {
+            if (event.sensor.type == Sensor.TYPE_PROXIMITY) {
+                val distance = event.values[0]
+                val isNear = distance < (proximitySensor?.maximumRange ?: 0f) && distance < 5f
+                Log.d(TAG, "Proximity onSensorChanged: distance=$distance, isNear=$isNear")
+                // PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK handles screen off/on automatically
+                // we just need to acquire/release it correctly.
+            }
+        }
+        override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+    }
 
     private val callCallback = object : Call.Callback() {
         override fun onStateChanged(call: Call, state: Int) {
@@ -110,16 +137,26 @@ class InCallActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.addFlags(
-            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
-            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-        )
-        window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = Color.parseColor("#141218")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            @Suppress("DEPRECATION")
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
+        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        buildUI()
-        buildIncomingOverlay()
+        
+        themeColors = ThemeColors.get(this)
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = themeColors.background
+
+        buildUI(themeColors)
+        buildIncomingOverlay(themeColors)
+        initProximitySensor()
 
         val call = GlyphInCallService.currentCall
         if (call != null) {
@@ -185,6 +222,46 @@ class InCallActivity : Activity() {
         return try { tm.getPhoneAccount(accountHandle)?.label?.toString() } catch (_: Exception) { null }
     }
 
+    private fun initProximitySensor() {
+        try {
+            val powerManager = getSystemService(POWER_SERVICE) as PowerManager
+            if (powerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
+                proximityWakeLock = powerManager.newWakeLock(
+                    PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
+                    "NothingDialer:ProximityWakeLock"
+                )
+            }
+            sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            proximitySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PROXIMITY)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to init proximity sensor", e)
+        }
+    }
+
+    private fun updateProximityWakeLock(state: Int) {
+        val shouldSupportProximity = when (state) {
+            Call.STATE_ACTIVE, Call.STATE_DIALING, Call.STATE_CONNECTING -> true
+            else -> false
+        }
+
+        // We only use proximity if NOT on speaker and NOT on bluetooth
+        val isReceiver = currentRoute == CallAudioState.ROUTE_EARPIECE
+
+        if (shouldSupportProximity && isReceiver) {
+            if (proximityWakeLock?.isHeld == false) {
+                Log.d(TAG, "Acquiring proximity wake lock")
+                proximityWakeLock?.acquire()
+                sensorManager?.registerListener(proximityListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
+            }
+        } else {
+            if (proximityWakeLock?.isHeld == true) {
+                Log.d(TAG, "Releasing proximity wake lock")
+                proximityWakeLock?.release()
+                sensorManager?.unregisterListener(proximityListener)
+            }
+        }
+    }
+
     // ── State Updates ─────────────────────────────────────────────────────────
 
     private fun updateUI(state: Int) {
@@ -218,6 +295,7 @@ class InCallActivity : Activity() {
                 if (!isChangingSim) { handler.postDelayed({ finish() }, 1200) }
             }
         }
+        updateProximityWakeLock(state)
     }
 
     private fun showNativeSimPicker() {
@@ -279,7 +357,7 @@ class InCallActivity : Activity() {
         val sheet = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             background = GradientDrawable().apply {
-                setColor(Color.parseColor("#1C1B1F"))
+                setColor(themeColors.background)
                 cornerRadii = floatArrayOf(dp(28).toFloat(), dp(28).toFloat(), dp(28).toFloat(), dp(28).toFloat(), 0f, 0f, 0f, 0f)
             }
         }
@@ -295,7 +373,7 @@ class InCallActivity : Activity() {
         // Title
         sheet.addView(TextView(this).apply {
             text = title
-            setTextColor(Color.parseColor("#E6E1E5"))
+            setTextColor(themeColors.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
             typeface = Typeface.create("sans-serif", Typeface.NORMAL)
             setPadding(dp(24), dp(16), dp(24), dp(8))
@@ -336,13 +414,13 @@ class InCallActivity : Activity() {
             val textCol = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
             textCol.addView(TextView(this).apply {
                 text = labels[i]
-                setTextColor(Color.parseColor("#E6E1E5"))
+                setTextColor(themeColors.onSurface)
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                 typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
             })
             textCol.addView(TextView(this).apply {
                 text = "SIM ${i + 1}"
-                setTextColor(Color.parseColor("#CAC4D0"))
+                setTextColor(themeColors.onSurfaceVariant)
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             })
             row.addView(textCol)
@@ -381,16 +459,20 @@ class InCallActivity : Activity() {
             else -> CallAudioState.ROUTE_EARPIECE
         }
         GlyphInCallService.instance?.setAudioRoute(currentRoute); updateControlStates()
+        val call = GlyphInCallService.currentCall
+        if (call != null) {
+            updateProximityWakeLock(call.state)
+        }
     }
 
     private fun sendDtmf(digit: Char) { GlyphInCallService.currentCall?.playDtmfTone(digit); GlyphInCallService.currentCall?.stopDtmfTone() }
     private fun hangUp() { GlyphInCallService.currentCall?.disconnect() }
 
     private fun updateControlStates() {
-        val onBg = Color.WHITE
-        val offBg = Color.parseColor("#2B2930")
-        val onIcon = Color.parseColor("#141218")
-        val offIcon = Color.WHITE
+        val onBg = if (themeColors.isLight) themeColors.onSurface else Color.WHITE
+        val offBg = themeColors.surfaceContainer
+        val onIcon = if (themeColors.isLight) themeColors.background else Color.parseColor("#141218")
+        val offIcon = themeColors.onSurface
 
         fun setState(btn: LinearLayout, icon: ImageView, active: Boolean) {
             (btn.background as GradientDrawable).setColor(if (active) onBg else offBg)
@@ -405,6 +487,10 @@ class InCallActivity : Activity() {
     override fun onDestroy() {
         timerRunning = false; handler.removeCallbacksAndMessages(null)
         try { GlyphInCallService.currentCall?.unregisterCallback(callCallback) } catch (_: Exception) {}
+        if (proximityWakeLock?.isHeld == true) {
+            proximityWakeLock?.release()
+        }
+        sensorManager?.unregisterListener(proximityListener)
         super.onDestroy()
     }
 
@@ -413,6 +499,7 @@ class InCallActivity : Activity() {
         MainActivity.isAppInForeground = true
     }
 
+
     override fun onPause() {
         super.onPause()
         if (isChangingSim) {
@@ -420,6 +507,12 @@ class InCallActivity : Activity() {
         } else {
             MainActivity.isAppInForeground = false
         }
+        // Release wake lock when activity is not in foreground to be safe
+        // though PROXIMITY_SCREEN_OFF_WAKE_LOCK is usually handled by the system
+        if (proximityWakeLock?.isHeld == true) {
+            proximityWakeLock?.release()
+        }
+        sensorManager?.unregisterListener(proximityListener)
     }
 
     override fun onBackPressed() { if (isIncoming) { /* ignore back during ringing */ } else { finish() } }
@@ -427,12 +520,12 @@ class InCallActivity : Activity() {
 
     // ── Incoming Call Overlay ─────────────────────────────────────────────────
 
-    private fun buildIncomingOverlay() {
+    private fun buildIncomingOverlay(theme: ThemeColors) {
         val prefs = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
         val useSlide = prefs.getString("flutter.answer_method", "slide") == "slide"
 
         incomingOverlay = FrameLayout(this).apply {
-            setBackgroundColor(Color.parseColor("#141218"))
+            setBackgroundColor(theme.background)
             visibility = View.GONE
             isClickable = true  // consume touch events
         }
@@ -452,7 +545,7 @@ class InCallActivity : Activity() {
         
         content.addView(TextView(this).apply {
             text = android.text.Html.fromHtml(headerText, android.text.Html.FROM_HTML_MODE_LEGACY)
-            setTextColor(Color.parseColor("#B0B0B0"))
+            setTextColor(theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
             gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -461,12 +554,12 @@ class InCallActivity : Activity() {
         // ── Avatar ──
         val avatarSize = dp(110)
         val avatarBg = FrameLayout(this).apply {
-            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.parseColor("#3D3548")) }
+            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(theme.surfaceContainerHigh) }
             layoutParams = LinearLayout.LayoutParams(avatarSize, avatarSize).apply { gravity = Gravity.CENTER_HORIZONTAL; topMargin = dp(24) }
         }
         val avText = TextView(this).apply {
             text = if (contactName?.isNotEmpty() == true) contactName.first().uppercase() else if (number.isNotEmpty()) number.first().toString() else "?"
-            setTextColor(Color.parseColor("#D0BCFF"))
+            setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 46f)
             typeface = Typeface.create("sans-serif-light", Typeface.NORMAL)
             gravity = Gravity.CENTER
@@ -478,7 +571,7 @@ class InCallActivity : Activity() {
         // Amma (Name)
         content.addView(TextView(this).apply {
             text = contactName ?: number
-            setTextColor(Color.WHITE)
+            setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
             typeface = Typeface.create("sans-serif", Typeface.NORMAL)
             gravity = Gravity.CENTER
@@ -488,7 +581,7 @@ class InCallActivity : Activity() {
         // Mobile 077 049 9787
         content.addView(TextView(this).apply {
             text = if (contactName != null) "Mobile $number" else ""
-            setTextColor(Color.parseColor("#B0B0B0"))
+            setTextColor(theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER
             visibility = if (contactName != null) View.VISIBLE else View.GONE
@@ -503,14 +596,14 @@ class InCallActivity : Activity() {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
             background = GradientDrawable().apply {
-                setColor(Color.parseColor("#28252C"))
+                setColor(theme.surfaceContainer)
                 cornerRadius = dp(24).toFloat()
             }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dp(48)).apply {
                 bottomMargin = dp(48)
             }
             setPadding(dp(20), 0, dp(24), 0)
-            setOnClickListener { showQuickResponseDialog() }
+            setOnClickListener { showQuickResponseDialog(theme) }
         }
         
         msgButton.addView(ImageView(this).apply {
@@ -521,16 +614,16 @@ class InCallActivity : Activity() {
         
         msgButton.addView(TextView(this).apply {
             text = "Message"
-            setTextColor(Color.parseColor("#D0BCFF"))
+            setTextColor(theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
         })
         
         content.addView(msgButton)
 
         if (useSlide) {
-            content.addView(buildSlideToAnswer())
+            content.addView(buildSlideToAnswer(theme))
         } else {
-            content.addView(buildAnswerDeclineButtons())
+            content.addView(buildAnswerDeclineButtons(theme))
         }
 
         incomingOverlay.addView(content, FrameLayout.LayoutParams(
@@ -541,13 +634,13 @@ class InCallActivity : Activity() {
         ))
     }
 
-    private fun showQuickResponseDialog() {
+    private fun showQuickResponseDialog(theme: ThemeColors) {
         val dialog = android.app.Dialog(this).apply {
             requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
             setContentView(LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 background = GradientDrawable().apply {
-                    setColor(Color.parseColor("#2A262D"))
+                    setColor(theme.surfaceContainer)
                     cornerRadius = dp(16).toFloat()
                 }
                 
@@ -560,9 +653,19 @@ class InCallActivity : Activity() {
                         setPadding(dp(24), dp(16), dp(24), dp(16))
                         setOnClickListener {
                             if (index < msgs.size - 1) {
-                                GlyphInCallService.currentCall?.reject(true, msg)
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                                    GlyphInCallService.currentCall?.reject(android.telecom.Call.REJECT_REASON_DECLINED)
+                                } else {
+                                    @Suppress("DEPRECATION")
+                                    GlyphInCallService.currentCall?.reject(true, msg)
+                                }
                             } else {
-                                GlyphInCallService.currentCall?.reject(false, null)
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                                    GlyphInCallService.currentCall?.reject(android.telecom.Call.REJECT_REASON_DECLINED)
+                                } else {
+                                    @Suppress("DEPRECATION")
+                                    GlyphInCallService.currentCall?.reject(false, null)
+                                }
                             }
                             dismiss()
                         }
@@ -578,7 +681,7 @@ class InCallActivity : Activity() {
         dialog.show()
     }
 
-    private fun buildSlideToAnswer(): FrameLayout {
+    private fun buildSlideToAnswer(theme: ThemeColors): FrameLayout {
         val container = FrameLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, dp(90)
@@ -588,7 +691,7 @@ class InCallActivity : Activity() {
         // Track Background
         val trackBg = FrameLayout(this).apply {
             background = GradientDrawable().apply {
-                setColor(Color.parseColor("#2A262D"))
+                setColor(theme.surfaceContainer)
                 cornerRadius = dp(45).toFloat()
             }
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
@@ -597,7 +700,7 @@ class InCallActivity : Activity() {
         // Decline text (Left)
         trackBg.addView(TextView(this).apply {
             text = "Decline"
-            setTextColor(Color.WHITE)
+            setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER_VERTICAL or Gravity.START
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
@@ -608,7 +711,7 @@ class InCallActivity : Activity() {
         // Answer text (Right)
         trackBg.addView(TextView(this).apply {
             text = "Answer"
-            setTextColor(Color.WHITE)
+            setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER_VERTICAL or Gravity.END
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
@@ -624,7 +727,7 @@ class InCallActivity : Activity() {
         val slideHandle = FrameLayout(this).apply {
             background = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
-                setColor(Color.WHITE)
+                setColor(theme.onSurface)
             }
             layoutParams = FrameLayout.LayoutParams(handleSize, handleSize).apply {
                 gravity = Gravity.CENTER
@@ -632,7 +735,7 @@ class InCallActivity : Activity() {
         }
         val phoneIcon = ImageView(this).apply {
              setImageResource(R.drawable.ic_call_end) // standard phone icon base
-             setColorFilter(Color.parseColor("#34A853"))
+             setColorFilter(if (theme.isLight) theme.background else Color.parseColor("#34A853"))
              rotation = 135f
              layoutParams = FrameLayout.LayoutParams(dp(36), dp(36)).apply { gravity = Gravity.CENTER }
         }
@@ -677,7 +780,7 @@ class InCallActivity : Activity() {
         return container
     }
 
-    private fun buildAnswerDeclineButtons(): LinearLayout {
+    private fun buildAnswerDeclineButtons(theme: ThemeColors): LinearLayout {
         val row = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
@@ -751,7 +854,12 @@ class InCallActivity : Activity() {
     }
 
     private fun declineCall() {
-        GlyphInCallService.currentCall?.reject(false, null)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            GlyphInCallService.currentCall?.reject(android.telecom.Call.REJECT_REASON_DECLINED)
+        } else {
+            @Suppress("DEPRECATION")
+            GlyphInCallService.currentCall?.reject(false, null)
+        }
     }
 
     // ── Keypad toggle ────────────────────────────────────────────────────────
@@ -762,17 +870,18 @@ class InCallActivity : Activity() {
         updateControlStates()
     }
 
-    private fun buildKeypadSection(): LinearLayout {
+    private fun buildKeypadSection(theme: ThemeColors): LinearLayout {
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             visibility = View.GONE
             background = GradientDrawable().apply {
-                setColor(Color.parseColor("#1D1A22"))
+                setColor(theme.background)
                 cornerRadii = floatArrayOf(
                     dp(32).toFloat(), dp(32).toFloat(), 
                     dp(32).toFloat(), dp(32).toFloat(), 
                     0f, 0f, 0f, 0f
                 )
+                setStroke(dp(1), theme.handle)
             }
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT).apply {
                 gravity = Gravity.BOTTOM
@@ -784,7 +893,7 @@ class InCallActivity : Activity() {
         // Close button at top left using a Unicode X
         val closeBtn = TextView(this).apply {
             text = "✕"
-            setTextColor(Color.parseColor("#B0B0B0"))
+            setTextColor(theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
             gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(dp(48), dp(48)).apply {
@@ -819,7 +928,7 @@ class InCallActivity : Activity() {
                     background = GradientDrawable().apply {
                         shape = GradientDrawable.RECTANGLE
                         cornerRadius = dp(35).toFloat()
-                        setColor(Color.parseColor("#141218"))
+                        setColor(theme.surfaceContainer)
                     }
                     layoutParams = LinearLayout.LayoutParams(0, dp(64), 1f).apply {
                         setMargins(dp(6), dp(6), dp(6), dp(6))
@@ -852,8 +961,8 @@ class InCallActivity : Activity() {
 
     // ── Build UI ──────────────────────────────────────────────────────────────
 
-    private fun buildUI() {
-        rootLayout = FrameLayout(this).apply { setBackgroundColor(Color.parseColor("#141218")) }
+    private fun buildUI(theme: ThemeColors) {
+        rootLayout = FrameLayout(this).apply { setBackgroundColor(theme.background) }
 
         mainContent = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -869,7 +978,7 @@ class InCallActivity : Activity() {
         }
 
         simLabel = TextView(this).apply {
-            setTextColor(Color.parseColor("#B0B0B0")); setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+            setTextColor(theme.onSurfaceVariant); setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
             gravity = Gravity.CENTER; visibility = View.GONE
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
@@ -878,11 +987,11 @@ class InCallActivity : Activity() {
         // Avatar
         val avatarSize = dp(110)
         val avatarContainer = FrameLayout(this).apply {
-            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.parseColor("#3D3548")) }
+            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(theme.surfaceContainerHigh) }
             layoutParams = LinearLayout.LayoutParams(avatarSize, avatarSize).apply { gravity = Gravity.CENTER_HORIZONTAL; topMargin = dp(24) }
         }
         avatarText = TextView(this).apply {
-            setTextColor(Color.parseColor("#D0BCFF")); setTextSize(TypedValue.COMPLEX_UNIT_SP, 46f)
+            setTextColor(theme.onSurface); setTextSize(TypedValue.COMPLEX_UNIT_SP, 46f)
             typeface = Typeface.create("sans-serif-light", Typeface.NORMAL); gravity = Gravity.CENTER
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         }
@@ -890,28 +999,28 @@ class InCallActivity : Activity() {
         topSection.addView(avatarContainer)
 
         nameText = TextView(this).apply {
-            setTextColor(Color.WHITE); setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
+            setTextColor(theme.onSurface); setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
             typeface = Typeface.create("sans-serif", Typeface.NORMAL); gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(16); leftMargin = dp(16); rightMargin = dp(16) }
         }
         topSection.addView(nameText)
 
         numberText = TextView(this).apply {
-            setTextColor(Color.parseColor("#B0B0B0")); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+            setTextColor(theme.onSurfaceVariant); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER; visibility = View.GONE
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(4) }
         }
         topSection.addView(numberText)
 
         statusText = TextView(this).apply {
-            text = "Calling…"; setTextColor(Color.parseColor("#80FFFFFF")); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+            text = "Calling…"; setTextColor(theme.onSurfaceVariant); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(8) }
         }
         topSection.addView(statusText)
 
         durationText = TextView(this).apply {
-            setTextColor(Color.parseColor("#80FFFFFF")); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+            setTextColor(theme.onSurfaceVariant); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             typeface = Typeface.create("sans-serif", Typeface.NORMAL); gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(4) }
         }
@@ -923,25 +1032,25 @@ class InCallActivity : Activity() {
         mainContent.addView(View(this).apply { layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f) })
 
         // ── Single row: Mute · Keypad · Speaker · More ──
-        mainContent.addView(buildControlsRow())
+        mainContent.addView(buildControlsRow(theme))
 
         // ── Spacer ──
         mainContent.addView(View(this).apply { layoutParams = LinearLayout.LayoutParams(0, dp(20)) })
 
         // ── End Call ──
-        mainContent.addView(buildEndCallButton())
+        mainContent.addView(buildEndCallButton(theme))
 
         // Add main flow to root
         rootLayout.addView(mainContent, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
         
         // Add keypad overlay on top of everything
-        keypadContainer = buildKeypadSection()
+        keypadContainer = buildKeypadSection(theme)
         rootLayout.addView(keypadContainer)
         
         setContentView(rootLayout)
     }
 
-    private fun buildControlsRow(): LinearLayout {
+    private fun buildControlsRow(theme: ThemeColors): LinearLayout {
         val row = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
@@ -950,42 +1059,42 @@ class InCallActivity : Activity() {
             ).apply { leftMargin = dp(16); rightMargin = dp(16) }
         }
 
-        val m = makeBtn(R.drawable.ic_mic_off, "Mute") { toggleMute() }
+        val m = makeBtn(R.drawable.ic_mic_off, "Mute", theme) { toggleMute() }
         muteBtn = m.first; muteIcon = m.second; muteLabel = m.third
         row.addView(wrap(muteBtn, muteLabel))
 
-        val k = makeBtn(R.drawable.ic_dialpad, "Keypad") { toggleKeypad() }
+        val k = makeBtn(R.drawable.ic_dialpad, "Keypad", theme) { toggleKeypad() }
         keypadBtn = k.first; keypadIcon = k.second; keypadLabel = k.third
         row.addView(wrap(keypadBtn, keypadLabel))
 
-        val s = makeBtn(R.drawable.ic_volume_up, "Speaker") { cycleSpeaker() }
+        val s = makeBtn(R.drawable.ic_volume_up, "Speaker", theme) { cycleSpeaker() }
         speakerBtn = s.first; speakerIcon = s.second; speakerLabel = s.third
         row.addView(wrap(speakerBtn, speakerLabel))
 
-        val mo = makeBtn(R.drawable.ic_more_vert, "More") { showMoreMenu() }
+        val mo = makeBtn(R.drawable.ic_more_vert, "More", theme) { showMoreMenu(theme) }
         moreBtn = mo.first; moreIcon = mo.second; moreLabel = mo.third
         row.addView(wrap(moreBtn, moreLabel))
 
         return row
     }
 
-    private fun makeBtn(iconRes: Int, label: String, onClick: () -> Unit): Triple<LinearLayout, ImageView, TextView> {
+    private fun makeBtn(iconRes: Int, label: String, theme: ThemeColors, onClick: () -> Unit): Triple<LinearLayout, ImageView, TextView> {
         val icon = ImageView(this).apply {
-            setImageResource(iconRes); setColorFilter(Color.WHITE)
+            setImageResource(iconRes); setColorFilter(theme.onSurface)
             layoutParams = LinearLayout.LayoutParams(dp(28), dp(28))
         }
         val btn = LinearLayout(this).apply {
             background = GradientDrawable().apply { 
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = dp(24).toFloat()
-                setColor(Color.parseColor("#2B2930")) 
+                setColor(theme.surfaceContainer) 
             }
             gravity = Gravity.CENTER; addView(icon)
             layoutParams = LinearLayout.LayoutParams(dp(72), dp(72))
             setOnClickListener { onClick() }
         }
         val lbl = TextView(this).apply {
-            text = label; setTextColor(Color.parseColor("#B0B0B0")); setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
+            text = label; setTextColor(theme.onSurfaceVariant); setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
             gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(6) }
         }
@@ -1000,7 +1109,7 @@ class InCallActivity : Activity() {
         }
     }
 
-    private fun buildEndCallButton(): LinearLayout {
+    private fun buildEndCallButton(theme: ThemeColors): LinearLayout {
         val icon = ImageView(this).apply {
             setImageResource(R.drawable.ic_call_end); setColorFilter(Color.WHITE)
             layoutParams = LinearLayout.LayoutParams(dp(32), dp(32))
@@ -1020,13 +1129,13 @@ class InCallActivity : Activity() {
         }
     }
 
-    private fun showMoreMenu() {
+    private fun showMoreMenu(theme: ThemeColors) {
         val dialog = android.app.Dialog(this)
         dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
         val sheet = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             background = GradientDrawable().apply {
-                setColor(Color.parseColor("#2B2930"))
+                setColor(theme.surfaceContainer)
                 cornerRadii = floatArrayOf(dp(24).toFloat(), dp(24).toFloat(), dp(24).toFloat(), dp(24).toFloat(), 0f, 0f, 0f, 0f)
             }
             setPadding(dp(24), dp(16), dp(24), dp(32))
@@ -1040,10 +1149,10 @@ class InCallActivity : Activity() {
 
         fun opt(txt: String, onClick: () -> Unit) {
             sheet.addView(TextView(this@InCallActivity).apply {
-                text = txt; setTextColor(Color.parseColor("#E6E1E5")); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                text = txt; setTextColor(theme.onSurface); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                 typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
                 setPadding(dp(20), dp(16), dp(20), dp(16))
-                background = GradientDrawable().apply { setColor(Color.parseColor("#36343B")); cornerRadius = dp(12).toFloat() }
+                background = GradientDrawable().apply { setColor(theme.surfaceContainerHigh); cornerRadius = dp(12).toFloat() }
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { bottomMargin = dp(8) }
                 setOnClickListener { onClick(); dialog.dismiss() }
             })
@@ -1052,11 +1161,11 @@ class InCallActivity : Activity() {
         // Add call — always visible, but disabled when not active
         val addCallTv = TextView(this@InCallActivity).apply {
             text = "Add call"
-            setTextColor(if (isCallActive) Color.parseColor("#E6E1E5") else Color.parseColor("#5E5E5E"))
+            setTextColor(if (isCallActive) theme.onSurface else theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
             setPadding(dp(20), dp(16), dp(20), dp(16))
-            background = GradientDrawable().apply { setColor(Color.parseColor("#36343B")); cornerRadius = dp(12).toFloat() }
+            background = GradientDrawable().apply { setColor(theme.surfaceContainerHigh); cornerRadius = dp(12).toFloat() }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { bottomMargin = dp(8) }
             isClickable = isCallActive
             if (isCallActive) { setOnClickListener { dialog.dismiss() } }
@@ -1074,4 +1183,51 @@ class InCallActivity : Activity() {
     }
 
     private fun dp(v: Int): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v.toFloat(), resources.displayMetrics).toInt()
+
+    data class ThemeColors(
+        val background: Int,
+        val onSurface: Int,
+        val onSurfaceVariant: Int,
+        val surfaceContainer: Int,
+        val surfaceContainerHigh: Int,
+        val handle: Int,
+        val isLight: Boolean
+    ) {
+        companion object {
+            fun get(context: Context): ThemeColors {
+                val prefs = context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
+                val themeMode = prefs.getString("flutter.theme_mode", "system") ?: "system"
+                
+                val isLight = when (themeMode) {
+                    "light" -> true
+                    "dark" -> false
+                    else -> {
+                        (context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_NO
+                    }
+                }
+                
+                return if (isLight) {
+                    ThemeColors(
+                        background = Color.parseColor("#F3F3F3"),
+                        onSurface = Color.parseColor("#1C1B1F"),
+                        onSurfaceVariant = Color.parseColor("#49454F"),
+                        surfaceContainer = Color.parseColor("#E6E1E5"),
+                        surfaceContainerHigh = Color.parseColor("#DADCE0"),
+                        handle = Color.parseColor("#CAC4D0"),
+                        isLight = true
+                    )
+                } else {
+                    ThemeColors(
+                        background = Color.parseColor("#141218"),
+                        onSurface = Color.parseColor("#E6E1E5"),
+                        onSurfaceVariant = Color.parseColor("#B0B0B0"),
+                        surfaceContainer = Color.parseColor("#2B2930"),
+                        surfaceContainerHigh = Color.parseColor("#3D3548"),
+                        handle = Color.parseColor("#49454F"),
+                        isLight = false
+                    )
+                }
+            }
+        }
+    }
 }

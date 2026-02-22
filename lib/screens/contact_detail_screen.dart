@@ -31,18 +31,10 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     _refreshContact();
     _loadPreferences();
     BlockingManager.blockedNumbersNotifier.addListener(_onBlockedNumbersChanged);
-    BlockingManager.refreshBlockedNumbers();
   }
 
   void _onBlockedNumbersChanged() {
-    debugPrint('ContactDetailScreen: Blocked numbers updated, checking status for ${_contact.displayName}');
-    for (var phone in _contact.phones) {
-      final blocked = BlockingManager.isBlocked(phone.number);
-      debugPrint('  - ${phone.number}: blocked=$blocked');
-    }
-    if (mounted) {
-      setState(() {});
-    }
+    if (mounted) setState(() {});
   }
 
   @override
@@ -77,7 +69,6 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       setState(() {
         _contact = fullContact;
       });
-      BlockingManager.refreshBlockedNumbers();
     }
   }
 
@@ -101,7 +92,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     } on PlatformException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Call error: ${e.message}'), backgroundColor: const Color(0xFF333333)),
+          SnackBar(content: Text('Call error: ${e.message}'), backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest),
         );
       }
     }
@@ -186,13 +177,13 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A1A),
-        title: const Text('Delete contact?', style: TextStyle(color: Colors.white)),
-        content: const Text('This contact will be permanently deleted from your device.', style: TextStyle(color: Color(0xFF888888))),
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+        title: Text('Delete contact?', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+        content: Text('This contact will be permanently deleted from your device.', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel', style: TextStyle(color: Color(0xFF888888))),
+            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
@@ -223,22 +214,22 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A1A),
-        title: Text(isBlocked ? 'Unblock contact?' : 'Block contact?', style: const TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+        title: Text(isBlocked ? 'Unblock contact?' : 'Block contact?', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
         content: Text(
           isBlocked 
             ? 'You will start receiving calls and texts from this contact.' 
             : 'You will no longer receive calls or texts from this contact.',
-          style: const TextStyle(color: Color(0xFF888888))
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel', style: TextStyle(color: Color(0xFF888888))),
+            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(isBlocked ? 'Unblock' : 'Block', style: TextStyle(color: isBlocked ? Colors.white : Colors.redAccent)),
+            child: Text(isBlocked ? 'Unblock' : 'Block', style: TextStyle(color: isBlocked ? Theme.of(context).colorScheme.onSurface : Colors.redAccent)),
           ),
         ],
       ),
@@ -271,17 +262,17 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit_outlined, color: Colors.white),
+            icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.onSurface),
             onPressed: _editContact,
           ),
         ],
@@ -308,10 +299,10 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     return Column(
       children: [
         _Avatar(contact: _contact, size: 100),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Text(
           _contact.displayName,
-          style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 24, fontWeight: FontWeight.w400),
         ),
       ],
     );
@@ -325,28 +316,28 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           children: [
-            const Icon(Icons.phone_outlined, color: Color(0xFF888888), size: 24),
+            Icon(Icons.phone_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 24),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(phone.number, style: const TextStyle(color: Colors.white, fontSize: 16)),
-                  Text(phone.label.name.toLowerCase(), style: const TextStyle(color: Color(0xFF666666), fontSize: 12)),
+                  Text(phone.number, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16)),
+                  Text(phone.label.name.toLowerCase(), style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)),
                 ],
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.call_outlined, color: Colors.white, size: 24),
+              icon: Icon(Icons.call_outlined, color: Theme.of(context).colorScheme.onSurface, size: 24),
               onPressed: () => _call(phone.number),
             ),
             IconButton(
-              icon: const Icon(Icons.message_outlined, color: Colors.white, size: 22),
+              icon: Icon(Icons.message_outlined, color: Theme.of(context).colorScheme.onSurface, size: 22),
               onPressed: () => _message(phone.number),
             ),
           ],
@@ -361,13 +352,13 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: Text('Connected apps', style: TextStyle(color: Color(0xFF666666), fontSize: 13, fontWeight: FontWeight.w500)),
+          child: Text('Connected apps', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13, fontWeight: FontWeight.w500)),
         ),
         ..._contact.socialMedias.map((social) {
           IconData icon = Icons.link_outlined;
-          Color color = Colors.white;
+          Color color = Theme.of(context).colorScheme.onSurface;
           if (social.label == SocialMediaLabel.whatsapp) {
             icon = Icons.chat_outlined;
             color = const Color(0xFF25D366);
@@ -387,11 +378,11 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
   Widget _buildAppTile(String title, IconData icon, Color iconColor, {String? subtitle}) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+      contentPadding: EdgeInsets.symmetric(horizontal: 24),
       leading: Icon(icon, color: iconColor, size: 28),
-      title: Text(title, style: const TextStyle(color: Colors.white, fontSize: 15)),
-      subtitle: subtitle != null ? Text(subtitle, style: const TextStyle(color: Color(0xFF666666), fontSize: 12)) : null,
-      trailing: const Icon(Icons.keyboard_arrow_right, color: Color(0xFF444444)),
+      title: Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
+      subtitle: subtitle != null ? Text(subtitle, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)) : null,
+      trailing: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
       onTap: () {},
     );
   }
@@ -405,31 +396,37 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: Text('Contact settings', style: TextStyle(color: Color(0xFF666666), fontSize: 13, fontWeight: FontWeight.w500)),
+          child: Text('Contact settings', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13, fontWeight: FontWeight.w500)),
         ),
         ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-          leading: const Icon(Icons.sim_card_outlined, color: Color(0xFF888888), size: 22),
-          title: const Text('Set calling SIM', style: TextStyle(color: Colors.white, fontSize: 15)),
-          subtitle: Text(simText, style: const TextStyle(color: Color(0xFF666666), fontSize: 12)),
+          contentPadding: EdgeInsets.symmetric(horizontal: 24),
+          leading: Icon(Icons.sim_card_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 22),
+          title: Text('Set calling SIM', style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
+          subtitle: Text(simText, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)),
           onTap: _setCallingSim,
         ),
         ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-          leading: const Icon(Icons.music_note_outlined, color: Color(0xFF888888), size: 22),
-          title: const Text('Contact ringtone', style: TextStyle(color: Colors.white, fontSize: 15)),
-          subtitle: Text(_customRingtoneName ?? 'Default', style: const TextStyle(color: Color(0xFF666666), fontSize: 12)),
+          contentPadding: EdgeInsets.symmetric(horizontal: 24),
+          leading: Icon(Icons.music_note_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 22),
+          title: Text('Contact ringtone', style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
+          subtitle: Text(_customRingtoneName ?? 'Default', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)),
           onTap: _pickRingtone,
         ),
         _buildSettingTile('Share contact', Icons.share_outlined, onTap: _shareContact),
-        _buildSettingTile(
-          _contact.phones.any((n) => BlockingManager.isBlocked(n.number)) ? 'Unblock numbers' : 'Block numbers', 
-          Icons.block, 
-          textColor: _contact.phones.any((n) => BlockingManager.isBlocked(n.number)) ? Colors.white : Colors.redAccent,
-          iconColor: _contact.phones.any((n) => BlockingManager.isBlocked(n.number)) ? Colors.white : Colors.redAccent,
-          onTap: _toggleBlockContact
+        ValueListenableBuilder<List<String>>(
+          valueListenable: BlockingManager.blockedNumbersNotifier,
+          builder: (context, _, __) {
+            final isBlocked = _contact.phones.any((n) => BlockingManager.isBlocked(n.number));
+            return _buildSettingTile(
+              isBlocked ? 'Unblock numbers' : 'Block numbers',
+              Icons.block,
+              textColor: isBlocked ? Theme.of(context).colorScheme.onSurface : Colors.redAccent,
+              iconColor: isBlocked ? Theme.of(context).colorScheme.onSurface : Colors.redAccent,
+              onTap: _toggleBlockContact,
+            );
+          },
         ),
         _buildSettingTile('Delete', Icons.delete_outline, textColor: Colors.redAccent, iconColor: Colors.redAccent, onTap: _deleteContact),
       ],
@@ -438,9 +435,9 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
   Widget _buildSettingTile(String title, IconData icon, {Color? textColor, Color? iconColor, VoidCallback? onTap}) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-      leading: Icon(icon, color: iconColor ?? const Color(0xFF888888), size: 22),
-      title: Text(title, style: TextStyle(color: textColor ?? Colors.white, fontSize: 15)),
+      contentPadding: EdgeInsets.symmetric(horizontal: 24),
+      leading: Icon(icon, color: iconColor ?? Theme.of(context).colorScheme.onSurfaceVariant, size: 22),
+      title: Text(title, style: TextStyle(color: textColor ?? Theme.of(context).colorScheme.onSurface, fontSize: 15)),
       onTap: onTap ?? () {},
     );
   }
@@ -464,7 +461,7 @@ class _Avatar extends StatelessWidget {
       return CircleAvatar(
         radius: size / 2,
         backgroundImage: MemoryImage(contact.photo!),
-        backgroundColor: const Color(0xFF1A1A1A),
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
       );
     }
     final initials = _initials(contact.displayName);
@@ -472,13 +469,13 @@ class _Avatar extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: const Color(0xFF111111),
+        color: Theme.of(context).colorScheme.surfaceContainer,
         shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFF2A2A2A)),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       alignment: Alignment.center,
       child: Text(initials,
-          style: TextStyle(color: Colors.white, fontSize: size * 0.35, fontWeight: FontWeight.w300)),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: size * 0.35, fontWeight: FontWeight.w300)),
     );
   }
 

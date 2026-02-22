@@ -233,11 +233,19 @@ class MainActivity : FlutterActivity() {
                     val number = args?.get("number") as? String ?: (call.arguments as? String) ?: ""
                     if (number.isNotEmpty()) {
                         try {
-                            val deleted = contentResolver.delete(
-                                android.provider.BlockedNumberContract.BlockedNumbers.CONTENT_URI,
-                                "${android.provider.BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER} = ?",
-                                arrayOf(number)
-                            )
+                            var deleted = 0
+                            try {
+                                deleted = android.provider.BlockedNumberContract.unblock(this@MainActivity, number)
+                            } catch (_: Exception) {
+                                // Fallback to direct delete below.
+                            }
+                            if (deleted == 0) {
+                                deleted = contentResolver.delete(
+                                    android.provider.BlockedNumberContract.BlockedNumbers.CONTENT_URI,
+                                    "${android.provider.BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER} = ?",
+                                    arrayOf(number)
+                                )
+                            }
                             result.success(deleted > 0)
                         } catch (e: Exception) {
                             result.error("UNBLOCK_FAILED", e.message, null)

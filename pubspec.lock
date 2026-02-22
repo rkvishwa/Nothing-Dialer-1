@@ -238,10 +238,11 @@ packages:
   nothing_glyph_interface:
     dependency: "direct main"
     description:
-      name: nothing_glyph_interface
-      sha256: cbdb0fb3275887842e64a05e57927e85a8c8cb79ddf2f7bc10505abff7c3c690
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: fix-display-progress-and-toggle
+      resolved-ref: "5504ae1502ecd462673135915cb8d10d96eff6a4"
+      url: "https://github.com/rkvishwa/flutter-nothing-glyph-interface.git"
+    source: git
     version: "0.0.9"
   objective_c:
     dependency: transitive

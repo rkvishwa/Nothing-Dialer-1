@@ -13,7 +13,10 @@ class ContactsScreen extends StatefulWidget {
   State<ContactsScreen> createState() => _ContactsScreenState();
 }
 
-class _ContactsScreenState extends State<ContactsScreen> {
+class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   List<Contact> _contacts = [];
   List<Contact> _filtered = [];
   Map<String, List<Contact>> _groupedContacts = {};
@@ -48,7 +51,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
     }
     final contacts = await FlutterContacts.getContacts(
       withProperties: true,
-      withPhoto: true,
+      withThumbnail: true,
     );
     if (mounted) {
       setState(() {
@@ -117,7 +120,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
     } on PlatformException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Call error: ${e.message}'), backgroundColor: const Color(0xFF333333)),
+          SnackBar(content: Text('Call error: ${e.message}'), backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest),
         );
       }
     }
@@ -144,8 +147,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (_loading) {
-      return const Center(child: CircularProgressIndicator(color: Colors.white, strokeWidth: 1.5));
+      return Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onSurface, strokeWidth: 1.5));
     }
     if (_permissionDenied) {
       return _EmptyState(
@@ -168,24 +172,24 @@ class _ContactsScreenState extends State<ContactsScreen> {
       children: [
         // ─ Search bar ─
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 4),
           child: TextField(
             controller: _searchController,
-            style: const TextStyle(color: Colors.white, fontSize: 15),
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15),
             decoration: InputDecoration(
               hintText: 'Search contacts…',
-              hintStyle: const TextStyle(color: Color(0xFF555555)),
-              prefixIcon: const Icon(Icons.search, color: Color(0xFF555555), size: 20),
+              hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
               suffixIcon: _searching
                   ? IconButton(
-                      icon: const Icon(Icons.close, color: Color(0xFF555555), size: 18),
+                      icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 18),
                       onPressed: () {
                         _searchController.clear();
                         setState(() => _searching = false);
                       })
                   : null,
               filled: true,
-              fillColor: const Color(0xFF1A1A1A),
+              fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -201,37 +205,38 @@ class _ContactsScreenState extends State<ContactsScreen> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text('${_filtered.length} contacts',
-                style: const TextStyle(color: Color(0xFF444444), fontSize: 11)),
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 11)),
           ),
         ),
         // ─ List ─
         Expanded(
           child: RefreshIndicator(
-            color: Colors.white,
-            backgroundColor: const Color(0xFF1A1A1A),
+            color: Theme.of(context).colorScheme.onSurface,
+            backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
             onRefresh: _loadContacts,
             child: ListView.builder(
               padding: const EdgeInsets.only(top: 8, bottom: 24),
+              cacheExtent: 1000,
               itemCount: _flatItems.length,
               itemBuilder: (context, idx) {
                 final item = _flatItems[idx];
                 if (item == 'create_new') {
                   return ListTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: Color(0xFF1A1A1A),
+                    leading: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                       child: Icon(Icons.person_add_outlined,
-                          color: Colors.white, size: 20),
+                          color: Theme.of(context).colorScheme.onSurface, size: 20),
                     ),
-                    title: const Text('Create new contact',
-                        style: TextStyle(color: Colors.white, fontSize: 15)),
+                    title: Text('Create new contact',
+                        style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
                     onTap: _addContact,
                   );
                 } else if (item is String) {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 6),
                     child: Text(item,
-                        style: const TextStyle(
-                            color: Color(0xFF555555),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 12,
                             letterSpacing: 0.8)),
                   );
@@ -239,6 +244,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   return _ContactTile(
                     contact: item,
                     onTap: () => _showContactDetail(item),
+                    onCall: item.phones.isNotEmpty 
+                      ? () => _call(item.phones.first.number)
+                      : null,
                   );
                 }
                 return const SizedBox.shrink();
@@ -265,7 +273,7 @@ class _ContactHeader extends StatelessWidget {
         Expanded(
           child: Text(
             contact.displayName,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -277,7 +285,13 @@ class _ContactHeader extends StatelessWidget {
 class _ContactTile extends StatelessWidget {
   final Contact contact;
   final VoidCallback onTap;
-  const _ContactTile({required this.contact, required this.onTap});
+  final VoidCallback? onCall;
+
+  const _ContactTile({
+    required this.contact,
+    required this.onTap,
+    this.onCall,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -294,20 +308,26 @@ class _ContactTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(contact.displayName,
-                      style: const TextStyle(color: Colors.white, fontSize: 15)),
+                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
                   if (contact.phones.isNotEmpty)
                     Text(
                       contact.phones.first.number,
-                      style: const TextStyle(color: Color(0xFF666666), fontSize: 12),
+                      style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 12),
                     ),
                 ],
               ),
             ),
-            Icon(
-              contact.phones.length > 1 ? Icons.call : Icons.call_outlined,
-              color: const Color(0xFF444444),
-              size: 20,
-            ),
+            if (onCall != null)
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: onCall,
+                icon: Icon(
+                  contact.phones.length > 1 ? Icons.call : Icons.call_outlined,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  size: 20,
+                ),
+              ),
           ],
         ),
       ),
@@ -322,11 +342,11 @@ class _Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (contact.photo != null) {
+    if (contact.thumbnail != null) {
       return CircleAvatar(
         radius: size / 2,
-        backgroundImage: MemoryImage(contact.photo!),
-        backgroundColor: const Color(0xFF1A1A1A),
+        backgroundImage: MemoryImage(contact.thumbnail!),
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
       );
     }
     final initials = _initials(contact.displayName);
@@ -334,13 +354,13 @@ class _Avatar extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
         shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFF2A2A2A)),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       alignment: Alignment.center,
       child: Text(initials,
-          style: TextStyle(color: Colors.white, fontSize: size * 0.38, fontWeight: FontWeight.w300)),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: size * 0.38, fontWeight: FontWeight.w300)),
     );
   }
 
@@ -373,18 +393,18 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 48, color: const Color(0xFF333333)),
-          const SizedBox(height: 16),
-          Text(title, style: const TextStyle(color: Color(0xFF888888), fontSize: 16)),
+          Icon(icon, size: 48, color: Theme.of(context).colorScheme.outlineVariant),
+          SizedBox(height: 16),
+          Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 16)),
           const SizedBox(height: 6),
           Text(subtitle,
-              style: const TextStyle(color: Color(0xFF444444), fontSize: 13),
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),
               textAlign: TextAlign.center),
           if (buttonLabel != null) ...[
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             TextButton(
               onPressed: onButton,
-              child: Text(buttonLabel!, style: const TextStyle(color: Colors.white)),
+              child: Text(buttonLabel!, style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
             ),
           ],
         ],

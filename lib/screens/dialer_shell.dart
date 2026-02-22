@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'recents_screen.dart';
 import 'contacts_screen.dart';
-import 'home_screen.dart';
+import 'settings_screen.dart';
 import 'floating_dialpad.dart';
+import '../services/blocking_manager.dart';
 
 /// Root shell with bottom navigation: Recents | Contacts.
 /// The dial-pad is exposed via a floating action button that opens the
@@ -32,21 +33,26 @@ class _DialerShellState extends State<DialerShell>
 
   // FAB animation — nullable to avoid LateInitializationError on hot-reload
   AnimationController? _fabCtrl;
-  Animation<double> get _fabScale =>
-      _fabCtrl != null
-          ? Tween<double>(begin: 1.0, end: 0.88).animate(
-              CurvedAnimation(parent: _fabCtrl!, curve: Curves.easeOut))
-          : const AlwaysStoppedAnimation(1.0);
+  Animation<double> get _fabScale => _fabCtrl != null
+      ? Tween<double>(
+          begin: 1.0,
+          end: 0.88,
+        ).animate(CurvedAnimation(parent: _fabCtrl!, curve: Curves.easeOut))
+      : const AlwaysStoppedAnimation(1.0);
 
   static const _controlChannel = MethodChannel('nothing_dialer/control');
 
+  final ValueNotifier<Map<dynamic, dynamic>?> _callStateNotifier =
+      ValueNotifier(null);
   Timer? _callStateTimer;
-  Map<dynamic, dynamic>? _activeCallState;
 
   @override
   void initState() {
     super.initState();
-    _callStateTimer = Timer.periodic(const Duration(seconds: 1), (_) => _checkCallState());
+    _callStateTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => _checkCallState(),
+    );
     _fabCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 120),
@@ -64,15 +70,23 @@ class _DialerShellState extends State<DialerShell>
 
   Future<void> _checkCallState() async {
     try {
-      final state = await _controlChannel
-          .invokeMethod<Map<dynamic, dynamic>>('getCallState');
-      if (mounted) {
-        setState(() {
-          _activeCallState = state;
-        });
+      final state = await _controlChannel.invokeMethod<Map<dynamic, dynamic>>(
+        'getCallState',
+      );
+
+      // Only update if the relevant fields changed to avoid unnecessary rebuilds
+      final current = _callStateNotifier.value;
+      if (state == null) {
+        if (current != null) _callStateNotifier.value = null;
+      } else {
+        if (current == null ||
+            state['number'] != current['number'] ||
+            state['contactName'] != current['contactName']) {
+          _callStateNotifier.value = state;
+        }
       }
     } catch (e) {
-      if (mounted) setState(() => _activeCallState = null);
+      if (_callStateNotifier.value != null) _callStateNotifier.value = null;
     }
   }
 
@@ -109,48 +123,54 @@ class _DialerShellState extends State<DialerShell>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D0D),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBody: true,
       appBar: _buildAppBar(),
       body: Column(
         children: [
-          if (_activeCallState != null)
-            GestureDetector(
-              onTap: () {
-                _controlChannel.invokeMethod('returnToCall');
-              },
-              child: Container(
-                width: double.infinity,
-                color: const Color(0xFF1E8E3E), // Google style green banner
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.call, color: Colors.white, size: 18),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Ongoing call: ${_activeCallState!['contactName'] ?? _activeCallState!['number']}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+          ValueListenableBuilder<Map<dynamic, dynamic>?>(
+            valueListenable: _callStateNotifier,
+            builder: (context, activeCallState, _) {
+              if (activeCallState == null) return const SizedBox.shrink();
+              return GestureDetector(
+                onTap: () {
+                  _controlChannel.invokeMethod('returnToCall');
+                },
+                child: Container(
+                  width: double.infinity,
+                  color: const Color(0xFF1E8E3E), // Google style green banner
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.call,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        size: 18,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Text(
+                        'Ongoing call: ${activeCallState['contactName'] ?? activeCallState['number']}',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
+          ),
           Expanded(
             child: PageView(
               controller: _pageController,
               onPageChanged: (index) {
                 setState(() => _currentIndex = index);
               },
-              children: const [
-                RecentsScreen(),
-                ContactsScreen(),
-              ],
+              children: const [RecentsScreen(), ContactsScreen()],
             ),
           ),
         ],
@@ -164,12 +184,12 @@ class _DialerShellState extends State<DialerShell>
   AppBar _buildAppBar() {
     final titles = ['Recents', 'Contacts'];
     return AppBar(
-      backgroundColor: const Color(0xFF0D0D0D),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       elevation: 0,
       title: Text(
         titles[_currentIndex],
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
           fontSize: 22,
           fontWeight: FontWeight.w300,
           letterSpacing: 0.5,
@@ -177,18 +197,16 @@ class _DialerShellState extends State<DialerShell>
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.settings_outlined, color: Color(0xFF888888)),
-          onPressed: () {
-            Navigator.push(
+          icon: Icon(
+            Icons.settings_outlined,
+            color: Theme.of(context).colorScheme.outline,
+          ),
+          onPressed: () async {
+            await Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => HomeScreen(
-                  glyphConnectedNotifier: widget.glyphConnectedNotifier,
-                  isPhone1Notifier: widget.isPhone1Notifier,
-                  glyphEnabledNotifier: widget.glyphEnabledNotifier,
-                ),
-              ),
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
             );
+            await BlockingManager.refreshBlockedNumbers();
           },
         ),
       ],
@@ -209,18 +227,24 @@ class _DialerShellState extends State<DialerShell>
           width: 64,
           height: 64,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onSurface,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.white.withValues(alpha: 0.15),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.15),
                 blurRadius: 20,
                 spreadRadius: 2,
               ),
             ],
           ),
           alignment: Alignment.center,
-          child: const Icon(Icons.dialpad_rounded, color: Colors.black, size: 26),
+          child: Icon(
+            Icons.dialpad_rounded,
+            color: Theme.of(context).colorScheme.surface,
+            size: 26,
+          ),
         ),
       ),
     );
@@ -228,26 +252,30 @@ class _DialerShellState extends State<DialerShell>
 
   Widget _buildBottomNav() {
     return BottomAppBar(
-      color: const Color(0xFF111111),
+      color: Theme.of(context).colorScheme.surface,
       shape: const CircularNotchedRectangle(),
       notchMargin: 10,
       child: SizedBox(
         height: 60,
         child: Row(
           children: [
-            Expanded(child: _NavItem(
-              icon: Icons.history,
-              label: 'Recents',
-              selected: _currentIndex == 0,
-              onTap: () => _onTabTapped(0),
-            )),
+            Expanded(
+              child: _NavItem(
+                icon: Icons.history,
+                label: 'Recents',
+                selected: _currentIndex == 0,
+                onTap: () => _onTabTapped(0),
+              ),
+            ),
             const SizedBox(width: 64), // space for FAB
-            Expanded(child: _NavItem(
-              icon: Icons.contacts_outlined,
-              label: 'Contacts',
-              selected: _currentIndex == 1,
-              onTap: () => _onTabTapped(1),
-            )),
+            Expanded(
+              child: _NavItem(
+                icon: Icons.contacts_outlined,
+                label: 'Contacts',
+                selected: _currentIndex == 1,
+                onTap: () => _onTabTapped(1),
+              ),
+            ),
           ],
         ),
       ),
@@ -281,14 +309,22 @@ class _NavItem extends StatelessWidget {
           Icon(
             icon,
             size: 22,
-            color: selected ? Colors.white : const Color(0xFF555555),
+            color: selected
+                ? Theme.of(context).colorScheme.onSurface
+                : Theme.of(
+                    context,
+                  ).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
           ),
           const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
               fontSize: 11,
-              color: selected ? Colors.white : const Color(0xFF555555),
+              color: selected
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Theme.of(
+                      context,
+                    ).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
               fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
             ),
           ),

@@ -47,7 +47,7 @@ class _DialerScreenState extends State<DialerScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Call error: ${e.message}'),
-            backgroundColor: const Color(0xFF333333),
+            backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
           ),
         );
       }
@@ -57,7 +57,7 @@ class _DialerScreenState extends State<DialerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D0D),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -86,8 +86,8 @@ class _DialerScreenState extends State<DialerScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: _digits.isEmpty
-                    ? const Color(0xFF444444)
-                    : Colors.white,
+                    ? Theme.of(context).colorScheme.onSurfaceVariant
+                    : Theme.of(context).colorScheme.onSurface,
                 fontSize: _digits.length > 12 ? 24 : 36,
                 fontWeight: FontWeight.w300,
                 letterSpacing: 2,
@@ -98,9 +98,9 @@ class _DialerScreenState extends State<DialerScreen> {
             GestureDetector(
               onTap: _onDelete,
               onLongPress: () => setState(() => _digits = ''),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(8),
-                child: Icon(Icons.backspace_outlined, color: Color(0xFF666666), size: 22),
+                child: Icon(Icons.backspace_outlined, color: Theme.of(context).colorScheme.outline, size: 22),
               ),
             ),
         ],
@@ -142,11 +142,11 @@ class _DialerScreenState extends State<DialerScreen> {
           child: Container(
             width: 72,
             height: 72,
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.call, color: Colors.black, size: 32),
+            child: Icon(Icons.call, color: Theme.of(context).colorScheme.surface, size: 32),
           ),
         ),
         const SizedBox(width: 80),
@@ -169,15 +169,15 @@ class _DialKey extends StatelessWidget {
         height: 72,
         margin: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: const Color(0xFF161616),
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.circular(36),
-          border: Border.all(color: const Color(0xFF222222)),
+          border: Border.all(color: Theme.of(context).colorScheme.surfaceContainerHigh),
         ),
         alignment: Alignment.center,
         child: Text(
           label,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 24,
             fontWeight: FontWeight.w300,
           ),

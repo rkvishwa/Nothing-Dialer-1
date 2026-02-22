@@ -40,7 +40,12 @@ class CallActionReceiver : BroadcastReceiver() {
             }
             ACTION_DECLINE -> {
                 Log.d(TAG, "Declining call via notification action")
-                currentCall.reject(false, null)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                    currentCall.reject(android.telecom.Call.REJECT_REASON_DECLINED)
+                } else {
+                    @Suppress("DEPRECATION")
+                    currentCall.reject(false, null)
+                }
             }
         }
     }

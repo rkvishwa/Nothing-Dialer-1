@@ -18,8 +18,8 @@ class _GroupedCall {
   final String number;
   final CallType? callType;
   final int count;
-  final int? timestamp;   // most recent
-  final int? duration;    // most recent
+  final int? timestamp; // most recent
+  final int? duration; // most recent
   final String? simDisplayName;
   final String relativeTime;
   final List<String> entryRelativeTimes;
@@ -50,7 +50,11 @@ class RecentsScreen extends StatefulWidget {
   State<RecentsScreen> createState() => _RecentsScreenState();
 }
 
-class _RecentsScreenState extends State<RecentsScreen> {
+class _RecentsScreenState extends State<RecentsScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   List<CallLogEntry> _entries = [];
   Map<String, List<_GroupedCall>> _mapFiltered = {};
   List<Object> _flatItems = []; // Contains Strings (headers) and _GroupedCall
@@ -70,12 +74,7 @@ class _RecentsScreenState extends State<RecentsScreen> {
   }
 
   void _onBlockedNumbersChanged() {
-    debugPrint('RecentsScreen: Blocked numbers updated, refreshing filters');
-    if (mounted) {
-      setState(() {
-        _updateFilters();
-      });
-    }
+    if (mounted) setState(() {});
   }
 
   @override
@@ -90,7 +89,10 @@ class _RecentsScreenState extends State<RecentsScreen> {
 
     final status = await Permission.phone.request();
     if (!status.isGranted) {
-      setState(() { _loading = false; _permissionDenied = true; });
+      setState(() {
+        _loading = false;
+        _permissionDenied = true;
+      });
       return;
     }
 
@@ -123,21 +125,26 @@ class _RecentsScreenState extends State<RecentsScreen> {
     final mapFiltered = <String, List<_GroupedCall>>{};
     final now = DateTime.now();
     final todayStr = DateFormat('yyyy-MM-dd').format(now);
-    final yesterdayStr = DateFormat('yyyy-MM-dd').format(now.subtract(const Duration(days: 1)));
+    final yesterdayStr = DateFormat(
+      'yyyy-MM-dd',
+    ).format(now.subtract(const Duration(days: 1)));
     for (final g in groupedFiltered) {
-      final date = DateFormat('yyyy-MM-dd')
-          .format(DateTime.fromMillisecondsSinceEpoch(g.timestamp ?? 0));
+      final date = DateFormat(
+        'yyyy-MM-dd',
+      ).format(DateTime.fromMillisecondsSinceEpoch(g.timestamp ?? 0));
       String label;
       if (date == todayStr) {
         label = 'Today';
       } else if (date == yesterdayStr) {
         label = 'Yesterday';
       } else {
-        label = DateFormat('MMMM d').format(DateTime.fromMillisecondsSinceEpoch(g.timestamp ?? 0));
+        label = DateFormat(
+          'MMMM d',
+        ).format(DateTime.fromMillisecondsSinceEpoch(g.timestamp ?? 0));
       }
       mapFiltered.putIfAbsent(label, () => []).add(g);
     }
-    
+
     _mapFiltered = mapFiltered;
     _sections = _mapFiltered.keys.toList();
 
@@ -161,13 +168,22 @@ class _RecentsScreenState extends State<RecentsScreen> {
     } on PlatformException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Call error: ${e.message}'), backgroundColor: const Color(0xFF333333)),
+          SnackBar(
+            content: Text('Call error: ${e.message}'),
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest,
+          ),
         );
       }
     }
   }
 
-  void _showOptions(BuildContext tileContext, _GroupedCall group, Offset globalPosition) {
+  void _showOptions(
+    BuildContext tileContext,
+    _GroupedCall group,
+    Offset globalPosition,
+  ) {
     showMenu<String>(
       context: context,
       position: RelativeRect.fromLTRB(
@@ -176,7 +192,7 @@ class _RecentsScreenState extends State<RecentsScreen> {
         globalPosition.dx,
         globalPosition.dy,
       ),
-      color: const Color(0xFF2B2930),
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 8,
       items: [
@@ -184,95 +200,216 @@ class _RecentsScreenState extends State<RecentsScreen> {
           enabled: false,
           child: Text(
             group.number,
-            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
         PopupMenuItem(
           value: 'copy',
-          child: Row(children: const [Icon(Icons.copy_rounded, color: Colors.white, size: 20), SizedBox(width: 12), Text('Copy number', style: TextStyle(color: Colors.white, fontSize: 15))]),
+          child: Row(
+            children: [
+              Icon(
+                Icons.copy_rounded,
+                color: Theme.of(context).colorScheme.onSurface,
+                size: 20,
+              ),
+              SizedBox(width: 12),
+              Text(
+                'Copy number',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
         ),
         PopupMenuItem(
           value: 'edit_before_call',
-          child: Row(children: const [Icon(Icons.edit_outlined, color: Colors.white, size: 20), SizedBox(width: 12), Text('Edit number before call', style: TextStyle(color: Colors.white, fontSize: 15))]),
+          child: Row(
+            children: [
+              Icon(
+                Icons.edit_outlined,
+                color: Theme.of(context).colorScheme.onSurface,
+                size: 20,
+              ),
+              SizedBox(width: 12),
+              Text(
+                'Edit number before call',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
         ),
         if (BlockingManager.isBlocked(group.number))
           PopupMenuItem(
             value: 'unblock',
-            child: Row(children: const [Icon(Icons.check_circle_outline, color: Colors.white, size: 20), SizedBox(width: 12), Text('Unblock number', style: TextStyle(color: Colors.white, fontSize: 15))]),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.check_circle_outline,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  size: 20,
+                ),
+                SizedBox(width: 12),
+                Text(
+                  'Unblock number',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
           )
         else
           PopupMenuItem(
             value: 'block',
-            child: Row(children: const [Icon(Icons.block, color: Colors.white, size: 20), SizedBox(width: 12), Text('Block or report', style: TextStyle(color: Colors.white, fontSize: 15))]),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.block,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  size: 20,
+                ),
+                SizedBox(width: 12),
+                Text(
+                  'Block number',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
           ),
         PopupMenuItem(
           value: 'delete',
-          child: Row(children: const [Icon(Icons.delete_outline, color: Color(0xFFFF453A), size: 20), SizedBox(width: 12), Text('Delete', style: TextStyle(color: Color(0xFFFF453A), fontSize: 15))]),
+          child: Row(
+            children: const [
+              Icon(Icons.delete_outline, color: Color(0xFFFF453A), size: 20),
+              SizedBox(width: 12),
+              Text(
+                'Delete',
+                style: TextStyle(color: Color(0xFFFF453A), fontSize: 15),
+              ),
+            ],
+          ),
         ),
       ],
     ).then((value) {
       if (!mounted) return;
       if (value == 'copy') {
         Clipboard.setData(ClipboardData(text: group.number));
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Number copied', style: TextStyle(color: Colors.white)), backgroundColor: Color(0xFF333333)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Number copied',
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest,
+          ),
+        );
       } else if (value == 'edit_before_call') {
-        // Find the dialer shell and open dialpad with initial digits. 
+        // Find the dialer shell and open dialpad with initial digits.
         // We know DialerShell handles floating_dialpad state. The recents screen is nested inside DialerShell's PageView.
         // Easiest is to pop back to shell and broadcast a notification or use a global key, but DialerShell currently handles opening it via FAB.
         // We can just call showFloatingDialpad from floating_dialpad.dart directly here.
         importFloatingDialpad(group.number);
       } else if (value == 'block') {
-         showDialog(
-           context: context,
-           builder: (context) => AlertDialog(
-             backgroundColor: const Color(0xFF2B2930),
-             title: const Text('Block number?', style: TextStyle(color: Colors.white)),
-             content: Text('You will no longer receive calls or texts from ${group.number}.', style: const TextStyle(color: Color(0xFFCAC4D0))),
-             actions: [
-               TextButton(
-                 onPressed: () => Navigator.pop(context),
-                 child: const Text('Cancel', style: TextStyle(color: Color(0xFFD0BCFF))),
-               ),
-               TextButton(
-                   onPressed: () async {
-                     Navigator.pop(context);
-                     try {
-                       // Look for contact and block all numbers
-                       final contacts = await FlutterContacts.getContacts(withProperties: true);
-                       final target = _normalise(group.number);
-                       Contact? matchedContact;
-                       for (var c in contacts) {
-                         if (c.phones.any((p) => _normalise(p.number) == target)) {
-                           matchedContact = c;
-                           break;
-                         }
-                       }
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest,
+            title: Text(
+              'Block number?',
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            content: Text(
+              'You will no longer receive calls or texts from ${group.number}.',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  try {
+                    // Look for contact and block all numbers
+                    final contacts = await FlutterContacts.getContacts(
+                      withProperties: true,
+                    );
+                    final target = _normalise(group.number);
+                    Contact? matchedContact;
+                    for (var c in contacts) {
+                      if (c.phones.any((p) => _normalise(p.number) == target)) {
+                        matchedContact = c;
+                        break;
+                      }
+                    }
 
-                       if (matchedContact != null) {
-                         debugPrint('RecentsScreen: Blocking all numbers for contact ${matchedContact.displayName}');
-                         for (var phone in matchedContact.phones) {
-                           await BlockingManager.blockNumber(phone.number);
-                         }
-                       } else {
-                         debugPrint('RecentsScreen: No contact match, blocking number ${group.number}');
-                         await BlockingManager.blockNumber(group.number);
-                       }
+                    if (matchedContact != null) {
+                      debugPrint(
+                        'RecentsScreen: Blocking all numbers for contact ${matchedContact.displayName}',
+                      );
+                      for (var phone in matchedContact.phones) {
+                        await BlockingManager.blockNumber(phone.number);
+                      }
+                    } else {
+                      debugPrint(
+                        'RecentsScreen: No contact match, blocking number ${group.number}',
+                      );
+                      await BlockingManager.blockNumber(group.number);
+                    }
 
-                       if (mounted) {
-                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Blocked'), backgroundColor: Color(0xFF333333)));
-                         _loadCallLog(); 
-                       }
-                     } catch (e) {
-                       if (mounted) {
-                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not block'), backgroundColor: Color(0xFF333333)));
-                       }
-                     }
-                   },
-                 child: const Text('Block', style: TextStyle(color: Color(0xFFFF453A))),
-               ),
-             ],
-           ),
-         );
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Blocked'),
+                          backgroundColor: Color(0xFF333333),
+                        ),
+                      );
+                      _loadCallLog();
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Could not block'),
+                          backgroundColor: Color(0xFF333333),
+                        ),
+                      );
+                    }
+                  }
+                },
+                child: const Text(
+                  'Block',
+                  style: TextStyle(color: Color(0xFFFF453A)),
+                ),
+              ),
+            ],
+          ),
+        );
       } else if (value == 'contact_info') {
         _handleContactAction(group);
       } else if (value == 'unblock') {
@@ -286,9 +423,12 @@ class _RecentsScreenState extends State<RecentsScreen> {
   Future<void> _handleContactAction(_GroupedCall group) async {
     if (group.name.isNotEmpty) {
       // Try to find the contact by number
-      final contacts = await FlutterContacts.getContacts(withProperties: true, withPhoto: true);
+      final contacts = await FlutterContacts.getContacts(
+        withProperties: true,
+        withPhoto: true,
+      );
       final normalizedTarget = _normalise(group.number);
-      
+
       Contact? found;
       for (var c in contacts) {
         if (c.phones.any((p) => _normalise(p.number) == normalizedTarget)) {
@@ -300,14 +440,20 @@ class _RecentsScreenState extends State<RecentsScreen> {
       if (found != null && mounted) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => ContactDetailScreen(contact: found!)),
+          MaterialPageRoute(
+            builder: (_) => ContactDetailScreen(contact: found!),
+          ),
         );
       } else {
         // Fallback: create new contact if not found or name was just from call log
-        await FlutterContacts.openExternalInsert(Contact(phones: [Phone(group.number)]));
+        await FlutterContacts.openExternalInsert(
+          Contact(phones: [Phone(group.number)]),
+        );
       }
     } else {
-      await FlutterContacts.openExternalInsert(Contact(phones: [Phone(group.number)]));
+      await FlutterContacts.openExternalInsert(
+        Contact(phones: [Phone(group.number)]),
+      );
     }
   }
 
@@ -317,7 +463,7 @@ class _RecentsScreenState extends State<RecentsScreen> {
       final contacts = await FlutterContacts.getContacts(withProperties: true);
       final target = _normalise(number);
       Contact? matchedContact;
-      
+
       for (var c in contacts) {
         if (c.phones.any((p) => _normalise(p.number) == target)) {
           matchedContact = c;
@@ -326,22 +472,40 @@ class _RecentsScreenState extends State<RecentsScreen> {
       }
 
       if (matchedContact != null) {
-        debugPrint('RecentsScreen: Unblocking all numbers for contact ${matchedContact.displayName}');
+        debugPrint(
+          'RecentsScreen: Unblocking all numbers for contact ${matchedContact.displayName}',
+        );
         for (var phone in matchedContact.phones) {
           await BlockingManager.unblockNumber(phone.number);
         }
       } else {
-        debugPrint('RecentsScreen: No contact match, unblocking number $number');
+        debugPrint(
+          'RecentsScreen: No contact match, unblocking number $number',
+        );
         await BlockingManager.unblockNumber(number);
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Unblocked'), backgroundColor: Color(0xFF333333)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Unblocked'),
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest,
+          ),
+        );
         _loadCallLog(); // Refresh list
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not unblock'), backgroundColor: Color(0xFF333333)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Could not unblock'),
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest,
+          ),
+        );
       }
     }
   }
@@ -378,18 +542,22 @@ class _RecentsScreenState extends State<RecentsScreen> {
         count++;
         currentEntries.add(e);
       } else {
-        groups.add(_GroupedCall(
-          name: anchor.name ?? '',
-          number: anchor.number ?? '',
-          callType: prevType,
-          count: count,
-          timestamp: anchor.timestamp,
-          duration: anchor.duration,
-          simDisplayName: anchor.simDisplayName,
-          relativeTime: _formatRelativeTime(anchor.timestamp),
-          entryRelativeTimes: currentEntries.map((e) => _subtextRelativeTime(e.timestamp)).toList(),
-          entries: List.from(currentEntries),
-        ));
+        groups.add(
+          _GroupedCall(
+            name: anchor.name ?? '',
+            number: anchor.number ?? '',
+            callType: prevType,
+            count: count,
+            timestamp: anchor.timestamp,
+            duration: anchor.duration,
+            simDisplayName: anchor.simDisplayName,
+            relativeTime: _formatRelativeTime(anchor.timestamp),
+            entryRelativeTimes: currentEntries
+                .map((e) => _subtextRelativeTime(e.timestamp))
+                .toList(),
+            entries: List.from(currentEntries),
+          ),
+        );
         anchor = e;
         prevNumber = num;
         prevType = e.callType;
@@ -398,18 +566,22 @@ class _RecentsScreenState extends State<RecentsScreen> {
       }
     }
     // last group
-    groups.add(_GroupedCall(
-      name: anchor.name ?? '',
-      number: anchor.number ?? '',
-      callType: prevType,
-      count: count,
-      timestamp: anchor.timestamp,
-      duration: anchor.duration,
-      simDisplayName: anchor.simDisplayName,
-      relativeTime: _formatRelativeTime(anchor.timestamp),
-      entryRelativeTimes: currentEntries.map((e) => _subtextRelativeTime(e.timestamp)).toList(),
-      entries: currentEntries,
-    ));
+    groups.add(
+      _GroupedCall(
+        name: anchor.name ?? '',
+        number: anchor.number ?? '',
+        callType: prevType,
+        count: count,
+        timestamp: anchor.timestamp,
+        duration: anchor.duration,
+        simDisplayName: anchor.simDisplayName,
+        relativeTime: _formatRelativeTime(anchor.timestamp),
+        entryRelativeTimes: currentEntries
+            .map((e) => _subtextRelativeTime(e.timestamp))
+            .toList(),
+        entries: currentEntries,
+      ),
+    );
 
     return groups;
   }
@@ -444,18 +616,22 @@ class _RecentsScreenState extends State<RecentsScreen> {
       case CallType.rejected:
         return const Color(0xFFFF453A); // red
       case CallType.incoming:
-        return const Color(0xFF30D158); // green
+        return Color(0xFF30D158); // green
       default:
-        return const Color(0xFFCAC4D0); // neutral
+        return Theme.of(context).colorScheme.onSurfaceVariant; // neutral
     }
   }
 
   IconData _callTypeIcon(CallType? type) {
     switch (type) {
-      case CallType.missed:    return Icons.call_missed;
-      case CallType.rejected:  return Icons.call_missed_outgoing;
-      case CallType.incoming:  return Icons.call_received;
-      default:                 return Icons.call_made;
+      case CallType.missed:
+        return Icons.call_missed;
+      case CallType.rejected:
+        return Icons.call_missed_outgoing;
+      case CallType.incoming:
+        return Icons.call_received;
+      default:
+        return Icons.call_made;
     }
   }
 
@@ -463,8 +639,14 @@ class _RecentsScreenState extends State<RecentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (_loading) {
-      return const Center(child: CircularProgressIndicator(color: Colors.white, strokeWidth: 1.5));
+      return Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.onSurface,
+          strokeWidth: 1.5,
+        ),
+      );
     }
 
     if (_permissionDenied) {
@@ -478,7 +660,11 @@ class _RecentsScreenState extends State<RecentsScreen> {
     }
 
     if (_entries.isEmpty) {
-      return const _EmptyState(icon: Icons.history, title: 'No recent calls', subtitle: 'Your call history will appear here.');
+      return const _EmptyState(
+        icon: Icons.history,
+        title: 'No recent calls',
+        subtitle: 'Your call history will appear here.',
+      );
     }
 
     return Column(
@@ -494,25 +680,38 @@ class _RecentsScreenState extends State<RecentsScreen> {
                 _updateFilters();
               });
             },
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 16,
+            ),
             decoration: InputDecoration(
               hintText: 'Search recent calls',
-              hintStyle: const TextStyle(color: Color(0xFF938F99), fontSize: 16),
-              prefixIcon: const Icon(Icons.search, color: Color(0xFF938F99)),
+              hintStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 16,
+              ),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
               suffixIcon: _searchQuery.isNotEmpty
                   ? IconButton(
-                      icon: const Icon(Icons.close, color: Color(0xFF938F99), size: 20),
+                      icon: Icon(
+                        Icons.close,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        size: 20,
+                      ),
                       onPressed: () {
                         setState(() {
-                            _searchController.clear();
-                            _searchQuery = '';
-                            _updateFilters();
+                          _searchController.clear();
+                          _searchQuery = '';
+                          _updateFilters();
                         });
                       },
                     )
                   : null,
               filled: true,
-              fillColor: const Color(0xFF2B2930),
+              fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(28),
                 borderSide: BorderSide.none,
@@ -525,44 +724,54 @@ class _RecentsScreenState extends State<RecentsScreen> {
         // Call list
         Expanded(
           child: RefreshIndicator(
-            color: Colors.white,
-            backgroundColor: const Color(0xFF1C1B1F),
+            color: Theme.of(context).colorScheme.onSurface,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             onRefresh: _loadCallLog,
-            child: ListView.builder(
-              padding: const EdgeInsets.only(top: 8, bottom: 24),
-              itemCount: _flatItems.length,
-              itemBuilder: (context, idx) {
-                final item = _flatItems[idx];
-                if (item is String) {
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-                    child: Text(item,
-                        style: const TextStyle(
-                            color: Color(0xFF938F99),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.6)),
-                  );
-                } else if (item is _GroupedCall) {
-                  return _CallTile(
-                    group: item,
-                    isBlocked: BlockingManager.isBlocked(item.number),
-                    typeColor: _callTypeColor(item.callType),
-                    typeIcon: _callTypeIcon(item.callType),
-                    onCallTap: () => _call(item.number),
-                    onLongPress: (BuildContext tapContext, Offset globalPosition) =>
-                        _showOptions(tapContext, item, globalPosition),
-                    onContactActionTap: () => _handleContactAction(item),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
+            child: ValueListenableBuilder<List<String>>(
+              valueListenable: BlockingManager.blockedNumbersNotifier,
+              builder: (context, _, __) => ListView.builder(
+                padding: const EdgeInsets.only(top: 8, bottom: 24),
+                cacheExtent:
+                    1000, // Pre-build more items for smoother scrolling
+                itemCount: _flatItems.length,
+                itemBuilder: (context, idx) {
+                  final item = _flatItems[idx];
+                  if (item is String) {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+                      child: Text(
+                        item,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.6,
+                        ),
+                      ),
+                    );
+                  } else if (item is _GroupedCall) {
+                    return _CallTile(
+                      group: item,
+                      isBlocked: BlockingManager.isBlocked(item.number),
+                      typeColor: _callTypeColor(item.callType),
+                      typeIcon: _callTypeIcon(item.callType),
+                      onCallTap: () => _call(item.number),
+                      onLongPress:
+                          (BuildContext tapContext, Offset globalPosition) =>
+                              _showOptions(tapContext, item, globalPosition),
+                      onContactActionTap: () => _handleContactAction(item),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ),
         ),
       ],
     );
   }
+
   void importFloatingDialpad(String number) {
     // Show the floating dialpad directly from recents screen
     showFloatingDialpad(
@@ -577,7 +786,12 @@ class _RecentsScreenState extends State<RecentsScreen> {
         } on PlatformException catch (e) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Call error: ${e.message}'), backgroundColor: const Color(0xFF333333)),
+              SnackBar(
+                content: Text('Call error: ${e.message}'),
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.surfaceContainerHighest,
+              ),
             );
           }
         }
@@ -611,7 +825,8 @@ class _CallTile extends StatefulWidget {
   State<_CallTile> createState() => _CallTileState();
 }
 
-class _CallTileState extends State<_CallTile> with SingleTickerProviderStateMixin {
+class _CallTileState extends State<_CallTile>
+    with SingleTickerProviderStateMixin {
   bool _expanded = false;
   bool _isPressed = false;
   late AnimationController _animController;
@@ -620,8 +835,14 @@ class _CallTileState extends State<_CallTile> with SingleTickerProviderStateMixi
   @override
   void initState() {
     super.initState();
-    _animController = AnimationController(vsync: this, duration: const Duration(milliseconds: 250));
-    _expandAnimation = CurvedAnimation(parent: _animController, curve: Curves.easeInOut);
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
+    _expandAnimation = CurvedAnimation(
+      parent: _animController,
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -631,6 +852,7 @@ class _CallTileState extends State<_CallTile> with SingleTickerProviderStateMixi
   }
 
   void _toggleExpand() {
+    if (!mounted) return;
     setState(() {
       _expanded = !_expanded;
       if (_expanded) {
@@ -645,7 +867,9 @@ class _CallTileState extends State<_CallTile> with SingleTickerProviderStateMixi
   Widget build(BuildContext context) {
     final group = widget.group;
     final displayName = group.name.isNotEmpty ? group.name : group.number;
-    final isMissed = group.callType == CallType.missed || group.callType == CallType.rejected;
+    final isMissed =
+        group.callType == CallType.missed ||
+        group.callType == CallType.rejected;
 
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
@@ -664,247 +888,372 @@ class _CallTileState extends State<_CallTile> with SingleTickerProviderStateMixi
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        color: _isPressed ? Colors.white.withOpacity(0.08) : Colors.transparent,
+        color: _isPressed
+            ? Theme.of(context).colorScheme.onSurface.withOpacity(0.08)
+            : Colors.transparent,
         child: Column(
-
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Row(
-              children: [
-                // Avatar
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2B2930),
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
-                  child: widget.isBlocked
-                      ? const Icon(Icons.block, color: Color(0xFFFF453A), size: 24)
-                      : Text(
-                          displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
-                          style: const TextStyle(color: Color(0xFFD0BCFF), fontSize: 20, fontWeight: FontWeight.w400),
-                        ),
-                ),
-                const SizedBox(width: 16),
-
-                // Name + subtitle + SIM label
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              displayName,
-                              style: TextStyle(
-                                color: isMissed ? const Color(0xFFFF453A) : Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                children: [
+                  // Avatar
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: widget.isBlocked
+                        ? Icon(Icons.block, color: Color(0xFFFF453A), size: 24)
+                        : Text(
+                            displayName.isNotEmpty
+                                ? displayName[0].toUpperCase()
+                                : '?',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                          if (group.count > 1) ...[
+                  ),
+                  const SizedBox(width: 16),
+
+                  // Name + subtitle + SIM label
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                displayName,
+                                style: TextStyle(
+                                  color: isMissed
+                                      ? Color(0xFFFF453A)
+                                      : Theme.of(context).colorScheme.onSurface,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            if (group.count > 1) ...[
+                              const SizedBox(width: 6),
+                              Text(
+                                '(${group.count})',
+                                style: TextStyle(
+                                  color: isMissed
+                                      ? const Color(0xFFFF453A)
+                                      : Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 3),
+                        Row(
+                          children: [
+                            Icon(
+                              widget.typeIcon,
+                              size: 14,
+                              color: widget.typeColor,
+                            ),
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text(
+                                group.name.isNotEmpty
+                                    ? group.number
+                                    : _callTypeName(group.callType),
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                  fontSize: 13,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                             const SizedBox(width: 6),
                             Text(
-                              '(${group.count})',
+                              '• ${group.relativeTime}',
                               style: TextStyle(
-                                color: isMissed ? const Color(0xFFFF453A) : const Color(0xFF938F99),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                                fontSize: 12,
                               ),
                             ),
                           ],
-                        ],
-                      ),
-                      const SizedBox(height: 3),
-                      Row(
-                        children: [
-                          Icon(widget.typeIcon, size: 14, color: widget.typeColor),
-                          const SizedBox(width: 6),
-                          Flexible(
-                            child: Text(
-                              group.name.isNotEmpty ? group.number : _callTypeName(group.callType),
-                              style: const TextStyle(color: Color(0xFF938F99), fontSize: 13),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            '• ${group.relativeTime}',
-                            style: const TextStyle(color: Color(0xFF938F99), fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                // SIM icon
-              if (group.simDisplayName != null && group.simDisplayName!.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(right: 2),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomPaint(
-                        painter: _SimCardPainter(color: const Color(0xFF938F99)),
-                        child: SizedBox(
-                          width: 16,
-                          height: 20,
-                          child: Center(
-                            child: Text(
-                              group.simDisplayName![0].toUpperCase(),
-                              style: const TextStyle(color: Color(0xFFCAC4D0), fontSize: 10, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (_expanded) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          group.simDisplayName!,
-                          style: const TextStyle(color: Color(0xFF938F99), fontSize: 10),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ]
-                    ],
-                  ),
-                ),
-              IconButton(
-                onPressed: widget.onCallTap,
-                icon: const Icon(Icons.call_outlined, color: Color(0xFFCAC4D0)),
-                iconSize: 22,
-                padding: const EdgeInsets.all(12),
-                constraints: const BoxConstraints(),
-              ),
-              ],
-            ),
-          ),
-          
-          // Expanded content
-          SizeTransition(
-            sizeFactor: _expandAnimation,
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2B2930),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (group.entries.length > 1) ...[
-                    // Just show all the individual logs
-                    for (int i = 0; i < group.entries.length; i++)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(
-                          group.entryRelativeTimes[i],
-                          style: const TextStyle(color: Color(0xFF938F99), fontSize: 13),
-                        ),
-                      ),
-                  ],
-                  if (group.entries.length <= 1) ...[
-                    // Still show the single time if user expands a group of 1 to see individual time detail
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        group.entryRelativeTimes[0],
-                        style: const TextStyle(color: Color(0xFF938F99), fontSize: 13),
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: 12),
-                  
-                  // Action Buttons (Video call, Message, History)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1E1C22),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        _ActionItem(
-                          icon: Icons.videocam_outlined,
-                          label: 'Video call',
-                          onTap: () async {
-                            const channel = MethodChannel('nothing_dialer/control');
-                            try {
-                              await channel.invokeMethod('placeVideoCall', {'number': group.number});
-                            } catch (e) {
-                              if (mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not place video call'), backgroundColor: Color(0xFF333333)));
-                              }
-                            }
-                          },
-                        ),
-                        const Divider(height: 1, color: Color(0xFF2B2930)),
-                        _ActionItem(
-                          icon: Icons.chat_bubble_outline,
-                          label: 'Message',
-                          onTap: () async {
-                            const channel = MethodChannel('nothing_dialer/control');
-                            try {
-                              await channel.invokeMethod('openSmsApp', {'number': group.number});
-                            } catch (e) {
-                              if (mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not open messaging app'), backgroundColor: Color(0xFF333333)));
-                              }
-                            }
-                          },
-                        ),
-                        const Divider(height: 1, color: Color(0xFF2B2930)),
-                        _ActionItem(
-                          icon: Icons.history,
-                          label: 'History',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => CallHistoryScreen(
-                                  number: group.number,
-                                  contactName: group.name.isNotEmpty ? group.name : null,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        const Divider(height: 1, color: Color(0xFF2B2930)),
-                        _ActionItem(
-                          icon: group.name.isNotEmpty ? Icons.person_outline : Icons.person_add_outlined,
-                          label: group.name.isNotEmpty ? 'View contact' : 'Add to contact',
-                          onTap: widget.onContactActionTap,
                         ),
                       ],
                     ),
                   ),
+
+                  // SIM icon
+                  if (group.simDisplayName != null &&
+                      group.simDisplayName!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 2),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomPaint(
+                            painter: _SimCardPainter(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
+                            child: SizedBox(
+                              width: 16,
+                              height: 20,
+                              child: Center(
+                                child: Text(
+                                  group.simDisplayName![0].toUpperCase(),
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (_expanded) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              group.simDisplayName!,
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                                fontSize: 10,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  IconButton(
+                    onPressed: widget.onCallTap,
+                    icon: Icon(
+                      Icons.call_outlined,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                    iconSize: 22,
+                    padding: const EdgeInsets.all(12),
+                    constraints: const BoxConstraints(),
+                  ),
                 ],
               ),
             ),
-          ),
-        ],
+
+            // Expanded content
+            SizeTransition(
+              sizeFactor: _expandAnimation,
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (group.entries.length > 1) ...[
+                      // Just show all the individual logs
+                      for (int i = 0; i < group.entries.length; i++)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            group.entryRelativeTimes[i],
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                    ],
+                    if (group.entries.length <= 1) ...[
+                      // Still show the single time if user expands a group of 1 to see individual time detail
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          group.entryRelativeTimes[0],
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 12),
+
+                    // Action Buttons (Video call, Message, History)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.08),
+                          width: 0.5,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          _ActionItem(
+                            icon: Icons.videocam_outlined,
+                            label: 'Video call',
+                            onTap: () async {
+                              const channel = MethodChannel(
+                                'nothing_dialer/control',
+                              );
+                              try {
+                                await channel.invokeMethod('placeVideoCall', {
+                                  'number': group.number,
+                                });
+                              } catch (e) {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'Could not place video call',
+                                      ),
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.surfaceContainerHighest,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                          Divider(
+                            height: 1,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.08),
+                          ),
+                          _ActionItem(
+                            icon: Icons.chat_bubble_outline,
+                            label: 'Message',
+                            onTap: () async {
+                              const channel = MethodChannel(
+                                'nothing_dialer/control',
+                              );
+                              try {
+                                await channel.invokeMethod('openSmsApp', {
+                                  'number': group.number,
+                                });
+                              } catch (e) {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'Could not open messaging app',
+                                      ),
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.surfaceContainerHighest,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                          Divider(
+                            height: 1,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.08),
+                          ),
+                          _ActionItem(
+                            icon: Icons.history,
+                            label: 'History',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => CallHistoryScreen(
+                                    number: group.number,
+                                    contactName: group.name.isNotEmpty
+                                        ? group.name
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          Divider(
+                            height: 1,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.08),
+                          ),
+                          _ActionItem(
+                            icon: group.name.isNotEmpty
+                                ? Icons.person_outline
+                                : Icons.person_add_outlined,
+                            label: group.name.isNotEmpty
+                                ? 'View contact'
+                                : 'Add to contact',
+                            onTap: widget.onContactActionTap,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   String _callTypeName(CallType? type) {
     switch (type) {
-      case CallType.missed:    return 'Missed';
-      case CallType.rejected:  return 'Rejected';
-      case CallType.incoming:  return 'Incoming';
-      case CallType.outgoing:  return 'Outgoing';
-      default:                 return '';
+      case CallType.missed:
+        return 'Missed';
+      case CallType.rejected:
+        return 'Rejected';
+      case CallType.incoming:
+        return 'Incoming';
+      case CallType.outgoing:
+        return 'Outgoing';
+      default:
+        return '';
     }
   }
 }
@@ -914,19 +1263,33 @@ class _ActionItem extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _ActionItem({required this.icon, required this.label, required this.onTap});
+  const _ActionItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         child: Row(
           children: [
-            Icon(icon, color: Colors.white, size: 20),
-            const SizedBox(width: 16),
-            Text(label, style: const TextStyle(color: Colors.white, fontSize: 15)),
+            Icon(
+              icon,
+              color: Theme.of(context).colorScheme.onSurface,
+              size: 20,
+            ),
+            SizedBox(width: 16),
+            Text(
+              label,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 15,
+              ),
+            ),
           ],
         ),
       ),
@@ -957,16 +1320,36 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 48, color: const Color(0xFF49454F)),
-          const SizedBox(height: 16),
-          Text(title, style: const TextStyle(color: Color(0xFFCAC4D0), fontSize: 16)),
+          Icon(
+            icon,
+            size: 48,
+            color: Theme.of(context).colorScheme.outlineVariant,
+          ),
+          SizedBox(height: 16),
+          Text(
+            title,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 16,
+            ),
+          ),
           const SizedBox(height: 6),
-          Text(subtitle, style: const TextStyle(color: Color(0xFF938F99), fontSize: 13), textAlign: TextAlign.center),
+          Text(
+            subtitle,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 13,
+            ),
+            textAlign: TextAlign.center,
+          ),
           if (buttonLabel != null) ...[
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             TextButton(
               onPressed: onButton,
-              child: Text(buttonLabel!, style: const TextStyle(color: Color(0xFFD0BCFF))),
+              child: Text(
+                buttonLabel!,
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
             ),
           ],
         ],
@@ -991,13 +1374,18 @@ class _SimCardPainter extends CustomPainter {
     final path = Path();
     const double cutSize = 6.0;
     const double r = 3.0;
-    
+
     // Top-left cut, top right rounded, bottom right rounded, bottom left rounded.
     path.moveTo(cutSize, 0);
     path.lineTo(size.width - r, 0);
     path.quadraticBezierTo(size.width, 0, size.width, r);
     path.lineTo(size.width, size.height - r);
-    path.quadraticBezierTo(size.width, size.height, size.width - r, size.height);
+    path.quadraticBezierTo(
+      size.width,
+      size.height,
+      size.width - r,
+      size.height,
+    );
     path.lineTo(r, size.height);
     path.quadraticBezierTo(0, size.height, 0, size.height - r);
     path.lineTo(0, cutSize);
@@ -1007,5 +1395,6 @@ class _SimCardPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _SimCardPainter oldDelegate) => oldDelegate.color != color;
+  bool shouldRepaint(covariant _SimCardPainter oldDelegate) =>
+      oldDelegate.color != color;
 }

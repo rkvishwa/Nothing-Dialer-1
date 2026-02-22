@@ -21,11 +21,14 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <!-- Show ongoing call notification on Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
 
     <application
         android:label="Nothing Dialer"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:roundIcon="@mipmap/launcher_icon">
 
         <!-- ─── Nothing Glyph API Key (use "test" for local debug) ─── -->
         <meta-data

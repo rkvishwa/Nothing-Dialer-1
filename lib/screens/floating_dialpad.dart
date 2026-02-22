@@ -28,7 +28,6 @@ void showFloatingDialpad(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    barrierColor: Colors.black.withValues(alpha: 0.55),
     useSafeArea: true,
     builder: (_) =>
         _FloatingDialpad(initialDigits: initialDigits, onCall: onCall),
@@ -224,15 +223,15 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
         child: Row(
           children: [
-            Icon(icon, color: const Color(0xFFD0BCFF), size: 24),
+            Icon(icon, color: Theme.of(context).colorScheme.onSurface, size: 24),
             const SizedBox(width: 24),
             Text(
               label,
-              style: const TextStyle(
-                color: Color(0xFFD0BCFF),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -360,8 +359,8 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
               alignment: Alignment.center,
               child: Text(
                 _getInitials(contact.displayName),
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
                 ),
@@ -374,8 +373,8 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
                 children: [
                   Text(
                     contact.displayName,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
@@ -393,8 +392,8 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
                       // Highlight the matched part simple implementation
                       Text(
                         matchedNumber,
-                        style: const TextStyle(
-                          color: Color(0xFFD0BCFF),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontSize: 14,
                           letterSpacing: 0.5,
                         ),
@@ -419,10 +418,12 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
     final matchedContacts = _findMatchedContacts(digits);
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
+      duration: Duration(milliseconds: 250),
       height: hasDigits ? MediaQuery.of(context).size.height : null,
       decoration: BoxDecoration(
-        color: hasDigits ? const Color(0xFF0D0D0D) : Colors.transparent,
+        color: hasDigits
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Colors.transparent,
         borderRadius: hasDigits
             ? BorderRadius.zero
             : const BorderRadius.vertical(top: Radius.circular(28)),
@@ -486,13 +487,13 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
               margin: EdgeInsets.fromLTRB(12, 0, 12, hasDigits ? 16 : 16),
               padding: EdgeInsets.only(bottom: bottomPadding),
               decoration: BoxDecoration(
-                color: const Color(0xFF1C1B1F), // M3 dark surface
+                color: Theme.of(context).colorScheme.surfaceContainerHigh, // M3 dark surface
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: hasDigits
                     ? []
                     : [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.6),
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.15),
                           blurRadius: 40,
                           offset: const Offset(0, -5),
                         ),
@@ -524,7 +525,7 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
         width: 38,
         height: 4,
         decoration: BoxDecoration(
-          color: const Color(0xFF3A3A3A),
+          color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
           borderRadius: BorderRadius.circular(2),
         ),
       ),
@@ -585,12 +586,12 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
               },
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: _numberController.text.length > 12 ? 26 : 36,
                 fontWeight: FontWeight.w400,
                 letterSpacing: hasDigits ? 1.5 : 0,
               ),
-              cursorColor: const Color(0xFFD0BCFF),
+              cursorColor: Theme.of(context).colorScheme.primary,
               cursorWidth: 1.5,
               cursorHeight: _numberController.text.length > 12 ? 22 : 30,
               decoration: const InputDecoration(
@@ -618,13 +619,13 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
                 width: 44,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1E1E1E),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 alignment: Alignment.center,
-                child: const Icon(
+                child: Icon(
                   Icons.backspace_outlined,
-                  color: Color(0xFF888888),
+                  color: Theme.of(context).colorScheme.onSurface,
                   size: 18,
                 ),
               ),
@@ -744,8 +745,12 @@ class _DialKeyState extends State<_DialKey>
         onTapUp: _onTapUp,
         onTapCancel: _onTapCancel,
         borderRadius: BorderRadius.circular(40),
-        splashColor: Colors.white.withValues(alpha: 0.1),
-        highlightColor: Colors.white.withValues(alpha: 0.05),
+        splashColor: Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.1),
+        highlightColor: Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.05),
         child: ScaleTransition(
           scale: _scale,
           child: SizedBox(
@@ -757,8 +762,8 @@ class _DialKeyState extends State<_DialKey>
                   widget.label,
                   style: TextStyle(
                     color: widget.label == '*' || widget.label == '#'
-                        ? const Color(0xFFCAC4D0)
-                        : Colors.white,
+                        ? Theme.of(context).colorScheme.onSurfaceVariant
+                        : Theme.of(context).colorScheme.onSurface,
                     fontSize: 32,
                     fontWeight: FontWeight.w400,
                     height: 1.0,
@@ -768,8 +773,8 @@ class _DialKeyState extends State<_DialKey>
                   const SizedBox(height: 2),
                   Text(
                     widget.subLabel,
-                    style: const TextStyle(
-                      color: Color(0xFF938F99),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 2.0,
@@ -811,21 +816,23 @@ class _CallButton extends StatelessWidget {
           height: 72,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40),
-            color: enabled ? const Color(0xFF30D158) : const Color(0xFF2E2D32),
+            color: enabled ? const Color(0xFF30D158) : Theme.of(context).colorScheme.surfaceContainerHighest,
           ),
           alignment: Alignment.center,
           child: calling
-              ? const SizedBox(
+              ? SizedBox(
                   width: 28,
                   height: 28,
                   child: CircularProgressIndicator(
                     strokeWidth: 2.5,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 )
               : Icon(
                   Icons.call,
-                  color: enabled ? Colors.white : const Color(0xFF757575),
+                  color: enabled
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 32,
                 ),
         ),
@@ -864,7 +871,11 @@ class _IconCircleButton extends StatelessWidget {
               color: Colors.transparent,
             ),
             alignment: Alignment.center,
-            child: Icon(icon, color: const Color(0xFFCAC4D0), size: 28),
+            child: Icon(
+              icon,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              size: 28,
+            ),
           ),
         ),
       ),

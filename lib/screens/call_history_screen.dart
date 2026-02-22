@@ -128,9 +128,9 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
       case CallType.rejected:
         return const Color(0xFFFF453A);
       case CallType.incoming:
-        return const Color(0xFF30D158);
+        return Color(0xFF30D158);
       default:
-        return const Color(0xFFCAC4D0);
+        return Theme.of(context).colorScheme.onSurfaceVariant;
     }
   }
 
@@ -177,27 +177,27 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
     final title = widget.contactName ?? widget.number;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D0D),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0D0D0D),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
+            Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.w500)),
             if (widget.contactName != null)
-              Text(widget.number, style: const TextStyle(color: Color(0xFF938F99), fontSize: 13)),
+              Text(widget.number, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13)),
           ],
         ),
       ),
       body: _loading
-          ? const Center(child: CircularProgressIndicator(color: Colors.white, strokeWidth: 1.5))
+          ? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onSurface, strokeWidth: 1.5))
           : _entries.isEmpty
-              ? const Center(child: Text('No call history found', style: TextStyle(color: Color(0xFF938F99))))
+              ? Center(child: Text('No call history found', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)))
               : _buildGroupedList(),
     );
   }
@@ -218,8 +218,8 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
               child: Text(
                 section,
-                style: const TextStyle(
-                  color: Color(0xFF938F99),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 0.6,
@@ -278,7 +278,7 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
                         const SizedBox(height: 2),
                         Text(
                           timeStr,
-                          style: const TextStyle(color: Color(0xFF938F99), fontSize: 13),
+                          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),
                         ),
                       ],
                     ),
@@ -286,7 +286,7 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
 
                   // Duration
                   if (dur.isNotEmpty)
-                    Text(dur, style: const TextStyle(color: Color(0xFF938F99), fontSize: 13)),
+                    Text(dur, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13)),
                 ],
               ),
             );
