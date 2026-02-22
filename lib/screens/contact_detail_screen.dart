@@ -30,7 +30,9 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     _contact = widget.contact;
     _refreshContact();
     _loadPreferences();
-    BlockingManager.blockedNumbersNotifier.addListener(_onBlockedNumbersChanged);
+    BlockingManager.blockedNumbersNotifier.addListener(
+      _onBlockedNumbersChanged,
+    );
   }
 
   void _onBlockedNumbersChanged() {
@@ -39,7 +41,9 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
   @override
   void dispose() {
-    BlockingManager.blockedNumbersNotifier.removeListener(_onBlockedNumbersChanged);
+    BlockingManager.blockedNumbersNotifier.removeListener(
+      _onBlockedNumbersChanged,
+    );
     super.dispose();
   }
 
@@ -47,7 +51,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     final prefs = await SharedPreferences.getInstance();
     final simIdx = prefs.getInt('pref_sim_${_contact.id}');
     final rUri = prefs.getString('pref_ringtone_${_contact.id}');
-    
+
     String? rTitle;
     if (rUri != null) {
       try {
@@ -76,12 +80,12 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
   Future<void> _call(String number) async {
     HapticFeedback.mediumImpact();
-    
+
     int? simIndex = _preferredSim;
     if (simIndex == null || simIndex == -1) {
       simIndex = await showSimPicker(context);
     }
-    
+
     if (simIndex == null || !mounted) return;
 
     try {
@@ -92,7 +96,12 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     } on PlatformException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Call error: ${e.message}'), backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest),
+          SnackBar(
+            content: Text('Call error: ${e.message}'),
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest,
+          ),
         );
       }
     }
@@ -103,9 +112,9 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       await _channel.invokeMethod('openSmsApp', {'number': number});
     } on PlatformException catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.message}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: ${e.message}')));
       }
     }
   }
@@ -139,15 +148,20 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         // 2. Persist locally for UI consistency (Local)
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('pref_ringtone_${_contact.id}', ringtoneUri);
-        
-        final String? title = await _channel.invokeMethod('getRingtoneTitle', ringtoneUri);
-        
+
+        final String? title = await _channel.invokeMethod(
+          'getRingtoneTitle',
+          ringtoneUri,
+        );
+
         if (mounted) {
           setState(() {
             _customRingtoneName = title ?? "Custom";
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Ringtone set globally for this contact')),
+            const SnackBar(
+              content: Text('Ringtone set globally for this contact'),
+            ),
           );
         }
       }
@@ -163,14 +177,14 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   Future<void> _shareContact() async {
     final vcard = _contact.toVCard();
     final directory = await getTemporaryDirectory();
-    final path = '${directory.path}/${_contact.displayName.replaceAll(' ', '_')}.vcf';
+    final path =
+        '${directory.path}/${_contact.displayName.replaceAll(' ', '_')}.vcf';
     final file = File(path);
     await file.writeAsString(vcard);
 
-    await Share.shareXFiles(
-      [XFile(path)],
-      subject: 'Contact: ${_contact.displayName}',
-    );
+    await Share.shareXFiles([
+      XFile(path),
+    ], subject: 'Contact: ${_contact.displayName}');
   }
 
   Future<void> _deleteContact() async {
@@ -178,16 +192,32 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        title: Text('Delete contact?', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
-        content: Text('This contact will be permanently deleted from your device.', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+        title: Text(
+          'Delete contact?',
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
+        content: Text(
+          'This contact will be permanently deleted from your device.',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete', style: TextStyle(color: Colors.redAccent)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Colors.redAccent),
+            ),
           ),
         ],
       ),
@@ -209,27 +239,46 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     }
 
     // A contact is considered blocked if ANY of their numbers are blocked
-    final bool isBlocked = phoneNumbers.any((n) => BlockingManager.isBlocked(n));
+    final bool isBlocked = phoneNumbers.any(
+      (n) => BlockingManager.isBlocked(n),
+    );
 
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        title: Text(isBlocked ? 'Unblock contact?' : 'Block contact?', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+        title: Text(
+          isBlocked ? 'Unblock contact?' : 'Block contact?',
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
         content: Text(
-          isBlocked 
-            ? 'You will start receiving calls and texts from this contact.' 
-            : 'You will no longer receive calls or texts from this contact.',
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)
+          isBlocked
+              ? 'You will start receiving calls and texts from this contact.'
+              : 'You will no longer receive calls or texts from this contact.',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(isBlocked ? 'Unblock' : 'Block', style: TextStyle(color: isBlocked ? Theme.of(context).colorScheme.onSurface : Colors.redAccent)),
+            child: Text(
+              isBlocked ? 'Unblock' : 'Block',
+              style: TextStyle(
+                color: isBlocked
+                    ? Theme.of(context).colorScheme.onSurface
+                    : Colors.redAccent,
+              ),
+            ),
           ),
         ],
       ),
@@ -246,14 +295,18 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         }
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(isBlocked ? 'Contact unblocked' : 'Contact blocked')),
+            SnackBar(
+              content: Text(
+                isBlocked ? 'Contact unblocked' : 'Contact blocked',
+              ),
+            ),
           );
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${e.toString()}')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
         }
       }
     }
@@ -267,12 +320,18 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.onSurface),
+            icon: Icon(
+              Icons.edit_outlined,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             onPressed: _editContact,
           ),
         ],
@@ -302,7 +361,11 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         SizedBox(height: 16),
         Text(
           _contact.displayName,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 24, fontWeight: FontWeight.w400),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontSize: 24,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ],
     );
@@ -312,37 +375,67 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     if (_contact.phones.isEmpty) return const SizedBox.shrink();
 
     return Column(
-      children: _contact.phones.map((phone) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.phone_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 24),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      children: _contact.phones
+          .map(
+            (phone) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
                 children: [
-                  Text(phone.number, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16)),
-                  Text(phone.label.name.toLowerCase(), style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)),
+                  Icon(
+                    Icons.phone_outlined,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          phone.number,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          phone.label.name.toLowerCase(),
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.call_outlined,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      size: 24,
+                    ),
+                    onPressed: () => _call(phone.number),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.message_outlined,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      size: 22,
+                    ),
+                    onPressed: () => _message(phone.number),
+                  ),
                 ],
               ),
             ),
-            IconButton(
-              icon: Icon(Icons.call_outlined, color: Theme.of(context).colorScheme.onSurface, size: 24),
-              onPressed: () => _call(phone.number),
-            ),
-            IconButton(
-              icon: Icon(Icons.message_outlined, color: Theme.of(context).colorScheme.onSurface, size: 22),
-              onPressed: () => _message(phone.number),
-            ),
-          ],
-        ),
-      )).toList(),
+          )
+          .toList(),
     );
   }
 
@@ -354,7 +447,14 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: Text('Connected apps', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13, fontWeight: FontWeight.w500)),
+          child: Text(
+            'Connected apps',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
         ..._contact.socialMedias.map((social) {
           IconData icon = Icons.link_outlined;
@@ -369,20 +469,49 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
             icon = Icons.public_outlined;
             color = const Color(0xFF1877F2);
           }
-          
-          return _buildAppTile(social.label.name.capitalize(), icon, color, subtitle: social.userName);
+
+          return _buildAppTile(
+            social.label.name.capitalize(),
+            icon,
+            color,
+            subtitle: social.userName,
+          );
         }),
       ],
     );
   }
 
-  Widget _buildAppTile(String title, IconData icon, Color iconColor, {String? subtitle}) {
+  Widget _buildAppTile(
+    String title,
+    IconData icon,
+    Color iconColor, {
+    String? subtitle,
+  }) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 24),
       leading: Icon(icon, color: iconColor, size: 28),
-      title: Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
-      subtitle: subtitle != null ? Text(subtitle, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)) : null,
-      trailing: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
+          fontSize: 15,
+        ),
+      ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 12,
+              ),
+            )
+          : null,
+      trailing: Icon(
+        Icons.keyboard_arrow_right,
+        color: Theme.of(
+          context,
+        ).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+      ),
       onTap: () {},
     );
   }
@@ -398,46 +527,117 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: Text('Contact settings', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13, fontWeight: FontWeight.w500)),
+          child: Text(
+            'Contact settings',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
         ListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 24),
-          leading: Icon(Icons.sim_card_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 22),
-          title: Text('Set calling SIM', style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
-          subtitle: Text(simText, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)),
+          leading: Icon(
+            Icons.sim_card_outlined,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            size: 22,
+          ),
+          title: Text(
+            'Set calling SIM',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 15,
+            ),
+          ),
+          subtitle: Text(
+            simText,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 12,
+            ),
+          ),
           onTap: _setCallingSim,
         ),
         ListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 24),
-          leading: Icon(Icons.music_note_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 22),
-          title: Text('Contact ringtone', style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
-          subtitle: Text(_customRingtoneName ?? 'Default', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)),
+          leading: Icon(
+            Icons.music_note_outlined,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            size: 22,
+          ),
+          title: Text(
+            'Contact ringtone',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 15,
+            ),
+          ),
+          subtitle: Text(
+            _customRingtoneName ?? 'Default',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 12,
+            ),
+          ),
           onTap: _pickRingtone,
         ),
-        _buildSettingTile('Share contact', Icons.share_outlined, onTap: _shareContact),
+        _buildSettingTile(
+          'Share contact',
+          Icons.share_outlined,
+          onTap: _shareContact,
+        ),
         ValueListenableBuilder<List<String>>(
           valueListenable: BlockingManager.blockedNumbersNotifier,
           builder: (context, _, __) {
-            final isBlocked = _contact.phones.any((n) => BlockingManager.isBlocked(n.number));
+            final isBlocked = _contact.phones.any(
+              (n) => BlockingManager.isBlocked(n.number),
+            );
             return _buildSettingTile(
               isBlocked ? 'Unblock numbers' : 'Block numbers',
               Icons.block,
-              textColor: isBlocked ? Theme.of(context).colorScheme.onSurface : Colors.redAccent,
-              iconColor: isBlocked ? Theme.of(context).colorScheme.onSurface : Colors.redAccent,
+              textColor: isBlocked
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Colors.redAccent,
+              iconColor: isBlocked
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Colors.redAccent,
               onTap: _toggleBlockContact,
             );
           },
         ),
-        _buildSettingTile('Delete', Icons.delete_outline, textColor: Colors.redAccent, iconColor: Colors.redAccent, onTap: _deleteContact),
+        _buildSettingTile(
+          'Delete',
+          Icons.delete_outline,
+          textColor: Colors.redAccent,
+          iconColor: Colors.redAccent,
+          onTap: _deleteContact,
+        ),
       ],
     );
   }
 
-  Widget _buildSettingTile(String title, IconData icon, {Color? textColor, Color? iconColor, VoidCallback? onTap}) {
+  Widget _buildSettingTile(
+    String title,
+    IconData icon, {
+    Color? textColor,
+    Color? iconColor,
+    VoidCallback? onTap,
+  }) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 24),
-      leading: Icon(icon, color: iconColor ?? Theme.of(context).colorScheme.onSurfaceVariant, size: 22),
-      title: Text(title, style: TextStyle(color: textColor ?? Theme.of(context).colorScheme.onSurface, fontSize: 15)),
+      leading: Icon(
+        icon,
+        color: iconColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
+        size: 22,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: textColor ?? Theme.of(context).colorScheme.onSurface,
+          fontSize: 15,
+        ),
+      ),
       onTap: onTap ?? () {},
     );
   }
@@ -474,8 +674,14 @@ class _Avatar extends StatelessWidget {
         border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       alignment: Alignment.center,
-      child: Text(initials,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: size * 0.35, fontWeight: FontWeight.w300)),
+      child: Text(
+        initials,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
+          fontSize: size * 0.35,
+          fontWeight: FontWeight.w300,
+        ),
+      ),
     );
   }
 

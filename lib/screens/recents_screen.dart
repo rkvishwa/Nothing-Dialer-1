@@ -70,7 +70,9 @@ class _RecentsScreenState extends State<RecentsScreen>
   void initState() {
     super.initState();
     _loadCallLog();
-    BlockingManager.blockedNumbersNotifier.addListener(_onBlockedNumbersChanged);
+    BlockingManager.blockedNumbersNotifier.addListener(
+      _onBlockedNumbersChanged,
+    );
   }
 
   void _onBlockedNumbersChanged() {
@@ -79,7 +81,9 @@ class _RecentsScreenState extends State<RecentsScreen>
 
   @override
   void dispose() {
-    BlockingManager.blockedNumbersNotifier.removeListener(_onBlockedNumbersChanged);
+    BlockingManager.blockedNumbersNotifier.removeListener(
+      _onBlockedNumbersChanged,
+    );
     _searchController.dispose();
     super.dispose();
   }
@@ -1113,16 +1117,14 @@ class _CallTileState extends State<_CallTile>
                     // Action Buttons (Video call, Message, History)
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.05),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.08),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.08),
                           width: 0.5,
                         ),
                       ),
@@ -1157,10 +1159,9 @@ class _CallTileState extends State<_CallTile>
                           ),
                           Divider(
                             height: 1,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.08),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.08),
                           ),
                           _ActionItem(
                             icon: Icons.chat_bubble_outline,
@@ -1191,10 +1192,9 @@ class _CallTileState extends State<_CallTile>
                           ),
                           Divider(
                             height: 1,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.08),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.08),
                           ),
                           _ActionItem(
                             icon: Icons.history,
@@ -1215,10 +1215,9 @@ class _CallTileState extends State<_CallTile>
                           ),
                           Divider(
                             height: 1,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.08),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.08),
                           ),
                           _ActionItem(
                             icon: group.name.isNotEmpty
