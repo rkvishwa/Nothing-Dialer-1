@@ -31,9 +31,9 @@
         android:roundIcon="@mipmap/launcher_icon">
 
         <!-- ─── Nothing Glyph API Key (use "test" for local debug) ─── -->
-        <!-- <meta-data
+        <meta-data
             android:name="NothingKey"
-            android:value="test" /> -->
+            android:value="test" />
 
         <activity
             android:name="com.rkkvishva.nothing_dialer.MainActivity"
