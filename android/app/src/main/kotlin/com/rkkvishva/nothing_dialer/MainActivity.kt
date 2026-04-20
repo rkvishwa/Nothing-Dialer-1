@@ -2,10 +2,13 @@ package com.rkkvishva.nothing_dialer
 
 import android.Manifest
 import android.app.role.RoleManager
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.provider.Settings
 import android.telecom.Call
 import android.telecom.CallAudioState
 import android.telecom.PhoneAccountHandle
@@ -14,6 +17,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import io.flutter.embedding.android.FlutterActivity
+import java.util.Locale
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
@@ -25,14 +29,28 @@ class MainActivity : FlutterActivity() {
         const val REQUEST_DEFAULT_DIALER = 1001
         const val REQUEST_CALL_PHONE = 1002
         const val REQUEST_PICK_RINGTONE = 1003
-        
+        const val REQUEST_VOICE_SEARCH = 1004
+
         var isAppInForeground = false
     }
 
     private var methodChannel: MethodChannel? = null
     private var pendingCallNumber: String? = null
     private var pendingSimIndex: Int? = null
+    private var pendingDialpadNumber: String? = null
     private var ringtoneResult: MethodChannel.Result? = null
+    private var voiceSearchResult: MethodChannel.Result? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        handleDialpadIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleDialpadIntent(intent)
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -44,6 +62,7 @@ class MainActivity : FlutterActivity() {
         methodChannel = MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger, CHANNEL
         )
+        flushPendingDialpadRequest()
 
         methodChannel!!.setMethodCallHandler { call, result ->
             when (call.method) {
@@ -280,6 +299,14 @@ class MainActivity : FlutterActivity() {
                     }
                 }
 
+                "openSoundSettings" -> {
+                    try {
+                        startActivity(Intent(Settings.ACTION_SOUND_SETTINGS))
+                        result.success(true)
+                    } catch (e: Exception) {
+                        result.error("OPEN_FAILED", e.message, null)
+                    }
+                }
                 "getRingtoneTitle" -> {
                     val uriString = call.arguments as? String
                     if (uriString != null) {
@@ -306,6 +333,40 @@ class MainActivity : FlutterActivity() {
                         }
                     } else {
                         result.error("INVALID_ARGS", "Contact ID is null", null)
+                    }
+                }
+                "startVoiceSearch" -> {
+                    voiceSearchResult = result
+                    val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                        putExtra(
+                            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+                        )
+                        putExtra(
+                            RecognizerIntent.EXTRA_LANGUAGE,
+                            Locale.getDefault().toString()
+                        )
+                        putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to search")
+                        putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+                        // Do not set EXTRA_PREFER_OFFLINE: Google's default recognizer on some OEMs
+                        // (e.g. Nothing) shows "Voice search isn't available" when offline packs
+                        // are missing or incomplete, even if the system reports on-device support.
+                    }
+                    try {
+                        startActivityForResult(intent, REQUEST_VOICE_SEARCH)
+                    } catch (_: ActivityNotFoundException) {
+                        // No speech recognizer on this device/profile.
+                        voiceSearchResult?.error(
+                            "NO_RECOGNIZER",
+                            "No speech recognizer installed on this device. " +
+                                "Install Google app or enable Device Speech Services.",
+                            null
+                        )
+                        voiceSearchResult = null
+                    } catch (e: Exception) {
+                        Log.e(TAG, "startVoiceSearch error: ${e.message}")
+                        voiceSearchResult?.error("VOICE_SEARCH_FAILED", e.message, null)
+                        voiceSearchResult = null
                     }
                 }
                 else -> result.notImplemented()
@@ -373,6 +434,7 @@ class MainActivity : FlutterActivity() {
                 )
             }
             Log.d(TAG, "Placing call to $number with SIM $simIndex")
+            saveLastDialedNumber(number)
             tm.placeCall(uri, extras)
         } catch (e: SecurityException) {
             Log.e(TAG, "placeCallWithSim SecurityException: ${e.message}")
@@ -404,6 +466,7 @@ class MainActivity : FlutterActivity() {
 
         try {
             Log.d(TAG, "Placing call to $number (no SIM specified)")
+            saveLastDialedNumber(number)
             tm.placeCall(uri, Bundle())
         } catch (e: SecurityException) {
             Log.e(TAG, "placeCall SecurityException: ${e.message}")
@@ -438,6 +501,7 @@ class MainActivity : FlutterActivity() {
                 putInt(TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE, android.telecom.VideoProfile.STATE_BIDIRECTIONAL)
             }
             Log.d(TAG, "Placing video call to $number")
+            saveLastDialedNumber(number)
             tm.placeCall(uri, extras)
         } catch (e: SecurityException) {
             Log.e(TAG, "placeVideoCall SecurityException: ${e.message}")
@@ -534,6 +598,15 @@ class MainActivity : FlutterActivity() {
                 ringtoneResult?.success(null)
             }
             ringtoneResult = null
+        } else if (requestCode == REQUEST_VOICE_SEARCH) {
+            if (resultCode == RESULT_OK && data != null) {
+                val results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                val text = results?.firstOrNull()
+                voiceSearchResult?.success(text)
+            } else {
+                voiceSearchResult?.success(null)
+            }
+            voiceSearchResult = null
         }
     }
 
@@ -562,5 +635,52 @@ class MainActivity : FlutterActivity() {
         } catch (e: IllegalArgumentException) {
             Log.w(TAG, "Ignored GlyphManager unbind crash: ${e.message}")
         }
+    }
+
+    private fun handleDialpadIntent(intent: Intent?) {
+        // Assistant / Gemini App Actions: place call directly (no dialpad).
+        if (intent?.action == Intent.ACTION_CALL) {
+            val data = intent.data
+            if (data?.scheme == "tel") {
+                val number = android.net.Uri.decode(data.schemeSpecificPart ?: "").trim()
+                if (number.isNotEmpty()) {
+                    placeCallWithSim(number, 0)
+                }
+                return
+            }
+        }
+
+        val isAddCallRequest = intent?.getBooleanExtra("EXTRA_SHOW_DIALPAD", false) == true
+        val data = intent?.data
+        val isTelIntent = (intent?.action == Intent.ACTION_VIEW || intent?.action == Intent.ACTION_DIAL) &&
+            data?.scheme == "tel"
+
+        if (isAddCallRequest) {
+            pendingDialpadNumber = ""
+            flushPendingDialpadRequest()
+            return
+        }
+
+        if (!isTelIntent) return
+        val number = android.net.Uri.decode(data?.schemeSpecificPart ?: "")
+        pendingDialpadNumber = number
+        flushPendingDialpadRequest()
+    }
+
+    private fun flushPendingDialpadRequest() {
+        val channel = methodChannel ?: return
+        if (pendingDialpadNumber == null) return
+        val numberToOpen = pendingDialpadNumber
+        pendingDialpadNumber = null
+        channel.invokeMethod("openDialpad", numberToOpen)
+    }
+
+    private fun saveLastDialedNumber(number: String) {
+        val cleaned = number.trim()
+        if (cleaned.isEmpty()) return
+        getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
+            .edit()
+            .putString("flutter.last_dialed_number", cleaned)
+            .apply()
     }
 }

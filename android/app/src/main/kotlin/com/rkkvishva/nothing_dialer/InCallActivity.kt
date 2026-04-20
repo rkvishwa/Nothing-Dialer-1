@@ -96,6 +96,15 @@ class InCallActivity : Activity() {
     private var isCallActive = false
     private var selectedSimLabel: String? = null
     private var isChangingSim = false
+    private var boundCall: Call? = null
+
+    private val audioStateListener: (CallAudioState) -> Unit = { audioState ->
+        runOnUiThread {
+            isMuted = audioState.isMuted
+            currentRoute = audioState.route
+            updateControlStates()
+        }
+    }
 
     // Proximity sensor
     private var proximityWakeLock: PowerManager.WakeLock? = null
@@ -120,6 +129,10 @@ class InCallActivity : Activity() {
             Log.d(TAG, "onStateChanged: $state")
             runOnUiThread { updateUI(state) }
         }
+    }
+
+    private val currentCallListener: (Call?) -> Unit = { call ->
+        runOnUiThread { bindToCurrentCall(call) }
     }
 
     private val timerRunnable = object : Runnable {
@@ -158,42 +171,11 @@ class InCallActivity : Activity() {
         buildIncomingOverlay(themeColors)
         initProximitySensor()
 
-        val call = GlyphInCallService.currentCall
-        if (call != null) {
-            call.registerCallback(callCallback)
-
-            val handle = call.details?.handle
-            val number = handle?.schemeSpecificPart ?: "Unknown"
-            val contactName = getContactName(number)
-
-            if (contactName != null) {
-                nameText.text = contactName
-                numberText.text = number
-                numberText.visibility = View.VISIBLE
-                avatarText.text = contactName.first().uppercase()
-            } else {
-                nameText.text = number
-                numberText.visibility = View.GONE
-                avatarText.text = if (number.isNotEmpty()) number.first().toString() else "?"
-            }
-
-            selectedSimLabel = getSimLabelForCall(call)
-            if (selectedSimLabel != null) {
-                simLabel.text = android.text.Html.fromHtml("Calling via <font color='#00E676'>$selectedSimLabel</font>", android.text.Html.FROM_HTML_MODE_LEGACY)
-            } else {
-                simLabel.text = ""
-            }
-            simLabel.visibility = if (selectedSimLabel != null) View.VISIBLE else View.GONE
-
-            val audioState = GlyphInCallService.instance?.callAudioState
-            isMuted = audioState?.isMuted ?: false
-            currentRoute = audioState?.route ?: CallAudioState.ROUTE_EARPIECE
-
-            updateControlStates()
-            updateUI(call.state)
-        } else {
+        if (GlyphInCallService.currentCall == null) {
             finish()
+            return
         }
+        bindToCurrentCall(GlyphInCallService.currentCall)
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
@@ -220,6 +202,51 @@ class InCallActivity : Activity() {
         val accountHandle = call.details?.accountHandle ?: return null
         val tm = getSystemService(TELECOM_SERVICE) as TelecomManager
         return try { tm.getPhoneAccount(accountHandle)?.label?.toString() } catch (_: Exception) { null }
+    }
+
+    private fun bindToCurrentCall(call: Call?) {
+        if (boundCall === call) {
+            return
+        }
+        try {
+            boundCall?.unregisterCallback(callCallback)
+        } catch (_: Exception) {
+        }
+        boundCall = call
+        if (call == null) {
+            finish()
+            return
+        }
+        call.registerCallback(callCallback)
+
+        val handle = call.details?.handle
+        val number = handle?.schemeSpecificPart ?: "Unknown"
+        val contactName = getContactName(number)
+
+        if (contactName != null) {
+            nameText.text = contactName
+            numberText.text = number
+            numberText.visibility = View.VISIBLE
+            avatarText.text = contactName.first().uppercase()
+        } else {
+            nameText.text = number
+            numberText.visibility = View.GONE
+            avatarText.text = if (number.isNotEmpty()) number.first().toString() else "?"
+        }
+
+        selectedSimLabel = getSimLabelForCall(call)
+        if (selectedSimLabel != null) {
+            simLabel.text = formatSimLabel("Calling via", selectedSimLabel!!)
+        } else {
+            simLabel.text = ""
+        }
+        simLabel.visibility = if (selectedSimLabel != null) View.VISIBLE else View.GONE
+
+        val audioState = GlyphInCallService.latestAudioState ?: GlyphInCallService.instance?.callAudioState
+        isMuted = audioState?.isMuted ?: false
+        currentRoute = audioState?.route ?: CallAudioState.ROUTE_EARPIECE
+        updateControlStates()
+        updateUI(call.state)
     }
 
     private fun initProximitySensor() {
@@ -281,6 +308,13 @@ class InCallActivity : Activity() {
                 if (!timerRunning) { timerRunning = true; callStartTime = System.currentTimeMillis(); handler.post(timerRunnable) }
             }
             Call.STATE_DISCONNECTED, Call.STATE_DISCONNECTING -> {
+                val activeCurrentCall = GlyphInCallService.currentCall
+                if (activeCurrentCall != null && activeCurrentCall !== boundCall) {
+                    isCallActive = false
+                    timerRunning = false
+                    handler.removeCallbacks(timerRunnable)
+                    return
+                }
                 if (incomingOverlay.visibility != View.VISIBLE) {
                     isIncoming = false; hideIncomingOverlay()
                 } else {
@@ -292,7 +326,9 @@ class InCallActivity : Activity() {
                 statusText.text = if (isChangingSim) "Switching SIM…" else "Call Ended"
                 isCallActive = false; timerRunning = false
                 handler.removeCallbacks(timerRunnable)
-                if (!isChangingSim) { handler.postDelayed({ finish() }, 1200) }
+                if (!isChangingSim && GlyphInCallService.currentCall == null) {
+                    handler.postDelayed({ finish() }, 1200)
+                }
             }
         }
         updateProximityWakeLock(state)
@@ -312,9 +348,16 @@ class InCallActivity : Activity() {
         showStyledSimSheet("Choose SIM for this call", labels) { which ->
             call.phoneAccountSelected(accounts[which], false)
             selectedSimLabel = labels[which]
-            simLabel.text = android.text.Html.fromHtml("Calling via <font color='#00E676'>${labels[which]}</font>", android.text.Html.FROM_HTML_MODE_LEGACY)
+            simLabel.text = formatSimLabel("Calling via", labels[which])
             simLabel.visibility = View.VISIBLE
         }
+    }
+
+    private fun formatSimLabel(prefix: String, simName: String): android.text.Spanned {
+        return android.text.Html.fromHtml(
+            "$prefix <b>$simName</b>",
+            android.text.Html.FROM_HTML_MODE_LEGACY
+        )
     }
 
     // ── Change SIM ────────────────────────────────────────────────────────────
@@ -448,20 +491,88 @@ class InCallActivity : Activity() {
 
     private fun toggleMute() { isMuted = !isMuted; GlyphInCallService.instance?.setMuted(isMuted); updateControlStates() }
 
-    private fun cycleSpeaker() {
+    private fun showAudioPicker() {
         val audioState = GlyphInCallService.instance?.callAudioState
         val supported = audioState?.supportedRouteMask ?: CallAudioState.ROUTE_EARPIECE
         val hasBluetooth = (supported and CallAudioState.ROUTE_BLUETOOTH) != 0
-        currentRoute = when (currentRoute) {
-            CallAudioState.ROUTE_EARPIECE -> CallAudioState.ROUTE_SPEAKER
-            CallAudioState.ROUTE_SPEAKER -> if (hasBluetooth) CallAudioState.ROUTE_BLUETOOTH else CallAudioState.ROUTE_EARPIECE
-            CallAudioState.ROUTE_BLUETOOTH -> CallAudioState.ROUTE_EARPIECE
-            else -> CallAudioState.ROUTE_EARPIECE
+
+        if (!hasBluetooth) {
+            val nextRoute = when (currentRoute) {
+                CallAudioState.ROUTE_EARPIECE -> CallAudioState.ROUTE_SPEAKER
+                else -> CallAudioState.ROUTE_EARPIECE
+            }
+            applyAudioRoute(nextRoute)
+            return
         }
-        GlyphInCallService.instance?.setAudioRoute(currentRoute); updateControlStates()
+
+        val dialog = android.app.Dialog(this)
+        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        val sheet = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = GradientDrawable().apply {
+                setColor(themeColors.surfaceContainer)
+                cornerRadii = floatArrayOf(dp(24).toFloat(), dp(24).toFloat(), dp(24).toFloat(), dp(24).toFloat(), 0f, 0f, 0f, 0f)
+            }
+            setPadding(dp(24), dp(16), dp(24), dp(24))
+        }
+
+        sheet.addView(View(this).apply {
+            background = GradientDrawable().apply { setColor(Color.parseColor("#49454F")); cornerRadius = dp(2).toFloat() }
+            layoutParams = LinearLayout.LayoutParams(dp(32), dp(4)).apply { gravity = Gravity.CENTER_HORIZONTAL; bottomMargin = dp(20) }
+        })
+
+        fun option(label: String, route: Int) {
+            val isSelected = currentRoute == route
+            sheet.addView(TextView(this).apply {
+                text = if (isSelected) "$label  (Current)" else label
+                setTextColor(if (isSelected) themeColors.onSurface else themeColors.onSurfaceVariant)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+                setPadding(dp(20), dp(16), dp(20), dp(16))
+                background = GradientDrawable().apply { setColor(themeColors.surfaceContainerHigh); cornerRadius = dp(12).toFloat() }
+                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { bottomMargin = dp(8) }
+                setOnClickListener {
+                    applyAudioRoute(route)
+                    dialog.dismiss()
+                }
+            })
+        }
+
+        option("Phone", CallAudioState.ROUTE_EARPIECE)
+        option("Speaker", CallAudioState.ROUTE_SPEAKER)
+        option("Bluetooth", CallAudioState.ROUTE_BLUETOOTH)
+
+        dialog.setContentView(sheet)
+        dialog.window?.apply {
+            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            setGravity(Gravity.BOTTOM); setBackgroundDrawableResource(android.R.color.transparent)
+            attributes = attributes.also { it.windowAnimations = android.R.style.Animation_InputMethod }
+        }
+        dialog.show()
+    }
+
+    private fun applyAudioRoute(route: Int) {
+        currentRoute = route
+        GlyphInCallService.instance?.setAudioRoute(route)
+        updateControlStates()
         val call = GlyphInCallService.currentCall
-        if (call != null) {
-            updateProximityWakeLock(call.state)
+        if (call != null) updateProximityWakeLock(call.state)
+    }
+
+    private fun updateSpeakerButtonUi() {
+        when (currentRoute) {
+            CallAudioState.ROUTE_BLUETOOTH -> {
+                speakerIcon.setImageResource(R.drawable.ic_bluetooth)
+                speakerLabel.text = "Bluetooth"
+            }
+            CallAudioState.ROUTE_SPEAKER -> {
+                speakerIcon.setImageResource(R.drawable.ic_volume_up)
+                speakerLabel.text = "Speaker"
+            }
+            else -> {
+                speakerIcon.setImageResource(R.drawable.ic_phone_in_talk)
+                speakerLabel.text = "Phone"
+            }
         }
     }
 
@@ -480,13 +591,15 @@ class InCallActivity : Activity() {
         }
 
         setState(muteBtn, muteIcon, isMuted)
-        setState(speakerBtn, speakerIcon, currentRoute == CallAudioState.ROUTE_SPEAKER)
+        setState(speakerBtn, speakerIcon, currentRoute != CallAudioState.ROUTE_EARPIECE)
         setState(keypadBtn, keypadIcon, isKeypadVisible)
+        updateSpeakerButtonUi()
     }
 
     override fun onDestroy() {
         timerRunning = false; handler.removeCallbacksAndMessages(null)
-        try { GlyphInCallService.currentCall?.unregisterCallback(callCallback) } catch (_: Exception) {}
+        try { boundCall?.unregisterCallback(callCallback) } catch (_: Exception) {}
+        GlyphInCallService.currentCallListeners.remove(currentCallListener)
         if (proximityWakeLock?.isHeld == true) {
             proximityWakeLock?.release()
         }
@@ -497,6 +610,19 @@ class InCallActivity : Activity() {
     override fun onResume() {
         super.onResume()
         MainActivity.isAppInForeground = true
+        if (!GlyphInCallService.currentCallListeners.contains(currentCallListener)) {
+            GlyphInCallService.currentCallListeners.add(currentCallListener)
+        }
+        currentCallListener(GlyphInCallService.currentCall)
+        if (!GlyphInCallService.audioStateListeners.contains(audioStateListener)) {
+            GlyphInCallService.audioStateListeners.add(audioStateListener)
+        }
+        val latestAudio = GlyphInCallService.latestAudioState ?: GlyphInCallService.instance?.callAudioState
+        if (latestAudio != null) {
+            isMuted = latestAudio.isMuted
+            currentRoute = latestAudio.route
+            updateControlStates()
+        }
     }
 
 
@@ -513,6 +639,14 @@ class InCallActivity : Activity() {
             proximityWakeLock?.release()
         }
         sensorManager?.unregisterListener(proximityListener)
+        GlyphInCallService.currentCallListeners.remove(currentCallListener)
+        GlyphInCallService.audioStateListeners.remove(audioStateListener)
+    }
+
+    override fun onNewIntent(intent: android.content.Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        currentCallListener(GlyphInCallService.currentCall)
     }
 
     override fun onBackPressed() { if (isIncoming) { /* ignore back during ringing */ } else { finish() } }
@@ -541,7 +675,7 @@ class InCallActivity : Activity() {
         val contactName = getContactName(number)
         val selectedSimLabel = call?.let { getSimLabelForCall(it) }
         
-        val headerText = if (selectedSimLabel != null) "Call via <font color='#00E676'>$selectedSimLabel</font> from" else "Call from"
+        val headerText = if (selectedSimLabel != null) "Call via <b>$selectedSimLabel</b> from" else "Call from"
         
         content.addView(TextView(this).apply {
             text = android.text.Html.fromHtml(headerText, android.text.Html.FROM_HTML_MODE_LEGACY)
@@ -1067,7 +1201,7 @@ class InCallActivity : Activity() {
         keypadBtn = k.first; keypadIcon = k.second; keypadLabel = k.third
         row.addView(wrap(keypadBtn, keypadLabel))
 
-        val s = makeBtn(R.drawable.ic_volume_up, "Speaker", theme) { cycleSpeaker() }
+        val s = makeBtn(R.drawable.ic_phone_in_talk, "Phone", theme) { showAudioPicker() }
         speakerBtn = s.first; speakerIcon = s.second; speakerLabel = s.third
         row.addView(wrap(speakerBtn, speakerLabel))
 
@@ -1168,7 +1302,12 @@ class InCallActivity : Activity() {
             background = GradientDrawable().apply { setColor(theme.surfaceContainerHigh); cornerRadius = dp(12).toFloat() }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { bottomMargin = dp(8) }
             isClickable = isCallActive
-            if (isCallActive) { setOnClickListener { dialog.dismiss() } }
+            if (isCallActive) {
+                setOnClickListener {
+                    dialog.dismiss()
+                    launchAddCallDialpad()
+                }
+            }
         }
         sheet.addView(addCallTv)
         opt("Change SIM") { changeSim() }
@@ -1180,6 +1319,22 @@ class InCallActivity : Activity() {
             attributes = attributes.also { it.windowAnimations = android.R.style.Animation_InputMethod }
         }
         dialog.show()
+    }
+
+    private fun launchAddCallDialpad() {
+        try {
+            val intent = android.content.Intent(this, MainActivity::class.java).apply {
+                addFlags(
+                    android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
+                        android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                        android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                )
+                putExtra("EXTRA_SHOW_DIALPAD", true)
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to launch dialpad for add call: ${e.message}")
+        }
     }
 
     private fun dp(v: Int): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v.toFloat(), resources.displayMetrics).toInt()

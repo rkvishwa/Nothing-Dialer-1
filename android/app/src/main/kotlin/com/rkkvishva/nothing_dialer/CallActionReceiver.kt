@@ -11,6 +11,9 @@ class CallActionReceiver : BroadcastReceiver() {
         const val TAG = "CallActionReceiver"
         const val ACTION_ANSWER = "com.nothing.dialer.ACTION_ANSWER"
         const val ACTION_DECLINE = "com.nothing.dialer.ACTION_DECLINE"
+        const val ACTION_HANGUP = "com.nothing.dialer.ACTION_HANGUP"
+        const val ACTION_TOGGLE_MUTE = "com.nothing.dialer.ACTION_TOGGLE_MUTE"
+        const val ACTION_CYCLE_AUDIO_ROUTE = "com.nothing.dialer.ACTION_CYCLE_AUDIO_ROUTE"
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -18,13 +21,14 @@ class CallActionReceiver : BroadcastReceiver() {
         Log.d(TAG, "onReceive: action=$action")
 
         val currentCall = GlyphInCallService.currentCall
-        if (currentCall == null || currentCall.state != Call.STATE_RINGING) {
-            Log.w(TAG, "No ringing call to handle action: $action")
+        if (currentCall == null) {
+            Log.w(TAG, "No active call to handle action: $action")
             return
         }
 
         when (action) {
             ACTION_ANSWER -> {
+                if (currentCall.state != Call.STATE_RINGING) return
                 Log.d(TAG, "Answering call via notification action")
                 currentCall.answer(android.telecom.VideoProfile.STATE_AUDIO_ONLY)
                 
@@ -39,6 +43,7 @@ class CallActionReceiver : BroadcastReceiver() {
                 }
             }
             ACTION_DECLINE -> {
+                if (currentCall.state != Call.STATE_RINGING) return
                 Log.d(TAG, "Declining call via notification action")
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
                     currentCall.reject(android.telecom.Call.REJECT_REASON_DECLINED)
@@ -46,6 +51,23 @@ class CallActionReceiver : BroadcastReceiver() {
                     @Suppress("DEPRECATION")
                     currentCall.reject(false, null)
                 }
+            }
+            ACTION_HANGUP -> {
+                Log.d(TAG, "Hanging up call via notification action")
+                currentCall.disconnect()
+            }
+            ACTION_TOGGLE_MUTE -> {
+                val service = GlyphInCallService.instance
+                if (service != null) {
+                    val muted = !(GlyphInCallService.latestAudioState?.isMuted
+                        ?: service.callAudioState?.isMuted
+                        ?: false)
+                    Log.d(TAG, "Toggling mute via notification action: $muted")
+                    service.setMuted(muted)
+                }
+            }
+            ACTION_CYCLE_AUDIO_ROUTE -> {
+                GlyphInCallService.instance?.cycleAudioRoute()
             }
         }
     }

@@ -2,7 +2,7 @@ name: nothing_dialer
 description: "Nothing Phone 1 Outgoing Call Glyph Trigger – triggers Glyph lights during dialing."
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+6
 
 environment:
   sdk: ^3.11.0

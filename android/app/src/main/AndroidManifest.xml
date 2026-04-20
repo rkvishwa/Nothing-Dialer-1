@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ─── Permissions ─── -->
     <!-- Required to use InCallService as Default Dialer -->
@@ -21,7 +22,6 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <!-- Show ongoing call notification on Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
 
     <application
@@ -33,7 +33,8 @@
         <!-- ─── Nothing Glyph API Key (use "test" for local debug) ─── -->
         <meta-data
             android:name="NothingKey"
-            android:value="test" />
+            tools:replace="android:value"
+            android:value="cbaf5e96-0d1c42a6b8fa508669d7acbb" />
 
         <activity
             android:name="com.rkkvishva.nothing_dialer.MainActivity"
@@ -70,6 +71,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="tel" />
             </intent-filter>
+            <!-- Assistant / Gemini: outbound calls via CREATE_CALL App Action -->
+            <intent-filter>
+                <action android:name="android.intent.action.CALL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="tel" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <!-- ─── In-Call Screen (native Kotlin) ─── -->
@@ -124,6 +135,16 @@
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="tel" />
+        </intent>
+        <!-- Voice search: let the app see the system speech recognizer -->
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+        <intent>
+            <action android:name="android.speech.action.WEB_SEARCH" />
         </intent>
     </queries>
 </manifest>

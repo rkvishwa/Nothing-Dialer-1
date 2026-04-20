@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:path_provider/path_provider.dart';
 import '../services/blocking_manager.dart';
+import '../services/favourites_manager.dart';
 import 'sim_picker_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -327,6 +328,37 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
+          ValueListenableBuilder<List<FavouriteEntry>>(
+            valueListenable: FavouritesManager.favouritesNotifier,
+            builder: (context, _, __) {
+              final phones = _contact.phones;
+              if (phones.isEmpty) return const SizedBox(width: 0);
+              final num = phones.first.number;
+              final fav = FavouritesManager.isFavourite(num);
+              return IconButton(
+                icon: Icon(
+                  fav ? Icons.star_rounded : Icons.star_outline_rounded,
+                  color: fav
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.onSurface,
+                ),
+                onPressed: () async {
+                  if (fav) {
+                    await FavouritesManager.removeFavourite(num);
+                  } else {
+                    await FavouritesManager.addFavourite(
+                      FavouriteEntry(
+                        id: _contact.id,
+                        number: num,
+                        name: _contact.displayName,
+                      ),
+                    );
+                  }
+                  if (mounted) setState(() {});
+                },
+              );
+            },
+          ),
           IconButton(
             icon: Icon(
               Icons.edit_outlined,

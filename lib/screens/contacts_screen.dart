@@ -4,6 +4,8 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'sim_picker_sheet.dart';
 import 'contact_detail_screen.dart';
+import '../main.dart' as main_app;
+import '../services/voice_search.dart';
 
 /// Displays phone contacts synced from the device address book.
 class ContactsScreen extends StatefulWidget {
@@ -13,7 +15,8 @@ class ContactsScreen extends StatefulWidget {
   State<ContactsScreen> createState() => _ContactsScreenState();
 }
 
-class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAliveClientMixin {
+class _ContactsScreenState extends State<ContactsScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -25,6 +28,7 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
   bool _loading = true;
   bool _permissionDenied = false;
   final _searchController = TextEditingController();
+  final ScrollController _listScrollController = ScrollController();
   bool _searching = false;
 
   static const _channel = MethodChannel('nothing_dialer/control');
@@ -34,19 +38,44 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
     super.initState();
     _loadContacts();
     _searchController.addListener(_onSearch);
+    main_app.clearContactsSearchTickNotifier.addListener(
+      _handleExternalClearSearch,
+    );
   }
 
   @override
   void dispose() {
+    main_app.clearContactsSearchTickNotifier.removeListener(
+      _handleExternalClearSearch,
+    );
+    main_app.contactsSearchActiveNotifier.value = false;
+    _listScrollController.dispose();
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _handleExternalClearSearch() {
+    if (!mounted || _searchController.text.isEmpty) return;
+    _searchController.clear();
+    setState(() => _searching = false);
+    _scheduleResetScrollToTop();
+  }
+
+  void _scheduleResetScrollToTop() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_listScrollController.hasClients) return;
+      _listScrollController.jumpTo(0);
+    });
   }
 
   Future<void> _loadContacts() async {
     setState(() => _loading = true);
     final status = await Permission.contacts.request();
     if (!status.isGranted) {
-      setState(() { _loading = false; _permissionDenied = true; });
+      setState(() {
+        _loading = false;
+        _permissionDenied = true;
+      });
       return;
     }
     final contacts = await FlutterContacts.getContacts(
@@ -55,8 +84,12 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
     );
     if (mounted) {
       setState(() {
-        _contacts = contacts..sort((a, b) =>
-            a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
+        _contacts = contacts
+          ..sort(
+            (a, b) => a.displayName.toLowerCase().compareTo(
+              b.displayName.toLowerCase(),
+            ),
+          );
         _filtered = _contacts;
         _updateGroups();
         _loading = false;
@@ -91,9 +124,11 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
 
   void _onSearch() {
     final query = _searchController.text.toLowerCase();
+    main_app.contactsSearchActiveNotifier.value = query.isNotEmpty;
     setState(() {
       if (query.isEmpty) {
         _filtered = _contacts;
+        _scheduleResetScrollToTop();
       } else {
         _filtered = _contacts.where((c) {
           final name = c.displayName.toLowerCase();
@@ -120,7 +155,12 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
     } on PlatformException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Call error: ${e.message}'), backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest),
+          SnackBar(
+            content: Text('Call error: ${e.message}'),
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest,
+          ),
         );
       }
     }
@@ -134,9 +174,7 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
   void _showContactDetail(Contact contact) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => ContactDetailScreen(contact: contact),
-      ),
+      MaterialPageRoute(builder: (_) => ContactDetailScreen(contact: contact)),
     );
     if (result == true) {
       _loadContacts();
@@ -149,7 +187,12 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
   Widget build(BuildContext context) {
     super.build(context);
     if (_loading) {
-      return Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onSurface, strokeWidth: 1.5));
+      return Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.onSurface,
+          strokeWidth: 1.5,
+        ),
+      );
     }
     if (_permissionDenied) {
       return _EmptyState(
@@ -172,31 +215,73 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
       children: [
         // ─ Search bar ─
         Padding(
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 4),
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 4),
           child: TextField(
             controller: _searchController,
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 15,
+            ),
             decoration: InputDecoration(
               hintText: 'Search contacts…',
-              hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-              prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
+              hintStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                size: 20,
+              ),
               suffixIcon: _searching
                   ? IconButton(
-                      icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 18),
+                      icon: Icon(
+                        Icons.close,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        size: 18,
+                      ),
                       onPressed: () {
                         _searchController.clear();
+                        main_app.contactsSearchActiveNotifier.value = false;
                         setState(() => _searching = false);
-                      })
-                  : null,
+                        _scheduleResetScrollToTop();
+                      },
+                    )
+                  : IconButton(
+                      icon: Icon(
+                        Icons.mic_none,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        size: 20,
+                      ),
+                      tooltip: 'Voice search',
+                      onPressed: () async {
+                        final spoken = await VoiceSearch.listenWithFeedback(
+                          context,
+                        );
+                        if (spoken == null || !mounted) return;
+                        _searchController.text = spoken;
+                        _searchController.selection =
+                            TextSelection.fromPosition(
+                              TextPosition(offset: spoken.length),
+                            );
+                        setState(() => _searching = true);
+                      },
+                    ),
               filled: true,
               fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 10,
+              ),
             ),
-            onChanged: (_) => setState(() => _searching = _searchController.text.isNotEmpty),
+            onChanged: (_) {
+              final active = _searchController.text.isNotEmpty;
+              main_app.contactsSearchActiveNotifier.value = active;
+              setState(() => _searching = active);
+            },
           ),
         ),
         // ─ Contact count ─
@@ -204,8 +289,13 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text('${_filtered.length} contacts',
-                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 11)),
+            child: Text(
+              '${_filtered.length} contacts',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 11,
+              ),
+            ),
           ),
         ),
         // ─ List ─
@@ -215,7 +305,8 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
             backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
             onRefresh: _loadContacts,
             child: ListView.builder(
-              padding: const EdgeInsets.only(top: 8, bottom: 24),
+              controller: _listScrollController,
+              padding: const EdgeInsets.only(top: 8, bottom: 120),
               cacheExtent: 1000,
               itemCount: _flatItems.length,
               itemBuilder: (context, idx) {
@@ -223,30 +314,43 @@ class _ContactsScreenState extends State<ContactsScreen> with AutomaticKeepAlive
                 if (item == 'create_new') {
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-                      child: Icon(Icons.person_add_outlined,
-                          color: Theme.of(context).colorScheme.onSurface, size: 20),
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHigh,
+                      child: Icon(
+                        Icons.person_add_outlined,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        size: 20,
+                      ),
                     ),
-                    title: Text('Create new contact',
-                        style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
+                    title: Text(
+                      'Create new contact',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 15,
+                      ),
+                    ),
                     onTap: _addContact,
                   );
                 } else if (item is String) {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 6),
-                    child: Text(item,
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontSize: 12,
-                            letterSpacing: 0.8)),
+                    child: Text(
+                      item,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 12,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
                   );
                 } else if (item is Contact) {
                   return _ContactTile(
                     contact: item,
                     onTap: () => _showContactDetail(item),
-                    onCall: item.phones.isNotEmpty 
-                      ? () => _call(item.phones.first.number)
-                      : null,
+                    onCall: item.phones.isNotEmpty
+                        ? () => _call(item.phones.first.number)
+                        : null,
                   );
                 }
                 return const SizedBox.shrink();
@@ -273,7 +377,10 @@ class _ContactHeader extends StatelessWidget {
         Expanded(
           child: Text(
             contact.displayName,
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 16,
+            ),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -287,11 +394,7 @@ class _ContactTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback? onCall;
 
-  const _ContactTile({
-    required this.contact,
-    required this.onTap,
-    this.onCall,
-  });
+  const _ContactTile({required this.contact, required this.onTap, this.onCall});
 
   @override
   Widget build(BuildContext context) {
@@ -307,12 +410,20 @@ class _ContactTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(contact.displayName,
-                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15)),
+                  Text(
+                    contact.displayName,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 15,
+                    ),
+                  ),
                   if (contact.phones.isNotEmpty)
                     Text(
                       contact.phones.first.number,
-                      style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 12),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline,
+                        fontSize: 12,
+                      ),
                     ),
                 ],
               ),
@@ -359,8 +470,14 @@ class _Avatar extends StatelessWidget {
         border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       alignment: Alignment.center,
-      child: Text(initials,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: size * 0.38, fontWeight: FontWeight.w300)),
+      child: Text(
+        initials,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
+          fontSize: size * 0.38,
+          fontWeight: FontWeight.w300,
+        ),
+      ),
     );
   }
 
@@ -393,18 +510,38 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 48, color: Theme.of(context).colorScheme.outlineVariant),
+          Icon(
+            icon,
+            size: 48,
+            color: Theme.of(context).colorScheme.outlineVariant,
+          ),
           SizedBox(height: 16),
-          Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 16)),
+          Text(
+            title,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 16,
+            ),
+          ),
           const SizedBox(height: 6),
-          Text(subtitle,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),
-              textAlign: TextAlign.center),
+          Text(
+            subtitle,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 13,
+            ),
+            textAlign: TextAlign.center,
+          ),
           if (buttonLabel != null) ...[
             SizedBox(height: 20),
             TextButton(
               onPressed: onButton,
-              child: Text(buttonLabel!, style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+              child: Text(
+                buttonLabel!,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
             ),
           ],
         ],

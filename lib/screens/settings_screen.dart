@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'blocked_numbers_screen.dart';
+import 'favourites_screen.dart';
 import '../main.dart' as main_app;
+int _readFrequentContactsMaxFromPrefs(SharedPreferences prefs) {
+  final stored = prefs.getInt('frequent_contacts_max');
+  if (stored != null) return stored.clamp(0, 20);
+  if (prefs.getBool('frequent_contacts_enabled') == false) return 0;
+  return 5;
+}
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -27,6 +35,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int _inCallBreathProgressDuration = 65000;
   int _inCallBreathProgressInterval = 100;
   List<String> _inCallCustomChannels = ['A1', 'B1', 'C-All', 'D-All', 'E1'];
+
+  String _frequentContactsPeriod = 'year';
+  int _frequentContactsMax = 5;
 
   @override
   void initState() {
@@ -63,7 +74,255 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _inCallCustomChannels =
           prefs.getStringList('in_call_custom_channels') ??
           ['A1', 'B1', 'C-All', 'D-All', 'E1'];
+
+      _frequentContactsPeriod =
+          prefs.getString('frequent_contacts_period') ?? 'year';
+      _frequentContactsMax = _readFrequentContactsMaxFromPrefs(prefs);
     });
+  }
+
+  Future<void> _saveFrequentContactsPeriod(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('frequent_contacts_period', value);
+    setState(() => _frequentContactsPeriod = value);
+    main_app.frequentContactsPeriodNotifier.value = value;
+  }
+
+  Future<void> _saveFrequentContactsMax(int value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final clamped = value.clamp(0, 20);
+    await prefs.setInt('frequent_contacts_max', clamped);
+    setState(() => _frequentContactsMax = clamped);
+    main_app.frequentContactsMaxNotifier.value = clamped;
+  }
+
+  String _frequentMaxSubtitle() {
+    if (_frequentContactsMax == 0) return 'Off';
+    if (_frequentContactsMax == 1) return '1 contact';
+    return 'Up to ${_frequentContactsMax} contacts';
+  }
+
+  String _frequentPeriodSubtitle() {
+    switch (_frequentContactsPeriod) {
+      case 'day':
+        return 'Last 24 hours';
+      case 'week':
+        return 'Last 7 days';
+      case 'month':
+        return 'Last 30 days';
+      case 'year':
+        return 'Last 12 months';
+      case 'all':
+        return 'All time';
+      default:
+        return 'Last 12 months';
+    }
+  }
+
+  void _showFrequentPeriodPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 8),
+                  child: Container(
+                    width: 32,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
+                child: Text(
+                  'Time period',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              _MethodOption(
+                icon: Icons.today_rounded,
+                label: 'Last 24 hours',
+                subtitle: 'Calls from the past day',
+                selected: _frequentContactsPeriod == 'day',
+                onTap: () {
+                  _saveFrequentContactsPeriod('day');
+                  Navigator.pop(context);
+                },
+              ),
+              _MethodOption(
+                icon: Icons.date_range_rounded,
+                label: 'Last 7 days',
+                subtitle: 'Calls from the past week',
+                selected: _frequentContactsPeriod == 'week',
+                onTap: () {
+                  _saveFrequentContactsPeriod('week');
+                  Navigator.pop(context);
+                },
+              ),
+              _MethodOption(
+                icon: Icons.calendar_month_rounded,
+                label: 'Last 30 days',
+                subtitle: 'Calls from the past month',
+                selected: _frequentContactsPeriod == 'month',
+                onTap: () {
+                  _saveFrequentContactsPeriod('month');
+                  Navigator.pop(context);
+                },
+              ),
+              _MethodOption(
+                icon: Icons.calendar_today_rounded,
+                label: 'Last 12 months',
+                subtitle: 'Calls from the past year',
+                selected: _frequentContactsPeriod == 'year',
+                onTap: () {
+                  _saveFrequentContactsPeriod('year');
+                  Navigator.pop(context);
+                },
+              ),
+              _MethodOption(
+                icon: Icons.all_inclusive_rounded,
+                label: 'All time',
+                subtitle: 'Entire call history',
+                selected: _frequentContactsPeriod == 'all',
+                onTap: () {
+                  _saveFrequentContactsPeriod('all');
+                  Navigator.pop(context);
+                },
+              ),
+              SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showFrequentMaxPicker() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 32,
+                        height: 4,
+                        margin: const EdgeInsets.only(bottom: 24),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.outlineVariant,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Number of records',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Set to 0 to hide the section. Otherwise choose how many numbers appear at the top of Recents.',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Slider(
+                            value: _frequentContactsMax
+                                .toDouble()
+                                .clamp(0, 20),
+                            min: 0,
+                            max: 20,
+                            divisions: 20,
+                            activeColor: Theme.of(context).colorScheme.primary,
+                            onChanged: (val) {
+                              setModalState(
+                                () => _frequentContactsMax = val.toInt(),
+                              );
+                              setState(
+                                () => _frequentContactsMax = val.toInt(),
+                              );
+                            },
+                            onChangeEnd: (val) {
+                              _saveFrequentContactsMax(val.toInt());
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: 44,
+                          child: Text(
+                            _frequentContactsMax == 0
+                                ? 'Off'
+                                : '${_frequentContactsMax}',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.outline,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Center(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          'Done',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Future<void> _saveAnswerMethod(String value) async {
@@ -167,6 +426,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () => _showAnswerMethodPicker(),
           ),
           _SettingsTile(
+            icon: Icons.star_rate_rounded,
+            title: 'All favourites',
+            subtitle: 'Reorder, remove, and add from contacts',
+            onTap: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (_) => const FavouritesScreen(),
+                ),
+              );
+            },
+          ),
+          _SettingsTile(
             icon: Icons.block_rounded,
             title: 'Blocked numbers',
             subtitle: 'View and unblock numbers',
@@ -177,6 +449,50 @@ class _SettingsScreenState extends State<SettingsScreen> {
               );
             },
           ),
+          _SettingsTile(
+            icon: Icons.volume_up_rounded,
+            title: 'Sounds and vibration',
+            subtitle: 'Ringtone, vibration, dial pad tones',
+            onTap: () async {
+              try {
+                await const MethodChannel(
+                  'nothing_dialer/control',
+                ).invokeMethod<void>('openSoundSettings');
+              } on PlatformException catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Could not open settings: ${e.message}')),
+                  );
+                }
+              }
+            },
+          ),
+          SizedBox(height: 16),
+          _SectionHeader(
+            title: 'Frequently Contacted',
+            trailing: GestureDetector(
+              onTap: _showFrequentlyContactedInfoDialog,
+              child: Icon(
+                Icons.info_outline_rounded,
+                color: Theme.of(context).colorScheme.outline,
+                size: 20,
+              ),
+            ),
+          ),
+          _SettingsTile(
+            icon: Icons.format_list_numbered_rounded,
+            title: 'Number of records',
+            subtitle: _frequentMaxSubtitle(),
+            onTap: _showFrequentMaxPicker,
+          ),
+          if (_frequentContactsMax > 0) ...[
+            _SettingsTile(
+              icon: Icons.date_range_rounded,
+              title: 'Time period',
+              subtitle: _frequentPeriodSubtitle(),
+              onTap: _showFrequentPeriodPicker,
+            ),
+          ],
           SizedBox(height: 16),
           _SectionHeader(
             title: 'Glyph Lights',
@@ -210,7 +526,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.timer_rounded,
                 title: 'Speed Settings',
                 subtitle: '${_glyphC1C4Interval}ms delay',
-                onTap: () => _showC1C4SpeedPicker(isInCall: false),
+                onTap: () => _showC1C4SpeedPicker(
+                  isInCall: false,
+                  style: _glyphAnimationStyle,
+                ),
               ),
             if (_glyphAnimationStyle == 'Breath & Progress')
               _SettingsTile(
@@ -243,7 +562,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.timer_rounded,
                 title: 'Speed Settings',
                 subtitle: '${_inCallC1C4Interval}ms delay',
-                onTap: () => _showC1C4SpeedPicker(isInCall: true),
+                onTap: () => _showC1C4SpeedPicker(
+                  isInCall: true,
+                  style: _inCallAnimationStyle,
+                ),
               ),
             if (_inCallAnimationStyle == 'Breath & Progress')
               _SettingsTile(
@@ -387,7 +709,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           ),
                           selected: isSelected,
-                          checkmarkColor: Colors.white,
+                          checkmarkColor: Theme.of(
+                            context,
+                          ).colorScheme.onPrimary,
                           selectedColor: Theme.of(context).colorScheme.primary,
                           backgroundColor: Theme.of(
                             context,
@@ -559,7 +883,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           ),
                           selected: isSelected,
-                          checkmarkColor: Colors.white,
+                          checkmarkColor: Theme.of(
+                            context,
+                          ).colorScheme.onPrimary,
                           selectedColor: Theme.of(context).colorScheme.primary,
                           backgroundColor: Theme.of(
                             context,
@@ -1003,7 +1329,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _showC1C4SpeedPicker({required bool isInCall}) {
+  void _showC1C4SpeedPicker({required bool isInCall, required String style}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1013,6 +1339,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           final currentInterval = isInCall
               ? _inCallC1C4Interval
               : _glyphC1C4Interval;
+          final isSingle = style == 'Single';
+          final minInterval = isSingle ? 100.0 : 1000.0;
+          final maxInterval = 10000.0;
+          final divisions = isSingle ? 99 : 90;
           return Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
@@ -1046,7 +1376,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     SizedBox(height: 24),
                     Text(
-                      'Animation Delay (1s - 10s)',
+                      'Animation Delay (${isSingle ? "0.1s" : "1s"} - 10s)',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 13,
@@ -1059,12 +1389,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Expanded(
                           child: Slider(
                             value: currentInterval.toDouble().clamp(
-                              1000,
-                              10000,
+                              minInterval,
+                              maxInterval,
                             ),
-                            min: 1000,
-                            max: 10000,
-                            divisions: 90,
+                            min: minInterval,
+                            max: maxInterval,
+                            divisions: divisions,
                             activeColor: Theme.of(context).colorScheme.primary,
                             onChanged: (val) {
                               setModalState(() {
@@ -1201,6 +1531,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showFrequentlyContactedInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Frequently Contacted',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Shows your most-called phone numbers at the top of the Recents tab, based on how many incoming, outgoing, missed, or rejected calls you had with each number in the time period you choose.\n\n'
+                'Number of records: set to 0 to turn this off. Use 1–20 to show that many top contacts.\n\n'
+                'Time period applies only when at least one contact is shown.',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'Close',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

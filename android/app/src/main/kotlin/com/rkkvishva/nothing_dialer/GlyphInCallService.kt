@@ -45,6 +45,12 @@ class GlyphInCallService : InCallService() {
 
         var instance: GlyphInCallService? = null
             private set
+
+        var latestAudioState: CallAudioState? = null
+            private set
+
+        val audioStateListeners = mutableListOf<(CallAudioState) -> Unit>()
+        val currentCallListeners = mutableListOf<(Call?) -> Unit>()
     }
 
     override fun onCreate() {
@@ -84,6 +90,17 @@ class GlyphInCallService : InCallService() {
     }
 
     private val callCallbacks = mutableMapOf<Call, Call.Callback>()
+    private val activeCalls = mutableListOf<Call>()
+
+    private fun setCurrentCall(call: Call?) {
+        currentCall = call
+        for (listener in currentCallListeners.toList()) {
+            try {
+                listener(call)
+            } catch (_: Exception) {
+            }
+        }
+    }
 
     // ─── InCallService lifecycle ─────────────────────────────────────────────
 
@@ -91,7 +108,10 @@ class GlyphInCallService : InCallService() {
         super.onCallAdded(call)
         Log.d(TAG, "onCallAdded: state=${call.state}")
 
-        currentCall = call
+        if (!activeCalls.contains(call)) {
+            activeCalls.add(call)
+        }
+        setCurrentCall(call)
 
         val callback = buildCallback()
         callCallbacks[call] = callback
@@ -100,17 +120,12 @@ class GlyphInCallService : InCallService() {
         // Handle the initial state immediately.
         handleCallState(call.state)
 
-        // Launch the in-call screen if:
-        // 1. User is initiating the call (outgoing).
-        // 2. The app is already in foreground.
-        // 3. The phone is locked (we want full screen UI on lockscreen).
-        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as android.app.KeyguardManager
-        val isLocked = keyguardManager.isKeyguardLocked
-        
-        if (call.state == Call.STATE_DIALING || MainActivity.isAppInForeground || isLocked) {
+        // Incoming (RINGING): notification only — user opens full UI via tap or Answer.
+        // Outgoing / other states: show in-call screen immediately.
+        if (call.state != Call.STATE_RINGING) {
             launchInCallActivity()
         } else {
-            Log.d(TAG, "App is in background, phone is unlocked, and it's an incoming call. Showing notification only (heads-up).")
+            Log.d(TAG, "Incoming call: showing call notification only (no automatic full-screen UI).")
         }
 
 
@@ -120,7 +135,10 @@ class GlyphInCallService : InCallService() {
 
     private fun updateForegroundNotification(state: Int) {
         val call = currentCall ?: return
-        
+        val isMuted = latestAudioState?.isMuted ?: callAudioState?.isMuted ?: false
+        val muteIconRes = if (isMuted) R.drawable.ic_mic_on else R.drawable.ic_mic_off
+        val muteLabel = if (isMuted) "Unmute" else "Mute"
+
         val intent = Intent(this, InCallActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
@@ -144,7 +162,7 @@ class GlyphInCallService : InCallService() {
                .setOngoing(true)
                .setCategory(Notification.CATEGORY_CALL)
 
-        if (state == Call.STATE_RINGING || state == Call.STATE_DIALING) {
+        if (state == Call.STATE_RINGING) {
             val handle = call.details?.handle
             val number = handle?.schemeSpecificPart ?: "Unknown"
             val contactName = getContactName(number)
@@ -154,59 +172,134 @@ class GlyphInCallService : InCallService() {
             
             builder.setContentTitle(title)
                    .setContentText(text)
-                   .setFullScreenIntent(pendingIntent, true)
+                   .setContentIntent(pendingIntent)
                    
-            if (state == Call.STATE_RINGING) {
-                // Add Answer action
-                val answerIntent = Intent(this, CallActionReceiver::class.java).apply {
-                    action = CallActionReceiver.ACTION_ANSWER
-                }
-                val answerPendingIntent = PendingIntent.getBroadcast(
-                    this, 1, answerIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            // Add Answer action
+            val answerIntent = Intent(this, CallActionReceiver::class.java).apply {
+                action = CallActionReceiver.ACTION_ANSWER
+            }
+            val answerPendingIntent = PendingIntent.getBroadcast(
+                this, 1, answerIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            // Add Decline action
+            val declineIntent = Intent(this, CallActionReceiver::class.java).apply {
+                action = CallActionReceiver.ACTION_DECLINE
+            }
+            val declinePendingIntent = PendingIntent.getBroadcast(
+                this, 2, declineIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            // Android 12+ (S) CallStyle
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val person = android.app.Person.Builder()
+                    .setName(title)
+                    .setImportant(true)
+                    .build()
+
+                builder.style = Notification.CallStyle.forIncomingCall(
+                    person,
+                    declinePendingIntent,
+                    answerPendingIntent
                 )
-                
-                // Add Decline action
-                val declineIntent = Intent(this, CallActionReceiver::class.java).apply {
-                    action = CallActionReceiver.ACTION_DECLINE
-                }
-                val declinePendingIntent = PendingIntent.getBroadcast(
-                    this, 2, declineIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-                )
-                
-                // Android 12+ (S) CallStyle
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    val person = android.app.Person.Builder()
-                        .setName(title)
-                        .setImportant(true)
-                        .build()
-                        
-                    builder.style = Notification.CallStyle.forIncomingCall(
-                        person, 
-                        declinePendingIntent, 
-                        answerPendingIntent
-                    )
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val answerAction = Notification.Action.Builder(
-                        R.drawable.ic_call_end, "Answer", answerPendingIntent
-                    ).build()
-                    val declineAction = Notification.Action.Builder(
-                        R.drawable.ic_call_end, "Decline", declinePendingIntent
-                    ).build()
-                    builder.addAction(declineAction)
-                    builder.addAction(answerAction)
-                } else {
-                    @Suppress("DEPRECATION")
-                    builder.addAction(R.drawable.ic_call_end, "Decline", declinePendingIntent)
-                    @Suppress("DEPRECATION")
-                    builder.addAction(R.drawable.ic_call_end, "Answer", answerPendingIntent)
-                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val answerAction = Notification.Action.Builder(
+                    R.drawable.ic_call_end, "Answer", answerPendingIntent
+                ).build()
+                val declineAction = Notification.Action.Builder(
+                    R.drawable.ic_call_end, "Decline", declinePendingIntent
+                ).build()
+                builder.addAction(declineAction)
+                builder.addAction(answerAction)
             } else {
-                builder.setContentIntent(pendingIntent)
+                @Suppress("DEPRECATION")
+                builder.addAction(R.drawable.ic_call_end, "Decline", declinePendingIntent)
+                @Suppress("DEPRECATION")
+                builder.addAction(R.drawable.ic_call_end, "Answer", answerPendingIntent)
             }
         } else {
-            builder.setContentTitle("Ongoing Call")
-                   .setContentText("Tap to return to call")
-                   .setContentIntent(pendingIntent)
+            val route = latestAudioState?.route ?: callAudioState?.route ?: CallAudioState.ROUTE_EARPIECE
+            val (routeIconRes, routeLabel) = when (route) {
+                CallAudioState.ROUTE_SPEAKER -> R.drawable.ic_volume_up to "Speaker"
+                CallAudioState.ROUTE_BLUETOOTH -> R.drawable.ic_bluetooth to "Bluetooth"
+                else -> R.drawable.ic_phone_in_talk to "Phone"
+            }
+
+            val handle = call.details?.handle
+            val number = handle?.schemeSpecificPart ?: "Unknown"
+            val contactName = getContactName(number)
+            val title = contactName ?: number
+            val text = if (state == Call.STATE_DIALING || state == Call.STATE_CONNECTING) {
+                "Calling…"
+            } else {
+                "Tap to return to call"
+            }
+
+            val hangupIntent = Intent(this, CallActionReceiver::class.java).apply {
+                action = CallActionReceiver.ACTION_HANGUP
+            }
+            val hangupPendingIntent = PendingIntent.getBroadcast(
+                this, 3, hangupIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            val toggleMuteIntent = Intent(this, CallActionReceiver::class.java).apply {
+                action = CallActionReceiver.ACTION_TOGGLE_MUTE
+            }
+            val toggleMutePendingIntent = PendingIntent.getBroadcast(
+                this, 4, toggleMuteIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            val routeIntent = Intent(this, CallActionReceiver::class.java).apply {
+                action = CallActionReceiver.ACTION_CYCLE_AUDIO_ROUTE
+            }
+            val routePendingIntent = PendingIntent.getBroadcast(
+                this, 5, routeIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            builder.setContentTitle(title)
+                .setContentText(text)
+                .setContentIntent(pendingIntent)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val person = android.app.Person.Builder()
+                    .setName(title)
+                    .setImportant(true)
+                    .build()
+                builder.style = Notification.CallStyle.forOngoingCall(person, hangupPendingIntent)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val hangupAction = Notification.Action.Builder(
+                    R.drawable.ic_call_end, "End", hangupPendingIntent
+                ).build()
+                builder.addAction(hangupAction)
+            } else {
+                @Suppress("DEPRECATION")
+                builder.addAction(R.drawable.ic_call_end, "End", hangupPendingIntent)
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // Icon-only chips under the large End button (CallStyle).
+                val muteAction = Notification.Action.Builder(
+                    muteIconRes, "", toggleMutePendingIntent
+                ).build()
+                val routeAction = Notification.Action.Builder(
+                    routeIconRes, "", routePendingIntent
+                ).build()
+                builder.addAction(muteAction)
+                builder.addAction(routeAction)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val muteAction = Notification.Action.Builder(
+                    muteIconRes, muteLabel, toggleMutePendingIntent
+                ).build()
+                val routeAction = Notification.Action.Builder(
+                    routeIconRes, routeLabel, routePendingIntent
+                ).build()
+                builder.addAction(muteAction)
+                builder.addAction(routeAction)
+            } else {
+                @Suppress("DEPRECATION")
+                builder.addAction(muteIconRes, muteLabel, toggleMutePendingIntent)
+                @Suppress("DEPRECATION")
+                builder.addAction(routeIconRes, routeLabel, routePendingIntent)
+            }
         }
 
         val notification = builder.build()
@@ -242,14 +335,23 @@ class GlyphInCallService : InCallService() {
         Log.d(TAG, "onCallRemoved")
 
         callCallbacks.remove(call)?.let { call.unregisterCallback(it) }
-        currentCall = null
-        sendGlyphCommand("lightsOff")
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(STOP_FOREGROUND_REMOVE)
+        activeCalls.remove(call)
+        if (activeCalls.isNotEmpty()) {
+            val nextCall = activeCalls.last()
+            setCurrentCall(nextCall)
+            handleCallState(nextCall.state)
+            if (nextCall.state != Call.STATE_RINGING) {
+                launchInCallActivity()
+            }
         } else {
-            @Suppress("DEPRECATION")
-            stopForeground(true)
+            setCurrentCall(null)
+            sendGlyphCommand("lightsOff")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                stopForeground(STOP_FOREGROUND_REMOVE)
+            } else {
+                @Suppress("DEPRECATION")
+                stopForeground(true)
+            }
         }
     }
 
@@ -260,6 +362,36 @@ class GlyphInCallService : InCallService() {
             Log.d(TAG, "onStateChanged: state=$state")
             handleCallState(state)
         }
+    }
+
+    override fun onCallAudioStateChanged(audioState: CallAudioState?) {
+        super.onCallAudioStateChanged(audioState)
+        if (audioState == null) return
+        latestAudioState = audioState
+        for (listener in audioStateListeners.toList()) {
+            try {
+                listener(audioState)
+            } catch (_: Exception) {
+            }
+        }
+        currentCall?.let { updateForegroundNotification(it.state) }
+    }
+
+    fun cycleAudioRoute() {
+        val state = latestAudioState ?: callAudioState ?: return
+        val supported = state.supportedRouteMask
+        val bluetoothSupported = (supported and CallAudioState.ROUTE_BLUETOOTH) != 0
+        val nextRoute = when (state.route) {
+            CallAudioState.ROUTE_EARPIECE, CallAudioState.ROUTE_WIRED_HEADSET -> {
+                CallAudioState.ROUTE_SPEAKER
+            }
+            CallAudioState.ROUTE_SPEAKER -> {
+                if (bluetoothSupported) CallAudioState.ROUTE_BLUETOOTH else CallAudioState.ROUTE_EARPIECE
+            }
+            CallAudioState.ROUTE_BLUETOOTH -> CallAudioState.ROUTE_EARPIECE
+            else -> CallAudioState.ROUTE_EARPIECE
+        }
+        setAudioRoute(nextRoute)
     }
 
     private fun handleCallState(state: Int) {

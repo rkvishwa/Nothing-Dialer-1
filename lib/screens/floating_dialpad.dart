@@ -1,9 +1,50 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'sim_picker_sheet.dart';
+
+final _nonDigit = RegExp(r'\D');
+final _pasteSanitize = RegExp(r'[^\d\+\*\#]');
+
+String _nameToT9(String name) {
+  const mapping = {
+    'a': '2',
+    'b': '2',
+    'c': '2',
+    'd': '3',
+    'e': '3',
+    'f': '3',
+    'g': '4',
+    'h': '4',
+    'i': '4',
+    'j': '5',
+    'k': '5',
+    'l': '5',
+    'm': '6',
+    'n': '6',
+    'o': '6',
+    'p': '7',
+    'q': '7',
+    'r': '7',
+    's': '7',
+    't': '8',
+    'u': '8',
+    'v': '8',
+    'w': '9',
+    'x': '9',
+    'y': '9',
+    'z': '9',
+  };
+
+  final buffer = StringBuffer();
+  for (var i = 0; i < name.length; i++) {
+    final char = name[i].toLowerCase();
+    buffer.write(mapping[char] ?? char);
+  }
+  return buffer.toString();
+}
 
 /// Advanced floating dialpad shown as a draggable bottom sheet.
 ///
@@ -42,6 +83,18 @@ class _ContactMatch {
   _ContactMatch(this.contact, this.matchedNumber);
 }
 
+class _IndexedContact {
+  final Contact contact;
+  final List<({String norm, String display})> phones;
+  final String t9Name;
+
+  _IndexedContact({
+    required this.contact,
+    required this.phones,
+    required this.t9Name,
+  });
+}
+
 class _FloatingDialpad extends StatefulWidget {
   final String initialDigits;
   final Future<void> Function(String digits, int simIndex) onCall;
@@ -52,13 +105,17 @@ class _FloatingDialpad extends StatefulWidget {
   State<_FloatingDialpad> createState() => _FloatingDialpadState();
 }
 
-class _FloatingDialpadState extends State<_FloatingDialpad>
-    with SingleTickerProviderStateMixin {
+class _FloatingDialpadState extends State<_FloatingDialpad> {
   late final TextEditingController _numberController;
   late final FocusNode _focusNode;
   bool _calling = false;
   bool _cursorVisible = false;
-  List<Contact> _contacts = [];
+  bool _contactsRequested = false;
+  List<_IndexedContact> _indexedContacts = [];
+
+  String? _cacheQuery;
+  List<_ContactMatch> _cacheMatches = const [];
+  List<_IndexedContact>? _cacheIndexedRef;
 
   static const _channel = MethodChannel('nothing_dialer/control');
 
@@ -88,17 +145,51 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
   void initState() {
     super.initState();
     _numberController = TextEditingController(text: widget.initialDigits);
-    _numberController.addListener(() => setState(() {}));
     _focusNode = FocusNode();
-
-    _loadContacts();
   }
 
-  Future<void> _loadContacts() async {
+  void _invalidateMatchCache() {
+    _cacheQuery = null;
+    _cacheMatches = const [];
+    _cacheIndexedRef = null;
+  }
+
+  void _ensureContactsLoaded() {
+    if (_contactsRequested) return;
+    _contactsRequested = true;
+    _loadContactsIndexed();
+  }
+
+  Future<void> _loadContactsIndexed() async {
     final status = await Permission.contacts.request();
-    if (status.isGranted) {
-      final contacts = await FlutterContacts.getContacts(withProperties: true);
-      if (mounted) setState(() => _contacts = contacts);
+    if (!mounted) return;
+    if (!status.isGranted) return;
+
+    final contacts = await FlutterContacts.getContacts(withProperties: true);
+    if (!mounted) return;
+
+    final indexed = <_IndexedContact>[];
+    for (final contact in contacts) {
+      final phoneEntries = <({String norm, String display})>[];
+      for (final phone in contact.phones) {
+        final norm = phone.number.replaceAll(_nonDigit, '');
+        if (norm.isEmpty) continue;
+        phoneEntries.add((norm: norm, display: phone.number));
+      }
+      indexed.add(
+        _IndexedContact(
+          contact: contact,
+          phones: phoneEntries,
+          t9Name: _nameToT9(contact.displayName),
+        ),
+      );
+    }
+
+    if (mounted) {
+      setState(() {
+        _indexedContacts = indexed;
+        _invalidateMatchCache();
+      });
     }
   }
 
@@ -197,7 +288,18 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
   }
 
   Future<void> _placeCall() async {
-    if (_numberController.text.isEmpty) return;
+    if (_numberController.text.isEmpty) {
+      final prefs = await SharedPreferences.getInstance();
+      final lastDialed = prefs.getString('last_dialed_number') ?? '';
+      if (lastDialed.isNotEmpty) {
+        _numberController.text = lastDialed;
+        _numberController.selection = TextSelection.collapsed(
+          offset: lastDialed.length,
+        );
+        HapticFeedback.selectionClick();
+      }
+      return;
+    }
     HapticFeedback.heavyImpact();
     await _dialNumber(_numberController.text);
   }
@@ -213,6 +315,8 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
     setState(() => _calling = true);
     try {
       await widget.onCall(number, simIndex);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('last_dialed_number', number);
     } finally {
       if (mounted) setState(() => _calling = false);
     }
@@ -226,7 +330,11 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
         child: Row(
           children: [
-            Icon(icon, color: Theme.of(context).colorScheme.onSurface, size: 24),
+            Icon(
+              icon,
+              color: Theme.of(context).colorScheme.onSurface,
+              size: 24,
+            ),
             const SizedBox(width: 24),
             Text(
               label,
@@ -242,83 +350,39 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
     );
   }
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
-
-  String _nameToT9(String name) {
-    const mapping = {
-      'a': '2',
-      'b': '2',
-      'c': '2',
-      'd': '3',
-      'e': '3',
-      'f': '3',
-      'g': '4',
-      'h': '4',
-      'i': '4',
-      'j': '5',
-      'k': '5',
-      'l': '5',
-      'm': '6',
-      'n': '6',
-      'o': '6',
-      'p': '7',
-      'q': '7',
-      'r': '7',
-      's': '7',
-      't': '8',
-      'u': '8',
-      'v': '8',
-      'w': '9',
-      'x': '9',
-      'y': '9',
-      'z': '9',
-    };
-
-    final buffer = StringBuffer();
-    for (var i = 0; i < name.length; i++) {
-      final char = name[i].toLowerCase();
-      buffer.write(mapping[char] ?? char);
-    }
-    return buffer.toString();
-  }
-
   // ── Build ─────────────────────────────────────────────────────────────────
 
-  List<_ContactMatch> _findMatchedContacts(String number) {
-    if (number.isEmpty) return [];
-    final normalizedSearch = number.replaceAll(RegExp(r'\D'), '');
+  List<_ContactMatch> _findMatchesMemoized(String rawDigits) {
+    final normalizedSearch = rawDigits.replaceAll(_nonDigit, '');
+    if (normalizedSearch.isEmpty) return const [];
+
+    if (identical(_cacheIndexedRef, _indexedContacts) &&
+        _cacheQuery == normalizedSearch) {
+      return _cacheMatches;
+    }
+
     final matches = <_ContactMatch>[];
-
-    for (final contact in _contacts) {
-      bool matched = false;
-
-      // 1. Check phone numbers
-      for (final phone in contact.phones) {
-        final normalizedPhone = phone.number.replaceAll(RegExp(r'\D'), '');
-        if (normalizedPhone.contains(normalizedSearch)) {
-          matches.add(_ContactMatch(contact, phone.number));
+    for (final ic in _indexedContacts) {
+      var matched = false;
+      for (final phone in ic.phones) {
+        if (phone.norm.contains(normalizedSearch)) {
+          matches.add(_ContactMatch(ic.contact, phone.display));
           matched = true;
-          // Continue checking other phones for the same contact if they match
         }
       }
-
-      // 2. Check name if not already matched or to add if name matches
-      // Usually, we want to show the contact if the name matches even if the phone number doesn't
-      // If we already added it via phone matching, we might not need to add it again
-      // unless we want to show it explicitly because of the name match.
-      // For now, let's just make sure it's in the list.
-      if (!matched) {
-        final t9Name = _nameToT9(contact.displayName);
-        if (t9Name.contains(normalizedSearch)) {
-          matches.add(
-            _ContactMatch(
-              contact,
-              contact.phones.isNotEmpty ? contact.phones.first.number : '',
-            ),
-          );
-        }
+      if (!matched && ic.t9Name.contains(normalizedSearch)) {
+        matches.add(
+          _ContactMatch(
+            ic.contact,
+            ic.phones.isNotEmpty ? ic.phones.first.display : '',
+          ),
+        );
       }
     }
+
+    _cacheQuery = normalizedSearch;
+    _cacheMatches = matches;
+    _cacheIndexedRef = _indexedContacts;
     return matches;
   }
 
@@ -413,108 +477,119 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
-    final digits = _numberController.text;
-    final hasDigits = digits.isNotEmpty;
-    final matchedContacts = _findMatchedContacts(digits);
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: _numberController,
+      builder: (context, value, dialPadChild) {
+        final digits = value.text;
+        final hasDigits = digits.isNotEmpty;
+        if (hasDigits) {
+          _ensureContactsLoaded();
+        }
 
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 250),
-      height: hasDigits ? MediaQuery.of(context).size.height : null,
-      decoration: BoxDecoration(
-        color: hasDigits
-            ? Theme.of(context).scaffoldBackgroundColor
-            : Colors.transparent,
-        borderRadius: hasDigits
-            ? BorderRadius.zero
-            : const BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      child: SafeArea(
-        child: Column(
-          mainAxisSize: hasDigits ? MainAxisSize.max : MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (hasDigits) ...[
-              const SizedBox(height: 16),
-              Flexible(
-                child: ListView.builder(
-                  itemCount: matchedContacts.length + 3,
-                  itemBuilder: (context, index) {
-                    if (index < matchedContacts.length) {
-                      return _buildContactOption(matchedContacts[index]);
-                    }
-                    final optionIndex = index - matchedContacts.length;
-                    if (optionIndex == 0) {
-                      return _buildTopOption(
-                        Icons.person_add_alt_1_outlined,
-                        'Create new contact',
-                        () {
-                          Navigator.pop(context);
-                          FlutterContacts.openExternalInsert(
-                            Contact(phones: [Phone(digits)]),
-                          );
-                        },
-                      );
-                    } else if (optionIndex == 1) {
-                      return _buildTopOption(
-                        Icons.person_add_outlined,
-                        'Add to a contact',
-                        () {
-                          Navigator.pop(context);
-                          _channel.invokeMethod('addToExistingContact', {
-                            'number': digits,
-                          });
-                        },
-                      );
-                    } else {
-                      return _buildTopOption(
-                        Icons.chat_bubble_outline,
-                        'Send a message',
-                        () {
-                          Navigator.pop(context);
-                          _channel.invokeMethod('openSmsApp', {
-                            'number': digits,
-                          });
-                        },
-                      );
-                    }
-                  },
+        final matchedContacts = _findMatchesMemoized(digits);
+
+        final sheetBody = SafeArea(
+          child: Column(
+            mainAxisSize: hasDigits ? MainAxisSize.max : MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (hasDigits) ...[
+                const SizedBox(height: 16),
+                Flexible(
+                  child: ListView.builder(
+                    itemCount: matchedContacts.length + 3,
+                    itemBuilder: (context, index) {
+                      if (index < matchedContacts.length) {
+                        return _buildContactOption(matchedContacts[index]);
+                      }
+                      final optionIndex = index - matchedContacts.length;
+                      if (optionIndex == 0) {
+                        return _buildTopOption(
+                          Icons.person_add_alt_1_outlined,
+                          'Create new contact',
+                          () {
+                            Navigator.pop(context);
+                            FlutterContacts.openExternalInsert(
+                              Contact(phones: [Phone(digits)]),
+                            );
+                          },
+                        );
+                      } else if (optionIndex == 1) {
+                        return _buildTopOption(
+                          Icons.person_add_outlined,
+                          'Add to a contact',
+                          () {
+                            Navigator.pop(context);
+                            _channel.invokeMethod('addToExistingContact', {
+                              'number': digits,
+                            });
+                          },
+                        );
+                      } else {
+                        return _buildTopOption(
+                          Icons.chat_bubble_outline,
+                          'Send a message',
+                          () {
+                            Navigator.pop(context);
+                            _channel.invokeMethod('openSmsApp', {
+                              'number': digits,
+                            });
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
+              Container(
+                margin: const EdgeInsets.fromLTRB(12, 0, 12, 16),
+                padding: EdgeInsets.only(bottom: bottomPadding),
+                decoration: BoxDecoration(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHigh, // M3 dark surface
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildHandle(),
+                    _buildDisplay(digits),
+                    const SizedBox(height: 8),
+                    dialPadChild ?? _buildDialPad(),
+                    const SizedBox(height: 12),
+                    _buildBottomRow(hasDigits),
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
-              const SizedBox(height: 12),
             ],
-            Container(
-              margin: EdgeInsets.fromLTRB(12, 0, 12, hasDigits ? 16 : 16),
-              padding: EdgeInsets.only(bottom: bottomPadding),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerHigh, // M3 dark surface
-                borderRadius: BorderRadius.circular(28),
-                boxShadow: hasDigits
-                    ? []
-                    : [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.15),
-                          blurRadius: 40,
-                          offset: const Offset(0, -5),
-                        ),
-                      ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildHandle(),
-                  _buildDisplay(),
-                  const SizedBox(height: 8),
-                  _buildDialPad(),
-                  const SizedBox(height: 12),
-                  _buildBottomRow(),
-                  const SizedBox(height: 20),
-                ],
-              ),
+          ),
+        );
+
+        if (hasDigits) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.zero,
             ),
-          ],
-        ),
-      ),
+            child: sheetBody,
+          );
+        }
+
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: sheetBody,
+        );
+      },
+      child: _buildDialPad(),
     );
   }
 
@@ -525,15 +600,18 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
         width: 38,
         height: 4,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+          color: Theme.of(
+            context,
+          ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
           borderRadius: BorderRadius.circular(2),
         ),
       ),
     );
   }
 
-  Widget _buildDisplay() {
-    final hasDigits = _numberController.text.isNotEmpty;
+  Widget _buildDisplay(String digits) {
+    final hasDigits = digits.isNotEmpty;
+    final len = digits.length;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -567,7 +645,7 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
                         if (data?.text != null) {
                           // Keep digits, +, *, #
                           final textToPaste = data!.text!.replaceAll(
-                            RegExp(r'[^\d\+\*\#]'),
+                            _pasteSanitize,
                             '',
                           );
                           if (textToPaste.isNotEmpty) {
@@ -587,13 +665,13 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
-                fontSize: _numberController.text.length > 12 ? 26 : 36,
+                fontSize: len > 12 ? 26 : 36,
                 fontWeight: FontWeight.w400,
                 letterSpacing: hasDigits ? 1.5 : 0,
               ),
               cursorColor: Theme.of(context).colorScheme.primary,
               cursorWidth: 1.5,
-              cursorHeight: _numberController.text.length > 12 ? 22 : 30,
+              cursorHeight: len > 12 ? 22 : 30,
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
@@ -648,12 +726,14 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
                 return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: _DialKey(
-                      key: ValueKey('key_$key'),
-                      label: key,
-                      subLabel: _subLabels[key] ?? '',
-                      onTap: () => _onKey(key),
-                      onLongPress: () => _onLongKey(key),
+                    child: RepaintBoundary(
+                      child: _DialKey(
+                        key: ValueKey('key_$key'),
+                        label: key,
+                        subLabel: _subLabels[key] ?? '',
+                        onTap: () => _onKey(key),
+                        onLongPress: () => _onLongKey(key),
+                      ),
                     ),
                   ),
                 );
@@ -665,9 +745,7 @@ class _FloatingDialpadState extends State<_FloatingDialpad>
     );
   }
 
-  Widget _buildBottomRow() {
-    final hasDigits = _numberController.text.isNotEmpty;
-
+  Widget _buildBottomRow(bool hasDigits) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Row(
@@ -808,7 +886,7 @@ class _CallButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: enabled ? onTap : null,
+        onTap: onTap,
         borderRadius: BorderRadius.circular(40),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
@@ -816,7 +894,9 @@ class _CallButton extends StatelessWidget {
           height: 72,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40),
-            color: enabled ? const Color(0xFF30D158) : Theme.of(context).colorScheme.surfaceContainerHighest,
+            color: enabled
+                ? const Color(0xFF30D158)
+                : Theme.of(context).colorScheme.surfaceContainerHighest,
           ),
           alignment: Alignment.center,
           child: calling

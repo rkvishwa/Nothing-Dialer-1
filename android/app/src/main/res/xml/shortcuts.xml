@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <capability android:name="actions.intent.CREATE_CALL">
+        <intent
+            android:action="android.intent.action.CALL"
+            android:targetPackage="com.rkkvishva.nothing_dialer"
+            android:targetClass="com.rkkvishva.nothing_dialer.MainActivity">
+            <parameter
+                android:name="call.callee.name"
+                android:key="name" />
+            <parameter
+                android:name="call.phone"
+                android:key="number" />
+        </intent>
+    </capability>
+</shortcuts>
