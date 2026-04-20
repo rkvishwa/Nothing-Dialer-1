@@ -12,6 +12,7 @@ import android.os.Handler
 import android.os.Looper
 import android.telecom.Call
 import android.telecom.CallAudioState
+import android.telecom.DisconnectCause
 import android.telecom.InCallService
 import android.util.Log
 
@@ -92,6 +93,9 @@ class GlyphInCallService : InCallService() {
     private val callCallbacks = mutableMapOf<Call, Call.Callback>()
     private val activeCalls = mutableListOf<Call>()
 
+    private data class CallRingMeta(var everRang: Boolean, var everActive: Boolean)
+    private val callRingMeta = mutableMapOf<Call, CallRingMeta>()
+
     private fun setCurrentCall(call: Call?) {
         currentCall = call
         for (listener in currentCallListeners.toList()) {
@@ -112,6 +116,11 @@ class GlyphInCallService : InCallService() {
             activeCalls.add(call)
         }
         setCurrentCall(call)
+
+        callRingMeta[call] = CallRingMeta(
+            everRang = call.state == Call.STATE_RINGING,
+            everActive = call.state == Call.STATE_ACTIVE,
+        )
 
         val callback = buildCallback()
         callCallbacks[call] = callback
@@ -165,7 +174,7 @@ class GlyphInCallService : InCallService() {
         if (state == Call.STATE_RINGING) {
             val handle = call.details?.handle
             val number = handle?.schemeSpecificPart ?: "Unknown"
-            val contactName = getContactName(number)
+            val contactName = ContactLookup.getContactName(this, number)
             
             val title = contactName ?: number
             val text = if (contactName != null) "Incoming call from $number" else "Incoming call"
@@ -229,7 +238,7 @@ class GlyphInCallService : InCallService() {
 
             val handle = call.details?.handle
             val number = handle?.schemeSpecificPart ?: "Unknown"
-            val contactName = getContactName(number)
+            val contactName = ContactLookup.getContactName(this, number)
             val title = contactName ?: number
             val text = if (state == Call.STATE_DIALING || state == Call.STATE_CONNECTING) {
                 "Calling…"
@@ -313,28 +322,22 @@ class GlyphInCallService : InCallService() {
         }
     }
     
-    private fun getContactName(phoneNumber: String): String? {
-        val uri = android.net.Uri.withAppendedPath(
-            android.provider.ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
-            android.net.Uri.encode(phoneNumber)
-        )
-        val projection = arrayOf(android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME)
-        var name: String? = null
-        try {
-            contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val idx = cursor.getColumnIndex(android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME)
-                    if (idx != -1) name = cursor.getString(idx)
-                }
-            }
-        } catch (_: Exception) {}
-        return name
-    }
-
-
     override fun onCallRemoved(call: Call) {
         super.onCallRemoved(call)
         Log.d(TAG, "onCallRemoved")
+
+        val meta = callRingMeta.remove(call)
+        val number = call.details?.handle?.schemeSpecificPart?.trim().orEmpty()
+        if (meta != null && meta.everRang && !meta.everActive && number.isNotEmpty()) {
+            val cause = call.details?.disconnectCause?.code ?: DisconnectCause.UNKNOWN
+            if (cause != DisconnectCause.REJECTED) {
+                if (MissedCallDedupe.shouldShow(number)) {
+                    val cname = ContactLookup.getContactName(this, number)
+                    MissedCallNotifier.show(this, number, cname, 1)
+                    Log.d(TAG, "Posted missed call (fallback) for $number")
+                }
+            }
+        }
 
         callCallbacks.remove(call)?.let { call.unregisterCallback(it) }
         activeCalls.remove(call)
@@ -362,6 +365,10 @@ class GlyphInCallService : InCallService() {
     private fun buildCallback(): Call.Callback = object : Call.Callback() {
         override fun onStateChanged(call: Call, state: Int) {
             Log.d(TAG, "onStateChanged: state=$state")
+            callRingMeta[call]?.let { m ->
+                if (state == Call.STATE_RINGING) m.everRang = true
+                if (state == Call.STATE_ACTIVE) m.everActive = true
+            }
             handleCallState(state)
         }
     }

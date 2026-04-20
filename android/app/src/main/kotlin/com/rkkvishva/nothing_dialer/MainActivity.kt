@@ -30,8 +30,12 @@ class MainActivity : FlutterActivity() {
         const val REQUEST_CALL_PHONE = 1002
         const val REQUEST_PICK_RINGTONE = 1003
         const val REQUEST_VOICE_SEARCH = 1004
+        const val EXTRA_OPEN_TAB = "open_tab"
 
         var isAppInForeground = false
+
+        @Volatile
+        var pendingLaunchTab: String? = null
     }
 
     private var methodChannel: MethodChannel? = null
@@ -43,13 +47,20 @@ class MainActivity : FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        extractLaunchExtras(intent)
         handleDialpadIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        extractLaunchExtras(intent)
         handleDialpadIntent(intent)
+    }
+
+    private fun extractLaunchExtras(intent: Intent?) {
+        val tab = intent?.getStringExtra(EXTRA_OPEN_TAB)
+        if (!tab.isNullOrEmpty()) pendingLaunchTab = tab
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -162,6 +173,22 @@ class MainActivity : FlutterActivity() {
                     }
                     startActivity(intent)
                     result.success(null)
+                }
+                "clearMissedCalls" -> {
+                    MissedCallNotifier.cancel(this@MainActivity)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        try {
+                            (getSystemService(TELECOM_SERVICE) as TelecomManager)
+                                .cancelMissedCallsNotification()
+                        } catch (_: Exception) {
+                        }
+                    }
+                    result.success(null)
+                }
+                "consumePendingOpenTab" -> {
+                    val tab = pendingLaunchTab
+                    pendingLaunchTab = null
+                    result.success(tab)
                 }
                 "openSmsApp" -> {
                     val args = call.arguments as? Map<*, *>
@@ -515,25 +542,8 @@ class MainActivity : FlutterActivity() {
 
     // ── Contact Name Lookup ───────────────────────────────────────────────────
 
-    private fun getContactName(phoneNumber: String): String? {
-        val uri = android.net.Uri.withAppendedPath(
-            android.provider.ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
-            android.net.Uri.encode(phoneNumber)
-        )
-        val projection = arrayOf(android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME)
-        var name: String? = null
-        try {
-            contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val idx = cursor.getColumnIndex(
-                        android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME
-                    )
-                    if (idx != -1) name = cursor.getString(idx)
-                }
-            }
-        } catch (_: Exception) {}
-        return name
-    }
+    private fun getContactName(phoneNumber: String): String? =
+        ContactLookup.getContactName(this, phoneNumber)
 
     // ── Permission callbacks ──────────────────────────────────────────────────
 

@@ -119,6 +119,15 @@
             android:name=".CallActionReceiver"
             android:exported="false" />
 
+        <receiver
+            android:name=".MissedCallReceiver"
+            android:exported="true"
+            android:permission="android.permission.READ_PHONE_STATE">
+            <intent-filter>
+                <action android:name="android.telecom.action.SHOW_MISSED_CALLS_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
+
         <!-- Flutter embedding meta-data -->
         <meta-data
             android:name="flutterEmbedding"

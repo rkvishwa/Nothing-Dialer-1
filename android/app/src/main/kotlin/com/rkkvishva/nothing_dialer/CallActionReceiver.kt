@@ -3,6 +3,7 @@ package com.rkkvishva.nothing_dialer
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.telecom.Call
 import android.util.Log
 
@@ -14,12 +15,52 @@ class CallActionReceiver : BroadcastReceiver() {
         const val ACTION_HANGUP = "com.nothing.dialer.ACTION_HANGUP"
         const val ACTION_TOGGLE_MUTE = "com.nothing.dialer.ACTION_TOGGLE_MUTE"
         const val ACTION_CYCLE_AUDIO_ROUTE = "com.nothing.dialer.ACTION_CYCLE_AUDIO_ROUTE"
+        const val ACTION_MISSED_CALL_BACK = "com.nothing.dialer.ACTION_MISSED_CALL_BACK"
+        const val ACTION_MISSED_MESSAGE = "com.nothing.dialer.ACTION_MISSED_MESSAGE"
+        const val EXTRA_PHONE_NUMBER = "extra_phone_number"
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val action = intent?.action
         Log.d(TAG, "onReceive: action=$action")
+        val ctx = context ?: return
 
+        when (action) {
+            ACTION_MISSED_CALL_BACK -> {
+                val number = intent.getStringExtra(EXTRA_PHONE_NUMBER) ?: return
+                MissedCallNotifier.cancel(ctx)
+                OutgoingCallHelper.placeCallWithDefaultSim(ctx, number)
+            }
+            ACTION_MISSED_MESSAGE -> {
+                val number = intent.getStringExtra(EXTRA_PHONE_NUMBER) ?: return
+                MissedCallNotifier.cancel(ctx)
+                openSms(ctx, number)
+            }
+            else -> handleInCallAction(ctx, action)
+        }
+    }
+
+    private fun openSms(context: Context, number: String) {
+        val viewIntent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("sms:$number")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        try {
+            context.startActivity(viewIntent)
+        } catch (_: Exception) {
+            try {
+                val fallback = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("smsto:$number")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(fallback)
+            } catch (e: Exception) {
+                Log.e(TAG, "openSms failed: ${e.message}")
+            }
+        }
+    }
+
+    private fun handleInCallAction(context: Context, action: String?) {
         val currentCall = GlyphInCallService.currentCall
         if (currentCall == null) {
             Log.w(TAG, "No active call to handle action: $action")
@@ -31,16 +72,13 @@ class CallActionReceiver : BroadcastReceiver() {
                 if (currentCall.state != Call.STATE_RINGING) return
                 Log.d(TAG, "Answering call via notification action")
                 currentCall.answer(android.telecom.VideoProfile.STATE_AUDIO_ONLY)
-                
-                // Launch InCallActivity to show the full screen UI
-                if (context != null) {
-                    val inCallIntent = Intent(context, InCallActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or 
-                                Intent.FLAG_ACTIVITY_SINGLE_TOP or 
-                                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    }
-                    context.startActivity(inCallIntent)
+
+                val inCallIntent = Intent(context, InCallActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                        Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 }
+                context.startActivity(inCallIntent)
             }
             ACTION_DECLINE -> {
                 if (currentCall.state != Call.STATE_RINGING) return
@@ -69,6 +107,7 @@ class CallActionReceiver : BroadcastReceiver() {
             ACTION_CYCLE_AUDIO_ROUTE -> {
                 GlyphInCallService.instance?.cycleAudioRoute()
             }
+            else -> Log.d(TAG, "Unhandled in-call action: $action")
         }
     }
 }

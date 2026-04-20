@@ -65,6 +65,29 @@ class _DialerShellState extends State<DialerShell>
     );
     main_app.openDialpadRequestNotifier.addListener(_onOpenDialpadRequest);
     _onOpenDialpadRequest();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _consumePendingLaunchTab();
+      _maybeClearMissedNotifications(_currentIndex);
+    });
+  }
+
+  void _maybeClearMissedNotifications(int index) {
+    if (index != 0) return;
+    _controlChannel.invokeMethod<void>('clearMissedCalls').catchError((_) {});
+  }
+
+  Future<void> _consumePendingLaunchTab() async {
+    try {
+      final tab = await _controlChannel.invokeMethod<String?>(
+        'consumePendingOpenTab',
+      );
+      if (!mounted) return;
+      if (tab == 'recents' && _currentIndex != 0) {
+        setState(() => _currentIndex = 0);
+        _pageController.jumpToPage(0);
+        _maybeClearMissedNotifications(0);
+      }
+    } catch (_) {}
   }
 
   @override
@@ -114,6 +137,7 @@ class _DialerShellState extends State<DialerShell>
     if (index == _currentIndex) return;
     setState(() => _currentIndex = index);
     _pageController.jumpToPage(index);
+    _maybeClearMissedNotifications(index);
   }
 
   Future<void> _toggleFavouritesStrip() async {
@@ -355,6 +379,7 @@ class _DialerShellState extends State<DialerShell>
                 controller: _pageController,
                 onPageChanged: (index) {
                   setState(() => _currentIndex = index);
+                  _maybeClearMissedNotifications(index);
                 },
                 children: const [RecentsScreen(), ContactsScreen()],
               ),
