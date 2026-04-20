@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'blocked_numbers_screen.dart';
 import 'favourites_screen.dart';
+import 'sim_picker_sheet.dart';
 import '../main.dart' as main_app;
 int _readFrequentContactsMaxFromPrefs(SharedPreferences prefs) {
   final stored = prefs.getInt('frequent_contacts_max');
@@ -38,6 +39,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   String _frequentContactsPeriod = 'year';
   int _frequentContactsMax = 5;
+
+  String _defaultSimMode = kDefaultSimModeAsk;
+  int? _defaultSimIndex;
 
   @override
   void initState() {
@@ -78,7 +82,127 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _frequentContactsPeriod =
           prefs.getString('frequent_contacts_period') ?? 'year';
       _frequentContactsMax = _readFrequentContactsMaxFromPrefs(prefs);
+
+      _defaultSimMode = prefs.getString(kDefaultSimModeKey) ?? kDefaultSimModeAsk;
+      _defaultSimIndex = prefs.getInt(kDefaultSimIndexKey);
     });
+  }
+
+  String _defaultSimSubtitle() {
+    if (_defaultSimMode == kDefaultSimModeAsk) {
+      return 'Ask every time';
+    }
+    final idx = _defaultSimIndex;
+    if (idx == null) return 'Ask every time';
+    return 'SIM ${idx + 1}';
+  }
+
+  Future<void> _saveDefaultSim({required String mode, int? index}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(kDefaultSimModeKey, mode);
+    if (mode == kDefaultSimModeFixed && index != null) {
+      await prefs.setInt(kDefaultSimIndexKey, index);
+    } else {
+      await prefs.remove(kDefaultSimIndexKey);
+    }
+    setState(() {
+      _defaultSimMode = mode;
+      _defaultSimIndex = mode == kDefaultSimModeFixed ? index : null;
+    });
+  }
+
+  Future<void> _showDefaultSimPicker() async {
+    try {
+      final raw = await const MethodChannel(
+        'nothing_dialer/control',
+      ).invokeMethod<List<dynamic>>('getSimCards');
+      if (!mounted) return;
+      if (raw == null || raw.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No SIM cards found')),
+        );
+        return;
+      }
+      final sims = raw.cast<Map<dynamic, dynamic>>();
+      await showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (sheetContext) => Container(
+          decoration: BoxDecoration(
+            color: Theme.of(sheetContext).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: Container(
+                      width: 32,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          sheetContext,
+                        ).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                  child: Text(
+                    'Default SIM for calls',
+                    style: TextStyle(
+                      color: Theme.of(sheetContext).colorScheme.onSurface,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                  title: const Text('Ask every time'),
+                  subtitle: const Text('Show SIM picker before each call'),
+                  onTap: () async {
+                    await _saveDefaultSim(mode: kDefaultSimModeAsk);
+                    if (sheetContext.mounted) Navigator.pop(sheetContext);
+                  },
+                ),
+                ...sims.asMap().entries.map((e) {
+                  final idx = e.key;
+                  final sim = e.value;
+                  final label = sim['label'] as String? ?? 'SIM ${idx + 1}';
+                  final slot = (sim['slot'] as int?) ?? (idx + 1);
+                  return ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                    title: Text(label),
+                    subtitle: Text('SIM $slot'),
+                    onTap: () async {
+                      await _saveDefaultSim(
+                        mode: kDefaultSimModeFixed,
+                        index: idx,
+                      );
+                      if (sheetContext.mounted) Navigator.pop(sheetContext);
+                    },
+                  );
+                }),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
+        ),
+      );
+    } on PlatformException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not load SIMs: ${e.message}')),
+        );
+      }
+    }
   }
 
   Future<void> _saveFrequentContactsPeriod(String value) async {
@@ -424,6 +548,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ? 'Slide to answer'
                 : 'Button tap to answer',
             onTap: () => _showAnswerMethodPicker(),
+          ),
+          _SectionHeader(title: 'Calling'),
+          _SettingsTile(
+            icon: Icons.sim_card_rounded,
+            title: 'Default SIM',
+            subtitle: _defaultSimSubtitle(),
+            onTap: _showDefaultSimPicker,
           ),
           _SettingsTile(
             icon: Icons.star_rate_rounded,

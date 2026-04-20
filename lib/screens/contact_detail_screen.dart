@@ -22,6 +22,9 @@ class ContactDetailScreen extends StatefulWidget {
 class _ContactDetailScreenState extends State<ContactDetailScreen> {
   late Contact _contact;
   bool _loading = false;
+  /// Per-contact SIM: `system` (use global default / picker rules), `ask`, or `fixed`.
+  String _callingSimMode = 'system';
+  /// 0-based index when [_callingSimMode] is `fixed`.
   int? _preferredSim;
   String? _customRingtoneName;
 
@@ -50,7 +53,29 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
-    final simIdx = prefs.getInt('pref_sim_${_contact.id}');
+    var mode = prefs.getString('pref_sim_mode_${_contact.id}');
+    var simIdx = prefs.getInt('pref_sim_${_contact.id}');
+
+    // Migrate legacy storage (SIM index only, no mode key).
+    if (mode == null) {
+      if (simIdx != null && simIdx >= 0) {
+        mode = 'fixed';
+        await prefs.setString('pref_sim_mode_${_contact.id}', 'fixed');
+      } else if (simIdx == -1) {
+        mode = 'ask';
+        await prefs.remove('pref_sim_${_contact.id}');
+        await prefs.setString('pref_sim_mode_${_contact.id}', 'ask');
+        simIdx = null;
+      } else {
+        mode = 'system';
+      }
+    }
+
+    if ((mode == 'system' || mode == 'ask') && simIdx != null) {
+      await prefs.remove('pref_sim_${_contact.id}');
+      simIdx = null;
+    }
+
     final rUri = prefs.getString('pref_ringtone_${_contact.id}');
 
     String? rTitle;
@@ -62,7 +87,8 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
     if (mounted) {
       setState(() {
-        _preferredSim = simIdx;
+        _callingSimMode = mode ?? 'system';
+        _preferredSim = _callingSimMode == 'fixed' ? simIdx : null;
         _customRingtoneName = rTitle;
       });
     }
@@ -82,9 +108,21 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   Future<void> _call(String number) async {
     HapticFeedback.mediumImpact();
 
-    int? simIndex = _preferredSim;
-    if (simIndex == null || simIndex == -1) {
-      simIndex = await showSimPicker(context);
+    int? simIndex;
+    switch (_callingSimMode) {
+      case 'fixed':
+        simIndex = _preferredSim;
+        if (simIndex == null) {
+          simIndex = await showSimPicker(context, rememberChoice: false);
+        }
+        break;
+      case 'ask':
+        simIndex = await showSimPicker(context, rememberChoice: false);
+        break;
+      case 'system':
+      default:
+        simIndex = await showSimPicker(context);
+        break;
     }
 
     if (simIndex == null || !mounted) return;
@@ -126,13 +164,143 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   }
 
   Future<void> _setCallingSim() async {
-    final simIndex = await showSimPicker(context);
-    if (simIndex != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('pref_sim_${_contact.id}', simIndex);
-      setState(() {
-        _preferredSim = simIndex;
-      });
+    try {
+      final raw = await _channel.invokeMethod<List<dynamic>>('getSimCards');
+      if (!mounted) return;
+      if (raw == null || raw.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No SIM cards found')),
+        );
+        return;
+      }
+      final sims = raw.cast<Map<dynamic, dynamic>>();
+
+      await showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (sheetContext) => Container(
+          decoration: BoxDecoration(
+            color: Theme.of(sheetContext).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: Container(
+                      width: 32,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          sheetContext,
+                        ).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                  child: Text(
+                    'Calling SIM for this contact',
+                    style: TextStyle(
+                      color: Theme.of(sheetContext).colorScheme.onSurface,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                  leading: Icon(
+                    Icons.settings_rounded,
+                    color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+                  ),
+                  title: const Text('Same as system'),
+                  subtitle: const Text('Follows Default SIM in Settings'),
+                  onTap: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.remove('pref_sim_${_contact.id}');
+                    await prefs.setString(
+                      'pref_sim_mode_${_contact.id}',
+                      'system',
+                    );
+                    if (mounted) {
+                      setState(() {
+                        _callingSimMode = 'system';
+                        _preferredSim = null;
+                      });
+                    }
+                    if (sheetContext.mounted) Navigator.pop(sheetContext);
+                  },
+                ),
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                  leading: Icon(
+                    Icons.help_outline_rounded,
+                    color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+                  ),
+                  title: const Text('Ask every time'),
+                  subtitle: const Text('Always show SIM picker for this contact'),
+                  onTap: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.remove('pref_sim_${_contact.id}');
+                    await prefs.setString('pref_sim_mode_${_contact.id}', 'ask');
+                    if (mounted) {
+                      setState(() {
+                        _callingSimMode = 'ask';
+                        _preferredSim = null;
+                      });
+                    }
+                    if (sheetContext.mounted) Navigator.pop(sheetContext);
+                  },
+                ),
+                ...sims.asMap().entries.map((e) {
+                  final idx = e.key;
+                  final sim = e.value;
+                  final label = sim['label'] as String? ?? 'SIM ${idx + 1}';
+                  final slot = (sim['slot'] as int?) ?? (idx + 1);
+                  return ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                    leading: Icon(
+                      Icons.sim_card_outlined,
+                      color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+                    ),
+                    title: Text(label),
+                    subtitle: Text('SIM $slot'),
+                    onTap: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setString(
+                        'pref_sim_mode_${_contact.id}',
+                        'fixed',
+                      );
+                      await prefs.setInt('pref_sim_${_contact.id}', idx);
+                      if (mounted) {
+                        setState(() {
+                          _callingSimMode = 'fixed';
+                          _preferredSim = idx;
+                        });
+                      }
+                      if (sheetContext.mounted) Navigator.pop(sheetContext);
+                    },
+                  );
+                }),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
+        ),
+      );
+    } on PlatformException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not load SIMs: ${e.message}')),
+        );
+      }
     }
   }
 
@@ -549,10 +717,12 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   }
 
   Widget _buildSettingsSection() {
-    String simText = 'Not set';
-    if (_preferredSim != null && _preferredSim != -1) {
-      simText = 'SIM ${_preferredSim! + 1}';
-    }
+    final String simText = switch (_callingSimMode) {
+      'ask' => 'Ask every time',
+      'fixed' when _preferredSim != null => 'SIM ${_preferredSim! + 1}',
+      'fixed' => 'Not set',
+      _ => 'Same as system',
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

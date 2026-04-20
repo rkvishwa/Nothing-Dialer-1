@@ -1,49 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-/// Shows a beautiful SIM selection bottom sheet.
+/// SharedPreferences keys for global default outgoing SIM (also used from Settings).
+const String kDefaultSimModeKey = 'default_sim_mode';
+const String kDefaultSimIndexKey = 'default_sim_index';
+const String kDefaultSimModeAsk = 'ask';
+const String kDefaultSimModeFixed = 'fixed';
+
+/// Shows a SIM selection bottom sheet.
 ///
 /// Returns the selected SIM index (0-based), or `null` if cancelled.
-/// If there's only one SIM, it auto-selects it and returns 0.
+/// If there's only one SIM, returns 0 without showing the sheet.
+///
+/// When [rememberChoice] is true (default), a "Don't ask again" checkbox is shown;
+/// if checked when the user picks a SIM, the choice is saved as the global default.
 Future<int?> showSimPicker(
   BuildContext context, {
-  bool allowAlwaysAsk = false,
+  bool rememberChoice = true,
 }) async {
   const channel = MethodChannel('nothing_dialer/control');
 
-  // Fetch available SIMs from native side
+  final prefs = await SharedPreferences.getInstance();
+
   final List<dynamic>? raw = await channel.invokeMethod<List<dynamic>>(
     'getSimCards',
   );
 
   if (raw == null || raw.isEmpty) {
-    // No SIMs — fall back to default (index 0)
     return 0;
   }
 
   final sims = raw.cast<Map<dynamic, dynamic>>();
 
-  // Single SIM and NO "Always ask" required → auto-select
-  if (sims.length == 1 && !allowAlwaysAsk) return 0;
+  final mode = prefs.getString(kDefaultSimModeKey) ?? kDefaultSimModeAsk;
+  final savedIdx = prefs.getInt(kDefaultSimIndexKey);
+  if (mode == kDefaultSimModeFixed &&
+      savedIdx != null &&
+      savedIdx >= 0 &&
+      savedIdx < sims.length) {
+    return savedIdx;
+  }
 
-  // Multiple SIMs or "Always ask" required → show picker
+  if (sims.length == 1) {
+    return 0;
+  }
+
   if (!context.mounted) return null;
 
   return showModalBottomSheet<int>(
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
-    builder: (_) => _SimPickerSheet(sims: sims, allowAlwaysAsk: allowAlwaysAsk),
+    builder: (_) => _SimPickerSheet(sims: sims, rememberChoice: rememberChoice),
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _SimPickerSheet extends StatelessWidget {
+class _SimPickerSheet extends StatefulWidget {
   final List<Map<dynamic, dynamic>> sims;
-  final bool allowAlwaysAsk;
+  final bool rememberChoice;
 
-  const _SimPickerSheet({required this.sims, this.allowAlwaysAsk = false});
+  const _SimPickerSheet({required this.sims, required this.rememberChoice});
+
+  @override
+  State<_SimPickerSheet> createState() => _SimPickerSheetState();
+}
+
+class _SimPickerSheetState extends State<_SimPickerSheet> {
+  bool _dontAskAgain = false;
+
+  Future<void> _onSelectSim(int idx) async {
+    if (widget.rememberChoice && _dontAskAgain) {
+      final p = await SharedPreferences.getInstance();
+      await p.setString(kDefaultSimModeKey, kDefaultSimModeFixed);
+      await p.setInt(kDefaultSimIndexKey, idx);
+    }
+    if (mounted) Navigator.pop(context, idx);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +92,6 @@ class _SimPickerSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Handle
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 8),
@@ -72,7 +106,6 @@ class _SimPickerSheet extends StatelessWidget {
               ),
             ),
 
-            // Title
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Text(
@@ -85,12 +118,11 @@ class _SimPickerSheet extends StatelessWidget {
               ),
             ),
 
-            // SIM options
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Column(
                 children: [
-                  ...sims.asMap().entries.map((entry) {
+                  ...widget.sims.asMap().entries.map((entry) {
                     final idx = entry.key;
                     final sim = entry.value;
                     final label = sim['label'] as String? ?? 'SIM ${idx + 1}';
@@ -99,20 +131,39 @@ class _SimPickerSheet extends StatelessWidget {
                     return _SimOption(
                       simSlot: slot,
                       label: label,
-                      onTap: () => Navigator.pop(context, idx),
+                      onTap: () => _onSelectSim(idx),
                     );
                   }),
-                  if (allowAlwaysAsk)
-                    _SimOption(
-                      simSlot: 0,
-                      label: 'Always ask',
-                      icon: Icons.question_mark,
-                      onTap: () => Navigator.pop(context, -1),
-                    ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+
+            if (widget.rememberChoice)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                child: CheckboxListTile(
+                  value: _dontAskAgain,
+                  onChanged: (v) =>
+                      setState(() => _dontAskAgain = v ?? false),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: Text(
+                    "Don't ask again",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 15,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'Use this SIM as default (change in Settings)',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+
+            const SizedBox(height: 8),
           ],
         ),
       ),
@@ -125,28 +176,23 @@ class _SimPickerSheet extends StatelessWidget {
 class _SimOption extends StatelessWidget {
   final int simSlot;
   final String label;
-  final IconData? icon;
   final VoidCallback onTap;
 
   const _SimOption({
     required this.simSlot,
     required this.label,
-    this.icon,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    // M3 accent colors for SIMs
     final colors = [
-      Theme.of(context).colorScheme.primary, // Primary Purple
-      const Color(0xFF81C784), // Light Green
-      Color(0xFF4FC3F7), // Light Blue
+      Theme.of(context).colorScheme.primary,
+      const Color(0xFF81C784),
+      const Color(0xFF4FC3F7),
     ];
-    // simSlot 0 (Always ask) gets a special color
-    final color = simSlot == 0
-        ? Theme.of(context).colorScheme.onSurfaceVariant
-        : colors[(simSlot - 1) % colors.length];
+    final colorIdx = simSlot >= 1 ? (simSlot - 1) % colors.length : 0;
+    final color = colors[colorIdx];
 
     return Material(
       color: Colors.transparent,
@@ -156,23 +202,18 @@ class _SimOption extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Row(
             children: [
-              // SIM icon
               Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(color: color, shape: BoxShape.circle),
                 alignment: Alignment.center,
                 child: Icon(
-                  icon ?? Icons.sim_card,
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary, // Dark icon color
+                  Icons.sim_card,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   size: 20,
                 ),
               ),
               const SizedBox(width: 16),
-
-              // Label + slot
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,17 +226,15 @@ class _SimOption extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if (simSlot > 0) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        'SIM $simSlot',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'SIM $simSlot',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
                       ),
-                    ],
+                    ),
                   ],
                 ),
               ),

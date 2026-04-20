@@ -173,7 +173,9 @@ class GlyphInCallService : InCallService() {
             builder.setContentTitle(title)
                    .setContentText(text)
                    .setContentIntent(pendingIntent)
-                   
+            // Full-screen incoming UI when keyguard is active (not shown as full-screen when unlocked)
+            builder.setFullScreenIntent(pendingIntent, true)
+
             // Add Answer action
             val answerIntent = Intent(this, CallActionReceiver::class.java).apply {
                 action = CallActionReceiver.ACTION_ANSWER

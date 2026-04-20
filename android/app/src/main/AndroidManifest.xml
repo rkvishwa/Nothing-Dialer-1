@@ -22,6 +22,8 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <!-- Show ongoing call notification on Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Incoming call: full-screen UI over keyguard (OS typically fires when locked) -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
 
     <application
