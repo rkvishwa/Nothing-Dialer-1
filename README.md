@@ -38,7 +38,7 @@ Nothing Dialer is a next-generation dialer app built exclusively for Nothing Pho
 
 ## Closed testing
 
-To join closed testing, request access to the **[Nothing Dialer 1 - Testers](https://groups.google.com/u/2/g/nothing-dialer-1---testers)** group on Google Groups. If you cannot see conversations yet, contact the group owners for approval.
+To join closed testing, request access to the **[Nothing Dialer 1 - Testers](https://groups.google.com/u/2/g/nothing-dialer-1---testers)** group on Google Groups. If you cannot see conversations yet, contact the group owners for approval or using the email support@knurdz.org
 
 ---
 
