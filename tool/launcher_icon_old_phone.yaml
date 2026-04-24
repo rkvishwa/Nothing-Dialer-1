@@ -1,0 +1,6 @@
+flutter_launcher_icons:
+  android: "launcher_icon_old_phone"
+  ios: false
+  image_path: "assets/launcher/app_icon_old_phone.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/launcher/app_icon_old_phone.png"

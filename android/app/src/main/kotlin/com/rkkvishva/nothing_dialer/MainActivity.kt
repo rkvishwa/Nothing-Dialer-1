@@ -42,8 +42,10 @@ class MainActivity : FlutterActivity() {
     private var pendingCallNumber: String? = null
     private var pendingSimIndex: Int? = null
     private var pendingDialpadNumber: String? = null
+    private var isDartReadyForDialpad = false
     private var ringtoneResult: MethodChannel.Result? = null
     private var voiceSearchResult: MethodChannel.Result? = null
+    private var torchMethodChannel: MethodChannel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,8 +77,40 @@ class MainActivity : FlutterActivity() {
         )
         flushPendingDialpadRequest()
 
+        torchMethodChannel = MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            "nothing_dialer/torch",
+        )
+        torchMethodChannel!!.setMethodCallHandler { call, result ->
+            when (call.method) {
+                "torchStartInterval" -> {
+                    val args = call.arguments as? Map<*, *>
+                    val ms = (args?.get("intervalMs") as? Number)?.toInt() ?: 500
+                    TorchController.startInterval(this, ms)
+                    result.success(null)
+                }
+                "torchStop" -> {
+                    TorchController.stop(this)
+                    result.success(null)
+                }
+                "torchHasFlash" -> {
+                    result.success(
+                        packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+                    )
+                }
+                else -> result.notImplemented()
+            }
+        }
+
         methodChannel!!.setMethodCallHandler { call, result ->
             when (call.method) {
+                "isNothingDevice" -> {
+                    val m = Build.MANUFACTURER.orEmpty()
+                    val b = Build.BRAND.orEmpty()
+                    val nothing = m.equals("nothing", ignoreCase = true) ||
+                        b.equals("nothing", ignoreCase = true)
+                    result.success(nothing)
+                }
                 "isDefaultDialer" -> {
                     val tm = getSystemService(TELECOM_SERVICE) as TelecomManager
                     result.success(tm.defaultDialerPackage == packageName)
@@ -189,6 +223,36 @@ class MainActivity : FlutterActivity() {
                     val tab = pendingLaunchTab
                     pendingLaunchTab = null
                     result.success(tab)
+                }
+                "consumePendingDialpadRequest" -> {
+                    isDartReadyForDialpad = true
+                    val number = pendingDialpadNumber
+                    pendingDialpadNumber = null
+                    result.success(number)
+                }
+
+                "getLauncherIcon" -> {
+                    try {
+                        result.success(LauncherIconManager.getCurrentVariant(this@MainActivity))
+                    } catch (e: Exception) {
+                        result.error("LAUNCHER_ICON", e.message, null)
+                    }
+                }
+                "setLauncherIcon" -> {
+                    val args = call.arguments as? Map<*, *>
+                    val id = args?.get("id") as? String
+                    if (id.isNullOrEmpty()) {
+                        result.error("INVALID_ARGS", "Missing id", null)
+                    } else {
+                        try {
+                            val applied = LauncherIconManager.setVariant(this@MainActivity, id)
+                            result.success(applied)
+                        } catch (e: IllegalArgumentException) {
+                            result.error("INVALID_VARIANT", e.message, null)
+                        } catch (e: Exception) {
+                            result.error("LAUNCHER_ICON", e.message, null)
+                        }
+                    }
                 }
                 "openSmsApp" -> {
                     val args = call.arguments as? Map<*, *>
@@ -679,7 +743,7 @@ class MainActivity : FlutterActivity() {
 
     private fun flushPendingDialpadRequest() {
         val channel = methodChannel ?: return
-        if (pendingDialpadNumber == null) return
+        if (!isDartReadyForDialpad || pendingDialpadNumber == null) return
         val numberToOpen = pendingDialpadNumber
         pendingDialpadNumber = null
         channel.invokeMethod("openDialpad", numberToOpen)

@@ -299,19 +299,10 @@ class _BlockedItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Row(
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest,
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: Icon(
-                  Icons.block_rounded,
-                  color: theme.colorScheme.onSurfaceVariant,
-                  size: 20,
-                ),
+              Icon(
+                Icons.block_rounded,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                size: 24,
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -347,7 +338,7 @@ class _BlockedItem extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     Icons.close_rounded,
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     size: 22,
                   ),
                   onPressed: onUnblock,
@@ -415,7 +406,9 @@ class _EmptyState extends StatelessWidget {
           Icon(
             Icons.block_rounded,
             size: 48,
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 16),
           Text(

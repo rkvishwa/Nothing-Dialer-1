@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.rkkvishva.nothing_dialer">
 
     <!-- ─── Permissions ─── -->
     <!-- Required to use InCallService as Default Dialer -->
@@ -24,13 +25,16 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Incoming call: full-screen UI over keyguard (OS typically fires when locked) -->
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
 
     <application
         android:label="Nothing Dialer"
-        android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon"
-        android:roundIcon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon_default"
+        android:roundIcon="@mipmap/launcher_icon_default"
+        android:name="${applicationName}">
 
         <!-- ─── Nothing Glyph API Key (use "test" for local debug) ─── -->
         <meta-data
@@ -41,6 +45,8 @@
         <activity
             android:name="com.rkkvishva.nothing_dialer.MainActivity"
             android:exported="true"
+            android:icon="@mipmap/launcher_icon_default"
+            android:roundIcon="@mipmap/launcher_icon_default"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -50,11 +56,11 @@
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
 
-            <!-- App launcher -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- MAIN/LAUNCHER: added in src/debug and src/profile only. Release uses activity-alias
+                 only so icon switching does not leave a second launcher entry on MainActivity. -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
 
             <!-- Required for Default Dialer role -->
             <intent-filter>
@@ -79,11 +85,121 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="tel" />
             </intent-filter>
+        </activity>
 
+        <!-- Launcher icons: exactly one alias enabled at a time (see LauncherIconManager). -->
+        <activity-alias
+            android:name=".LauncherAliasDefault"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="true"
+            android:icon="@mipmap/launcher_icon_default"
+            android:roundIcon="@mipmap/launcher_icon_default"
+            android:label="Nothing Dialer">
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
-        </activity>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".LauncherAliasLight"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@mipmap/launcher_icon_light"
+            android:roundIcon="@mipmap/launcher_icon_light"
+            android:label="Nothing Dialer">
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".LauncherAliasRed"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@mipmap/launcher_icon_red"
+            android:roundIcon="@mipmap/launcher_icon_red"
+            android:label="Nothing Dialer">
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".LauncherAliasGrey"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@mipmap/launcher_icon_grey"
+            android:roundIcon="@mipmap/launcher_icon_grey"
+            android:label="Nothing Dialer">
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".LauncherAliasCream"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@mipmap/launcher_icon_cream"
+            android:roundIcon="@mipmap/launcher_icon_cream"
+            android:label="Nothing Dialer">
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".LauncherAliasOldPhone"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@mipmap/launcher_icon_old_phone"
+            android:roundIcon="@mipmap/launcher_icon_old_phone"
+            android:label="Nothing Dialer">
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".LauncherAliasOldPhoneLight"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@mipmap/launcher_icon_old_phone_light"
+            android:roundIcon="@mipmap/launcher_icon_old_phone_light"
+            android:label="Nothing Dialer">
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
         <!-- ─── In-Call Screen (native Kotlin) ─── -->
         <!-- Required because IN_CALL_SERVICE_UI=true means WE provide the call UI. -->

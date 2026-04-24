@@ -859,29 +859,43 @@ class _Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final outlineColor = Theme.of(context).colorScheme.outlineVariant;
+    final circleShape = CircleBorder(
+      side: BorderSide(color: outlineColor, width: 1.5),
+    );
     if (contact.photo != null) {
-      return CircleAvatar(
-        radius: size / 2,
-        backgroundImage: MemoryImage(contact.photo!),
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+      return Material(
+        color: Colors.transparent,
+        shape: circleShape,
+        clipBehavior: Clip.antiAlias,
+        child: SizedBox(
+          width: size,
+          height: size,
+          child: CircleAvatar(
+            radius: size / 2,
+            backgroundImage: MemoryImage(contact.photo!),
+            backgroundColor: Colors.transparent,
+          ),
+        ),
       );
     }
     final initials = _initials(contact.displayName);
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
-        shape: BoxShape.circle,
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        initials,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
-          fontSize: size * 0.35,
-          fontWeight: FontWeight.w300,
+    return Material(
+      color: Colors.transparent,
+      shape: circleShape,
+      clipBehavior: Clip.antiAlias,
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: Center(
+          child: Text(
+            initials,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: size * 0.35,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
         ),
       ),
     );

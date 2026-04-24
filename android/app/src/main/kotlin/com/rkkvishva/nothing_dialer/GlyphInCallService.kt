@@ -14,6 +14,7 @@ import android.telecom.Call
 import android.telecom.CallAudioState
 import android.telecom.DisconnectCause
 import android.telecom.InCallService
+import android.telecom.TelecomManager
 import android.util.Log
 
 import io.flutter.embedding.engine.FlutterEngine
@@ -104,6 +105,10 @@ class GlyphInCallService : InCallService() {
             } catch (_: Exception) {
             }
         }
+        // Cleared without a follow-up handleCallState (e.g. last call removed).
+        if (call == null) {
+            pushCallStateToFlutter()
+        }
     }
 
     // ─── InCallService lifecycle ─────────────────────────────────────────────
@@ -129,13 +134,9 @@ class GlyphInCallService : InCallService() {
         // Handle the initial state immediately.
         handleCallState(call.state)
 
-        // Incoming (RINGING): notification only — user opens full UI via tap or Answer.
-        // Outgoing / other states: show in-call screen immediately.
-        if (call.state != Call.STATE_RINGING) {
-            launchInCallActivity()
-        } else {
-            Log.d(TAG, "Incoming call: showing call notification only (no automatic full-screen UI).")
-        }
+        // Launch the in-call screen for ALL states including RINGING.
+        // On locked devices, InCallActivity handles showWhenLocked/turnScreenOn/keyguard dismissal.
+        launchInCallActivity()
 
 
         // Start Foreground Notification so user can answer/decline or return to call
@@ -345,9 +346,7 @@ class GlyphInCallService : InCallService() {
             val nextCall = activeCalls.last()
             setCurrentCall(nextCall)
             handleCallState(nextCall.state)
-            if (nextCall.state != Call.STATE_RINGING) {
-                launchInCallActivity()
-            }
+            launchInCallActivity()
         } else {
             setCurrentCall(null)
             sendGlyphCommand("lightsOff")
@@ -428,6 +427,7 @@ class GlyphInCallService : InCallService() {
                 sendGlyphCommand("lightsOff")
             }
         }
+        pushCallStateToFlutter()
     }
 
     // ─── Launch the in-call UI ───────────────────────────────────────────────
@@ -463,6 +463,47 @@ class GlyphInCallService : InCallService() {
                 channel.invokeMethod(command, null)
             } catch (e: Exception) {
                 Log.e(TAG, "sendGlyphCommand error: ${e.message}")
+            }
+        }
+    }
+
+    private fun getSimLabelForCall(call: Call): String? {
+        val accountHandle = call.details?.accountHandle ?: return null
+        val tm = getSystemService(TELECOM_SERVICE) as TelecomManager
+        return try {
+            tm.getPhoneAccount(accountHandle)?.label?.toString()
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    /** Pushes the same payload as MainActivity "getCallState" so the Flutter UI can update without polling. */
+    private fun pushCallStateToFlutter() {
+        val engine: FlutterEngine? = FlutterEngineCache.getInstance().get(ENGINE_ID)
+        if (engine == null) {
+            return
+        }
+        val call = currentCall
+        val payload: Map<String, Any?>? = if (call != null) {
+            val handle = call.details?.handle
+            val number = handle?.schemeSpecificPart ?: "Unknown"
+            val contactName = ContactLookup.getContactName(this, number)
+            mapOf(
+                "state" to call.state,
+                "number" to number,
+                "contactName" to contactName,
+                "simLabel" to getSimLabelForCall(call),
+            )
+        } else {
+            null
+        }
+        val messenger = engine.dartExecutor.binaryMessenger
+        val channel = MethodChannel(messenger, MainActivity.CHANNEL)
+        Handler(Looper.getMainLooper()).post {
+            try {
+                channel.invokeMethod("onCallStateChanged", payload)
+            } catch (e: Exception) {
+                Log.e(TAG, "pushCallStateToFlutter: ${e.message}")
             }
         }
     }

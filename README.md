@@ -97,3 +97,5 @@ flutter build apk   # or appbundle for Play-style release
 ```
 
 Configure Android release signing in your local Gradle/properties setup before shipping a signed build.
+
+**Launcher icons:** Put final art in `assets/launcher/` (`app_icon_light.png`, `app_icon_red.png`, `app_icon_grey.png`, `app_icon_cream.png`), then from the project root run `bash scripts/regenerate_icons.sh`. That runs `flutter_launcher_icons` per variant using configs in `tool/launcher_icon_*.yaml` (those names avoid the package’s `flutter_launcher_icons-*.yaml` “flavors” mode, which would ignore `-f` and overwrite icons). Default icon still comes from `pubspec.yaml` + `assets/app_icon.png`.

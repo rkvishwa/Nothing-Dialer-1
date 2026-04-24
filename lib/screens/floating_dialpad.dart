@@ -59,7 +59,7 @@ String _nameToT9(String name) {
 /// • Animated entrance / exit (slides up from bottom)
 /// • Haptic feedback on every key press
 /// • Call button pulses when number is ready
-/// • Semi-transparent frosted dark surface
+/// • Sheet surface matches the theme background color
 void showFloatingDialpad(
   BuildContext context, {
   String initialDigits = '',
@@ -397,16 +397,6 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
     final contact = match.contact;
     final matchedNumber = match.matchedNumber;
 
-    // Google Phone app inspired colors
-    final colors = [
-      const Color(0xFFC24A00),
-      const Color(0xFF007B83),
-      const Color(0xFF4C5D9F),
-      const Color(0xFF8A3B8B),
-      const Color(0xFF0F7D4E),
-    ];
-    final colorPref = colors[contact.displayName.length % colors.length];
-
     return InkWell(
       onTap: () => _dialNumber(matchedNumber),
       child: Padding(
@@ -417,14 +407,17 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: colorPref,
                 shape: BoxShape.circle,
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                  width: 1.5,
+                ),
               ),
               alignment: Alignment.center,
               child: Text(
                 _getInitials(contact.displayName),
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: Theme.of(context).colorScheme.primary,
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
                 ),
@@ -446,10 +439,10 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
                   const SizedBox(height: 2),
                   Row(
                     children: [
-                      const Text(
+                      Text(
                         'Mobile ',
                         style: TextStyle(
-                          color: Color(0xFF9AA0A6),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 14,
                         ),
                       ),
@@ -467,7 +460,11 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
                 ],
               ),
             ),
-            const Icon(Icons.call_outlined, color: Color(0xFF9AA0A6), size: 24),
+            Icon(
+              Icons.call_outlined,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              size: 24,
+            ),
           ],
         ),
       ),
@@ -547,9 +544,7 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
                 margin: const EdgeInsets.fromLTRB(12, 0, 12, 16),
                 padding: EdgeInsets.only(bottom: bottomPadding),
                 decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.surfaceContainerHigh, // M3 dark surface
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Column(
@@ -895,7 +890,7 @@ class _CallButton extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40),
             color: enabled
-                ? const Color(0xFF30D158)
+                ? Theme.of(context).colorScheme.primary
                 : Theme.of(context).colorScheme.surfaceContainerHighest,
           ),
           alignment: Alignment.center,

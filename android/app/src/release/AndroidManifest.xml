@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Release: launcher icon and shortcuts live on activity-alias only (see LauncherIconManager).
+         src/main has no MAIN/LAUNCHER on MainActivity; remove shortcuts meta-data here so they
+         attach only to the enabled alias. -->
+    <application>
+        <activity
+            android:name="com.rkkvishva.nothing_dialer.MainActivity"
+            tools:node="merge">
+            <meta-data
+                android:name="android.app.shortcuts"
+                tools:node="remove" />
+        </activity>
+    </application>
+</manifest>

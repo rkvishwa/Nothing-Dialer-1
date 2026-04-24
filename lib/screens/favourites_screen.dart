@@ -40,7 +40,10 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               ),
               const Divider(height: 1),
               ListTile(
-                leading: Icon(Icons.person_add_outlined, color: cs.onSurface),
+                leading: Icon(
+                  Icons.person_add_outlined,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 title: Text(
                   'Add favourite',
                   style: TextStyle(
@@ -74,7 +77,10 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.menu_rounded, color: cs.onSurface),
+          icon: Icon(
+            Icons.menu_rounded,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
           tooltip: 'Menu',
         ),
@@ -117,14 +123,25 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               final e = list[index];
               return ListTile(
                 key: ValueKey('${e.number}_$index'),
-                leading: CircleAvatar(
-                  backgroundColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
-                  child: Text(
-                    e.name.isNotEmpty ? e.name[0].toUpperCase() : '?',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 18,
+                leading: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        e.name.isNotEmpty ? e.name[0].toUpperCase() : '?',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
 /// A minimal but functional dial-pad screen.
 /// Required for Default Dialer apps – otherwise the system will not grant
 /// the Default Dialer role.
@@ -100,7 +101,11 @@ class _DialerScreenState extends State<DialerScreen> {
               onLongPress: () => setState(() => _digits = ''),
               child: Padding(
                 padding: EdgeInsets.all(8),
-                child: Icon(Icons.backspace_outlined, color: Theme.of(context).colorScheme.outline, size: 22),
+                child: Icon(
+                  Icons.backspace_outlined,
+                  color: Theme.of(context).colorScheme.outline,
+                  size: 22,
+                ),
               ),
             ),
         ],
@@ -168,18 +173,27 @@ class _DialKey extends StatelessWidget {
       child: Container(
         height: 72,
         margin: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
+        child: Material(
           color: Theme.of(context).colorScheme.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(36),
-          border: Border.all(color: Theme.of(context).colorScheme.surfaceContainerHigh),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          label,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontSize: 24,
-            fontWeight: FontWeight.w300,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(36),
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
+              width: 1.5,
+            ),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: SizedBox.expand(
+            child: Center(
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
           ),
         ),
       ),

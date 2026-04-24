@@ -1,11 +1,15 @@
+import 'dart:async';
+import 'dart:math' as math;
+
+import 'package:call_log/call_log.dart';
+import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:call_log/call_log.dart';
-import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../services/blocking_manager.dart';
 import '../services/favourites_manager.dart';
+import '../services/recents_compute.dart';
 import '../services/voice_search.dart';
 import 'sim_picker_sheet.dart';
 import 'floating_dialpad.dart';
@@ -62,6 +66,10 @@ class _FavouritesRowMarker {
   const _FavouritesRowMarker();
 }
 
+class _LoadMoreMarker {
+  const _LoadMoreMarker();
+}
+
 // ─── Screen ──────────────────────────────────────────────────────────────────
 
 /// Displays the device's call log grouped by date, with consecutive
@@ -79,14 +87,17 @@ class _RecentsScreenState extends State<RecentsScreen>
   bool get wantKeepAlive => true;
 
   List<CallLogEntry> _entries = [];
-  Map<String, List<_GroupedCall>> _mapFiltered = {};
-  List<Object> _flatItems = []; // Contains Strings (headers) and _GroupedCall
-  List<String> _sections = [];
+  List<Object> _flatItems = [];
   bool _loading = true;
   bool _permissionDenied = false;
   String _searchQuery = '';
   final _searchController = TextEditingController();
   final ScrollController _listScrollController = ScrollController();
+
+  static const _initialPageSize = 500;
+  int _loadedLimit = _initialPageSize;
+  int? _lastMaxTimestampMs;
+  bool _rebuildInFlight = false;
 
   static const _channel = MethodChannel('nothing_dialer/control');
 
@@ -120,11 +131,11 @@ class _RecentsScreenState extends State<RecentsScreen>
   }
 
   void _onRecentsFilterOrFavouritesChanged() {
-    if (mounted) setState(_updateFilters);
+    if (mounted) unawaited(_scheduleRebuild());
   }
 
   void _onFrequentSettingsChanged() {
-    if (mounted) setState(_updateFilters);
+    if (mounted) unawaited(_scheduleRebuild());
   }
 
   void _onBlockedNumbersChanged() {
@@ -167,14 +178,30 @@ class _RecentsScreenState extends State<RecentsScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (mounted) _loadCallLog();
-      });
+      unawaited(_maybeReloadCallLogIfNewer());
     }
   }
 
+  Future<void> _maybeReloadCallLogIfNewer() async {
+    if (!mounted || _permissionDenied || _loading) return;
+    try {
+      final fresh = await CallLog.get();
+      if (!mounted) return;
+      final list = fresh.toList()
+        ..sort((a, b) => (b.timestamp ?? 0).compareTo(a.timestamp ?? 0));
+      if (list.isEmpty) {
+        if (_entries.isNotEmpty) await _loadCallLog();
+        return;
+      }
+      final maxTs = list.first.timestamp;
+      if (maxTs != null && maxTs != _lastMaxTimestampMs) {
+        await _loadCallLog();
+      }
+    } catch (_) {}
+  }
+
   void _handleRecentsRefreshTick() {
-    if (mounted) _loadCallLog();
+    if (mounted) unawaited(_loadCallLog());
   }
 
   void _handleExternalClearSearch() {
@@ -183,8 +210,8 @@ class _RecentsScreenState extends State<RecentsScreen>
       _searchController.clear();
       _searchQuery = '';
       main_app.recentsSearchActiveNotifier.value = false;
-      _updateFilters();
     });
+    unawaited(_scheduleRebuild());
     _scheduleResetScrollToTop();
   }
 
@@ -211,221 +238,110 @@ class _RecentsScreenState extends State<RecentsScreen>
       final entries = await CallLog.get();
       await BlockingManager.refreshBlockedNumbers();
 
-      if (mounted) {
-        setState(() {
-          _entries = entries.toList();
-          _updateFilters();
-          _loading = false;
-        });
-      }
+      if (!mounted) return;
+      final list = entries.toList()
+        ..sort((a, b) => (b.timestamp ?? 0).compareTo(a.timestamp ?? 0));
+      _entries = list;
+      _lastMaxTimestampMs = list.isEmpty ? null : list.first.timestamp;
+      _loadedLimit = _initialPageSize;
+      await _scheduleRebuild();
+      if (mounted) setState(() => _loading = false);
     } catch (_) {
       if (mounted) setState(() => _loading = false);
     }
   }
 
-  List<CallLogEntry> _applyRecentsFilter(List<CallLogEntry> entries) {
-    switch (main_app.recentsFilterNotifier.value) {
-      case 'missed':
-        return entries
-            .where(
-              (e) =>
-                  e.callType == CallType.missed ||
-                  e.callType == CallType.rejected,
-            )
-            .toList();
-      case 'contacts':
-        return entries.where((e) => (e.name ?? '').isNotEmpty).toList();
-      case 'non_contacts':
-        return entries.where((e) => (e.name ?? '').isEmpty).toList();
-      default:
-        return entries;
-    }
-  }
-
-  void _updateFilters() {
-    final base = _applyRecentsFilter(_entries);
-    final filteredEntries = _searchQuery.isEmpty
-        ? base
-        : base.where((e) {
-            final q = _searchQuery.toLowerCase();
-            return (e.name ?? '').toLowerCase().contains(q) ||
-                (e.number ?? '').contains(q);
-          }).toList();
-
-    final groupedFiltered = _groupEntries(filteredEntries);
-    final mapFiltered = <String, List<_GroupedCall>>{};
-    final now = DateTime.now();
-    final todayStr = DateFormat('yyyy-MM-dd').format(now);
-    final yesterdayStr = DateFormat(
-      'yyyy-MM-dd',
-    ).format(now.subtract(const Duration(days: 1)));
-    for (final g in groupedFiltered) {
-      final date = DateFormat(
-        'yyyy-MM-dd',
-      ).format(DateTime.fromMillisecondsSinceEpoch(g.timestamp ?? 0));
-      String label;
-      if (date == todayStr) {
-        label = 'Today';
-      } else if (date == yesterdayStr) {
-        label = 'Yesterday';
-      } else {
-        label = DateFormat(
-          'MMMM d',
-        ).format(DateTime.fromMillisecondsSinceEpoch(g.timestamp ?? 0));
+  Future<void> _scheduleRebuild() async {
+    if (!mounted) return;
+    if (_rebuildInFlight) return;
+    _rebuildInFlight = true;
+    try {
+      if (_entries.isEmpty) {
+        if (mounted) {
+          setState(() => _flatItems = []);
+        }
+        return;
       }
-      mapFiltered.putIfAbsent(label, () => []).add(g);
-    }
-
-    _mapFiltered = mapFiltered;
-    _sections = _mapFiltered.keys.toList();
-
-    _flatItems = [];
-
-    if (FavouritesManager.showFavouritesStripOnRecents.value &&
-        _searchQuery.isEmpty) {
-      _flatItems.add(const _FavouritesRowMarker());
-    }
-
-    final filterAll = main_app.recentsFilterNotifier.value == 'all';
-    final showFrequent =
-        filterAll &&
-        main_app.frequentContactsMaxNotifier.value > 0 &&
-        _searchQuery.isEmpty;
-    if (showFrequent) {
-      final frequent = _computeFrequent(_entries);
-      if (frequent.isNotEmpty) {
-        _flatItems.add(
-          _FrequentHeader(
-            periodSubtitle: _periodSubtitleFor(
-              main_app.frequentContactsPeriodNotifier.value,
-            ),
-          ),
-        );
-        _flatItems.addAll(frequent);
-        _flatItems.add(const _RecentHistoryHeader());
-      }
-    }
-
-    for (final section in _sections) {
-      _flatItems.add(section);
-      _flatItems.addAll(_mapFiltered[section]!);
-    }
-  }
-
-  int? _cutoffMsForPeriod(String period) {
-    final now = DateTime.now();
-    switch (period) {
-      case 'day':
-        return now.subtract(const Duration(days: 1)).millisecondsSinceEpoch;
-      case 'week':
-        return now.subtract(const Duration(days: 7)).millisecondsSinceEpoch;
-      case 'month':
-        return now.subtract(const Duration(days: 30)).millisecondsSinceEpoch;
-      case 'year':
-        return now.subtract(const Duration(days: 365)).millisecondsSinceEpoch;
-      case 'all':
-      default:
-        return null;
-    }
-  }
-
-  String _periodSubtitleFor(String period) {
-    switch (period) {
-      case 'day':
-        return 'Last 24 hours';
-      case 'week':
-        return 'Last 7 days';
-      case 'month':
-        return 'Last 30 days';
-      case 'year':
-        return 'Last 12 months';
-      case 'all':
-        return 'All time';
-      default:
-        return 'Last 12 months';
-    }
-  }
-
-  bool _isCountableFrequentCallType(CallType? t) {
-    if (t == null) return false;
-    switch (t) {
-      case CallType.incoming:
-      case CallType.outgoing:
-      case CallType.missed:
-      case CallType.rejected:
-        return true;
-      case CallType.voiceMail:
-      case CallType.blocked:
-      case CallType.answeredExternally:
-      case CallType.unknown:
-      case CallType.wifiIncoming:
-      case CallType.wifiOutgoing:
-        return false;
-    }
-  }
-
-  /// Ranks numbers by total call count in the selected period (independent of
-  /// consecutive grouping used for the main list).
-  List<_GroupedCall> _computeFrequent(List<CallLogEntry> entries) {
-    final period = main_app.frequentContactsPeriodNotifier.value;
-    final maxN = main_app.frequentContactsMaxNotifier.value;
-    if (maxN <= 0) return [];
-    final cutoffMs = _cutoffMsForPeriod(period);
-
-    final filtered = entries.where((e) {
-      if (!_isCountableFrequentCallType(e.callType)) return false;
-      final ts = e.timestamp;
-      if (ts == null) return false;
-      final key = _normalise(e.number);
-      if (key.isEmpty) return false;
-      if (cutoffMs != null && ts < cutoffMs) return false;
-      return true;
-    }).toList();
-
-    final byNumber = <String, List<CallLogEntry>>{};
-    for (final e in filtered) {
-      final key = _normalise(e.number);
-      byNumber.putIfAbsent(key, () => []).add(e);
-    }
-
-    for (final list in byNumber.values) {
-      list.sort((a, b) => (b.timestamp ?? 0).compareTo(a.timestamp ?? 0));
-    }
-
-    final keys = byNumber.keys.toList();
-    keys.sort((a, b) {
-      final la = byNumber[a]!;
-      final lb = byNumber[b]!;
-      final cmp = lb.length.compareTo(la.length);
-      if (cmp != 0) return cmp;
-      final ta = la.first.timestamp ?? 0;
-      final tb = lb.first.timestamp ?? 0;
-      return tb.compareTo(ta);
-    });
-
-    final out = <_GroupedCall>[];
-    for (final key in keys.take(maxN)) {
-      final list = byNumber[key]!;
-      final anchor = list.first;
-      out.add(
-        _GroupedCall(
-          name: anchor.name ?? '',
-          number: anchor.number ?? '',
-          callType: anchor.callType,
-          count: list.length,
-          timestamp: anchor.timestamp,
-          duration: anchor.duration,
-          simDisplayName: anchor.simDisplayName,
-          relativeTime: _formatRelativeTime(anchor.timestamp),
-          entryRelativeTimes: list
-              .map((e) => _subtextRelativeTime(e.timestamp))
-              .toList(),
-          entries: List.from(list),
-          isFrequentContact: true,
+      final serialized = _entries.map(serializeCallLogEntry).toList();
+      final nowMs = DateTime.now().millisecondsSinceEpoch;
+      final output = await compute(
+        recentsComputeMain,
+        RecentsComputeArgs(
+          allEntries: serialized,
+          mainListMaxEntries: _loadedLimit.clamp(0, serialized.length),
+          recentsFilter: main_app.recentsFilterNotifier.value,
+          searchQuery: _searchQuery,
+          frequentMax: main_app.frequentContactsMaxNotifier.value,
+          frequentPeriod: main_app.frequentContactsPeriodNotifier.value,
+          showFavouritesStrip:
+              FavouritesManager.showFavouritesStripOnRecents.value,
+          showFrequentSection: true,
+          nowMs: nowMs,
         ),
       );
+      if (!mounted) return;
+      setState(() {
+        _flatItems = _flatItemsFromOutput(output);
+        if (_entries.length > _loadedLimit) {
+          _flatItems.add(const _LoadMoreMarker());
+        }
+      });
+    } finally {
+      _rebuildInFlight = false;
     }
-    return out;
+  }
+
+  void _loadMore() {
+    setState(() {
+      _loadedLimit += _initialPageSize;
+    });
+    unawaited(_scheduleRebuild());
+  }
+
+  _GroupedCall _groupedCallFromMap(Map<String, dynamic> m) {
+    final entryMaps = (m['entries'] as List<dynamic>)
+        .map((e) => CallLogEntry.fromMap(Map<dynamic, dynamic>.from(e as Map)))
+        .toList();
+    return _GroupedCall(
+      name: m['name'] as String,
+      number: m['number'] as String,
+      callType: getCallType((m['callType'] as num).toInt()),
+      count: (m['count'] as num).toInt(),
+      timestamp: (m['timestamp'] as num?)?.toInt(),
+      duration: (m['duration'] as num?)?.toInt(),
+      simDisplayName: m['simDisplayName'] as String?,
+      relativeTime: m['relativeTime'] as String,
+      entryRelativeTimes: (m['entryRelativeTimes'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      entries: entryMaps,
+      isFrequentContact: m['isFrequentContact'] as bool? ?? false,
+    );
+  }
+
+  List<Object> _flatItemsFromOutput(RecentsProcessOutput out) {
+    final r = <Object>[];
+    for (final m in out.flatItems) {
+      final kind = m['kind'] as String;
+      switch (kind) {
+        case 'favourites_marker':
+          r.add(const _FavouritesRowMarker());
+          break;
+        case 'frequent_header':
+          r.add(_FrequentHeader(periodSubtitle: m['subtitle'] as String));
+          break;
+        case 'recent_history_header':
+          r.add(const _RecentHistoryHeader());
+          break;
+        case 'section':
+          r.add(m['label'] as String);
+          break;
+        case 'group':
+          r.add(_groupedCallFromMap(Map<String, dynamic>.from(m)));
+          break;
+      }
+    }
+    return r;
   }
 
   Widget _buildFavouritesStrip() {
@@ -512,7 +428,6 @@ class _RecentsScreenState extends State<RecentsScreen>
                       child: GestureDetector(
                         onLongPressStart: (details) {
                           _showOptions(
-                            context,
                             syn,
                             details.globalPosition,
                             fromFavouriteStrip: true,
@@ -526,24 +441,19 @@ class _RecentsScreenState extends State<RecentsScreen>
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: 56,
                                   height: 56,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.surfaceContainerHighest,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    initial,
-                                    style: TextStyle(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.primary,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w400,
+                                  child: Center(
+                                    child: Text(
+                                      initial,
+                                      style: TextStyle(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -601,194 +511,178 @@ class _RecentsScreenState extends State<RecentsScreen>
   }
 
   void _showOptions(
-    BuildContext tileContext,
     _GroupedCall group,
     Offset globalPosition, {
     bool fromFavouriteStrip = false,
   }) {
-    showMenu<String>(
-      context: context,
-      position: RelativeRect.fromLTRB(
-        globalPosition.dx,
-        globalPosition.dy,
-        globalPosition.dx,
-        globalPosition.dy,
+    FocusScope.of(context).unfocus();
+    HapticFeedback.selectionClick();
+
+    final cs = Theme.of(context).colorScheme;
+
+    final specs = <_RecentsMenuItemSpec>[
+      _RecentsMenuItemSpec(
+        icon: Icons.copy_rounded,
+        label: 'Copy number',
+        value: 'copy',
       ),
-      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 8,
-      items: [
-        PopupMenuItem(
-          enabled: false,
-          child: Text(
-            group.number,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+      _RecentsMenuItemSpec(
+        icon: Icons.edit_outlined,
+        label: 'Edit number before call',
+        value: 'edit_before_call',
+      ),
+      if (fromFavouriteStrip)
+        _RecentsMenuItemSpec(
+          icon: Icons.star_outline,
+          label: 'Remove from favourites',
+          value: 'remove_favourite',
         ),
-        PopupMenuItem(
-          value: 'copy',
-          child: Row(
-            children: [
-              Icon(
-                Icons.copy_rounded,
-                color: Theme.of(context).colorScheme.onSurface,
-                size: 20,
-              ),
-              SizedBox(width: 12),
-              Text(
-                'Copy number',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
+      if (!fromFavouriteStrip && FavouritesManager.isFavourite(group.number))
+        _RecentsMenuItemSpec(
+          icon: Icons.star_rounded,
+          label: 'Remove from favourites',
+          value: 'remove_favourite_recents',
+          iconColor: cs.primary,
         ),
-        PopupMenuItem(
-          value: 'edit_before_call',
-          child: Row(
-            children: [
-              Icon(
-                Icons.edit_outlined,
-                color: Theme.of(context).colorScheme.onSurface,
-                size: 20,
-              ),
-              SizedBox(width: 12),
-              Text(
-                'Edit number before call',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
+      if (!fromFavouriteStrip && !FavouritesManager.isFavourite(group.number))
+        _RecentsMenuItemSpec(
+          icon: Icons.star_outline_rounded,
+          label: 'Add to favourites',
+          value: 'add_favourite_recents',
         ),
-        if (fromFavouriteStrip)
-          PopupMenuItem(
-            value: 'remove_favourite',
-            child: Row(
-              children: [
-                Icon(
-                  Icons.star_outline,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  size: 20,
-                ),
-                SizedBox(width: 12),
-                Text(
-                  'Remove from favourites',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 15,
+      if (BlockingManager.isBlocked(group.number))
+        _RecentsMenuItemSpec(
+          icon: Icons.check_circle_outline,
+          label: 'Unblock number',
+          value: 'unblock',
+        )
+      else
+        _RecentsMenuItemSpec(
+          icon: Icons.block,
+          label: 'Block number',
+          value: 'block',
+        ),
+      if (!fromFavouriteStrip)
+        const _RecentsMenuItemSpec(
+          icon: Icons.delete_outline,
+          label: 'Delete',
+          value: 'delete',
+          iconColor: Color(0xFFFF453A),
+          textColor: Color(0xFFFF453A),
+        ),
+    ];
+
+    final overlay =
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
+    // Sit just under the row so the menu doesn’t cover the pressed number.
+    final anchor =
+        overlay.globalToLocal(globalPosition) + const Offset(0, 14);
+
+    showGeneralDialog<String>(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black.withValues(alpha: 0.25),
+      transitionDuration: const Duration(milliseconds: 130),
+      transitionBuilder: (ctx, animation, secondaryAnimation, child) => child,
+      pageBuilder: (ctx, animation, secondaryAnimation) {
+        final curved = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+        );
+        final media = MediaQuery.of(ctx);
+        final dialogCs = Theme.of(ctx).colorScheme;
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => Navigator.pop(ctx),
+              ),
+            ),
+            CustomSingleChildLayout(
+              delegate: _RecentsMenuLayoutDelegate(
+                anchor: anchor,
+                screenSize: media.size,
+                safePadding: media.padding,
+              ),
+              child: FadeTransition(
+                opacity: curved,
+                child: ScaleTransition(
+                  scale: Tween<double>(begin: 0.96, end: 1.0).animate(curved),
+                  alignment: Alignment.topLeft,
+                  child: Material(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(12),
+                    elevation: 0,
+                    clipBehavior: Clip.antiAlias,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minWidth: 176,
+                        maxWidth: 236,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(18, 14, 18, 12),
+                            child: Text(
+                              group.number,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: dialogCs.onSurfaceVariant,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0.15,
+                              ),
+                            ),
+                          ),
+                          for (final spec in specs)
+                            InkWell(
+                              onTap: () => Navigator.pop(ctx, spec.value),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 13,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      spec.icon,
+                                      size: 18,
+                                      color: spec.iconColor ??
+                                          dialogCs.onSurface,
+                                    ),
+                                    const SizedBox(width: 14),
+                                    Expanded(
+                                      child: Text(
+                                        spec.label,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: spec.textColor ??
+                                              dialogCs.onSurface,
+                                          fontSize: 14,
+                                          height: 1.25,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        if (!fromFavouriteStrip && FavouritesManager.isFavourite(group.number))
-          PopupMenuItem(
-            value: 'remove_favourite_recents',
-            child: Row(
-              children: [
-                Icon(
-                  Icons.star_rounded,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 20,
-                ),
-                SizedBox(width: 12),
-                Text(
-                  'Remove from favourites',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        if (!fromFavouriteStrip && !FavouritesManager.isFavourite(group.number))
-          PopupMenuItem(
-            value: 'add_favourite_recents',
-            child: Row(
-              children: [
-                Icon(
-                  Icons.star_outline_rounded,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  size: 20,
-                ),
-                SizedBox(width: 12),
-                Text(
-                  'Add to favourites',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        if (BlockingManager.isBlocked(group.number))
-          PopupMenuItem(
-            value: 'unblock',
-            child: Row(
-              children: [
-                Icon(
-                  Icons.check_circle_outline,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  size: 20,
-                ),
-                SizedBox(width: 12),
-                Text(
-                  'Unblock number',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
-            ),
-          )
-        else
-          PopupMenuItem(
-            value: 'block',
-            child: Row(
-              children: [
-                Icon(
-                  Icons.block,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  size: 20,
-                ),
-                SizedBox(width: 12),
-                Text(
-                  'Block number',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        if (!fromFavouriteStrip)
-          PopupMenuItem(
-            value: 'delete',
-            child: Row(
-              children: const [
-                Icon(Icons.delete_outline, color: Color(0xFFFF453A), size: 20),
-                SizedBox(width: 12),
-                Text(
-                  'Delete',
-                  style: TextStyle(color: Color(0xFFFF453A), fontSize: 15),
-                ),
-              ],
-            ),
-          ),
-      ],
+          ],
+        );
+      },
     ).then((value) {
       if (!mounted) return;
       if (value == 'copy') {
@@ -916,8 +810,8 @@ class _RecentsScreenState extends State<RecentsScreen>
 
   Future<void> _handleContactAction(_GroupedCall group) async {
     final normalizedTarget = _normalise(group.number);
-    final targetSuffix = normalizedTarget.length > 9
-        ? normalizedTarget.substring(normalizedTarget.length - 9)
+    final targetSuffix = normalizedTarget.length > 7
+        ? normalizedTarget.substring(normalizedTarget.length - 7)
         : normalizedTarget;
 
     if (group.name.isNotEmpty) {
@@ -927,6 +821,8 @@ class _RecentsScreenState extends State<RecentsScreen>
       );
 
       Contact? found;
+
+      // Pass 1: Exact normalized number match
       for (final c in contacts) {
         if (c.phones.any((p) => _normalise(p.number) == normalizedTarget)) {
           found = c;
@@ -934,6 +830,7 @@ class _RecentsScreenState extends State<RecentsScreen>
         }
       }
 
+      // Pass 2: Suffix-based match (handles country code differences)
       if (found == null && targetSuffix.isNotEmpty) {
         for (final c in contacts) {
           if (c.phones.any((p) {
@@ -942,6 +839,19 @@ class _RecentsScreenState extends State<RecentsScreen>
             return normalizedPhone.endsWith(targetSuffix) ||
                 targetSuffix.endsWith(normalizedPhone);
           })) {
+            found = c;
+            break;
+          }
+        }
+      }
+
+      // Pass 3: Match by display name (handles Google account contacts
+      // where the call log has the name from Android's caller ID but
+      // the number format differs between accounts)
+      if (found == null) {
+        final lowerName = group.name.toLowerCase().trim();
+        for (final c in contacts) {
+          if (c.displayName.toLowerCase().trim() == lowerName) {
             found = c;
             break;
           }
@@ -1035,96 +945,9 @@ class _RecentsScreenState extends State<RecentsScreen>
     _loadCallLog(); // Refresh list after deletion
   }
 
-  // ── Group consecutive entries ───────────────────────────────────────────────
-
   /// Normalise a number string to just digits for comparison.
   String _normalise(String? number) =>
       (number ?? '').replaceAll(RegExp(r'[^\d+]'), '');
-
-  List<_GroupedCall> _groupEntries(List<CallLogEntry> entries) {
-    if (entries.isEmpty) return [];
-
-    final groups = <_GroupedCall>[];
-    String? prevNumber = _normalise(entries.first.number);
-    CallType? prevType = entries.first.callType;
-    int count = 1;
-    CallLogEntry anchor = entries.first;
-    List<CallLogEntry> currentEntries = [entries.first];
-
-    for (int i = 1; i < entries.length; i++) {
-      final e = entries[i];
-      final num = _normalise(e.number);
-      if (num == prevNumber && e.callType == prevType) {
-        count++;
-        currentEntries.add(e);
-      } else {
-        groups.add(
-          _GroupedCall(
-            name: anchor.name ?? '',
-            number: anchor.number ?? '',
-            callType: prevType,
-            count: count,
-            timestamp: anchor.timestamp,
-            duration: anchor.duration,
-            simDisplayName: anchor.simDisplayName,
-            relativeTime: _formatRelativeTime(anchor.timestamp),
-            entryRelativeTimes: currentEntries
-                .map((e) => _subtextRelativeTime(e.timestamp))
-                .toList(),
-            entries: List.from(currentEntries),
-          ),
-        );
-        anchor = e;
-        prevNumber = num;
-        prevType = e.callType;
-        count = 1;
-        currentEntries = [e];
-      }
-    }
-    // last group
-    groups.add(
-      _GroupedCall(
-        name: anchor.name ?? '',
-        number: anchor.number ?? '',
-        callType: prevType,
-        count: count,
-        timestamp: anchor.timestamp,
-        duration: anchor.duration,
-        simDisplayName: anchor.simDisplayName,
-        relativeTime: _formatRelativeTime(anchor.timestamp),
-        entryRelativeTimes: currentEntries
-            .map((e) => _subtextRelativeTime(e.timestamp))
-            .toList(),
-        entries: currentEntries,
-      ),
-    );
-
-    return groups;
-  }
-
-  // ── Date helpers ────────────────────────────────────────────────────────────
-
-  String _subtextRelativeTime(int? ms) {
-    if (ms == null) return '';
-    final dt = DateTime.fromMillisecondsSinceEpoch(ms);
-    final diff = DateTime.now().difference(dt);
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes} min ago';
-    if (diff.inHours < 24) return '${diff.inHours} hr ago';
-    return DateFormat('MMM d').format(dt);
-  }
-
-  String _formatRelativeTime(int? ms) {
-    if (ms == null) return '';
-    final dt = DateTime.fromMillisecondsSinceEpoch(ms);
-    final diff = DateTime.now().difference(dt);
-
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes} min ago';
-    if (diff.inHours < 24) return DateFormat('HH:mm').format(dt);
-    if (diff.inDays == 1) return 'Yesterday';
-    return DateFormat('MMM d, yyyy').format(dt);
-  }
 
   Color _callTypeColor(CallType? type) {
     switch (type) {
@@ -1134,7 +957,7 @@ class _RecentsScreenState extends State<RecentsScreen>
       case CallType.incoming:
         return Color(0xFF30D158); // green
       default:
-        return Theme.of(context).colorScheme.onSurfaceVariant; // neutral
+        return Theme.of(context).colorScheme.onSurfaceVariant;
     }
   }
 
@@ -1186,8 +1009,8 @@ class _RecentsScreenState extends State<RecentsScreen>
               setState(() {
                 _searchQuery = v;
                 main_app.recentsSearchActiveNotifier.value = v.isNotEmpty;
-                _updateFilters();
               });
+              unawaited(_scheduleRebuild());
               if (v.isEmpty) _scheduleResetScrollToTop();
             },
             style: TextStyle(
@@ -1216,8 +1039,8 @@ class _RecentsScreenState extends State<RecentsScreen>
                           _searchController.clear();
                           _searchQuery = '';
                           main_app.recentsSearchActiveNotifier.value = false;
-                          _updateFilters();
                         });
+                        unawaited(_scheduleRebuild());
                         _scheduleResetScrollToTop();
                       },
                     )
@@ -1241,12 +1064,11 @@ class _RecentsScreenState extends State<RecentsScreen>
                               );
                           _searchQuery = spoken;
                           main_app.recentsSearchActiveNotifier.value = true;
-                          _updateFilters();
                         });
+                        unawaited(_scheduleRebuild());
                       },
                     ),
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+              filled: false,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(28),
                 borderSide: BorderSide.none,
@@ -1263,15 +1085,6 @@ class _RecentsScreenState extends State<RecentsScreen>
             backgroundColor: Theme.of(context).colorScheme.surface,
             onRefresh: _loadCallLog,
             child: ValueListenableBuilder<List<String>>(
-              key: ValueKey<Object>(
-                Object.hash(
-                  FavouritesManager.showFavouritesStripOnRecents.value,
-                  _flatItems.length,
-                  FavouritesManager.favouritesNotifier.value.length,
-                  main_app.recentsFilterNotifier.value,
-                  BlockingManager.blockedNumbersNotifier.value.length,
-                ),
-              ),
               valueListenable: BlockingManager.blockedNumbersNotifier,
               builder: (context, _, __) {
                 if (_flatItems.isEmpty) {
@@ -1290,11 +1103,18 @@ class _RecentsScreenState extends State<RecentsScreen>
                 return ListView.builder(
                   controller: _listScrollController,
                   padding: const EdgeInsets.only(top: 8, bottom: 120),
-                  cacheExtent:
-                      1000, // Pre-build more items for smoother scrolling
                   itemCount: _flatItems.length,
                   itemBuilder: (context, idx) {
                     final item = _flatItems[idx];
+                    if (item is _LoadMoreMarker) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+                        child: OutlinedButton(
+                          onPressed: _loadMore,
+                          child: const Text('Load more'),
+                        ),
+                      );
+                    }
                     if (item is _FavouritesRowMarker) {
                       return _buildFavouritesStrip();
                     }
@@ -1369,9 +1189,8 @@ class _RecentsScreenState extends State<RecentsScreen>
                         typeColor: _callTypeColor(item.callType),
                         typeIcon: _callTypeIcon(item.callType),
                         onCallTap: () => _call(item.number),
-                        onLongPress:
-                            (BuildContext tapContext, Offset globalPosition) =>
-                                _showOptions(tapContext, item, globalPosition),
+                        onLongPress: (Offset globalPosition) =>
+                            _showOptions(item, globalPosition),
                         onContactActionTap: () => _handleContactAction(item),
                       );
                     }
@@ -1422,7 +1241,7 @@ class _CallTile extends StatefulWidget {
   final Color typeColor;
   final IconData typeIcon;
   final VoidCallback onCallTap;
-  final void Function(BuildContext, Offset) onLongPress;
+  final void Function(Offset) onLongPress;
   final VoidCallback onContactActionTap;
 
   const _CallTile({
@@ -1497,48 +1316,38 @@ class _CallTileState extends State<_CallTile>
           onTapUp: (_) => setState(() => _isPressed = false),
           onTapCancel: () => setState(() => _isPressed = false),
           onTap: _toggleExpand,
-          onLongPressDown: (details) {
-            FocusScope.of(context).unfocus();
-            setState(() => _isPressed = true);
-          },
-          onLongPressEnd: (_) => setState(() => _isPressed = false),
-          onLongPressCancel: () => setState(() => _isPressed = false),
           onLongPressStart: (details) {
-            setState(() => _isPressed = false);
-            widget.onLongPress(context, details.globalPosition);
+            widget.onLongPress(details.globalPosition);
           },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
             color: _isPressed
-                ? Theme.of(context).colorScheme.onSurface.withOpacity(0.08)
+                ? Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.08)
                 : Colors.transparent,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 children: [
                   // Avatar
-                  Container(
+                  SizedBox(
                     width: 48,
                     height: 48,
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest,
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: widget.isBlocked
-                        ? Icon(Icons.block, color: Color(0xFFFF453A), size: 24)
-                        : Text(
-                            displayName.isNotEmpty
-                                ? displayName[0].toUpperCase()
-                                : '?',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
+                    child: Center(
+                      child: widget.isBlocked
+                          ? Icon(Icons.block, color: Color(0xFFFF453A), size: 24)
+                          : Text(
+                              displayName.isNotEmpty
+                                  ? displayName[0].toUpperCase()
+                                  : '?',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                          ),
+                    ),
                   ),
                   const SizedBox(width: 16),
 
@@ -1692,7 +1501,7 @@ class _CallTileState extends State<_CallTile>
             margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              color: Colors.transparent,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Column(
@@ -1804,19 +1613,13 @@ class _CallTileState extends State<_CallTile>
                 const SizedBox(height: 12),
 
                 // Action Buttons (Video call, Message, History)
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.05),
+                Material(
+                  color: Colors.transparent,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.08),
-                      width: 0.5,
-                    ),
+                    side: BorderSide.none,
                   ),
+                  clipBehavior: Clip.antiAlias,
                   child: Column(
                     children: [
                       _ActionItem(
@@ -1986,6 +1789,73 @@ class _ActionItem extends StatelessWidget {
   }
 }
 
+// ─── Recents long-press context menu (small flat popup) ───────────────────────
+
+class _RecentsMenuItemSpec {
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color? iconColor;
+  final Color? textColor;
+
+  const _RecentsMenuItemSpec({
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.iconColor,
+    this.textColor,
+  });
+}
+
+class _RecentsMenuLayoutDelegate extends SingleChildLayoutDelegate {
+  _RecentsMenuLayoutDelegate({
+    required this.anchor,
+    required this.screenSize,
+    required this.safePadding,
+  });
+
+  final Offset anchor;
+  final Size screenSize;
+  final EdgeInsets safePadding;
+
+  static const double _margin = 8;
+
+  @override
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+    final maxW = math.max(
+      0.0,
+      screenSize.width - safePadding.horizontal - _margin * 2,
+    );
+    final maxH = math.max(
+      0.0,
+      screenSize.height - safePadding.vertical - _margin * 2,
+    );
+    return BoxConstraints.loose(Size(maxW, maxH));
+  }
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) {
+    final minX = safePadding.left + _margin;
+    final minY = safePadding.top + _margin;
+    final maxX =
+        screenSize.width - safePadding.right - _margin - childSize.width;
+    final maxY =
+        screenSize.height - safePadding.bottom - _margin - childSize.height;
+    var x = anchor.dx;
+    var y = anchor.dy;
+    x = x.clamp(minX, math.max(minX, maxX));
+    y = y.clamp(minY, math.max(minY, maxY));
+    return Offset(x, y);
+  }
+
+  @override
+  bool shouldRelayout(covariant _RecentsMenuLayoutDelegate oldDelegate) {
+    return anchor != oldDelegate.anchor ||
+        screenSize != oldDelegate.screenSize ||
+        safePadding != oldDelegate.safePadding;
+  }
+}
+
 // ─── Empty state ─────────────────────────────────────────────────────────────
 
 class _EmptyState extends StatelessWidget {
@@ -2012,7 +1882,7 @@ class _EmptyState extends StatelessWidget {
           Icon(
             icon,
             size: 48,
-            color: Theme.of(context).colorScheme.outlineVariant,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           SizedBox(height: 16),
           Text(

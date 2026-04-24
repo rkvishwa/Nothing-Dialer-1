@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -5,6 +8,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'sim_picker_sheet.dart';
 import 'contact_detail_screen.dart';
 import '../main.dart' as main_app;
+import '../services/contacts_cache.dart';
+import '../services/contacts_compute.dart';
 import '../services/voice_search.dart';
 
 /// Displays phone contacts synced from the device address book.
@@ -15,16 +20,9 @@ class ContactsScreen extends StatefulWidget {
   State<ContactsScreen> createState() => _ContactsScreenState();
 }
 
-class _ContactsScreenState extends State<ContactsScreen>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  List<Contact> _contacts = [];
-  List<Contact> _filtered = [];
-  Map<String, List<Contact>> _groupedContacts = {};
-  List<Object> _flatItems = []; // Contains Strings (headers) and Contacts
-  List<String> _sections = [];
+class _ContactsScreenState extends State<ContactsScreen> {
+  List<Object> _flatItems = []; // 'create_new', section String, or Contact
+  int _totalContactsOnDevice = 0;
   bool _loading = true;
   bool _permissionDenied = false;
   final _searchController = TextEditingController();
@@ -58,6 +56,11 @@ class _ContactsScreenState extends State<ContactsScreen>
     if (!mounted || _searchController.text.isEmpty) return;
     _searchController.clear();
     setState(() => _searching = false);
+    main_app.contactsSearchActiveNotifier.value = false;
+    final snap = ContactsCache.snapshot;
+    if (snap != null) {
+      unawaited(_rebuildFlatList(snap, ''));
+    }
     _scheduleResetScrollToTop();
   }
 
@@ -68,7 +71,7 @@ class _ContactsScreenState extends State<ContactsScreen>
     });
   }
 
-  Future<void> _loadContacts() async {
+  Future<void> _loadContacts({bool forceRefresh = false}) async {
     setState(() => _loading = true);
     final status = await Permission.contacts.request();
     if (!status.isGranted) {
@@ -78,66 +81,71 @@ class _ContactsScreenState extends State<ContactsScreen>
       });
       return;
     }
-    final contacts = await FlutterContacts.getContacts(
-      withProperties: true,
-      withThumbnail: true,
-    );
-    if (mounted) {
-      setState(() {
-        _contacts = contacts
-          ..sort(
-            (a, b) => a.displayName.toLowerCase().compareTo(
-              b.displayName.toLowerCase(),
-            ),
-          );
-        _filtered = _contacts;
-        _updateGroups();
-        _loading = false;
-      });
+    try {
+      final contacts = await ContactsCache.load(
+        forceRefresh: forceRefresh,
+        fetch: () => FlutterContacts.getContacts(
+          withProperties: true,
+          withThumbnail: false,
+        ),
+      );
+      if (!mounted) return;
+      _totalContactsOnDevice = contacts.length;
+      await _rebuildFlatList(contacts, _searchController.text);
+      if (mounted) {
+        setState(() {
+          _loading = false;
+          _permissionDenied = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) setState(() => _loading = false);
     }
   }
 
-  void _updateGroups() {
-    final map = <String, List<Contact>>{};
-    for (final c in _filtered) {
-      final key = c.displayName.isNotEmpty
-          ? c.displayName[0].toUpperCase()
-          : '#';
-      final sectionKey = RegExp(r'[A-Z]').hasMatch(key) ? key : '#';
-      map.putIfAbsent(sectionKey, () => []).add(c);
-    }
-    _groupedContacts = Map.fromEntries(
-      map.entries.toList()..sort((a, b) {
-        if (a.key == '#') return 1;
-        if (b.key == '#') return -1;
-        return a.key.compareTo(b.key);
-      }),
+  Future<void> _rebuildFlatList(List<Contact> contacts, String query) async {
+    final sorted = [...contacts]..sort(
+        (a, b) => a.displayName.toLowerCase().compareTo(
+              b.displayName.toLowerCase(),
+            ),
+      );
+    final rows = sorted
+        .map(
+          (c) => <String, dynamic>{
+            'id': c.id,
+            'displayName': c.displayName,
+            'phones': c.phones.map((p) => p.number).join(' '),
+          },
+        )
+        .toList();
+    final flatMaps = await compute(
+      contactsComputeMain,
+      ContactsComputeArgs(rows: rows, query: query),
     );
-    _sections = _groupedContacts.keys.toList();
-
-    _flatItems = ['create_new'];
-    for (final section in _sections) {
-      _flatItems.add(section);
-      _flatItems.addAll(_groupedContacts[section]!);
+    if (!mounted) return;
+    final byId = {for (final c in sorted) c.id: c};
+    final next = <Object>[];
+    for (final m in flatMaps) {
+      final kind = m['kind'] as String;
+      if (kind == 'create_new') {
+        next.add('create_new');
+      } else if (kind == 'section') {
+        next.add(m['label'] as String);
+      } else if (kind == 'contact_id') {
+        final id = m['id'] as String;
+        final c = byId[id];
+        if (c != null) next.add(c);
+      }
     }
+    setState(() => _flatItems = next);
   }
 
   void _onSearch() {
-    final query = _searchController.text.toLowerCase();
-    main_app.contactsSearchActiveNotifier.value = query.isNotEmpty;
-    setState(() {
-      if (query.isEmpty) {
-        _filtered = _contacts;
-        _scheduleResetScrollToTop();
-      } else {
-        _filtered = _contacts.where((c) {
-          final name = c.displayName.toLowerCase();
-          final phones = c.phones.map((p) => p.number).join(' ');
-          return name.contains(query) || phones.contains(query);
-        }).toList();
-      }
-      _updateGroups();
-    });
+    main_app.contactsSearchActiveNotifier.value =
+        _searchController.text.isNotEmpty;
+    final snap = ContactsCache.snapshot;
+    if (snap == null) return;
+    unawaited(_rebuildFlatList(snap, _searchController.text));
   }
 
   Future<void> _call(String number) async {
@@ -168,7 +176,7 @@ class _ContactsScreenState extends State<ContactsScreen>
 
   Future<void> _addContact() async {
     await FlutterContacts.openExternalInsert();
-    _loadContacts();
+    await _loadContacts(forceRefresh: true);
   }
 
   void _showContactDetail(Contact contact) async {
@@ -177,15 +185,17 @@ class _ContactsScreenState extends State<ContactsScreen>
       MaterialPageRoute(builder: (_) => ContactDetailScreen(contact: contact)),
     );
     if (result == true) {
-      _loadContacts();
+      await _loadContacts(forceRefresh: true);
     }
   }
+
+  int get _visibleContactCount =>
+      _flatItems.whereType<Contact>().length;
 
   // ── Alphabet sectioned list ─────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     if (_loading) {
       return Center(
         child: CircularProgressIndicator(
@@ -203,7 +213,7 @@ class _ContactsScreenState extends State<ContactsScreen>
         onButton: openAppSettings,
       );
     }
-    if (_contacts.isEmpty) {
+    if (_totalContactsOnDevice == 0) {
       return const _EmptyState(
         icon: Icons.person_outline,
         title: 'No contacts found',
@@ -266,8 +276,7 @@ class _ContactsScreenState extends State<ContactsScreen>
                         setState(() => _searching = true);
                       },
                     ),
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
+              filled: false,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -290,7 +299,7 @@ class _ContactsScreenState extends State<ContactsScreen>
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              '${_filtered.length} contacts',
+              '$_visibleContactCount contacts',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 11,
@@ -303,25 +312,19 @@ class _ContactsScreenState extends State<ContactsScreen>
           child: RefreshIndicator(
             color: Theme.of(context).colorScheme.onSurface,
             backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-            onRefresh: _loadContacts,
+            onRefresh: () => _loadContacts(forceRefresh: true),
             child: ListView.builder(
               controller: _listScrollController,
               padding: const EdgeInsets.only(top: 8, bottom: 120),
-              cacheExtent: 1000,
               itemCount: _flatItems.length,
               itemBuilder: (context, idx) {
                 final item = _flatItems[idx];
                 if (item == 'create_new') {
                   return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHigh,
-                      child: Icon(
-                        Icons.person_add_outlined,
-                        color: Theme.of(context).colorScheme.onSurface,
-                        size: 20,
-                      ),
+                    leading: Icon(
+                      Icons.person_add_outlined,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      size: 24,
                     ),
                     title: Text(
                       'Create new contact',
@@ -363,32 +366,6 @@ class _ContactsScreenState extends State<ContactsScreen>
   }
 }
 
-class _ContactHeader extends StatelessWidget {
-  final Contact contact;
-  const _ContactHeader({required this.contact});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(width: 16),
-        _Avatar(contact: contact, size: 44),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            contact.displayName,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: 16,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _ContactTile extends StatelessWidget {
   final Contact contact;
   final VoidCallback onTap;
@@ -404,7 +381,7 @@ class _ContactTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: [
-            _Avatar(contact: contact, size: 44),
+            _LazyAvatar(contact: contact, size: 44),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -446,39 +423,47 @@ class _ContactTile extends StatelessWidget {
   }
 }
 
-class _Avatar extends StatelessWidget {
+class _LazyAvatar extends StatefulWidget {
   final Contact contact;
   final double size;
-  const _Avatar({required this.contact, required this.size});
+
+  const _LazyAvatar({required this.contact, required this.size});
 
   @override
-  Widget build(BuildContext context) {
-    if (contact.thumbnail != null) {
-      return CircleAvatar(
-        radius: size / 2,
-        backgroundImage: MemoryImage(contact.thumbnail!),
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      );
+  State<_LazyAvatar> createState() => _LazyAvatarState();
+}
+
+class _LazyAvatarState extends State<_LazyAvatar> {
+  Uint8List? _thumbBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.contact.thumbnail == null && widget.contact.id.isNotEmpty) {
+      unawaited(_loadThumbnail());
     }
-    final initials = _initials(contact.displayName);
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        shape: BoxShape.circle,
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        initials,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
-          fontSize: size * 0.38,
-          fontWeight: FontWeight.w300,
-        ),
-      ),
-    );
+  }
+
+  @override
+  void didUpdateWidget(covariant _LazyAvatar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.contact.id != widget.contact.id) {
+      _thumbBytes = null;
+      if (widget.contact.thumbnail == null && widget.contact.id.isNotEmpty) {
+        unawaited(_loadThumbnail());
+      }
+    }
+  }
+
+  Future<void> _loadThumbnail() async {
+    try {
+      final c = await FlutterContacts.getContact(
+        widget.contact.id,
+        withThumbnail: true,
+      );
+      if (!mounted || c?.thumbnail == null) return;
+      setState(() => _thumbBytes = c!.thumbnail);
+    } catch (_) {}
   }
 
   String _initials(String name) {
@@ -486,6 +471,51 @@ class _Avatar extends StatelessWidget {
     if (parts.isEmpty || parts.first.isEmpty) return '?';
     if (parts.length == 1) return parts[0][0].toUpperCase();
     return '${parts[0][0]}${parts.last[0]}'.toUpperCase();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final outlineColor = Theme.of(context).colorScheme.outlineVariant;
+    final circleShape = CircleBorder(
+      side: BorderSide(color: outlineColor, width: 1.5),
+    );
+    final bytes = _thumbBytes ?? widget.contact.thumbnail;
+    if (bytes != null) {
+      return Material(
+        color: Colors.transparent,
+        shape: circleShape,
+        clipBehavior: Clip.antiAlias,
+        child: SizedBox(
+          width: widget.size,
+          height: widget.size,
+          child: CircleAvatar(
+            radius: widget.size / 2,
+            backgroundImage: MemoryImage(bytes),
+            backgroundColor: Colors.transparent,
+          ),
+        ),
+      );
+    }
+    final initials = _initials(widget.contact.displayName);
+    return Material(
+      color: Colors.transparent,
+      shape: circleShape,
+      clipBehavior: Clip.antiAlias,
+      child: SizedBox(
+        width: widget.size,
+        height: widget.size,
+        child: Center(
+          child: Text(
+            initials,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: widget.size * 0.38,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -513,7 +543,7 @@ class _EmptyState extends StatelessWidget {
           Icon(
             icon,
             size: 48,
-            color: Theme.of(context).colorScheme.outlineVariant,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           SizedBox(height: 16),
           Text(

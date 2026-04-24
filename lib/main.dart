@@ -8,9 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/dialer_shell.dart';
 import 'screens/default_dialer_screen.dart';
 import 'services/favourites_manager.dart';
+import 'services/theme_colors.dart';
 
 const String _glyphChannel = 'nothing_dialer/glyph';
 const String _controlChannel = 'nothing_dialer/control';
+const String _torchChannelName = 'nothing_dialer/torch';
+
+final MethodChannel _torchMethodChannel = MethodChannel(_torchChannelName);
 
 final NothingGlyphInterface _glyph = NothingGlyphInterface();
 
@@ -20,6 +24,14 @@ final ValueNotifier<bool> isPhone1Notifier = ValueNotifier(false);
 
 /// Glyph settings controlled from HomeScreen.
 final ValueNotifier<String> themeModeNotifier = ValueNotifier('system');
+final ValueNotifier<Color> lightBgColorNotifier =
+    ValueNotifier<Color>(kDefaultLightBg);
+final ValueNotifier<Color> darkBgColorNotifier =
+    ValueNotifier<Color>(kDefaultDarkBg);
+final ValueNotifier<Color> lightAccentColorNotifier =
+    ValueNotifier<Color>(kDefaultLightAccent);
+final ValueNotifier<Color> darkAccentColorNotifier =
+    ValueNotifier<Color>(kDefaultDarkAccent);
 final ValueNotifier<bool> glyphEnabledNotifier = ValueNotifier(true);
 final ValueNotifier<String> glyphAnimationStyleNotifier = ValueNotifier(
   'Breath & Progress',
@@ -62,6 +74,11 @@ final ValueNotifier<int> inCallBreathProgressIntervalNotifier = ValueNotifier(
 
 /// Default Dialer status
 final ValueNotifier<bool> isDefaultDialerNotifier = ValueNotifier(true);
+
+/// Ongoing call banner (pushed from native [GlyphInCallService]; also synced on resume).
+final ValueNotifier<Map<dynamic, dynamic>?> dialerCallStateNotifier =
+    ValueNotifier<Map<dynamic, dynamic>?>(null);
+
 final ValueNotifier<String?> openDialpadRequestNotifier = ValueNotifier(null);
 final ValueNotifier<int> recentsRefreshTickNotifier = ValueNotifier(0);
 final ValueNotifier<int> clearRecentsSearchTickNotifier = ValueNotifier(0);
@@ -76,6 +93,14 @@ final ValueNotifier<int> frequentContactsMaxNotifier = ValueNotifier(5);
 
 /// Recents filter: `all` | `missed` | `contacts` | `non_contacts`
 final ValueNotifier<String> recentsFilterNotifier = ValueNotifier('all');
+
+/// Torch blink (independent of Glyph): `off` | `interval`
+final ValueNotifier<String> torchIncomingModeNotifier = ValueNotifier('off');
+final ValueNotifier<int> torchIncomingIntervalNotifier = ValueNotifier(500);
+final ValueNotifier<String> torchOutgoingModeNotifier = ValueNotifier('off');
+final ValueNotifier<int> torchOutgoingIntervalNotifier = ValueNotifier(500);
+final ValueNotifier<String> torchOngoingModeNotifier = ValueNotifier('off');
+final ValueNotifier<int> torchOngoingIntervalNotifier = ValueNotifier(500);
 
 bool get _glyphConnected => glyphConnectedNotifier.value;
 bool get _isPhone1 => isPhone1Notifier.value;
@@ -106,7 +131,77 @@ int _loadFrequentContactsMax(SharedPreferences prefs) {
   return 5;
 }
 
-void main() {
+/// Loads SharedPreferences-backed settings before first frame (fast path).
+Future<void> loadAppSettingsFromPrefs() async {
+  final prefs = await SharedPreferences.getInstance();
+  themeModeNotifier.value = prefs.getString('theme_mode') ?? 'system';
+  lightBgColorNotifier.value = Color(
+    prefs.getInt('light_bg_color') ?? colorToArgb32(kDefaultLightBg),
+  );
+  darkBgColorNotifier.value = Color(
+    prefs.getInt('dark_bg_color') ?? colorToArgb32(kDefaultDarkBg),
+  );
+  lightAccentColorNotifier.value = Color(
+    prefs.getInt('light_accent_color') ?? colorToArgb32(kDefaultLightAccent),
+  );
+  darkAccentColorNotifier.value = Color(
+    prefs.getInt('dark_accent_color') ?? colorToArgb32(kDefaultDarkAccent),
+  );
+  glyphAnimationStyleNotifier.value =
+      prefs.getString('glyph_animation_style') ?? 'Breath & Progress';
+  glyphC1C4IntervalNotifier.value =
+      prefs.getInt('glyph_c1c4_interval') ?? 1000;
+  glyphCustomIntervalNotifier.value =
+      prefs.getInt('glyph_custom_interval') ?? 1500;
+  glyphCustomChannelsNotifier.value =
+      prefs.getStringList('glyph_custom_channels') ??
+      ['A1', 'B1', 'C-All', 'D-All', 'E1'];
+  glyphBreathProgressDurationNotifier.value =
+      prefs.getInt('glyph_breath_progress_duration') ?? 65000;
+  glyphBreathProgressIntervalNotifier.value =
+      prefs.getInt('glyph_breath_progress_interval') ?? 100;
+
+  inCallAnimationStyleNotifier.value =
+      prefs.getString('in_call_animation_style') ?? 'Breath & Progress';
+  inCallC1C4IntervalNotifier.value =
+      prefs.getInt('in_call_c1c4_interval') ?? 1000;
+  inCallCustomIntervalNotifier.value =
+      prefs.getInt('in_call_custom_interval') ?? 1500;
+  inCallCustomChannelsNotifier.value =
+      prefs.getStringList('in_call_custom_channels') ??
+      ['A1', 'B1', 'C-All', 'D-All', 'E1'];
+  inCallBreathProgressDurationNotifier.value =
+      prefs.getInt('in_call_breath_progress_duration') ?? 65000;
+  inCallBreathProgressIntervalNotifier.value =
+      prefs.getInt('in_call_breath_progress_interval') ?? 100;
+
+  frequentContactsPeriodNotifier.value =
+      prefs.getString('frequent_contacts_period') ?? 'year';
+  frequentContactsMaxNotifier.value = _loadFrequentContactsMax(prefs);
+
+  recentsFilterNotifier.value = prefs.getString('recents_filter') ?? 'all';
+
+  var torchIncomingMode = prefs.getString('torch_incoming_mode') ?? 'off';
+  if (torchIncomingMode != 'off' && torchIncomingMode != 'interval') {
+    torchIncomingMode = 'interval';
+    await prefs.setString('torch_incoming_mode', torchIncomingMode);
+  }
+  torchIncomingModeNotifier.value = torchIncomingMode;
+  torchIncomingIntervalNotifier.value =
+      (prefs.getInt('torch_incoming_interval') ?? 500).clamp(100, 3000);
+  torchOutgoingModeNotifier.value =
+      prefs.getString('torch_outgoing_mode') ?? 'off';
+  torchOutgoingIntervalNotifier.value =
+      (prefs.getInt('torch_outgoing_interval') ?? 500).clamp(100, 3000);
+  torchOngoingModeNotifier.value =
+      prefs.getString('torch_ongoing_mode') ?? 'off';
+  torchOngoingIntervalNotifier.value =
+      (prefs.getInt('torch_ongoing_interval') ?? 500).clamp(100, 3000);
+
+  await FavouritesManager.load();
+}
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -118,6 +213,7 @@ void main() {
       statusBarIconBrightness: Brightness.light,
     ),
   );
+  await loadAppSettingsFromPrefs();
   runApp(const NothingDialerApp());
 }
 
@@ -138,58 +234,16 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
   @override
   void initState() {
     super.initState();
-    _initGlyph();
     _listenForGlyphCommands();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(_initGlyphService());
+    });
   }
 
-  Future<void> _initGlyph() async {
-    // Cancel any previous subscription (survives hot-restart on the global _glyph).
+  /// Glyph binding + default-dialer check after first frame (needs MethodChannel).
+  Future<void> _initGlyphService() async {
     await _glyphSubscription?.cancel();
 
-    // Determine phone model BEFORE setting up the connection listener,
-    // so _isPhone1 is correct when _triggerGlyphLights is called.
-    isPhone1Notifier.value = await _glyph.is20111() ?? false;
-
-    // Load settings
-    final prefs = await SharedPreferences.getInstance();
-    themeModeNotifier.value = prefs.getString('theme_mode') ?? 'system';
-    glyphAnimationStyleNotifier.value =
-        prefs.getString('glyph_animation_style') ?? 'Breath & Progress';
-    glyphC1C4IntervalNotifier.value =
-        prefs.getInt('glyph_c1c4_interval') ?? 1000;
-    glyphCustomIntervalNotifier.value =
-        prefs.getInt('glyph_custom_interval') ?? 1500;
-    glyphCustomChannelsNotifier.value =
-        prefs.getStringList('glyph_custom_channels') ??
-        ['A1', 'B1', 'C-All', 'D-All', 'E1'];
-    glyphBreathProgressDurationNotifier.value =
-        prefs.getInt('glyph_breath_progress_duration') ?? 65000;
-    glyphBreathProgressIntervalNotifier.value =
-        prefs.getInt('glyph_breath_progress_interval') ?? 100;
-
-    inCallAnimationStyleNotifier.value =
-        prefs.getString('in_call_animation_style') ?? 'Breath & Progress';
-    inCallC1C4IntervalNotifier.value =
-        prefs.getInt('in_call_c1c4_interval') ?? 1000;
-    inCallCustomIntervalNotifier.value =
-        prefs.getInt('in_call_custom_interval') ?? 1500;
-    inCallCustomChannelsNotifier.value =
-        prefs.getStringList('in_call_custom_channels') ??
-        ['A1', 'B1', 'C-All', 'D-All', 'E1'];
-    inCallBreathProgressDurationNotifier.value =
-        prefs.getInt('in_call_breath_progress_duration') ?? 65000;
-    inCallBreathProgressIntervalNotifier.value =
-        prefs.getInt('in_call_breath_progress_interval') ?? 100;
-
-    frequentContactsPeriodNotifier.value =
-        prefs.getString('frequent_contacts_period') ?? 'year';
-    frequentContactsMaxNotifier.value = _loadFrequentContactsMax(prefs);
-
-    recentsFilterNotifier.value =
-        prefs.getString('recents_filter') ?? 'all';
-    await FavouritesManager.load();
-
-    // Initial default dialer check
     try {
       isDefaultDialerNotifier.value =
           await _controlMethodChannel.invokeMethod<bool>('isDefaultDialer') ??
@@ -198,8 +252,23 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
       debugPrint('Error checking default dialer on start: $e');
     }
 
-    // *** Bind the Glyph service — without this the onServiceConnection
-    // stream never fires and the status stays Disconnected forever. ***
+    var isNothingDevice = false;
+    try {
+      isNothingDevice =
+          await _controlMethodChannel.invokeMethod<bool>('isNothingDevice') ??
+          false;
+    } catch (e) {
+      debugPrint('isNothingDevice check failed: $e');
+    }
+
+    if (!isNothingDevice) {
+      isPhone1Notifier.value = false;
+      glyphConnectedNotifier.value = false;
+      return;
+    }
+
+    isPhone1Notifier.value = await _glyph.is20111() ?? false;
+
     await _glyph.init();
 
     _glyphSubscription = _glyph.onServiceConnection.listen((bool connected) {
@@ -213,13 +282,17 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
       switch (call.method) {
         case 'lightsOnOutgoing':
           await _triggerGlyphLights(isOutgoing: true);
+          await _triggerTorch('outgoing');
         case 'lightsOnActiveCall':
           await _triggerGlyphLights(isActiveCall: true);
+          await _triggerTorch('ongoing');
         case 'lightsOnIncoming':
         case 'lightsOn':
           await _triggerGlyphLights();
+          await _triggerTorch('incoming');
         case 'lightsOff':
           await _turnOffGlyphLights();
+          await _stopTorch();
           break;
       }
     });
@@ -234,6 +307,14 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
           final number = (call.arguments as String?) ?? '';
           openDialpadRequestNotifier.value = number;
           break;
+        case 'onCallStateChanged':
+          final raw = call.arguments;
+          if (raw == null) {
+            dialerCallStateNotifier.value = null;
+          } else if (raw is Map) {
+            dialerCallStateNotifier.value = Map<dynamic, dynamic>.from(raw);
+          }
+          break;
       }
     });
   }
@@ -246,9 +327,20 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<String>(
-      valueListenable: themeModeNotifier,
-      builder: (context, themeStr, _) {
+    return ListenableBuilder(
+      listenable: Listenable.merge([
+        themeModeNotifier,
+        lightBgColorNotifier,
+        darkBgColorNotifier,
+        lightAccentColorNotifier,
+        darkAccentColorNotifier,
+      ]),
+      builder: (context, _) {
+        final themeStr = themeModeNotifier.value;
+        final lightBg = lightBgColorNotifier.value;
+        final darkBg = darkBgColorNotifier.value;
+        final lightPrimary = lightAccentColorNotifier.value;
+        final darkPrimary = darkAccentColorNotifier.value;
         ThemeMode themeMode;
         switch (themeStr) {
           case 'light':
@@ -261,28 +353,30 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
             themeMode = ThemeMode.system;
             break;
         }
+        final lightScheme = buildColorSchemeForDialer(
+          background: lightBg,
+          accent: lightPrimary,
+          brightness: Brightness.light,
+        );
+
+        final darkScheme = buildColorSchemeForDialer(
+          background: darkBg,
+          accent: darkPrimary,
+          brightness: Brightness.dark,
+        );
+
         return MaterialApp(
           title: 'Nothing Dialer',
           debugShowCheckedModeBanner: false,
           themeMode: themeMode,
           theme: ThemeData(
-            colorScheme: ColorScheme.light(
-              primary: const Color(0xFF1C1B1F),
-              secondary: const Color(0xFF49454F),
-              surface: const Color(0xFFF3F3F3),
-            ),
-            scaffoldBackgroundColor: const Color(0xFFF3F3F3),
-            fontFamily: 'RobotoMono',
+            colorScheme: lightScheme,
+            scaffoldBackgroundColor: lightBg,
             useMaterial3: true,
           ),
           darkTheme: ThemeData(
-            colorScheme: const ColorScheme.dark(
-              primary: Color(0xFFE8E8E8),
-              secondary: Color(0xFFB0B0B0),
-              surface: Color(0xFF0D0D0D),
-            ),
-            scaffoldBackgroundColor: const Color(0xFF0D0D0D),
-            fontFamily: 'RobotoMono',
+            colorScheme: darkScheme,
+            scaffoldBackgroundColor: darkBg,
             useMaterial3: true,
           ),
           home: ValueListenableBuilder<bool>(
@@ -301,6 +395,41 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
         );
       },
     );
+  }
+}
+
+// ── Torch blink (native CameraManager) ────────────────────────────────────────
+
+Future<void> _triggerTorch(String kind) async {
+  try {
+    late final String mode;
+    late final int intervalMs;
+    if (kind == 'incoming') {
+      mode = torchIncomingModeNotifier.value;
+      intervalMs = torchIncomingIntervalNotifier.value;
+    } else if (kind == 'outgoing') {
+      mode = torchOutgoingModeNotifier.value;
+      intervalMs = torchOutgoingIntervalNotifier.value;
+    } else if (kind == 'ongoing') {
+      mode = torchOngoingModeNotifier.value;
+      intervalMs = torchOngoingIntervalNotifier.value;
+    } else {
+      return;
+    }
+    if (mode != 'interval') return;
+    await _torchMethodChannel.invokeMethod<void>('torchStartInterval', {
+      'intervalMs': intervalMs,
+    });
+  } catch (e) {
+    debugPrint('Dialer: _triggerTorch error - $e');
+  }
+}
+
+Future<void> _stopTorch() async {
+  try {
+    await _torchMethodChannel.invokeMethod<void>('torchStop');
+  } catch (e) {
+    debugPrint('Dialer: _stopTorch error - $e');
   }
 }
 

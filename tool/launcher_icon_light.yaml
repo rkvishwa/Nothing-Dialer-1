@@ -1,0 +1,7 @@
+# Used only by scripts/regenerate_icons.sh — not a "flavor" (see flutter_launcher_icons main.dart).
+flutter_launcher_icons:
+  android: "launcher_icon_light"
+  ios: false
+  image_path: "assets/launcher/app_icon_light.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/launcher/app_icon_light.png"

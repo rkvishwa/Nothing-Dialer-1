@@ -1,10 +1,19 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'blocked_numbers_screen.dart';
 import 'favourites_screen.dart';
 import 'sim_picker_sheet.dart';
 import '../main.dart' as main_app;
+import '../services/launcher_icon_manager.dart';
+import 'icon_picker_screen.dart';
+import '../services/theme_colors.dart';
+
+enum _ColorSlot { background, accent }
 int _readFrequentContactsMaxFromPrefs(SharedPreferences prefs) {
   final stored = prefs.getInt('frequent_contacts_max');
   if (stored != null) return stored.clamp(0, 20);
@@ -19,9 +28,14 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends State<SettingsScreen>
+    with WidgetsBindingObserver {
   String _answerMethod = 'slide'; // 'slide' or 'button'
   String _themeMode = 'system'; // 'system', 'light', 'dark'
+  Color _lightBgColor = kDefaultLightBg;
+  Color _darkBgColor = kDefaultDarkBg;
+  Color _lightAccentColor = kDefaultLightAccent;
+  Color _darkAccentColor = kDefaultDarkAccent;
 
   String _glyphAnimationStyle = 'Breath & Progress';
   int _customInterval = 1500;
@@ -43,16 +57,71 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _defaultSimMode = kDefaultSimModeAsk;
   int? _defaultSimIndex;
 
+  bool _torchHasFlash = true;
+  String _launcherIconLabel = LauncherIconVariant.classic.label;
+  String _torchIncomingMode = 'off';
+  int _torchIncomingInterval = 500;
+  String _torchOutgoingMode = 'off';
+  int _torchOutgoingInterval = 500;
+  String _torchOngoingMode = 'off';
+  int _torchOngoingInterval = 500;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadSettings();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    if (_themeMode == 'system') setState(() {});
+  }
+
+  /// Which background color row to show: light slot vs dark slot.
+  bool _activeAppearanceIsLight(BuildContext context) {
+    if (_themeMode == 'light') return true;
+    if (_themeMode == 'dark') return false;
+    return MediaQuery.platformBrightnessOf(context) == Brightness.light;
   }
 
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
+    var torchIncomingMode = prefs.getString('torch_incoming_mode') ?? 'off';
+    if (torchIncomingMode != 'off' && torchIncomingMode != 'interval') {
+      torchIncomingMode = 'interval';
+      await prefs.setString('torch_incoming_mode', torchIncomingMode);
+    }
+    var torchFlash = true;
+    try {
+      final r = await const MethodChannel(
+        'nothing_dialer/torch',
+      ).invokeMethod<bool>('torchHasFlash');
+      torchFlash = r ?? true;
+    } catch (_) {
+      torchFlash = false;
+    }
     setState(() {
       _themeMode = prefs.getString('theme_mode') ?? 'system';
+      _lightBgColor = Color(
+        prefs.getInt('light_bg_color') ?? colorToArgb32(kDefaultLightBg),
+      );
+      _darkBgColor = Color(
+        prefs.getInt('dark_bg_color') ?? colorToArgb32(kDefaultDarkBg),
+      );
+      _lightAccentColor = Color(
+        prefs.getInt('light_accent_color') ?? colorToArgb32(kDefaultLightAccent),
+      );
+      _darkAccentColor = Color(
+        prefs.getInt('dark_accent_color') ?? colorToArgb32(kDefaultDarkAccent),
+      );
       _answerMethod = prefs.getString('answer_method') ?? 'slide';
 
       _glyphAnimationStyle =
@@ -85,7 +154,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       _defaultSimMode = prefs.getString(kDefaultSimModeKey) ?? kDefaultSimModeAsk;
       _defaultSimIndex = prefs.getInt(kDefaultSimIndexKey);
+
+      _torchHasFlash = torchFlash;
+      _torchIncomingMode = torchIncomingMode;
+      _torchIncomingInterval =
+          (prefs.getInt('torch_incoming_interval') ?? 500).clamp(100, 3000);
+      _torchOutgoingMode = prefs.getString('torch_outgoing_mode') ?? 'off';
+      _torchOutgoingInterval =
+          (prefs.getInt('torch_outgoing_interval') ?? 500).clamp(100, 3000);
+      _torchOngoingMode = prefs.getString('torch_ongoing_mode') ?? 'off';
+      _torchOngoingInterval =
+          (prefs.getInt('torch_ongoing_interval') ?? 500).clamp(100, 3000);
     });
+    try {
+      final lid = await LauncherIconManager.getCurrentId();
+      if (mounted) {
+        setState(() {
+          _launcherIconLabel = LauncherIconVariant.fromId(lid).label;
+        });
+      }
+    } catch (_) {
+      // Keep default label.
+    }
+    main_app.torchIncomingModeNotifier.value = _torchIncomingMode;
+    main_app.torchIncomingIntervalNotifier.value = _torchIncomingInterval;
+    main_app.torchOutgoingModeNotifier.value = _torchOutgoingMode;
+    main_app.torchOutgoingIntervalNotifier.value = _torchOutgoingInterval;
+    main_app.torchOngoingModeNotifier.value = _torchOngoingMode;
+    main_app.torchOngoingIntervalNotifier.value = _torchOngoingInterval;
   }
 
   String _defaultSimSubtitle() {
@@ -109,6 +205,86 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _defaultSimMode = mode;
       _defaultSimIndex = mode == kDefaultSimModeFixed ? index : null;
     });
+  }
+
+  Future<void> _saveTorchIncomingMode(String mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('torch_incoming_mode', mode);
+    setState(() => _torchIncomingMode = mode);
+    main_app.torchIncomingModeNotifier.value = mode;
+  }
+
+  Future<void> _saveTorchIncomingInterval(int ms) async {
+    final prefs = await SharedPreferences.getInstance();
+    final clamped = ms.clamp(100, 3000);
+    await prefs.setInt('torch_incoming_interval', clamped);
+    setState(() => _torchIncomingInterval = clamped);
+    main_app.torchIncomingIntervalNotifier.value = clamped;
+  }
+
+  Future<void> _saveTorchOutgoingMode(String mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('torch_outgoing_mode', mode);
+    setState(() => _torchOutgoingMode = mode);
+    main_app.torchOutgoingModeNotifier.value = mode;
+  }
+
+  Future<void> _saveTorchOutgoingInterval(int ms) async {
+    final prefs = await SharedPreferences.getInstance();
+    final clamped = ms.clamp(100, 3000);
+    await prefs.setInt('torch_outgoing_interval', clamped);
+    setState(() => _torchOutgoingInterval = clamped);
+    main_app.torchOutgoingIntervalNotifier.value = clamped;
+  }
+
+  Future<void> _saveTorchOngoingMode(String mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('torch_ongoing_mode', mode);
+    setState(() => _torchOngoingMode = mode);
+    main_app.torchOngoingModeNotifier.value = mode;
+  }
+
+  Future<void> _saveTorchOngoingInterval(int ms) async {
+    final prefs = await SharedPreferences.getInstance();
+    final clamped = ms.clamp(100, 3000);
+    await prefs.setInt('torch_ongoing_interval', clamped);
+    setState(() => _torchOngoingInterval = clamped);
+    main_app.torchOngoingIntervalNotifier.value = clamped;
+  }
+
+  /// Torch interval is stored in ms; UI shows seconds (same range 0.1s–3.0s).
+  String _torchIntervalSecondsLabel(int ms) {
+    final s = ms / 1000.0;
+    final t = s == s.roundToDouble()
+        ? s.toInt().toString()
+        : s.toStringAsFixed(1);
+    return '$t s';
+  }
+
+  String _torchIncomingSubtitle() {
+    if (!_torchHasFlash) return 'Flashlight not available on this device';
+    switch (_torchIncomingMode) {
+      case 'interval':
+        return '${_torchIntervalSecondsLabel(_torchIncomingInterval)} blink';
+      default:
+        return 'Off';
+    }
+  }
+
+  String _torchOutgoingSubtitle() {
+    if (!_torchHasFlash) return 'Flashlight not available on this device';
+    if (_torchOutgoingMode == 'interval') {
+      return '${_torchIntervalSecondsLabel(_torchOutgoingInterval)} blink';
+    }
+    return 'Off';
+  }
+
+  String _torchOngoingSubtitle() {
+    if (!_torchHasFlash) return 'Flashlight not available on this device';
+    if (_torchOngoingMode == 'interval') {
+      return '${_torchIntervalSecondsLabel(_torchOngoingInterval)} blink';
+    }
+    return 'Off';
   }
 
   Future<void> _showDefaultSimPicker() async {
@@ -462,6 +638,306 @@ class _SettingsScreenState extends State<SettingsScreen> {
     main_app.themeModeNotifier.value = value;
   }
 
+  Future<void> _saveLightBgColor(Color color) async {
+    final clamped = clampToLight(color);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('light_bg_color', colorToArgb32(clamped));
+    setState(() => _lightBgColor = clamped);
+    main_app.lightBgColorNotifier.value = clamped;
+  }
+
+  Future<void> _saveDarkBgColor(Color color) async {
+    final clamped = clampToDark(color);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('dark_bg_color', colorToArgb32(clamped));
+    setState(() => _darkBgColor = clamped);
+    main_app.darkBgColorNotifier.value = clamped;
+  }
+
+  Future<void> _saveLightAccentColor(Color color) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('light_accent_color', colorToArgb32(color));
+    setState(() => _lightAccentColor = color);
+    main_app.lightAccentColorNotifier.value = color;
+  }
+
+  Future<void> _saveDarkAccentColor(Color color) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('dark_accent_color', colorToArgb32(color));
+    setState(() => _darkAccentColor = color);
+    main_app.darkAccentColorNotifier.value = color;
+  }
+
+  String _hexRgb(Color c) {
+    final v = c.toARGB32() & 0xFFFFFF;
+    return '#${v.toRadixString(16).padLeft(6, '0').toUpperCase()}';
+  }
+
+  String _bgSubtitle(Color c, List<Color> presets) {
+    final idx = presets.indexWhere((p) => colorsEqual(p, c));
+    final hex = _hexRgb(c);
+    if (idx >= 0) return 'Preset · $hex';
+    return 'Custom · $hex';
+  }
+
+  String _accentSubtitle(Color c) {
+    final idx = kAccentPresets.indexWhere((p) => colorsEqual(p, c));
+    final hex = _hexRgb(c);
+    if (idx >= 0) return 'Preset · $hex';
+    return 'Custom · $hex';
+  }
+
+  Future<void> _showPresetBottomSheet({
+    required String title,
+    required List<Color> presets,
+    required Color selectedColor,
+    required Future<void> Function(Color) onPresetChosen,
+    required Future<void> Function() openCustomDialog,
+    String? firstSwatchLabel,
+  }) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(sheetContext).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 32,
+                        height: 4,
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            sheetContext,
+                          ).colorScheme.outlineVariant,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Theme.of(sheetContext).colorScheme.onSurface,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: [
+                        for (var i = 0; i < presets.length; i++)
+                          _ColorSwatchButton(
+                            color: presets[i],
+                            selected: colorsEqual(presets[i], selectedColor),
+                            label: firstSwatchLabel != null && i == 0
+                                ? firstSwatchLabel
+                                : null,
+                            onTap: () async {
+                              await onPresetChosen(presets[i]);
+                              if (sheetContext.mounted) {
+                                Navigator.pop(sheetContext);
+                              }
+                            },
+                          ),
+                        _CustomColorSwatchButton(
+                          onTap: () async {
+                            Navigator.pop(sheetContext);
+                            if (!mounted) return;
+                            await openCustomDialog();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showLightBgPicker() async {
+    await _showPresetBottomSheet(
+      title: 'Light background',
+      presets: kLightPresets,
+      selectedColor: _lightBgColor,
+      onPresetChosen: _saveLightBgColor,
+      openCustomDialog: () => _showCustomLightColorDialog(
+        target: _ColorSlot.background,
+      ),
+      firstSwatchLabel: 'Default',
+    );
+  }
+
+  Future<void> _showLightAccentPicker() async {
+    await _showPresetBottomSheet(
+      title: 'Light accent',
+      presets: kAccentPresets,
+      selectedColor: _lightAccentColor,
+      onPresetChosen: _saveLightAccentColor,
+      openCustomDialog: () => _showCustomLightColorDialog(
+        target: _ColorSlot.accent,
+      ),
+    );
+  }
+
+  Future<void> _showDarkBgPicker() async {
+    await _showPresetBottomSheet(
+      title: 'Dark background',
+      presets: kDarkPresets,
+      selectedColor: _darkBgColor,
+      onPresetChosen: _saveDarkBgColor,
+      openCustomDialog: () => _showCustomDarkColorDialog(
+        target: _ColorSlot.background,
+      ),
+      firstSwatchLabel: 'Default',
+    );
+  }
+
+  Future<void> _showDarkAccentPicker() async {
+    await _showPresetBottomSheet(
+      title: 'Dark accent',
+      presets: kAccentPresets,
+      selectedColor: _darkAccentColor,
+      onPresetChosen: _saveDarkAccentColor,
+      openCustomDialog: () => _showCustomDarkColorDialog(
+        target: _ColorSlot.accent,
+      ),
+    );
+  }
+
+  Future<void> _showCustomLightColorDialog({
+    required _ColorSlot target,
+  }) async {
+    Color pickerColor =
+        target == _ColorSlot.accent ? _lightAccentColor : _lightBgColor;
+    final result = await showDialog<Color>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: Theme.of(ctx).colorScheme.surface,
+          title: Text(
+            target == _ColorSlot.accent
+                ? 'Custom accent color'
+                : 'Custom light background',
+            style: TextStyle(color: Theme.of(ctx).colorScheme.onSurface),
+          ),
+          content: StatefulBuilder(
+            builder: (ctx, setDialogState) {
+              return SingleChildScrollView(
+                child: ColorPicker(
+                  pickerColor: pickerColor,
+                  onColorChanged: (c) => setDialogState(() => pickerColor = c),
+                  enableAlpha: false,
+                  displayThumbColor: true,
+                  paletteType: PaletteType.hsvWithHue,
+                  pickerAreaHeightPercent: 0.72,
+                ),
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, pickerColor),
+              child: Text(
+                'Done',
+                style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    if (result != null) {
+      if (target == _ColorSlot.accent) {
+        await _saveLightAccentColor(result);
+      } else {
+        await _saveLightBgColor(result);
+      }
+    }
+  }
+
+  Future<void> _showCustomDarkColorDialog({
+    required _ColorSlot target,
+  }) async {
+    Color pickerColor =
+        target == _ColorSlot.accent ? _darkAccentColor : _darkBgColor;
+    final result = await showDialog<Color>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: Theme.of(ctx).colorScheme.surface,
+          title: Text(
+            target == _ColorSlot.accent
+                ? 'Custom accent color'
+                : 'Custom dark background',
+            style: TextStyle(color: Theme.of(ctx).colorScheme.onSurface),
+          ),
+          content: StatefulBuilder(
+            builder: (ctx, setDialogState) {
+              return SingleChildScrollView(
+                child: ColorPicker(
+                  pickerColor: pickerColor,
+                  onColorChanged: (c) => setDialogState(() => pickerColor = c),
+                  enableAlpha: false,
+                  displayThumbColor: true,
+                  paletteType: PaletteType.hsvWithHue,
+                  pickerAreaHeightPercent: 0.72,
+                ),
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, pickerColor),
+              child: Text(
+                'Done',
+                style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    if (result != null) {
+      if (target == _ColorSlot.accent) {
+        await _saveDarkAccentColor(result);
+      } else {
+        await _saveDarkBgColor(result);
+      }
+    }
+  }
+
   Future<void> _saveGlyphAnimationStyle(String value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('glyph_animation_style', value);
@@ -541,6 +1017,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 : 'Dark',
             onTap: () => _showThemeModePicker(),
           ),
+          if (_activeAppearanceIsLight(context)) ...[
+            _SettingsTile(
+              icon: Icons.light_mode_outlined,
+              title: 'Background',
+              subtitle: _bgSubtitle(_lightBgColor, kLightPresets),
+              previewColor: _lightBgColor,
+              onTap: _showLightBgPicker,
+            ),
+            _SettingsTile(
+              icon: Icons.color_lens_outlined,
+              title: 'Accent',
+              subtitle: _accentSubtitle(_lightAccentColor),
+              previewColor: _lightAccentColor,
+              onTap: _showLightAccentPicker,
+            ),
+          ] else ...[
+            _SettingsTile(
+              icon: Icons.dark_mode_outlined,
+              title: 'Background',
+              subtitle: _bgSubtitle(_darkBgColor, kDarkPresets),
+              previewColor: _darkBgColor,
+              onTap: _showDarkBgPicker,
+            ),
+            _SettingsTile(
+              icon: Icons.color_lens_outlined,
+              title: 'Accent',
+              subtitle: _accentSubtitle(_darkAccentColor),
+              previewColor: _darkAccentColor,
+              onTap: _showDarkAccentPicker,
+            ),
+          ],
+          if (!kIsWeb && Platform.isAndroid)
+            _SettingsTile(
+              icon: Icons.apps_rounded,
+              title: 'App icon',
+              subtitle: _launcherIconLabel,
+              onTap: () async {
+                await showLauncherIconPicker(context);
+                if (context.mounted) await _loadSettings();
+              },
+            ),
           _SettingsTile(
             icon: Icons.phone_callback_rounded,
             title: 'Answer method',
@@ -626,6 +1143,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
           SizedBox(height: 16),
           _SectionHeader(
+            title: 'Torch Blink',
+            trailing: GestureDetector(
+              onTap: _showTorchInfoDialog,
+              child: Icon(
+                Icons.info_outline_rounded,
+                color: Theme.of(context).colorScheme.outline,
+                size: 20,
+              ),
+            ),
+          ),
+          _SettingsTile(
+            icon: Icons.flashlight_on_rounded,
+            title: 'Incoming call torch',
+            subtitle: _torchIncomingSubtitle(),
+            onTap: _torchHasFlash ? _showTorchIncomingPicker : _noopTorch,
+          ),
+          if (_torchHasFlash && _torchIncomingMode == 'interval') ...[
+            _SettingsTile(
+              icon: Icons.timer_rounded,
+              title: 'Incoming blink interval',
+              subtitle: _torchIntervalSecondsLabel(_torchIncomingInterval),
+              onTap: () => _showTorchIntervalPicker('incoming'),
+            ),
+          ],
+          const SizedBox(height: 24),
+          _SettingsTile(
+            icon: Icons.call_made_rounded,
+            title: 'Outgoing call torch',
+            subtitle: _torchOutgoingSubtitle(),
+            onTap: _torchHasFlash ? _showTorchOutgoingPicker : _noopTorch,
+          ),
+          if (_torchHasFlash && _torchOutgoingMode == 'interval') ...[
+            _SettingsTile(
+              icon: Icons.timer_rounded,
+              title: 'Outgoing blink interval',
+              subtitle: _torchIntervalSecondsLabel(_torchOutgoingInterval),
+              onTap: () => _showTorchIntervalPicker('outgoing'),
+            ),
+          ],
+          const SizedBox(height: 24),
+          _SettingsTile(
+            icon: Icons.phone_in_talk_rounded,
+            title: 'Ongoing call torch',
+            subtitle: _torchOngoingSubtitle(),
+            onTap: _torchHasFlash ? _showTorchOngoingPicker : _noopTorch,
+          ),
+          if (_torchHasFlash && _torchOngoingMode == 'interval') ...[
+            _SettingsTile(
+              icon: Icons.timer_rounded,
+              title: 'Ongoing blink interval',
+              subtitle: _torchIntervalSecondsLabel(_torchOngoingInterval),
+              onTap: () => _showTorchIntervalPicker('ongoing'),
+            ),
+          ],
+          const SizedBox(height: 24),
+          _SectionHeader(
             title: 'Glyph Lights',
             trailing: GestureDetector(
               onTap: () => _showGlyphMapDialog(),
@@ -709,6 +1282,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
           const SizedBox(height: 24),
         ],
+      ),
+    );
+  }
+
+  void _noopTorch() {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Flashlight not available on this device'),
       ),
     );
   }
@@ -1772,6 +2354,366 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
+  void _showTorchInfoDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => Dialog(
+        backgroundColor: Theme.of(ctx).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Torch Blink',
+                style: TextStyle(
+                  color: Theme.of(ctx).colorScheme.onSurface,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Blinks the phone flashlight during calls. This is separate from Glyph lights.\n\n'
+                'Fixed interval: torch toggles on/off at the delay you set.',
+                style: TextStyle(
+                  color: Theme.of(ctx).colorScheme.onSurfaceVariant,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: Text(
+                    'Close',
+                    style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showTorchIncomingPicker() {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(sheetContext).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 8),
+                  child: Container(
+                    width: 32,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                child: Text(
+                  'Incoming call torch',
+                  style: TextStyle(
+                    color: Theme.of(sheetContext).colorScheme.onSurface,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              _MethodOption(
+                icon: Icons.block_rounded,
+                label: 'Off',
+                subtitle: 'No torch while ringing',
+                selected: _torchIncomingMode == 'off',
+                onTap: () {
+                  _saveTorchIncomingMode('off');
+                  Navigator.pop(sheetContext);
+                },
+              ),
+              _MethodOption(
+                icon: Icons.timer_rounded,
+                label: 'Fixed interval',
+                subtitle: 'Blink at a set speed',
+                selected: _torchIncomingMode == 'interval',
+                onTap: () {
+                  _saveTorchIncomingMode('interval');
+                  Navigator.pop(sheetContext);
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showTorchOutgoingPicker() {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(sheetContext).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 8),
+                  child: Container(
+                    width: 32,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                child: Text(
+                  'Outgoing call torch',
+                  style: TextStyle(
+                    color: Theme.of(sheetContext).colorScheme.onSurface,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              _MethodOption(
+                icon: Icons.block_rounded,
+                label: 'Off',
+                subtitle: 'No torch while dialing',
+                selected: _torchOutgoingMode == 'off',
+                onTap: () {
+                  _saveTorchOutgoingMode('off');
+                  Navigator.pop(sheetContext);
+                },
+              ),
+              _MethodOption(
+                icon: Icons.timer_rounded,
+                label: 'Fixed interval',
+                subtitle: 'Blink at a set speed',
+                selected: _torchOutgoingMode == 'interval',
+                onTap: () {
+                  _saveTorchOutgoingMode('interval');
+                  Navigator.pop(sheetContext);
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showTorchOngoingPicker() {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(sheetContext).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 8),
+                  child: Container(
+                    width: 32,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                child: Text(
+                  'Ongoing call torch',
+                  style: TextStyle(
+                    color: Theme.of(sheetContext).colorScheme.onSurface,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              _MethodOption(
+                icon: Icons.block_rounded,
+                label: 'Off',
+                subtitle: 'No torch during active call',
+                selected: _torchOngoingMode == 'off',
+                onTap: () {
+                  _saveTorchOngoingMode('off');
+                  Navigator.pop(sheetContext);
+                },
+              ),
+              _MethodOption(
+                icon: Icons.timer_rounded,
+                label: 'Fixed interval',
+                subtitle: 'Blink at a set speed',
+                selected: _torchOngoingMode == 'interval',
+                onTap: () {
+                  _saveTorchOngoingMode('interval');
+                  Navigator.pop(sheetContext);
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showTorchIntervalPicker(String kind) {
+    var currentMs = switch (kind) {
+      'incoming' => _torchIncomingInterval,
+      'outgoing' => _torchOutgoingInterval,
+      _ => _torchOngoingInterval,
+    };
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) {
+          final currentSec = (currentMs / 1000.0).clamp(0.1, 3.0);
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 32,
+                        height: 4,
+                        margin: const EdgeInsets.only(bottom: 24),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.outlineVariant,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Blink interval',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Slider(
+                            value: currentSec,
+                            min: 0.1,
+                            max: 3.0,
+                            divisions: 29,
+                            activeColor: Theme.of(context).colorScheme.primary,
+                            onChanged: (sec) {
+                              final ms = (sec * 1000).round().clamp(100, 3000);
+                              setModalState(() => currentMs = ms);
+                              setState(() {
+                                if (kind == 'incoming') {
+                                  _torchIncomingInterval = ms;
+                                } else if (kind == 'outgoing') {
+                                  _torchOutgoingInterval = ms;
+                                } else {
+                                  _torchOngoingInterval = ms;
+                                }
+                              });
+                            },
+                            onChangeEnd: (sec) {
+                              final ms = (sec * 1000).round().clamp(100, 3000);
+                              if (kind == 'incoming') {
+                                _saveTorchIncomingInterval(ms);
+                              } else if (kind == 'outgoing') {
+                                _saveTorchOutgoingInterval(ms);
+                              } else {
+                                _saveTorchOngoingInterval(ms);
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: 64,
+                          child: Text(
+                            _torchIntervalSecondsLabel(currentMs),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.outline,
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Center(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          'Done',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
 // Ensure the main.dart notifier gets updated live if settings is open while a call comes in
@@ -1825,16 +2767,53 @@ class _SettingsTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
+  final Color? previewColor;
 
   _SettingsTile({
     required this.icon,
     required this.title,
     required this.subtitle,
     required this.onTap,
+    this.previewColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final Color leadingIconColor;
+    if (previewColor != null) {
+      leadingIconColor =
+          ThemeData.estimateBrightnessForColor(previewColor!) ==
+              Brightness.dark
+          ? Colors.white.withValues(alpha: 0.92)
+          : const Color(0xFF1C1B1F).withValues(alpha: 0.82);
+    } else {
+      leadingIconColor = Theme.of(context).colorScheme.onSurface;
+    }
+
+    final Widget leading = previewColor != null
+        ? ClipOval(
+            child: Container(
+              width: 40,
+              height: 40,
+              color: previewColor,
+              alignment: Alignment.center,
+              child: Icon(
+                icon,
+                color: leadingIconColor,
+                size: 20,
+              ),
+            ),
+          )
+        : SizedBox(
+            width: 40,
+            height: 40,
+            child: Icon(
+              icon,
+              color: leadingIconColor,
+              size: 22,
+            ),
+          );
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -1843,20 +2822,7 @@ class _SettingsTile extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Row(
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: Icon(
-                  icon,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  size: 20,
-                ),
-              ),
+              leading,
               SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -1889,6 +2855,128 @@ class _SettingsTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ColorSwatchButton extends StatelessWidget {
+  const _ColorSwatchButton({
+    required this.color,
+    required this.selected,
+    required this.onTap,
+    this.label,
+  });
+
+  final Color color;
+  final bool selected;
+  final VoidCallback onTap;
+  final String? label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Material(
+          color: color,
+          shape: CircleBorder(
+            side: BorderSide(
+              color: selected
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.outlineVariant,
+              width: selected ? 3 : 1.5,
+            ),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onTap,
+            customBorder: const CircleBorder(),
+            child: SizedBox(
+              width: 48,
+              height: 48,
+              child: selected
+                  ? Icon(
+                      Icons.check,
+                      color: color.computeLuminance() > 0.5
+                          ? Colors.black54
+                          : Colors.white70,
+                    )
+                  : null,
+            ),
+          ),
+        ),
+        if (label != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            label!,
+            style: TextStyle(
+              fontSize: 11,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _CustomColorSwatchButton extends StatelessWidget {
+  const _CustomColorSwatchButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Material(
+          color: Colors.transparent,
+          shape: CircleBorder(
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.outlineVariant,
+              width: 1.5,
+            ),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onTap,
+            customBorder: const CircleBorder(),
+            child: Ink(
+              decoration: const ShapeDecoration(
+                shape: CircleBorder(),
+                gradient: SweepGradient(
+                  colors: [
+                    Colors.red,
+                    Colors.deepOrange,
+                    Colors.amber,
+                    Colors.green,
+                    Colors.cyan,
+                    Colors.blue,
+                    Colors.purple,
+                    Colors.red,
+                  ],
+                ),
+              ),
+              child: const SizedBox(
+                width: 48,
+                height: 48,
+                child: Center(
+                  child: Icon(Icons.colorize_rounded, color: Colors.white, size: 22),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Custom',
+          style: TextStyle(
+            fontSize: 11,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -1926,24 +3014,15 @@ class _MethodOption extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: Row(
               children: [
-                Container(
+                SizedBox(
                   width: 40,
                   height: 40,
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.15)
-                        : Theme.of(context).colorScheme.surfaceContainerHighest,
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
                   child: Icon(
                     icon,
                     color: selected
                         ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).colorScheme.onSurface,
-                    size: 20,
+                    size: 22,
                   ),
                 ),
                 SizedBox(width: 16),

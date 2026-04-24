@@ -10,7 +10,6 @@ import 'floating_dialpad.dart';
 import '../services/blocking_manager.dart';
 import '../services/favourites_manager.dart';
 import '../main.dart' as main_app;
-
 /// Root shell with bottom navigation: Recents | Contacts.
 /// The dial-pad is exposed via a floating action button that opens the
 /// advanced floating bottom-sheet dialpad.
@@ -31,7 +30,7 @@ class DialerShell extends StatefulWidget {
 }
 
 class _DialerShellState extends State<DialerShell>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   int _currentIndex = 0;
   final _pageController = PageController();
 
@@ -46,18 +45,13 @@ class _DialerShellState extends State<DialerShell>
 
   static const _controlChannel = MethodChannel('nothing_dialer/control');
 
-  final ValueNotifier<Map<dynamic, dynamic>?> _callStateNotifier =
-      ValueNotifier(null);
-  Timer? _callStateTimer;
-  bool _lastHadActiveCall = false;
+  Map<dynamic, dynamic>? _prevDialerCallState;
 
   @override
   void initState() {
     super.initState();
-    _callStateTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (_) => _checkCallState(),
-    );
+    WidgetsBinding.instance.addObserver(this);
+    main_app.dialerCallStateNotifier.addListener(_onDialerCallStateForRecents);
     _fabCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 120),
@@ -66,9 +60,41 @@ class _DialerShellState extends State<DialerShell>
     main_app.openDialpadRequestNotifier.addListener(_onOpenDialpadRequest);
     _onOpenDialpadRequest();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(_syncCallStateFromNative());
       _consumePendingLaunchTab();
+      _consumePendingDialpadRequest();
       _maybeClearMissedNotifications(_currentIndex);
     });
+  }
+
+  void _onDialerCallStateForRecents() {
+    final v = main_app.dialerCallStateNotifier.value;
+    if (_prevDialerCallState != null && v == null) {
+      main_app.recentsRefreshTickNotifier.value++;
+    }
+    _prevDialerCallState = v;
+  }
+
+  Future<void> _syncCallStateFromNative() async {
+    try {
+      final state = await _controlChannel
+          .invokeMethod<Map<dynamic, dynamic>>('getCallState');
+      if (!mounted) return;
+      main_app.dialerCallStateNotifier.value = state;
+      _prevDialerCallState = state;
+    } catch (_) {
+      if (mounted) {
+        main_app.dialerCallStateNotifier.value = null;
+        _prevDialerCallState = null;
+      }
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(_syncCallStateFromNative());
+    }
   }
 
   void _maybeClearMissedNotifications(int index) {
@@ -90,9 +116,22 @@ class _DialerShellState extends State<DialerShell>
     } catch (_) {}
   }
 
+  Future<void> _consumePendingDialpadRequest() async {
+    try {
+      final number = await _controlChannel.invokeMethod<String?>(
+        'consumePendingDialpadRequest',
+      );
+      if (!mounted) return;
+      if (number != null) {
+        main_app.openDialpadRequestNotifier.value = number;
+      }
+    } catch (_) {}
+  }
+
   @override
   void dispose() {
-    _callStateTimer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    main_app.dialerCallStateNotifier.removeListener(_onDialerCallStateForRecents);
     main_app.openDialpadRequestNotifier.removeListener(_onOpenDialpadRequest);
     _pageController.dispose();
     _fabCtrl?.dispose();
@@ -106,35 +145,9 @@ class _DialerShellState extends State<DialerShell>
     main_app.openDialpadRequestNotifier.value = null;
   }
 
-  Future<void> _checkCallState() async {
-    try {
-      final state = await _controlChannel.invokeMethod<Map<dynamic, dynamic>>(
-        'getCallState',
-      );
-
-      // Only update if the relevant fields changed to avoid unnecessary rebuilds
-      final current = _callStateNotifier.value;
-      if (state == null) {
-        if (current != null) _callStateNotifier.value = null;
-        if (_lastHadActiveCall) {
-          main_app.recentsRefreshTickNotifier.value++;
-          _lastHadActiveCall = false;
-        }
-      } else {
-        _lastHadActiveCall = true;
-        if (current == null ||
-            state['number'] != current['number'] ||
-            state['contactName'] != current['contactName']) {
-          _callStateNotifier.value = state;
-        }
-      }
-    } catch (e) {
-      if (_callStateNotifier.value != null) _callStateNotifier.value = null;
-    }
-  }
-
   void _onTabTapped(int index) {
     if (index == _currentIndex) return;
+    FocusManager.instance.primaryFocus?.unfocus();
     setState(() => _currentIndex = index);
     _pageController.jumpToPage(index);
     _maybeClearMissedNotifications(index);
@@ -339,7 +352,7 @@ class _DialerShellState extends State<DialerShell>
         body: Column(
           children: [
             ValueListenableBuilder<Map<dynamic, dynamic>?>(
-              valueListenable: _callStateNotifier,
+              valueListenable: main_app.dialerCallStateNotifier,
               builder: (context, activeCallState, _) {
                 if (activeCallState == null) return const SizedBox.shrink();
                 return GestureDetector(
@@ -356,14 +369,14 @@ class _DialerShellState extends State<DialerShell>
                       children: [
                         Icon(
                           Icons.call,
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Colors.white,
                           size: 18,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           'Ongoing call: ${activeCallState['contactName'] ?? activeCallState['number']}',
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -378,6 +391,7 @@ class _DialerShellState extends State<DialerShell>
               child: PageView(
                 controller: _pageController,
                 onPageChanged: (index) {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   setState(() => _currentIndex = index);
                   _maybeClearMissedNotifications(index);
                 },
@@ -388,7 +402,10 @@ class _DialerShellState extends State<DialerShell>
         ),
         bottomNavigationBar: _buildBottomNav(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: _buildFAB(),
+        floatingActionButton:
+            MediaQuery.viewInsetsOf(context).bottom > 0
+                ? const SizedBox.shrink()
+                : _buildFAB(),
       ),
     );
   }
@@ -466,6 +483,7 @@ class _DialerShellState extends State<DialerShell>
   }
 
   Widget _buildFAB() {
+    final scheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTapDown: (_) => _fabCtrl?.forward(),
       onTapUp: (_) {
@@ -475,27 +493,26 @@ class _DialerShellState extends State<DialerShell>
       onTapCancel: () => _fabCtrl?.reverse(),
       child: ScaleTransition(
         scale: _fabScale,
-        child: Container(
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.15),
-                blurRadius: 20,
-                spreadRadius: 2,
-              ),
-            ],
+        child: Material(
+          color: scheme.primary,
+          shape: CircleBorder(
+            side: BorderSide(
+              color: scheme.onPrimary.withValues(alpha: 0.2),
+              width: 1.5,
+            ),
           ),
-          alignment: Alignment.center,
-          child: Icon(
-            Icons.dialpad_rounded,
-            color: Theme.of(context).colorScheme.surface,
-            size: 26,
+          clipBehavior: Clip.antiAlias,
+          elevation: 0,
+          surfaceTintColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          child: SizedBox(
+            width: 64,
+            height: 64,
+            child: Icon(
+              Icons.dialpad_rounded,
+              color: scheme.onPrimary,
+              size: 26,
+            ),
           ),
         ),
       ),
@@ -560,35 +577,19 @@ class _FilterOption extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: Container(
-            decoration: BoxDecoration(
-              color: selected
-                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(16),
-            ),
+          child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: Row(
               children: [
-                Container(
+                SizedBox(
                   width: 40,
                   height: 40,
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withValues(alpha: 0.15)
-                        : Theme.of(context).colorScheme.surfaceContainerHighest,
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
                   child: Icon(
                     icon,
                     color: selected
                         ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).colorScheme.onSurface,
-                    size: 20,
+                    size: 22,
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -656,7 +657,7 @@ class _NavItem extends StatelessWidget {
             icon,
             size: 22,
             color: selected
-                ? Theme.of(context).colorScheme.onSurface
+                ? Theme.of(context).colorScheme.primary
                 : Theme.of(
                     context,
                   ).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
@@ -667,7 +668,7 @@ class _NavItem extends StatelessWidget {
             style: TextStyle(
               fontSize: 11,
               color: selected
-                  ? Theme.of(context).colorScheme.onSurface
+                  ? Theme.of(context).colorScheme.primary
                   : Theme.of(
                       context,
                     ).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
 class DefaultDialerScreen extends StatelessWidget {
   const DefaultDialerScreen({super.key});
 
@@ -17,7 +18,6 @@ class DefaultDialerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -49,20 +49,23 @@ class DefaultDialerScreen extends StatelessWidget {
               ),
               const Spacer(),
               Center(
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
-                      width: 1,
+                child: Material(
+                  color: Colors.transparent,
+                  shape: CircleBorder(
+                    side: BorderSide(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.35),
+                      width: 1.5,
                     ),
                   ),
-                  child: Icon(
-                    Icons.dialpad_rounded,
-                    size: 48,
-                    color: theme.colorScheme.onSurface,
+                  clipBehavior: Clip.antiAlias,
+                  child: SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: Icon(
+                      Icons.dialpad_rounded,
+                      size: 48,
+                      color: theme.colorScheme.primary,
+                    ),
                   ),
                 ),
               ),
@@ -73,8 +76,8 @@ class DefaultDialerScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: _requestDefault,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.onSurface,
-                    foregroundColor: theme.colorScheme.surface,
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28),
                     ),

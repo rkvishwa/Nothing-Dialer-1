@@ -1,6 +1,7 @@
 package com.rkkvishva.nothing_dialer
 
 import android.app.Activity
+import android.app.KeyguardManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
@@ -21,10 +22,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.os.PowerManager
 import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.ImageView
@@ -106,23 +103,12 @@ class InCallActivity : Activity() {
         }
     }
 
-    // Proximity sensor
+    // Proximity sensor — PROXIMITY_SCREEN_OFF_WAKE_LOCK does all the heavy
+    // lifting: when acquired it turns the screen off when the sensor reports
+    // "near" and back on when it reports "far".  We must NOT release it in
+    // onPause because Android fires onPause when the screen goes off, which
+    // would immediately undo the blanking.
     private var proximityWakeLock: PowerManager.WakeLock? = null
-    private var sensorManager: SensorManager? = null
-    private var proximitySensor: Sensor? = null
-
-    private val proximityListener = object : SensorEventListener {
-        override fun onSensorChanged(event: SensorEvent) {
-            if (event.sensor.type == Sensor.TYPE_PROXIMITY) {
-                val distance = event.values[0]
-                val isNear = distance < (proximitySensor?.maximumRange ?: 0f) && distance < 5f
-                Log.d(TAG, "Proximity onSensorChanged: distance=$distance, isNear=$isNear")
-                // PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK handles screen off/on automatically
-                // we just need to acquire/release it correctly.
-            }
-        }
-        override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
-    }
 
     private val callCallback = object : Call.Callback() {
         override fun onStateChanged(call: Call, state: Int) {
@@ -153,14 +139,19 @@ class InCallActivity : Activity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
+            val km = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            km.requestDismissKeyguard(this, null)
         } else {
             @Suppress("DEPRECATION")
             window.addFlags(
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
             )
         }
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        // NOTE: intentionally NOT setting FLAG_KEEP_SCREEN_ON here.
+        // That flag fights the proximity wake-lock and prevents the screen
+        // from turning off when the phone is held to the ear.
 
         
         themeColors = ThemeColors.get(this)
@@ -257,11 +248,29 @@ class InCallActivity : Activity() {
                     PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
                     "NothingDialer:ProximityWakeLock"
                 )
+            } else {
+                Log.w(TAG, "PROXIMITY_SCREEN_OFF_WAKE_LOCK not supported on this device")
             }
-            sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-            proximitySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PROXIMITY)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to init proximity sensor", e)
+        }
+    }
+
+    private fun acquireProximityWakeLock() {
+        if (proximityWakeLock?.isHeld == false) {
+            Log.d(TAG, "Acquiring proximity wake lock")
+            proximityWakeLock?.acquire()
+        }
+    }
+
+    private fun releaseProximityWakeLock() {
+        if (proximityWakeLock?.isHeld == true) {
+            Log.d(TAG, "Releasing proximity wake lock")
+            // RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY (flag 1) tells the system to wait
+            // until the sensor reports "far" before actually turning the screen on.
+            // This avoids a flash-on-then-off glitch when the phone is still near
+            // the ear at the moment we release (e.g. call disconnected).
+            proximityWakeLock?.release(1 /* RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY */)
         }
     }
 
@@ -273,19 +282,12 @@ class InCallActivity : Activity() {
 
         // We only use proximity if NOT on speaker and NOT on bluetooth
         val isReceiver = currentRoute == CallAudioState.ROUTE_EARPIECE
+                || currentRoute == CallAudioState.ROUTE_WIRED_HEADSET
 
         if (shouldSupportProximity && isReceiver) {
-            if (proximityWakeLock?.isHeld == false) {
-                Log.d(TAG, "Acquiring proximity wake lock")
-                proximityWakeLock?.acquire()
-                sensorManager?.registerListener(proximityListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
-            }
+            acquireProximityWakeLock()
         } else {
-            if (proximityWakeLock?.isHeld == true) {
-                Log.d(TAG, "Releasing proximity wake lock")
-                proximityWakeLock?.release()
-                sensorManager?.unregisterListener(proximityListener)
-            }
+            releaseProximityWakeLock()
         }
     }
 
@@ -600,10 +602,9 @@ class InCallActivity : Activity() {
         timerRunning = false; handler.removeCallbacksAndMessages(null)
         try { boundCall?.unregisterCallback(callCallback) } catch (_: Exception) {}
         GlyphInCallService.currentCallListeners.remove(currentCallListener)
-        if (proximityWakeLock?.isHeld == true) {
-            proximityWakeLock?.release()
-        }
-        sensorManager?.unregisterListener(proximityListener)
+        // Final cleanup — always release the wake lock when the activity is
+        // truly destroyed so we never leak it.
+        releaseProximityWakeLock()
         super.onDestroy()
     }
 
@@ -623,6 +624,13 @@ class InCallActivity : Activity() {
             currentRoute = latestAudio.route
             updateControlStates()
         }
+        // Re-acquire the proximity wake lock if we're in an active/dialing call
+        // on earpiece. This handles the case where the screen turned on (user
+        // pulled phone away) and onResume fired.
+        val call = GlyphInCallService.currentCall
+        if (call != null) {
+            updateProximityWakeLock(call.state)
+        }
     }
 
 
@@ -633,12 +641,11 @@ class InCallActivity : Activity() {
         } else {
             MainActivity.isAppInForeground = false
         }
-        // Release wake lock when activity is not in foreground to be safe
-        // though PROXIMITY_SCREEN_OFF_WAKE_LOCK is usually handled by the system
-        if (proximityWakeLock?.isHeld == true) {
-            proximityWakeLock?.release()
-        }
-        sensorManager?.unregisterListener(proximityListener)
+        // IMPORTANT: Do NOT release the proximity wake lock here!
+        // When PROXIMITY_SCREEN_OFF_WAKE_LOCK blanks the screen, Android
+        // fires onPause. Releasing the lock here would immediately un-blank
+        // the screen, defeating the entire purpose. The wake lock is only
+        // released in onDestroy or when the call ends/audio route changes.
         GlyphInCallService.currentCallListeners.remove(currentCallListener)
         GlyphInCallService.audioStateListeners.remove(audioStateListener)
     }
@@ -782,7 +789,7 @@ class InCallActivity : Activity() {
                 msgs.forEachIndexed { index, msg ->
                     addView(TextView(context).apply {
                         text = msg
-                        setTextColor(Color.WHITE)
+                        setTextColor(theme.onSurface)
                         setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
                         setPadding(dp(24), dp(16), dp(24), dp(16))
                         setOnClickListener {
@@ -1069,14 +1076,14 @@ class InCallActivity : Activity() {
                     }
                     
                     addView(TextView(this@InCallActivity).apply {
-                        text = key; setTextColor(Color.WHITE)
+                        text = key; setTextColor(theme.onSurface)
                         setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
                         typeface = Typeface.create("sans-serif", Typeface.NORMAL)
                         gravity = Gravity.CENTER
                     })
                     if (sub.isNotEmpty()) {
                         addView(TextView(this@InCallActivity).apply {
-                            text = sub; setTextColor(Color.parseColor("#A0A0A0"))
+                            text = sub; setTextColor(theme.onSurfaceVariant)
                             setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
                             letterSpacing = 0.05f
                             gravity = Gravity.CENTER

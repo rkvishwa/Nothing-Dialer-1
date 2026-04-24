@@ -1,0 +1,6 @@
+flutter_launcher_icons:
+  android: "launcher_icon_cream"
+  ios: false
+  image_path: "assets/launcher/app_icon_cream.png"
+  adaptive_icon_background: "#F5F1E8"
+  adaptive_icon_foreground: "assets/launcher/app_icon_cream.png"

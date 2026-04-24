@@ -1,7 +1,33 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <!-- The INTERNET permission is required for development. Specifically,
          the Flutter tool needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application>
+        <!-- Same as debug: MainActivity is the sole launcher; aliases removed. -->
+        <activity
+            android:name="com.rkkvishva.nothing_dialer.MainActivity"
+            android:exported="true"
+            android:label="Nothing Dialer (dev)"
+            android:icon="@mipmap/launcher_icon_default"
+            android:roundIcon="@mipmap/launcher_icon_default"
+            tools:node="merge">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity-alias android:name=".LauncherAliasDefault" tools:node="remove" />
+        <activity-alias android:name=".LauncherAliasLight" tools:node="remove" />
+        <activity-alias android:name=".LauncherAliasRed" tools:node="remove" />
+        <activity-alias android:name=".LauncherAliasGrey" tools:node="remove" />
+        <activity-alias android:name=".LauncherAliasCream" tools:node="remove" />
+        <activity-alias android:name=".LauncherAliasOldPhone" tools:node="remove" />
+        <activity-alias android:name=".LauncherAliasOldPhoneLight" tools:node="remove" />
+    </application>
 </manifest>
