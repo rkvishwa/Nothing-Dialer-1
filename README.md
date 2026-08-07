@@ -1,5 +1,13 @@
 # Nothing Dialer
 
+<p align="left">
+  <a href="https://play.google.com/store/apps/details?id=com.rkkvishva.nothing_dialer">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="60" />
+  </a>
+</p>
+
+**Google Play:** [Nothing Dialer 1](https://play.google.com/store/apps/details?id=com.rkkvishva.nothing_dialer)
+
 A full replacement dialer built for **Nothing Phone (1)**. It combines a clean, Material 3 UI with call history, contacts, dual-SIM calling, and Nothing-specific **Glyph** and torch effects. You can set it as the system default phone app for end-to-end call handling and a native in-call screen.
 
 **Device support today:** Nothing Phone (1) is the only model we actively develop and test against. If you use another Nothing phone (Phone (2), Phone (2a), Phone (3), or later), the app may install and partially work, but Glyph layout, hardware detection, and call behavior are not guaranteed. **We welcome contributions** from owners of other Nothing devices to add and maintain support for those models. See [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -161,13 +169,7 @@ Three styles are available under **Settings → Answer method** on the native in
 
 **Other Nothing phones:** Core dialer features may run on other Nothing Android phones, but **Nothing Phone (1) is the supported reference device** for this project. If you have a different Nothing model and want it officially supported, please contribute: test on your hardware, document what works, and open issues or pull requests for Glyph detection, SDK differences, and device-specific fixes. Maintainers merge changes when they are tested and scoped clearly.
 
-Planned: broader Nothing phone support (with community help) and Google Play public release.
-
----
-
-## Closed testing
-
-To join closed testing, request access to **[Nothing Dialer 1 - Testers](https://groups.google.com/u/2/g/nothing-dialer-1---testers)** on Google Groups. If you cannot see conversations yet, contact the group owners or email support@knurdz.org.
+**Install:** [Google Play](https://play.google.com/store/apps/details?id=com.rkkvishva.nothing_dialer) · Planned: broader Nothing phone support with community help.
 
 ---
 

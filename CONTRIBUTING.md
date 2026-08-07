@@ -358,7 +358,7 @@ For call or Glyph issues, logs from a physical Nothing Phone (1) are especially 
 ## Questions
 
 - **GitHub Issues** for bugs and feature discussion
-- **Closed testing group** (see README) for Play-track testers
-- **support@knurdz.org** for tester access issues
+- **[Google Play listing](https://play.google.com/store/apps/details?id=com.rkkvishva.nothing_dialer)** for installs and reviews
+- **support@knurdz.org** for support
 
 Thank you for contributing.

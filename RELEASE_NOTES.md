@@ -1,6 +1,6 @@
 # Nothing Dialer: Release Notes
 
-> **Device support:** Nothing Phone (1) today. Additional Nothing phones and a public Play Store release are planned.
+> **Device support:** Nothing Phone (1) today. Additional Nothing phones are planned. **Install:** [Google Play](https://play.google.com/store/apps/details?id=com.rkkvishva.nothing_dialer).
 
 ---
 
@@ -212,4 +212,3 @@ The first public release of **Nothing Dialer**, a purpose-built dialer for the N
 ## Coming soon
 
 - Support for additional Nothing phones.
-- Official Google Play Store release.
