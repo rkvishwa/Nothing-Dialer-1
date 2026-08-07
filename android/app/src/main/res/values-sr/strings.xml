@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Муте</string>
+    <string name="in_call_keypad">Тастатура</string>
+    <string name="in_call_speaker">Спеакер</string>
+    <string name="in_call_more">Више</string>
+    <string name="in_call_bluetooth">Блуетоотх</string>
+    <string name="in_call_phone">Телефон</string>
+    <string name="in_call_add_call">Додај позив</string>
+    <string name="in_call_change_sim">Промени СИМ</string>
+    <string name="in_call_decline">Одбиј</string>
+    <string name="in_call_answer">Одговори</string>
+    <string name="in_call_message">Порука</string>
+    <string name="in_call_calling">Позивање…</string>
+    <string name="in_call_incoming">Долазни позив</string>
+    <string name="in_call_select_sim">Изаберите СИМ…</string>
+    <string name="in_call_switching_sim">Промена СИМ картице…</string>
+    <string name="in_call_call_ended">Позив је завршен</string>
+    <string name="in_call_calling_via">Позивање преко %1$s</string>
+    <string name="in_call_calling_via_html">Позивање преко &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Изаберите СИМ за овај позив</string>
+    <string name="in_call_drag_answer_decline">Превуците удесно да одговорите · Превуците лево да одбијете</string>
+    <string name="in_call_mobile_number">Мобилни %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (тренутно)</string>
+    <string name="in_call_call_via_from">Позовите преко &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; од</string>
+    <string name="in_call_call_from">Позив од</string>
+    <string name="in_call_unknown">Непознато</string>
+    <string name="in_call_sim_slot">СИМ %1$d</string>
+    <string name="native_select_contact_ringtone">Изаберите мелодију звона за контакт</string>
+    <string name="native_speak_to_search">Говорите за претрагу</string>
+    <string name="native_phone_permission_required">Потребна је дозвола за телефон</string>
+    <string name="native_call_failed">Позив није успео: %1$s</string>
+    <string name="native_call_permission_denied">Дозвола за позив је одбијена</string>
+    <string name="native_already_default_dialer">Већ је подешено као подразумевано бирање бројева</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Demp</string>
+    <string name="in_call_keypad">Sleutelbord</string>
+    <string name="in_call_speaker">Spreker</string>
+    <string name="in_call_more">Meer</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefoon</string>
+    <string name="in_call_add_call">Voeg oproep by</string>
+    <string name="in_call_change_sim">Verander SIM</string>
+    <string name="in_call_decline">Weier</string>
+    <string name="in_call_answer">Antwoord</string>
+    <string name="in_call_message">Boodskap</string>
+    <string name="in_call_calling">Bel tans …</string>
+    <string name="in_call_incoming">Inkomende oproep</string>
+    <string name="in_call_select_sim">Kies SIM...</string>
+    <string name="in_call_switching_sim">Wissel tans SIM …</string>
+    <string name="in_call_call_ended">Oproep beëindig</string>
+    <string name="in_call_calling_via">Bel via %1$s</string>
+    <string name="in_call_calling_via_html">Bel via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Kies SIM vir hierdie oproep</string>
+    <string name="in_call_drag_answer_decline">Sleep regs om te antwoord · Sleep links om te weier</string>
+    <string name="in_call_mobile_number">Selfoon %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Huidig)</string>
+    <string name="in_call_call_via_from">Bel via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; vanaf</string>
+    <string name="in_call_call_from">Bel van</string>
+    <string name="in_call_unknown">Onbekend</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Kies kontakluitoon</string>
+    <string name="native_speak_to_search">Praat om te soek</string>
+    <string name="native_phone_permission_required">Foontoestemming word vereis</string>
+    <string name="native_call_failed">Oproep het misluk: %1$s</string>
+    <string name="native_call_permission_denied">Oproeptoestemming geweier</string>
+    <string name="native_already_default_dialer">Reeds gestel as verstekbeller</string>
+</resources>

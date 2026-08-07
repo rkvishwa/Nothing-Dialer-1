@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Խլացնել</string>
+    <string name="in_call_keypad">Ստեղնաշար</string>
+    <string name="in_call_speaker">խոսնակ</string>
+    <string name="in_call_more">Ավելին</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Հեռախոս</string>
+    <string name="in_call_add_call">Ավելացնել զանգ</string>
+    <string name="in_call_change_sim">Փոխել SIM քարտը</string>
+    <string name="in_call_decline">Անկում</string>
+    <string name="in_call_answer">Պատասխանել</string>
+    <string name="in_call_message">Հաղորդագրություն</string>
+    <string name="in_call_calling">Զանգում…</string>
+    <string name="in_call_incoming">Մուտքային զանգ</string>
+    <string name="in_call_select_sim">Ընտրեք SIM…</string>
+    <string name="in_call_switching_sim">SIM-ի փոխարկում…</string>
+    <string name="in_call_call_ended">Զանգն ավարտվեց</string>
+    <string name="in_call_calling_via">Զանգահարել %1$s համարով</string>
+    <string name="in_call_calling_via_html">Զանգահարել &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; համարով</string>
+    <string name="in_call_choose_sim">Ընտրեք SIM քարտ այս զանգի համար</string>
+    <string name="in_call_drag_answer_decline">Քաշեք աջ՝ պատասխանելու համար · Քաշեք ձախ՝ մերժելու համար</string>
+    <string name="in_call_mobile_number">Բջջային %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (ներկայիս)</string>
+    <string name="in_call_call_via_from">Զանգահարեք &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;-ից</string>
+    <string name="in_call_call_from">Զանգահարեք</string>
+    <string name="in_call_unknown">Անհայտ</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Ընտրեք կոնտակտային զանգ</string>
+    <string name="native_speak_to_search">Խոսեք որոնման համար</string>
+    <string name="native_phone_permission_required">Պահանջվում է հեռախոսի թույլտվություն</string>
+    <string name="native_call_failed">Զանգը ձախողվեց. %1$s</string>
+    <string name="native_call_permission_denied">Զանգի թույլտվությունը մերժվել է</string>
+    <string name="native_already_default_dialer">Արդեն սահմանված է որպես լռելյայն հավաքող</string>
+</resources>

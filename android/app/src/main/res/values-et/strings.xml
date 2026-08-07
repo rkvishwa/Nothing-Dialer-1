@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Vaigista</string>
+    <string name="in_call_keypad">Klaviatuur</string>
+    <string name="in_call_speaker">Kõlar</string>
+    <string name="in_call_more">Rohkem</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Lisa kõne</string>
+    <string name="in_call_change_sim">Vahetage SIM-kaart</string>
+    <string name="in_call_decline">Keeldumine</string>
+    <string name="in_call_answer">Vastus</string>
+    <string name="in_call_message">Sõnum</string>
+    <string name="in_call_calling">Helistamine…</string>
+    <string name="in_call_incoming">Sissetulev kõne</string>
+    <string name="in_call_select_sim">Valige SIM…</string>
+    <string name="in_call_switching_sim">SIM-kaardi vahetamine…</string>
+    <string name="in_call_call_ended">Kõne lõppes</string>
+    <string name="in_call_calling_via">Helistamine numbri %1$s kaudu</string>
+    <string name="in_call_calling_via_html">Helistamine numbri &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; kaudu</string>
+    <string name="in_call_choose_sim">Valige selle kõne jaoks SIM-kaart</string>
+    <string name="in_call_drag_answer_decline">Vastamiseks lohistage paremale · Keeldumiseks lohistage vasakule</string>
+    <string name="in_call_mobile_number">Mobiil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (praegune)</string>
+    <string name="in_call_call_via_from">Helistage numbril &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; alates</string>
+    <string name="in_call_call_from">Helista numbrilt</string>
+    <string name="in_call_unknown">Tundmatu</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Valige kontakti helin</string>
+    <string name="native_speak_to_search">Otsimiseks rääkige</string>
+    <string name="native_phone_permission_required">Vajalik telefoni luba</string>
+    <string name="native_call_failed">Kõne ebaõnnestus: %1$s</string>
+    <string name="native_call_permission_denied">Helistamisluba on keelatud</string>
+    <string name="native_already_default_dialer">Juba määratud vaikevalijaks</string>
+</resources>

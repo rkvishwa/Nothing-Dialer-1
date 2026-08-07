@@ -3,7 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nothing_dialer/l10n/app_localizations.dart';
 import 'sim_picker_sheet.dart';
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
+import '../widgets/dialer_font_scope.dart';
 
 final _nonDigit = RegExp(r'\D');
 final _pasteSanitize = RegExp(r'[^\d\+\*\#]');
@@ -240,8 +244,8 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
       // Long-press 1 → voicemail (placeholder)
       HapticFeedback.heavyImpact();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Speed dial: Voicemail'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).speedDialVoicemail),
           backgroundColor: Color(0xFF1E1E1E),
           duration: Duration(seconds: 2),
         ),
@@ -338,10 +342,13 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
             const SizedBox(width: 24),
             Text(
               label,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+              style: context.dialerTextStyle(
+                DialerFontRole.primary,
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ],
@@ -416,10 +423,13 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
               alignment: Alignment.center,
               child: Text(
                 _getInitials(contact.displayName),
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
+                style: context.dialerTextStyle(
+                  DialerFontRole.primary,
+                  TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
@@ -430,29 +440,37 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
                 children: [
                   Text(
                     contact.displayName,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.primary,
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 2),
                   Row(
                     children: [
                       Text(
-                        'Mobile ',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 14,
+                        AppLocalizations.of(context).mobileLabel,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
-                      // Highlight the matched part simple implementation
                       Text(
                         matchedNumber,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 14,
-                          letterSpacing: 0.5,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 14,
+                            letterSpacing: 0.5,
+                          ),
                         ),
                       ),
                     ],
@@ -474,7 +492,9 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
-    return ValueListenableBuilder<TextEditingValue>(
+    return DialerFontScope(
+      surface: DialerFontSurface.dialpad,
+      child: ValueListenableBuilder<TextEditingValue>(
       valueListenable: _numberController,
       builder: (context, value, dialPadChild) {
         final digits = value.text;
@@ -504,7 +524,7 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
                       if (optionIndex == 0) {
                         return _buildTopOption(
                           Icons.person_add_alt_1_outlined,
-                          'Create new contact',
+                          AppLocalizations.of(context).createNewContact,
                           () {
                             Navigator.pop(context);
                             FlutterContacts.openExternalInsert(
@@ -515,7 +535,7 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
                       } else if (optionIndex == 1) {
                         return _buildTopOption(
                           Icons.person_add_outlined,
-                          'Add to a contact',
+                          AppLocalizations.of(context).addToExistingContactAction,
                           () {
                             Navigator.pop(context);
                             _channel.invokeMethod('addToExistingContact', {
@@ -526,7 +546,7 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
                       } else {
                         return _buildTopOption(
                           Icons.chat_bubble_outline,
-                          'Send a message',
+                          AppLocalizations.of(context).sendMessage,
                           () {
                             Navigator.pop(context);
                             _channel.invokeMethod('openSmsApp', {
@@ -585,6 +605,7 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
         );
       },
       child: _buildDialPad(),
+    ),
     );
   }
 
@@ -658,11 +679,14 @@ class _FloatingDialpadState extends State<_FloatingDialpad> {
                 );
               },
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: len > 12 ? 26 : 36,
-                fontWeight: FontWeight.w400,
-                letterSpacing: hasDigits ? 1.5 : 0,
+              style: context.dialerTextStyle(
+                DialerFontRole.primary,
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: len > 12 ? 26 : 36,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: hasDigits ? 1.5 : 0,
+                ),
               ),
               cursorColor: Theme.of(context).colorScheme.primary,
               cursorWidth: 1.5,
@@ -833,24 +857,30 @@ class _DialKeyState extends State<_DialKey>
               children: [
                 Text(
                   widget.label,
-                  style: TextStyle(
-                    color: widget.label == '*' || widget.label == '#'
-                        ? Theme.of(context).colorScheme.onSurfaceVariant
-                        : Theme.of(context).colorScheme.onSurface,
-                    fontSize: 32,
-                    fontWeight: FontWeight.w400,
-                    height: 1.0,
+                  style: context.dialerTextStyle(
+                    DialerFontRole.dialKey,
+                    TextStyle(
+                      color: widget.label == '*' || widget.label == '#'
+                          ? Theme.of(context).colorScheme.onSurfaceVariant
+                          : Theme.of(context).colorScheme.onSurface,
+                      fontSize: 32,
+                      fontWeight: FontWeight.w400,
+                      height: 1.0,
+                    ),
                   ),
                 ),
                 if (hasSubLabel) ...[
                   const SizedBox(height: 2),
                   Text(
                     widget.subLabel,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 2.0,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.dialKey,
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 2.0,
+                      ),
                     ),
                   ),
                 ],

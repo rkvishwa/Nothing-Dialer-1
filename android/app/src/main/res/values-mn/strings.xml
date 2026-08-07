@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Дууг хаах</string>
+    <string name="in_call_keypad">Товчлуур</string>
+    <string name="in_call_speaker">Илтгэгч</string>
+    <string name="in_call_more">Илүү</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Утас</string>
+    <string name="in_call_add_call">Дуудлага нэмэх</string>
+    <string name="in_call_change_sim">SIM солих</string>
+    <string name="in_call_decline">Татгалзах</string>
+    <string name="in_call_answer">Хариулах</string>
+    <string name="in_call_message">Мессеж</string>
+    <string name="in_call_calling">Дуудаж байна...</string>
+    <string name="in_call_incoming">Ирж буй дуудлага</string>
+    <string name="in_call_select_sim">SIM сонгох...</string>
+    <string name="in_call_switching_sim">SIM-г сольж байна...</string>
+    <string name="in_call_call_ended">Дуудлага дууссан</string>
+    <string name="in_call_calling_via">%1$s-р залгаж байна</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;-р залгаж байна</string>
+    <string name="in_call_choose_sim">Энэ дуудлагад зориулж SIM сонгоно уу</string>
+    <string name="in_call_drag_answer_decline">Хариулахын тулд баруун тийш чирнэ үү · Татгалзахын тулд зүүн тийш чирнэ үү</string>
+    <string name="in_call_mobile_number">Гар утас %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Одоогийн)</string>
+    <string name="in_call_call_via_from">-аас &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;-ээр залгана уу</string>
+    <string name="in_call_call_from">-аас залгах</string>
+    <string name="in_call_unknown">Тодорхойгүй</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Харилцагчийн хонхны аяыг сонгоно уу</string>
+    <string name="native_speak_to_search">Хайлт хийхийн тулд ярь</string>
+    <string name="native_phone_permission_required">Утасны зөвшөөрөл шаардлагатай</string>
+    <string name="native_call_failed">Дуудлага амжилтгүй болсон: %1$s</string>
+    <string name="native_call_permission_denied">Дуудлагын зөвшөөрлийг үгүйсгэв</string>
+    <string name="native_already_default_dialer">Өгөгдмөл залгагчаар аль хэдийн тохируулсан</string>
+</resources>

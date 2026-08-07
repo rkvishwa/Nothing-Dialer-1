@@ -11,6 +11,10 @@ import '../main.dart' as main_app;
 import '../services/contacts_cache.dart';
 import '../services/contacts_compute.dart';
 import '../services/voice_search.dart';
+import 'package:nothing_dialer/l10n/app_localizations.dart';
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
+import '../widgets/dialer_font_scope.dart';
 
 /// Displays phone contacts synced from the device address book.
 class ContactsScreen extends StatefulWidget {
@@ -21,6 +25,11 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
+  Widget _fontScoped(Widget child) => DialerFontScope(
+        surface: DialerFontSurface.contacts,
+        child: child,
+      );
+
   List<Object> _flatItems = []; // 'create_new', section String, or Contact
   int _totalContactsOnDevice = 0;
   bool _loading = true;
@@ -162,9 +171,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
       });
     } on PlatformException catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Call error: ${e.message}'),
+            content: Text(l10n.callError(e.message ?? '')),
             backgroundColor: Theme.of(
               context,
             ).colorScheme.surfaceContainerHighest,
@@ -196,46 +206,60 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (_loading) {
-      return Center(
-        child: CircularProgressIndicator(
-          color: Theme.of(context).colorScheme.onSurface,
-          strokeWidth: 1.5,
+      return _fontScoped(
+        Center(
+          child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.onSurface,
+            strokeWidth: 1.5,
+          ),
         ),
       );
     }
     if (_permissionDenied) {
-      return _EmptyState(
+      return _fontScoped(
+        _EmptyState(
         icon: Icons.contacts,
-        title: 'Permission needed',
-        subtitle: 'Grant contacts permission to see your address book.',
-        buttonLabel: 'Open Settings',
+        title: l10n.permissionNeeded,
+        subtitle: l10n.grantContactsPermission,
+        buttonLabel: l10n.openSettings,
         onButton: openAppSettings,
+      ),
       );
     }
     if (_totalContactsOnDevice == 0) {
-      return const _EmptyState(
+      return _fontScoped(
+        _EmptyState(
         icon: Icons.person_outline,
-        title: 'No contacts found',
-        subtitle: 'Contacts from your device will appear here.',
+        title: l10n.noContactsFound,
+        subtitle: l10n.contactsEmptySubtitle,
+      ),
       );
     }
 
-    return Column(
+    return _fontScoped(
+      Column(
       children: [
         // ─ Search bar ─
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 8, 0, 4),
           child: TextField(
             controller: _searchController,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: 15,
+            style: context.dialerTextStyle(
+              DialerFontRole.primary,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 15,
+              ),
             ),
             decoration: InputDecoration(
-              hintText: 'Search contacts…',
-              hintStyle: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              hintText: l10n.searchContacts,
+              hintStyle: context.dialerTextStyle(
+                DialerFontRole.secondary,
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
               prefixIcon: Icon(
                 Icons.search,
@@ -262,7 +286,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                         size: 20,
                       ),
-                      tooltip: 'Voice search',
+                      tooltip: l10n.voiceSearch,
                       onPressed: () async {
                         final spoken = await VoiceSearch.listenWithFeedback(
                           context,
@@ -300,9 +324,12 @@ class _ContactsScreenState extends State<ContactsScreen> {
             alignment: Alignment.centerLeft,
             child: Text(
               '$_visibleContactCount contacts',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontSize: 11,
+              style: context.dialerTextStyle(
+                DialerFontRole.secondary,
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 11,
+                ),
               ),
             ),
           ),
@@ -327,10 +354,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
                       size: 24,
                     ),
                     title: Text(
-                      'Create new contact',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 15,
+                      l10n.createNewContact,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.primary,
+                        TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 15,
+                        ),
                       ),
                     ),
                     onTap: _addContact,
@@ -340,10 +370,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 6),
                     child: Text(
                       item,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 12,
-                        letterSpacing: 0.8,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.sectionHeader,
+                        TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontSize: 12,
+                          letterSpacing: 0.8,
+                        ),
                       ),
                     ),
                   );
@@ -362,6 +395,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           ),
         ),
       ],
+    ),
     );
   }
 }
@@ -389,17 +423,23 @@ class _ContactTile extends StatelessWidget {
                 children: [
                   Text(
                     contact.displayName,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontSize: 15,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.primary,
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                   if (contact.phones.isNotEmpty)
                     Text(
                       contact.phones.first.number,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.outline,
-                        fontSize: 12,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.secondary,
+                        TextStyle(
+                          color: Theme.of(context).colorScheme.outline,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                 ],
@@ -548,17 +588,23 @@ class _EmptyState extends StatelessWidget {
           SizedBox(height: 16),
           Text(
             title,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 16,
+            style: context.dialerTextStyle(
+              DialerFontRole.primary,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 16,
+              ),
             ),
           ),
           const SizedBox(height: 6),
           Text(
             subtitle,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 13,
+            style: context.dialerTextStyle(
+              DialerFontRole.secondary,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 13,
+              ),
             ),
             textAlign: TextAlign.center,
           ),
@@ -568,8 +614,11 @@ class _EmptyState extends StatelessWidget {
               onPressed: onButton,
               child: Text(
                 buttonLabel!,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
+                style: context.dialerTextStyle(
+                  DialerFontRole.button,
+                  TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
             ),

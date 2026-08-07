@@ -1,0 +1,759 @@
+{
+  "@@locale": "as",
+  "appTitle": "একো নাই ডায়েলাৰ",
+  "settings": "ছেটিংছ",
+  "settingsSearchHint": "সন্ধান ছেটিংছ",
+  "settingsSearchNoResults": "কোনো ছেটিংছ পোৱা নগ'ল",
+  "general": "সাধাৰণ",
+  "theme": "বিষয়বস্তু",
+  "themeSystemDefault": "চিস্টেম অবিকল্পিত",
+  "themeLight": "পাতল",
+  "themeDark": "অন্ধকাৰ",
+  "themeFollowSystem": "চিস্টেম সংহতিসমূহ অনুসৰণ কৰক",
+  "themeAlwaysLight": "সদায় পোহৰৰ থিম ব্যৱহাৰ কৰক",
+  "themeAlwaysDark": "সদায় ডাৰ্ক থিম ব্যৱহাৰ কৰক",
+  "language": "ভাষা",
+  "languageDeviceDefault": "ডিভাইচ অবিকল্পিত",
+  "languagePickerTitle": "ভাষা",
+  "languageSearchHint": "ভাষা সন্ধান কৰক",
+  "font": "ফন্ট",
+  "fontSystem": "ব্যৱস্থাপ্ৰণালীৰ অবিকল্পিত",
+  "fontNdot": "একো নাই (NDot)",
+  "fontSerif": "ৰবটো চেৰিফ",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "ফন্ট ডাউনলোড বিফল। আপোনাৰ সংযোগ পৰীক্ষা কৰক আৰু পুনৰ চেষ্টা কৰক।",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "ফন্ট",
+  "fontPreviewSample": "একো নাই ডায়েলাৰ",
+  "fontAppWide": "এপ ফন্ট",
+  "fontApplyTo": "আবেদন কৰক",
+  "fontApplyEntireApp": "সম্পূৰ্ণ এপ",
+  "fontApplyEntireAppSubtitle": "ইন-কলকে ধৰি সকলোতে একে ফণ্ট",
+  "fontApplyTitlesOnly": "শিৰোনাম আৰু হেডাৰ",
+  "fontApplyTitlesOnlySubtitle": "কেৱল ডাঙৰ শিৰোনাম আৰু অংশৰ হেডাৰ",
+  "fontApplyCustomize": "কাষ্টমাইজ কৰক",
+  "fontApplyCustomizeSubtitle": "প্ৰতি পৰ্দা আৰু লিখনীৰ ধৰণত ফন্ট বাছি লওক",
+  "fontCustomizeSection": "পৰ্দাৰ দ্বাৰা কাষ্টমাইজ কৰক",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "পৃষ্ঠাৰ শিৰোনাম",
+  "fontRoleSectionHeader": "অংশৰ হেডাৰ",
+  "fontRolePrimary": "প্ৰাথমিক পাঠ্য",
+  "fontRoleSecondary": "গৌণ পাঠ্য",
+  "fontRoleButton": "বুটাম",
+  "fontRoleDialKey": "ডায়েলপেড কি'সমূহ",
+  "fontSurfaceRecents": "শেহতীয়া",
+  "fontSurfaceContacts": "যোগাযোগসমূহ",
+  "fontSurfaceSettings": "ছেটিংছ",
+  "fontSurfaceDialpad": "ডায়েলপেড",
+  "fontSurfaceShell": "নেভিগেচন",
+  "fontSurfaceDefaultDialer": "অবিকল্পিত ডায়েলাৰ প্ৰমপ্ট",
+  "fontSurfaceFavourites": "প্ৰিয়",
+  "fontSurfaceBlocked": "ব্লক কৰা নম্বৰ",
+  "fontSurfaceContactDetail": "যোগাযোগৰ বিৱৰণ",
+  "fontSurfaceCallHistory": "কল হিষ্ট্ৰী",
+  "fontSurfaceSheets": "শ্বীট আৰু পিকাৰ",
+  "fontSurfaceInCall": "ইন-কল স্ক্ৰীণ",
+  "fontSubtitleEntireApp": "{font} — সমগ্ৰ এপ",
+  "fontSubtitleTitlesOnly": "⟦০⟧ — কেৱল উপাধি",
+  "fontSubtitleCustomize": "প্ৰতি পৰ্দাত স্বনিৰ্বাচিত",
+  "background": "পৃষ্ঠভূমি",
+  "accent": "উচ্চাৰণ",
+  "lightBackground": "পোহৰৰ পটভূমি",
+  "lightAccent": "পোহৰ উচ্চাৰণ",
+  "darkBackground": "গাঢ় পটভূমি",
+  "darkAccent": "ডাৰ্ক এচেণ্ট",
+  "callBackground": "কল পটভূমি",
+  "appIcon": "এপ আইকন",
+  "answerMethod": "উত্তৰ পদ্ধতি",
+  "answerSlide": "উত্তৰ দিবলৈ স্লাইড কৰক",
+  "answerSlideSubtitle": "বাৰত বাওঁ/সোঁ চুইপ কৰক, যেনে গুগল ফোন",
+  "answerButton": "বুটাম টেপ কৰক",
+  "answerButtonSubtitle": "উত্তৰ বা অস্বীকাৰ বুটামসমূহ টেপ কৰক",
+  "answerHuawei": "হুৱেই ষ্টাইল",
+  "answerHuaweiSubtitle": "উত্তৰ দিবলৈ বৃত্তটো সেউজীয়া ফোনটোলৈ টানি নিব",
+  "answerHuaweiTileSubtitle": "Huawei — সেউজীয়া / ৰঙালৈ টানি নিয়ক",
+  "calling": "ফোন কৰি আছে",
+  "defaultSim": "অবিকল্পিত চিম",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "প্ৰতিবাৰেই সুধিব",
+  "askEveryTimeSubtitle": "প্ৰতিটো কলৰ আগতে চিম পিকাৰ দেখুৱাওক",
+  "simSlot": "চিম {slot}",
+  "noSimCardsFound": "কোনো চিম কাৰ্ড পোৱা নগ’ল",
+  "couldNotLoadSims": "চিম লোড কৰিব পৰা নগ'ল: {error}",
+  "allFavourites": "সকলো প্ৰিয়",
+  "allFavouritesSubtitle": "পুনৰ ক্ৰম, আঁতৰা, আৰু পৰিচয়সমূহৰ পৰা যোগ কৰক",
+  "blockedNumbers": "ব্লক কৰা নম্বৰ",
+  "blockedNumbersSubtitle": "নম্বৰসমূহ চাওক আৰু আনব্লক কৰক",
+  "soundsAndVibration": "শব্দ আৰু কম্পন",
+  "soundsAndVibrationSubtitle": "ৰিংটোন, কম্পন, ডায়েল পেড টোন",
+  "couldNotOpenSettings": "ছেটিংছ খোলিব পৰা নগ'ল: {error}",
+  "frequentlyContacted": "সঘনাই যোগাযোগ কৰা হয়",
+  "numberOfRecords": "ৰেকৰ্ডৰ সংখ্যা",
+  "timePeriod": "সময়ৰ সময়সীমা",
+  "periodLast24Hours": "যোৱা ২৪ ঘণ্টা",
+  "periodLast24HoursSubtitle": "যোৱা দিনৰ ফোন",
+  "periodLast7Days": "যোৱা ৭ দিন",
+  "periodLast7DaysSubtitle": "যোৱা এসপ্তাহৰ পৰা ফোন",
+  "periodLast30Days": "যোৱা ৩০ দিন",
+  "periodLast30DaysSubtitle": "যোৱা এমাহৰ পৰা ফোন",
+  "periodLast12Months": "যোৱা ১২ মাহ",
+  "periodLast12MonthsSubtitle": "যোৱা বছৰৰ পৰা ফোন",
+  "periodAllTime": "সকলো সময়তে",
+  "periodAllTimeSubtitle": "সম্পূৰ্ণ কল ইতিহাস",
+  "frequentMaxOff": "বন্ধ কৰা",
+  "frequentMaxCount": "⟦০⟧ যোগাযোগ",
+  "torchBlink": "টৰ্চ ব্লিংক",
+  "torchIncomingCall": "ইনকামিং কল টৰ্চ",
+  "torchOutgoingCall": "আউটগোয়িং কল টৰ্চ",
+  "torchOngoingCall": "চলি থকা কল টৰ্চ",
+  "torchIncomingInterval": "ইনকামিং ব্লিংক ইন্টাৰভাল",
+  "torchOutgoingInterval": "আউটগোয়িং ব্লিংক ইন্টাৰভাল",
+  "torchOngoingInterval": "চলি থকা ব্লিংক ব্যৱধান",
+  "torchOff": "বন্ধ কৰা",
+  "torchOffIncomingSubtitle": "বাজি থকাৰ সময়ত কোনো টৰ্চ নাই",
+  "torchOffOutgoingSubtitle": "ডায়েল কৰাৰ সময়ত কোনো টৰ্চ নাই",
+  "torchOffOngoingSubtitle": "সক্ৰিয় কলৰ সময়ত কোনো টৰ্চ নাই",
+  "torchFixedInterval": "নিৰ্দিষ্ট ব্যৱধান",
+  "torchFixedIntervalSubtitle": "নিৰ্দিষ্ট গতিৰে টিপটিপিয়াব",
+  "torchIntervalSeconds": "⟦০⟧ ছ",
+  "torchIntervalBlink": "⟦০⟧ চকু টিপিয়াই",
+  "flashlightUnavailable": "এই ডিভাইচত টৰ্চলাইট উপলব্ধ নহয়",
+  "glyphLights": "গ্লিফ লাইট",
+  "glyphCallingAnimation": "গ্লিফ কলিং এনিমেচন",
+  "glyphOngoingAnimation": "গ্লিফ চলি থকা কল এনিমেচন",
+  "glyphNone": "একো নাই",
+  "glyphNoneOutgoingSubtitle": "আউটগোয়িং কলৰ বাবে গ্লাইফ লাইটসমূহ নিষ্ক্ৰিয় কৰক",
+  "glyphNoneInCallSubtitle": "সক্ৰিয়ভাৱে কলত থকাৰ সময়ত গ্লাইফ লাইটসমূহ নিষ্ক্ৰিয় কৰক",
+  "glyphBreathProgress": "উশাহ আৰু অগ্ৰগতি",
+  "glyphBreathProgressSubtitle": "লাইটে উশাহ লয় আৰু লাইন ৬৫ৰ ওপৰত ভৰি পৰে",
+  "glyphAccumulate": "জমা কৰা",
+  "glyphAccumulateSubtitle": "লাইট C1-C4 ত এনিমেচন জমা কৰা",
+  "glyphSingle": "একক",
+  "glyphSingleSubtitle": "C1-C4 ৰ ওপৰেৰে গতি কৰা একক পোহৰ",
+  "glyphBreath": "উশাহ",
+  "glyphBreathSubtitle": "লাইট আৰু গতি বাছি লওক",
+  "glyphSteady": "স্থিৰ",
+  "glyphSteadySubtitle": "নিৰ্বাচিত লাইট জ্বলি থাকে",
+  "breathSettings": "ব্ৰেথ ছেটিংছ",
+  "activeLights": "সক্ৰিয় পোহৰ",
+  "lightsCount": "⟦০⟧ লাইট",
+  "speedSettings": "গতি ছেটিংছ",
+  "speedSettingsDelay": "⟦০⟧ms বিলম্ব",
+  "durationAndSpeed": "সময়সীমা আৰু গতি",
+  "durationSpeedSummary": "{duration}s সময়সীমা, {interval}ms ব্যৱধান",
+  "cancel": "বাতিল কৰক",
+  "done": "কৰা হ’ল",
+  "save": "সঞ্চয় কৰা",
+  "block": "অৱৰুদ্ধ কৰা",
+  "delete": "বিলোপ",
+  "recents": "শেহতীয়া",
+  "contacts": "যোগাযোগসমূহ",
+  "hideFavouritesOnRecents": "শেহতীয়াকৈ প্ৰিয়সমূহ লুকুৱাওক",
+  "showFavouritesOnRecents": "শেহতীয়াকৈ প্ৰিয়সমূহ দেখুৱাওক",
+  "ongoingCall": "চলি থকা ফোন",
+  "setAsDefaultTitle": "SET AS\nঅবিকল্পিত",
+  "setAsDefaultBody": "Nothing Dialer ব্যৱহাৰ কৰিবলৈ, ইয়াক আপোনাৰ অবিকল্পিত ফোন এপ হিচাপে ছেট কৰিব লাগিব। ই আপোনাক কলসমূহ পৰিচালনা কৰিবলৈ, ইতিহাস চাবলৈ, আৰু গ্লিফ এনিমেচনসমূহ ব্যৱহাৰ কৰাৰ অনুমতি দিয়ে।",
+  "setAsDefaultButton": "অবিকল্পিত হিচাপে নিৰ্ধাৰণ কৰক",
+  "nothingDialerBrand": "NOTHING ডায়েলাৰ ১",
+  "favourites": "প্ৰিয়",
+  "addFavourite": "প্ৰিয় যোগ কৰক",
+  "favouritesDrawerHint": "পৰিচয় যোগ কৰিবলে মেনু ব্যৱহাৰ কৰক। ড্ৰয়াৰৰ বাহিৰত টেপ কৰক বা বন্ধ কৰি চুইপ কৰক। তেওঁলোকৰ বিৱৰণৰ পৰা এটা যোগাযোগ আৰম্ভ কৰক, বা শেহতীয়া কল এটা লং-প্ৰেছ কৰক।",
+  "menu": "মেনু",
+  "noFavouritesYet": "এতিয়াও কোনো প্ৰিয় নাই।\nএটা যোগ কৰিবলে মেনু খোলক, বা এটা পৰিচয় ষ্টাৰ কৰক।",
+  "contactsPermissionNeeded": "যোগাযোগৰ অনুমতিৰ প্ৰয়োজন",
+  "chooseContact": "যোগাযোগ বাছক",
+  "noPhone": "ফোন নাই",
+  "pickNumber": "নম্বৰ বাছি লওক",
+  "contactHasNoPhone": "এই যোগাযোগৰ কোনো ফোন নম্বৰ নাই",
+  "blockNumber": "ব্লক নম্বৰ",
+  "enterPhoneNumber": "ফোন নম্বৰ দিয়ক",
+  "unblockedDisplay": "আনব্লক কৰা হৈছে {display}",
+  "couldNotUnblockNumber": "নম্বৰ আনব্লক কৰিব পৰা নগ'ল",
+  "blockedSummary": "{blocked} ব্লক কৰা হৈছে • {matched} মিল আছে",
+  "contactsPermissionMissing": "যোগাযোগৰ অনুমতি অনুপস্থিত। ঠিক কৰিবলৈ টেপ কৰক।",
+  "noBlockedNumbers": "কোনো ব্লক কৰা নম্বৰ নাই",
+  "unknownContact": "অজ্ঞাত যোগাযোগ",
+  "unblock": "আনব্লক কৰক",
+  "permissionNeeded": "অনুমতিৰ প্ৰয়োজন",
+  "grantPhonePermission": "আপোনাৰ কলৰ ইতিহাস চাবলৈ ফোন অনুমতি প্ৰদান কৰক।",
+  "grantContactsPermission": "আপোনাৰ ঠিকনা পুথি চাবলৈ যোগাযোগসমূহক অনুমতি দিয়ক।",
+  "openSettings": "ছেটিংছ খোলক",
+  "tryAgain": "আকৌ এবাৰ চেষ্টা কৰক",
+  "couldNotLoadContacts": "পৰিচয়সমূহ লোড কৰিব পৰা নগ'ল",
+  "contactsLoadError": "আপোনাৰ ঠিকনা বহী পঢ়ি কিবা ভুল হ’ল।",
+  "noContactsFound": "কোনো যোগাযোগ পোৱা নগ'ল",
+  "contactsEmptySubtitle": "আপোনাৰ ডিভাইচৰ পৰা যোগাযোগসমূহ ইয়াত দেখা যাব।",
+  "searchContacts": "যোগাযোগ অনুসন্ধান...",
+  "searchRecentCalls": "শেহতীয়া কলসমূহ সন্ধান কৰক",
+  "fromContacts": "যোগাযোগৰ পৰা",
+  "recentsSearchSection": "শেহতীয়াকৈ সন্ধান কৰা হৈছে",
+  "recentsSearchShowContacts": "সন্ধানত যোগাযোগসমূহ দেখুৱাওক",
+  "recentsSearchShowContactsSubtitle": "শেহতীয়া সন্ধান কৰাৰ সময়ত, কল ইতিহাসৰ ফলাফলৰ তলত আপোনাৰ ঠিকনা পুথিৰ পৰা মিল থকা লোককো দেখুৱাওক।",
+  "voiceSearch": "কণ্ঠৰ সন্ধান",
+  "createNewContact": "নতুন যোগাযোগ সৃষ্টি কৰক",
+  "callError": "কল ত্ৰুটি: {error}",
+  "noRecentCalls": "শেহতীয়াকৈ কোনো ফোন নাই",
+  "callHistoryEmpty": "আপোনাৰ কল হিষ্ট্ৰী ইয়াত ওলাব।",
+  "loadMore": "অধিক লোড কৰক",
+  "frequentlyContactedHeader": "সঘনাই যোগাযোগ কৰা হয়",
+  "recentHistory": "শেহতীয়া ইতিহাস",
+  "noFavouritesRecentsHint": "এতিয়াও কোনো প্ৰিয় নাই। এটা পৰিচয় ষ্টাৰ কৰক, এটা কল দীঘলীয়া টিপক, বা প্ৰিয়সমূহ টেব ব্যৱহাৰ কৰক।",
+  "copyNumber": "নম্বৰ কপি কৰক",
+  "editNumberBeforeCall": "কল কৰাৰ আগতে নম্বৰ সম্পাদনা কৰক",
+  "removeFromFavourites": "প্ৰিয়ৰ পৰা আঁতৰাই পেলাওক",
+  "addToFavourites": "প্ৰিয়ত যোগ কৰক",
+  "blockNumberQuestion": "ব্লক নম্বৰ?",
+  "blockNumberConfirm": "আপুনি আৰু {number} ৰ পৰা ফোন বা টেক্সট লাভ নকৰিব।",
+  "blocked": "ব্লক কৰা হৈছে",
+  "couldNotBlock": "ব্লক কৰিব পৰা নগ'ল",
+  "contactNotOnDevice": "এই ডিভাইচত যোগাযোগ সংৰক্ষণ কৰা হোৱা নাই",
+  "unblocked": "আনব্লক কৰা হৈছে",
+  "numberCopied": "নম্বৰ কপি কৰা হৈছে",
+  "showLess": "কম দেখুৱাওক",
+  "showAllTimes": "সকলো সময়তে দেখুৱাওক",
+  "mostRecent": "শেহতীয়া · {time}",
+  "videoCall": "ভিডিঅ' কল",
+  "couldNotPlaceVideoCall": "ভিডিঅ' কল কৰিব পৰা নগ'ল",
+  "message": "বাৰ্তা",
+  "couldNotOpenMessaging": "বাৰ্তা প্ৰেৰণ এপ খোলিব পৰা নগ'ল",
+  "history": "ইতিহাস",
+  "viewContact": "যোগাযোগ চাওক",
+  "addToContact": "যোগাযোগত যোগ কৰক",
+  "callTypeMissed": "মিছড",
+  "callTypeRejected": "নাকচ কৰা হৈছে",
+  "callTypeIncoming": "ইনকামিং",
+  "callTypeOutgoing": "বহিৰ্গামী",
+  "today": "আজি",
+  "yesterday": "কালি",
+  "justNow": "মাত্ৰ এতিয়াই",
+  "minutesAgo": "⟦০⟧ মিনিট আগতে",
+  "hoursAgo": "⟦০⟧ ঘন্টা আগতে",
+  "filterAll": "আটাইবোৰ",
+  "filterMissed": "মিছড",
+  "filterContacts": "যোগাযোগসমূহ",
+  "filterNonContacts": "যোগাযোগহীন",
+  "iconUpdated": "আইকন আপডেট কৰা হৈছে। আপোনাৰ হোম স্ক্ৰীণ সতেজ হ'বলৈ অলপ সময় লাগিব পাৰে।",
+  "iconSavedRelease": "পছন্দ সংৰক্ষণ কৰা হৈছে। হোম পৰ্দা আইকন মুক্তি বিল্ডসমূহত আপডেইট হয়।",
+  "couldNotChangeIcon": "আইকন সলনি কৰিব পৰা নগ'ল: {error}",
+  "launcherClassicBlack": "ক্লাসিক (ক'লা)",
+  "launcherLight": "পাতল",
+  "launcherNothingRed": "ৰঙা একো নাই",
+  "launcherDarkGrey": "গাঢ় ধূসৰ",
+  "launcherCream": "ক্ৰীম",
+  "launcherRetroPhone": "ৰেট্ৰ' ফোন",
+  "launcherRetroPhoneLight": "ৰেট্ৰ' ফোন (লাইট)",
+  "voiceSearchUnavailable": "এই ডিভাইচত ভয়েচ চাৰ্চ উপলব্ধ নহয়।",
+  "voiceSearchFailed": "ভয়েচ সন্ধান বিফল: {error}",
+  "customColor": "অনুকুলন কৰা",
+  "selectColor": "ৰং নিৰ্বাচন কৰক",
+  "reset": "ৰিছেট কৰক",
+  "simPickerTitle": "চিম বাছক",
+  "simChooseForCall": "এই কলৰ বাবে চিম বাছক",
+  "defaultSimAsk": "প্ৰতিবাৰেই সুধিব",
+  "defaultSimFixed": "চিম {slot}",
+  "contactDetails": "যোগাযোগৰ সবিশেষ",
+  "call": "কল কৰা",
+  "share": "ভাগ-বতৰা কৰা",
+  "favourite": "প্ৰিয়",
+  "unfavourite": "অপ্ৰিয়",
+  "blockContact": "যোগাযোগ বন্ধ কৰক",
+  "unblockContact": "যোগাযোগ আনব্লক কৰক",
+  "deleteContact": "যোগাযোগ মচি পেলাওক",
+  "phone": "ফোন",
+  "email": "ইমেইল",
+  "ringtone": "ৰিংটোন",
+  "defaultRingtone": "ডিফল্ট",
+  "simForContact": "এই যোগাযোগৰ বাবে চিম",
+  "callHistoryTitle": "কল হিষ্ট্ৰী",
+  "noCallsWithNumber": "এই নম্বৰৰ সৈতে কোনো ফোন নাই",
+  "durationMinutesSeconds": "⟦০⟧মিটাৰ ⟦১⟧ছেকেণ্ড",
+  "durationSeconds": "⟦০⟧s",
+  "glyphAnimationStyle": "গ্লিফ এনিমেচন",
+  "inCallGlyphAnimationStyle": "ইন-কল গ্লিফ এনিমেচন",
+  "recordsOff": "বন্ধ কৰা",
+  "recordsCount": "⟦০⟧",
+  "pickDefaultSim": "অবিকল্পিত চিম",
+  "nothingPhoneOnly": "একো নাই কেৱল ফোন",
+  "nothingPhoneOnlySubtitle": "গ্লিফ বৈশিষ্ট্যসমূহৰ বাবে এটা Nothing Phone ৰ প্ৰয়োজন",
+  "custom": "অনুকুলন কৰা",
+  "presetColorHex": "প্ৰিছেট · {hex}",
+  "customColorHex": "কাষ্টম · {hex}",
+  "oneContact": "১ যোগাযোগ",
+  "upToContacts": "{count} যোগাযোগলৈকে",
+  "answerButtonTapSubtitle": "উত্তৰ দিবলৈ বুটাম টিপক",
+  "filterCalls": "কলসমূহ ফিল্টাৰ কৰক",
+  "filterTooltip": "ফিল্টাৰ কৰক",
+  "settingsTooltip": "ছেটিংছ",
+  "filterAllSubtitle": "সম্পূৰ্ণ কল লগ",
+  "filterMissedSubtitle": "মিছ আৰু প্ৰত্যাখ্যান",
+  "filterContactsSubtitle": "কলসমূহ এটা সংৰক্ষিত যোগাযোগৰ সৈতে মিল খাইছিল",
+  "filterNonContactsSubtitle": "আপোনাৰ ঠিকনা বহীত নথকা নম্বৰ",
+  "ongoingCallWithDetail": "চলি থকা কল: {detail}",
+  "defaultSimForCalls": "কলৰ বাবে অবিকল্পিত চিম",
+  "blinkInterval": "ব্লিংক ইন্টাৰভাল",
+  "close": "বন্ধ",
+  "frequentlyContactedInfoBody": "আপুনি বাছি লোৱা সময়সীমাৰ প্ৰতিটো নম্বৰৰ সৈতে আপুনি কিমান ইনকামিং, আউটগোয়িং, মিছড, বা প্ৰত্যাখ্যান কল কৰিছিল তাৰ ওপৰত ভিত্তি কৰি শেহতীয়া টেবৰ ওপৰত আপোনাৰ সৰ্বাধিক কল কৰা ফোন নম্বৰসমূহ দেখুৱায়।\n\nৰেকৰ্ডসমূহৰ সংখ্যা: এইটো বন্ধ কৰিবলে 0 লে সংহতি কৰক। 1–20 ব্যৱহাৰ কৰক দেখুৱাবলৈ যে বহুতো শীৰ্ষ সংস্পৰ্শ।\n\nসময়সীমা কেৱল তেতিয়াহে প্ৰযোজ্য যেতিয়া অন্ততঃ এটা সংস্পৰ্শ দেখুওৱা হয়।",
+  "breathSettingsSpeedSummary": "⟦০⟧ লাইট, ⟦১⟧ms গতি",
+  "deleteContactQuestion": "যোগাযোগ মচি পেলাওক?",
+  "deleteContactBody": "এই যোগাযোগ আপোনাৰ ডিভাইচৰ পৰা স্থায়ীভাৱে মচি পেলোৱা হ'ব।",
+  "blockContactQuestion": "যোগাযোগ বন্ধ কৰক?",
+  "unblockContactQuestion": "যোগাযোগ আনব্লক কৰক?",
+  "blockContactBody": "এই যোগাযোগৰ পৰা আপুনি আৰু ফোন বা টেক্সট লাভ নকৰিব।",
+  "unblockContactBody": "এই যোগাযোগৰ পৰা আপুনি ফোন আৰু টেক্সট লাভ কৰিবলৈ আৰম্ভ কৰিব।",
+  "contactBlocked": "যোগাযোগ ব্লক কৰা হৈছে",
+  "contactUnblocked": "যোগাযোগ আনব্লক কৰা হৈছে",
+  "noPhoneNumbersToBlock": "ব্লক কৰিবলৈ কোনো ফোন নম্বৰ নাই",
+  "simSameAsSystem": "ব্যৱস্থাৰ দৰেই",
+  "simSameAsSystemSubtitle": "ছেটিংছত অবিকল্পিত চিম অনুসৰণ কৰে",
+  "simAskEveryTimeForContact": "এই যোগাযোগৰ বাবে সদায় চিম পিকাৰ দেখুৱাওক",
+  "ringtoneSetForContact": "এই যোগাযোগৰ বাবে গোলকীয়ভাৱে ছেট কৰা ৰিংটোন",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "ৰিংটোন বাছি লোৱাত ব্যৰ্থ: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "ত্ৰুটি: {error}",
+  "noCallHistoryFound": "কোনো কল হিষ্ট্ৰী পোৱা নগ’ল",
+  "speedDialVoicemail": "স্পীড ডায়েল: ভইচমেইল",
+  "shareContactSubject": "যোগাযোগ: {name}",
+  "contactInfo": "যোগাযোগৰ তথ্য",
+  "dontAskAgainSim": "আৰু সুধিব নালাগে",
+  "simDontAskAgainSubtitle": "এই চিম অবিকল্পিত হিচাপে ব্যৱহাৰ কৰক (সংহতিসমূহত পৰিবৰ্তন কৰক)",
+  "addContact": "যোগাযোগ যোগ কৰক",
+  "createContact": "যোগাযোগ সৃষ্টি কৰক",
+  "paste": "পেষ্ট কৰক",
+  "clear": "পৰিষ্কাৰ",
+  "returnToCall": "কললৈ উভতি যাওক",
+  "numberOfRecordsTitle": "ৰেকৰ্ডৰ সংখ্যা",
+  "recordsPickerSubtitle": "সঘনাই যোগাযোগ কৰা কিমানটা প্ৰৱেশ দেখুৱাব (০ = বন্ধ)",
+  "torchInfoTitle": "টৰ্চৰ টিপটিপিয়া",
+  "torchInfoBody": "ইনকামিং, আউটগোয়িং, বা চলি থকা কলৰ সময়ত কেমেৰা ফ্লেছ ব্লিংক কৰে। গ্লিফ লাইটৰ পৰা স্বাধীন।",
+  "glyphMapTitle": "গ্লিফ বিন্যাস",
+  "glyphMapBody": "একো নাই ফোন ১ গ্লিফ এল ই ডি জ'ন। আউটগোয়িং আৰু ইন-কল এনিমেচনে এই চেনেলসমূহ ব্যৱহাৰ কৰে।",
+  "answerMethodTitle": "উত্তৰ পদ্ধতি",
+  "glyphOutgoingCallStyleTitle": "আউটগোয়িং কল ষ্টাইল",
+  "glyphInCallAnimationTitle": "গ্লিফ ইন-কল এনিমেচন",
+  "themePickerTitle": "বিষয়বস্তু",
+  "torchIncomingTitle": "ইনকামিং কল টৰ্চ",
+  "torchOutgoingTitle": "আউটগোয়িং কল টৰ্চ",
+  "torchOngoingTitle": "চলি থকা কল টৰ্চ",
+  "timePeriodTitle": "সময়ৰ সময়সীমা",
+  "ok": "ঠিক আছে",
+  "confirmDeleteCall": "ইতিহাসৰ পৰা এই কলটো মচি পেলাওক?",
+  "confirmDeleteAllCalls": "এই নম্বৰেৰে সকলো কল ডিলিট কৰক?",
+  "whatsapp": "হোৱাটছএপ",
+  "sendMessage": "এটা বাৰ্তা প্ৰেৰণ কৰক",
+  "addToExistingContactAction": "এটা যোগাযোগত যোগ কৰক",
+  "mobileLabel": "ম’বাইল",
+  "callingSimForContactTitle": "এই যোগাযোগৰ বাবে চিমলৈ ফোন কৰা",
+  "contactSettings": "যোগাযোগৰ ছেটিংছ",
+  "setCallingSim": "কলিং চিম ছেট কৰক",
+  "contactRingtone": "যোগাযোগ ৰিংটোন",
+  "shareContact": "যোগাযোগ শ্বেয়াৰ কৰক",
+  "blockNumbers": "ব্লক নম্বৰ",
+  "unblockNumbers": "নম্বৰ আনব্লক কৰক",
+  "connectedApps": "সংযুক্ত এপসমূহ",
+  "simNotSet": "ছেট কৰা হোৱা নাই",
+  "ringtoneDefault": "ডিফল্ট",
+  "customRingtone": "অনুকুলন কৰা",
+  "aboutSection": "বিষয়ে",
+  "aboutFeedbackSection": "সম্পৰ্কে & মতামত",
+  "aboutDescription": "একো নাই ডায়েলাৰ মুক্ত উৎস। যদি আপুনি এজন ডেভেলপাৰ, আপুনি ক'ডটো অন্বেষণ কৰিবলৈ আৰু অৰিহণা যোগাবলৈ আদৰণি জনোৱা হৈছে।",
+  "aboutViewSource": "GitHub ত চাওক",
+  "aboutRepositoryHost": "github.com/rkvishwa/একো নাই-ডায়েলাৰ-১",
+  "aboutCouldNotOpenLink": "লিংক খোলিব পৰা নগ'ল",
+  "reviewSection": "পুনৰীক্ষণ",
+  "reviewDescription": "Nothing Dialer উপভোগ কৰি আছেনে? গুগল প্লেত আপোনাৰ ৰেটিঙে আনক এপটো বিচাৰি উলিয়াবলৈ সহায় কৰে।",
+  "reviewRateOnPlay": "গুগল প্লেত ৰেট কৰক",
+  "reviewRateOnPlaySubtitle": "এপটো এৰি নোযোৱাকৈ এটা ৰেটিং এৰি দিয়ক",
+  "reviewCouldNotOpen": "গুগল প্লে খোলিব পৰা নগ’ল",
+  "breathSpeed": "উশাহৰ গতি",
+  "breathSpeedBlinkHint": "তলৰ = টিপটিপিয়া, উচ্চ = লেহেমীয়া উশাহ",
+  "speedSliderHint": "নিম্ন = দ্ৰুত, উচ্চ = লেহেমীয়া",
+  "swatchDefault": "ডিফল্ট",
+  "customAccentColorPicker": "কাষ্টম উচ্চাৰণ ৰং",
+  "customLightBackgroundPicker": "কাষ্টম পোহৰৰ পটভূমি",
+  "customDarkBackgroundPicker": "কাষ্টম গাঢ় পটভূমি",
+  "customCallBackgroundPicker": "কাষ্টম কল পটভূমি",
+  "ongoingCallStyleTitle": "চলি থকা কল ষ্টাইল",
+  "glyphMapUnavailable": "গ্লিফ মেপ উপলব্ধ নহয়",
+  "animationDelayRange": "এনিমেচন বিলম্ব (1s - 10s)",
+  "animationDelayRangeSingle": "এনিমেচন বিলম্ব (0.1s - 10s)",
+  "inCallMute": "নিঃশব্দ",
+  "inCallKeypad": "কিপেড",
+  "inCallSpeaker": "বক্তা",
+  "inCallMore": "অধিক",
+  "inCallBluetooth": "ব্লুটুথ",
+  "inCallPhone": "ফোন",
+  "inCallAddCall": "কল যোগ কৰক",
+  "inCallChangeSim": "চিম সলনি কৰক",
+  "inCallDecline": "অস্বীকাৰ কৰা",
+  "inCallAnswer": "উত্তৰ",
+  "inCallMessage": "বাৰ্তা",
+  "inCallCalling": "কলিং...",
+  "inCallIncoming": "ইনকামিং কল",
+  "inCallSelectSim": "SIM নির্বাচন করুন...",
+  "inCallSwitchingSim": "SIM চুইচিং...",
+  "inCallCallEnded": "কল শেষ হ’ল",
+  "inCallCallingVia": "{sim} ৰ জৰিয়তে ফোন কৰা",
+  "inCallCallingViaHtml": "<b>{sim}</b> ৰ জৰিয়তে ফোন কৰা",
+  "inCallChooseSim": "এই কলৰ বাবে চিম বাছক",
+  "inCallDragAnswerDecline": "উত্তৰ দিবলৈ সোঁফালে টানিব · অস্বীকাৰ কৰিবলৈ বাওঁফালে টানিব",
+  "inCallMobileNumber": "মোবাইল {number}",
+  "inCallAudioRouteCurrent": "{label} (বৰ্তমান)",
+  "inCallCallViaFrom": "<b>{sim}</b> ৰ জৰিয়তে ফোন কৰক",
+  "inCallCallFrom": "পৰা ফোন কৰক",
+  "inCallUnknown": "অজ্ঞাত",
+  "selectContactRingtone": "যোগাযোগ ৰিংটোন নিৰ্বাচন কৰক",
+  "speakToSearchPrompt": "সন্ধান কৰিবলৈ কথা কওক",
+  "phonePermissionRequired": "ফোন অনুমতিৰ প্ৰয়োজন",
+  "callFailed": "কল বিফল: {error}",
+  "callPermissionDenied": "কলৰ অনুমতি নাকচ কৰা হৈছে",
+  "alreadyDefaultDialer": "ইতিমধ্যে অবিকল্পিত ডায়েলাৰ হিচাপে সংহতি কৰা হৈছে",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

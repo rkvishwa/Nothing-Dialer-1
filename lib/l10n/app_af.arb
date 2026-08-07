@@ -1,0 +1,759 @@
+{
+  "@@locale": "af",
+  "appTitle": "Niks Dialer",
+  "settings": "Instellings",
+  "settingsSearchHint": "Soek instellings",
+  "settingsSearchNoResults": "Geen instellings gevind nie",
+  "general": "Algemeen",
+  "theme": "Tema",
+  "themeSystemDefault": "Stelsel verstek",
+  "themeLight": "Lig",
+  "themeDark": "Donker",
+  "themeFollowSystem": "Volg stelselinstellings",
+  "themeAlwaysLight": "Gebruik altyd ligte tema",
+  "themeAlwaysDark": "Gebruik altyd donker tema",
+  "language": "Taal",
+  "languageDeviceDefault": "Toestel verstek",
+  "languagePickerTitle": "Taal",
+  "languageSearchHint": "Soek tale",
+  "font": "Lettertipe",
+  "fontSystem": "Stelsel verstek",
+  "fontNdot": "Niks (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Kon nie lettertipe aflaai nie. Gaan jou verbinding na en probeer weer.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Lettertipe",
+  "fontPreviewSample": "Niks Dialer",
+  "fontAppWide": "App font",
+  "fontApplyTo": "Doen aansoek by",
+  "fontApplyEntireApp": "Hele toepassing",
+  "fontApplyEntireAppSubtitle": "Dieselfde lettertipe oral, insluitend in-oproep",
+  "fontApplyTitlesOnly": "Titels en opskrifte",
+  "fontApplyTitlesOnlySubtitle": "Slegs groot titels en afdelingopskrifte",
+  "fontApplyCustomize": "Pasmaak",
+  "fontApplyCustomizeSubtitle": "Kies lettertipe per skerm en tekstipe",
+  "fontCustomizeSection": "Pasmaak volgens skerm",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Bladsy titel",
+  "fontRoleSectionHeader": "Afdelingopskrif",
+  "fontRolePrimary": "Primêre teks",
+  "fontRoleSecondary": "Sekondêre teks",
+  "fontRoleButton": "Knoppies",
+  "fontRoleDialKey": "Dialpad-sleutels",
+  "fontSurfaceRecents": "Onlangse",
+  "fontSurfaceContacts": "Kontakte",
+  "fontSurfaceSettings": "Instellings",
+  "fontSurfaceDialpad": "Dialpad",
+  "fontSurfaceShell": "Navigasie",
+  "fontSurfaceDefaultDialer": "Verstek oproeper-opdrag",
+  "fontSurfaceFavourites": "Gunstelinge",
+  "fontSurfaceBlocked": "Geblokkeerde nommers",
+  "fontSurfaceContactDetail": "Kontakbesonderhede",
+  "fontSurfaceCallHistory": "Oproepgeskiedenis",
+  "fontSurfaceSheets": "Blaaie en plukkers",
+  "fontSurfaceInCall": "In-oproep skerm",
+  "fontSubtitleEntireApp": "{font} — hele toepassing",
+  "fontSubtitleTitlesOnly": "{font} — slegs titels",
+  "fontSubtitleCustomize": "Pasgemaak per skerm",
+  "background": "Agtergrond",
+  "accent": "Aksent",
+  "lightBackground": "Ligte agtergrond",
+  "lightAccent": "Ligte aksent",
+  "darkBackground": "Donker agtergrond",
+  "darkAccent": "Donker aksent",
+  "callBackground": "Oproep agtergrond",
+  "appIcon": "App-ikoon",
+  "answerMethod": "Antwoord metode",
+  "answerSlide": "Skuif om te antwoord",
+  "answerSlideSubtitle": "Swiep links/regs op die balk, soos Google Phone",
+  "answerButton": "Knoppie tik",
+  "answerButtonSubtitle": "Tik op antwoord of weier-knoppies",
+  "answerHuawei": "Huawei-styl",
+  "answerHuaweiSubtitle": "Sleep die sirkel na die groen foon om te antwoord",
+  "answerHuaweiTileSubtitle": "Huawei — sleep na groen / rooi",
+  "calling": "Roep",
+  "defaultSim": "Verstek SIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Vra elke keer",
+  "askEveryTimeSubtitle": "Wys SIM-kieser voor elke oproep",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "Geen SIM-kaarte gevind nie",
+  "couldNotLoadSims": "Kon nie SIM's laai nie: {error}",
+  "allFavourites": "Alle gunstelinge",
+  "allFavouritesSubtitle": "Herrangskik, verwyder en voeg by kontakte uit",
+  "blockedNumbers": "Geblokkeerde nommers",
+  "blockedNumbersSubtitle": "Bekyk en deblokkeer nommers",
+  "soundsAndVibration": "Klanke en vibrasie",
+  "soundsAndVibrationSubtitle": "Luitoon, vibrasie, skakelbordtone",
+  "couldNotOpenSettings": "Kon nie instellings oopmaak nie: {error}",
+  "frequentlyContacted": "Gereeld gekontak",
+  "numberOfRecords": "Aantal rekords",
+  "timePeriod": "Tydsperiode",
+  "periodLast24Hours": "Laaste 24 uur",
+  "periodLast24HoursSubtitle": "Oproepe van die afgelope dag",
+  "periodLast7Days": "Laaste 7 dae",
+  "periodLast7DaysSubtitle": "Oproepe van die afgelope week",
+  "periodLast30Days": "Laaste 30 dae",
+  "periodLast30DaysSubtitle": "Oproepe van die afgelope maand",
+  "periodLast12Months": "Laaste 12 maande",
+  "periodLast12MonthsSubtitle": "Oproepe van die afgelope jaar",
+  "periodAllTime": "Alle tye",
+  "periodAllTimeSubtitle": "Volledige oproepgeskiedenis",
+  "frequentMaxOff": "Af",
+  "frequentMaxCount": "{count} kontakte",
+  "torchBlink": "Toorts knipper",
+  "torchIncomingCall": "Inkomende oproep fakkel",
+  "torchOutgoingCall": "Uitgaande oproep fakkel",
+  "torchOngoingCall": "Deurlopende oproep fakkel",
+  "torchIncomingInterval": "Inkomende flikkerinterval",
+  "torchOutgoingInterval": "Uitgaande flikkerinterval",
+  "torchOngoingInterval": "Deurlopende flikkerinterval",
+  "torchOff": "Af",
+  "torchOffIncomingSubtitle": "Geen fakkel terwyl dit lui nie",
+  "torchOffOutgoingSubtitle": "Geen fakkel terwyl jy skakel nie",
+  "torchOffOngoingSubtitle": "Geen fakkel tydens aktiewe oproep nie",
+  "torchFixedInterval": "Vaste interval",
+  "torchFixedIntervalSubtitle": "Knipper teen 'n vasgestelde spoed",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} flikker",
+  "flashlightUnavailable": "Flitslig nie beskikbaar op hierdie toestel nie",
+  "glyphLights": "Glyph-ligte",
+  "glyphCallingAnimation": "Glyph-oproep-animasie",
+  "glyphOngoingAnimation": "Glyph deurlopende oproep animasie",
+  "glyphNone": "Geen",
+  "glyphNoneOutgoingSubtitle": "Deaktiveer Glyph-ligte vir uitgaande oproepe",
+  "glyphNoneInCallSubtitle": "Deaktiveer Glyph-ligte terwyl u aktief op oproep is",
+  "glyphBreathProgress": "Asem en vordering",
+  "glyphBreathProgressSubtitle": "Ligte asemhaal terwyl lyn oor 65s vol word",
+  "glyphAccumulate": "Akkumuleer",
+  "glyphAccumulateSubtitle": "Akkumulerende animasie op ligte C1-C4",
+  "glyphSingle": "Enkellopend",
+  "glyphSingleSubtitle": "Enkele lig wat oor C1-C4 beweeg",
+  "glyphBreath": "Asem",
+  "glyphBreathSubtitle": "Kies ligte en spoed",
+  "glyphSteady": "Bestendig",
+  "glyphSteadySubtitle": "Geselekteerde ligte bly aan",
+  "breathSettings": "Asem instellings",
+  "activeLights": "Aktiewe ligte",
+  "lightsCount": "{count} ligte",
+  "speedSettings": "Spoedinstellings",
+  "speedSettingsDelay": "{ms}ms vertraging",
+  "durationAndSpeed": "Duur en spoed",
+  "durationSpeedSummary": "{duration}s duur, {interval}ms interval",
+  "cancel": "Kanselleer",
+  "done": "Klaar",
+  "save": "Stoor",
+  "block": "Blok",
+  "delete": "Vee uit",
+  "recents": "Onlangse",
+  "contacts": "Kontakte",
+  "hideFavouritesOnRecents": "Versteek gunstelinge op Recents",
+  "showFavouritesOnRecents": "Wys gunstelinge op Recents",
+  "ongoingCall": "Deurlopende oproep",
+  "setAsDefaultTitle": "STEL AS\nVERSTAND",
+  "setAsDefaultBody": "Om Nothing Dialer te gebruik, moet dit as jou verstekfoontoepassing gestel word. Dit laat jou toe om oproepe te bestuur, geskiedenis te sien en Glyph-animasies te gebruik.",
+  "setAsDefaultButton": "STEL AS VERSTAND",
+  "nothingDialerBrand": "NIKS DIALER 1",
+  "favourites": "Gunstelinge",
+  "addFavourite": "Voeg gunsteling by",
+  "favouritesDrawerHint": "Gebruik die kieslys om kontakte by te voeg. Tik buite die laai of swiep dit toe. Ster 'n kontak uit hul besonderhede, of druk lank 'n oproep in Onlangse.",
+  "menu": "Spyskaart",
+  "noFavouritesYet": "Nog geen gunstelinge nie.\nMaak die kieslys oop om een ​​by te voeg, of ster 'n kontak.",
+  "contactsPermissionNeeded": "Kontaktoestemming benodig",
+  "chooseContact": "Kies kontak",
+  "noPhone": "Geen foon nie",
+  "pickNumber": "Kies nommer",
+  "contactHasNoPhone": "Hierdie kontak het geen telefoonnommer nie",
+  "blockNumber": "Bloknommer",
+  "enterPhoneNumber": "Voer telefoonnommer in",
+  "unblockedDisplay": "Gedeblokkeer {display}",
+  "couldNotUnblockNumber": "Kon nie nommer deblokkeer nie",
+  "blockedSummary": "{blocked} geblokkeer • {matched} ooreenstem",
+  "contactsPermissionMissing": "Kontaktoestemming ontbreek. Tik om reg te maak.",
+  "noBlockedNumbers": "Geen geblokkeerde nommers nie",
+  "unknownContact": "Onbekende kontak",
+  "unblock": "Deblokkeer",
+  "permissionNeeded": "Toestemming benodig",
+  "grantPhonePermission": "Gee foontoestemming om jou oproepgeskiedenis te sien.",
+  "grantContactsPermission": "Gee kontakte toestemming om jou adresboek te sien.",
+  "openSettings": "Maak Instellings oop",
+  "tryAgain": "Probeer weer",
+  "couldNotLoadContacts": "Kon nie kontakte laai nie",
+  "contactsLoadError": "Iets het verkeerd geloop met die lees van jou adresboek.",
+  "noContactsFound": "Geen kontakte gevind nie",
+  "contactsEmptySubtitle": "Kontakte vanaf jou toestel sal hier verskyn.",
+  "searchContacts": "Soek kontakte …",
+  "searchRecentCalls": "Soek onlangse oproepe",
+  "fromContacts": "Van kontakte",
+  "recentsSearchSection": "Onlangse soektog",
+  "recentsSearchShowContacts": "Wys kontakte in soektog",
+  "recentsSearchShowContactsSubtitle": "Terwyl jy Recents soek, wys ook passende mense uit jou adresboek onder oproepgeskiedenisresultate.",
+  "voiceSearch": "Stemsoektog",
+  "createNewContact": "Skep nuwe kontak",
+  "callError": "Oproepfout: {error}",
+  "noRecentCalls": "Geen onlangse oproepe nie",
+  "callHistoryEmpty": "Jou oproepgeskiedenis sal hier verskyn.",
+  "loadMore": "Laai meer",
+  "frequentlyContactedHeader": "Gereeld gekontak",
+  "recentHistory": "Onlangse geskiedenis",
+  "noFavouritesRecentsHint": "Nog geen gunstelinge nie. Ster 'n kontak, druk 'n oproep lank, of gebruik die Gunstelinge-oortjie.",
+  "copyNumber": "Kopieer nommer",
+  "editNumberBeforeCall": "Wysig nommer voor oproep",
+  "removeFromFavourites": "Verwyder uit gunstelinge",
+  "addToFavourites": "Voeg by gunstelinge",
+  "blockNumberQuestion": "Bloknommer?",
+  "blockNumberConfirm": "Jy sal nie meer oproepe of SMS'e van {number} ontvang nie.",
+  "blocked": "Geblokkeer",
+  "couldNotBlock": "Kon nie blokkeer nie",
+  "contactNotOnDevice": "Kontak nie op hierdie toestel gestoor nie",
+  "unblocked": "Gedeblokkeer",
+  "numberCopied": "Nommer gekopieer",
+  "showLess": "Wys minder",
+  "showAllTimes": "Wys alle tye",
+  "mostRecent": "Mees onlangse · {time}",
+  "videoCall": "Video-oproep",
+  "couldNotPlaceVideoCall": "Kon nie video-oproep plaas nie",
+  "message": "Boodskap",
+  "couldNotOpenMessaging": "Kon nie boodskapprogram oopmaak nie",
+  "history": "Geskiedenis",
+  "viewContact": "Bekyk kontak",
+  "addToContact": "Voeg by kontak",
+  "callTypeMissed": "Gemis",
+  "callTypeRejected": "Verwerp",
+  "callTypeIncoming": "Inkomende",
+  "callTypeOutgoing": "Uitgaande",
+  "today": "Vandag",
+  "yesterday": "Gister",
+  "justNow": "Netnou",
+  "minutesAgo": "{count} min gelede",
+  "hoursAgo": "{count} uur gelede",
+  "filterAll": "Almal",
+  "filterMissed": "Gemis",
+  "filterContacts": "Kontakte",
+  "filterNonContacts": "Nie-kontakte",
+  "iconUpdated": "Ikoon opgedateer. Jou tuisskerm kan dalk 'n oomblik neem om te verfris.",
+  "iconSavedRelease": "Keuse gestoor. Die tuisskermikoon word opgedateer in vrystellings.",
+  "couldNotChangeIcon": "Kon nie ikoon verander nie: {error}",
+  "launcherClassicBlack": "Klassiek (swart)",
+  "launcherLight": "Lig",
+  "launcherNothingRed": "Niks rooi nie",
+  "launcherDarkGrey": "Donkergrys",
+  "launcherCream": "Room",
+  "launcherRetroPhone": "Retro foon",
+  "launcherRetroPhoneLight": "Retro-foon (lig)",
+  "voiceSearchUnavailable": "Stemsoektog is nie op hierdie toestel beskikbaar nie.",
+  "voiceSearchFailed": "Stemsoektog het misluk: {error}",
+  "customColor": "Pasgemaak",
+  "selectColor": "Kies kleur",
+  "reset": "Stel terug",
+  "simPickerTitle": "Kies SIM",
+  "simChooseForCall": "Kies SIM vir hierdie oproep",
+  "defaultSimAsk": "Vra elke keer",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Kontakbesonderhede",
+  "call": "Bel",
+  "share": "Deel",
+  "favourite": "Gunsteling",
+  "unfavourite": "Ongunsteling",
+  "blockContact": "Blokkeer kontak",
+  "unblockContact": "Deblokkeer kontak",
+  "deleteContact": "Vee kontak uit",
+  "phone": "Telefoon",
+  "email": "E-pos",
+  "ringtone": "Luitoon",
+  "defaultRingtone": "Verstek",
+  "simForContact": "SIM vir hierdie kontak",
+  "callHistoryTitle": "Oproepgeskiedenis",
+  "noCallsWithNumber": "Geen oproepe met hierdie nommer nie",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Glyph animasie",
+  "inCallGlyphAnimationStyle": "In-oproep Glyph-animasie",
+  "recordsOff": "Af",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Verstek SIM",
+  "nothingPhoneOnly": "Niks Slegs foon",
+  "nothingPhoneOnlySubtitle": "Glyph-kenmerke vereis 'n Niks-foon",
+  "custom": "Pasgemaak",
+  "presetColorHex": "Vooraf ingesteld · {hex}",
+  "customColorHex": "Pasgemaak · {hex}",
+  "oneContact": "1 kontak",
+  "upToContacts": "Tot {count} kontakte",
+  "answerButtonTapSubtitle": "Tik op die knoppie om te antwoord",
+  "filterCalls": "Filter oproepe",
+  "filterTooltip": "Filter",
+  "settingsTooltip": "Instellings",
+  "filterAllSubtitle": "Hele oproeplogboek",
+  "filterMissedSubtitle": "Gemis en verwerp",
+  "filterContactsSubtitle": "Oproepe pas by 'n gestoorde kontak",
+  "filterNonContactsSubtitle": "Nommers nie in jou adresboek nie",
+  "ongoingCallWithDetail": "Deurlopende oproep: {detail}",
+  "defaultSimForCalls": "Verstek SIM vir oproepe",
+  "blinkInterval": "Knipper interval",
+  "close": "Maak toe",
+  "frequentlyContactedInfoBody": "Wys jou mees gebelde telefoonnommers boaan die Onlangse-oortjie, gebaseer op hoeveel inkomende, uitgaande, gemiste of afgekeurde oproepe jy met elke nommer gehad het in die tydperk wat jy kies.\n\nAantal rekords: stel op 0 om dit af te skakel. Gebruik 1–20 om soveel topkontakte te wys.\n\nTydperiode is slegs van toepassing wanneer ten minste een kontak gewys word.",
+  "breathSettingsSpeedSummary": "{count} ligte, {ms}ms spoed",
+  "deleteContactQuestion": "Vee kontak uit?",
+  "deleteContactBody": "Hierdie kontak sal permanent van jou toestel af uitgevee word.",
+  "blockContactQuestion": "Blokkeer kontak?",
+  "unblockContactQuestion": "Deblokkeer kontak?",
+  "blockContactBody": "Jy sal nie meer oproepe of SMS'e van hierdie kontak af ontvang nie.",
+  "unblockContactBody": "Jy sal oproepe en SMS'e van hierdie kontak af begin ontvang.",
+  "contactBlocked": "Kontak geblokkeer",
+  "contactUnblocked": "Kontak gedeblokkeer",
+  "noPhoneNumbersToBlock": "Geen telefoonnommers om te blokkeer nie",
+  "simSameAsSystem": "Dieselfde as stelsel",
+  "simSameAsSystemSubtitle": "Volg verstek SIM in instellings",
+  "simAskEveryTimeForContact": "Wys altyd SIM-kieser vir hierdie kontak",
+  "ringtoneSetForContact": "Luitoon wêreldwyd gestel vir hierdie kontak",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Kon nie luitoon kies nie: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Fout: {error}",
+  "noCallHistoryFound": "Geen oproepgeskiedenis gevind nie",
+  "speedDialVoicemail": "Snelskakel: Stempos",
+  "shareContactSubject": "Kontak: {name}",
+  "contactInfo": "Kontak inligting",
+  "dontAskAgainSim": "Moenie weer vra nie",
+  "simDontAskAgainSubtitle": "Gebruik hierdie SIM as verstek (verandering in Instellings)",
+  "addContact": "Voeg kontak by",
+  "createContact": "Skep kontak",
+  "paste": "Plak",
+  "clear": "Duidelik",
+  "returnToCall": "Keer terug na oproep",
+  "numberOfRecordsTitle": "Aantal rekords",
+  "recordsPickerSubtitle": "Hoeveel gereeld gekontak inskrywings om te wys (0 = af)",
+  "torchInfoTitle": "Toorts knip",
+  "torchInfoBody": "Knipper die kameraflits tydens inkomende, uitgaande of deurlopende oproepe. Onafhanklik van Glyph-ligte.",
+  "glyphMapTitle": "Glyph-uitleg",
+  "glyphMapBody": "Niks Phone 1 Glyph LED-sones. Uitgaande en in-oproep-animasies gebruik hierdie kanale.",
+  "answerMethodTitle": "Antwoord metode",
+  "glyphOutgoingCallStyleTitle": "Uitgaande oproepstyl",
+  "glyphInCallAnimationTitle": "Glyph in-oproep-animasie",
+  "themePickerTitle": "Tema",
+  "torchIncomingTitle": "Inkomende oproep fakkel",
+  "torchOutgoingTitle": "Uitgaande oproep fakkel",
+  "torchOngoingTitle": "Deurlopende oproep fakkel",
+  "timePeriodTitle": "Tydsperiode",
+  "ok": "OK",
+  "confirmDeleteCall": "Vee hierdie oproep uit die geskiedenis uit?",
+  "confirmDeleteAllCalls": "Vee alle oproepe met hierdie nommer uit?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Stuur 'n boodskap",
+  "addToExistingContactAction": "Voeg by 'n kontak",
+  "mobileLabel": "Selfoon",
+  "callingSimForContactTitle": "Bel tans SIM vir hierdie kontak",
+  "contactSettings": "Kontakinstellings",
+  "setCallingSim": "Stel oproep-SIM",
+  "contactRingtone": "Kontak luitoon",
+  "shareContact": "Deel kontak",
+  "blockNumbers": "Blok nommers",
+  "unblockNumbers": "Deblokkeer nommers",
+  "connectedApps": "Gekoppelde toepassings",
+  "simNotSet": "Nie gestel nie",
+  "ringtoneDefault": "Verstek",
+  "customRingtone": "Pasgemaak",
+  "aboutSection": "Oor",
+  "aboutFeedbackSection": "Oor & terugvoer",
+  "aboutDescription": "Nothing Dialer is oopbron. As jy 'n ontwikkelaar is, is jy welkom om die kode te verken en by te dra.",
+  "aboutViewSource": "Kyk op GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Kon nie skakel oopmaak nie",
+  "reviewSection": "Hersien",
+  "reviewDescription": "Geniet jy van Niks Dialer? Jou gradering op Google Play help ander om die program te vind.",
+  "reviewRateOnPlay": "Beoordeel op Google Play",
+  "reviewRateOnPlaySubtitle": "Laat 'n gradering sonder om die toepassing te verlaat",
+  "reviewCouldNotOpen": "Kon nie Google Play oopmaak nie",
+  "breathSpeed": "Asemspoed",
+  "breathSpeedBlinkHint": "Laer = Knipper, Hoër = Stadige asem",
+  "speedSliderHint": "Laer = Vinniger, Hoër = Stadiger",
+  "swatchDefault": "Verstek",
+  "customAccentColorPicker": "Pasgemaakte aksentkleur",
+  "customLightBackgroundPicker": "Pasgemaakte ligte agtergrond",
+  "customDarkBackgroundPicker": "Pasgemaakte donker agtergrond",
+  "customCallBackgroundPicker": "Pasgemaakte oproepagtergrond",
+  "ongoingCallStyleTitle": "Deurlopende oproepstyl",
+  "glyphMapUnavailable": "Glyph-kaart nie beskikbaar nie",
+  "animationDelayRange": "Animasievertraging (1s - 10s)",
+  "animationDelayRangeSingle": "Animasievertraging (0.1s - 10s)",
+  "inCallMute": "Demp",
+  "inCallKeypad": "Sleutelbord",
+  "inCallSpeaker": "Spreker",
+  "inCallMore": "Meer",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Telefoon",
+  "inCallAddCall": "Voeg oproep by",
+  "inCallChangeSim": "Verander SIM",
+  "inCallDecline": "Weier",
+  "inCallAnswer": "Antwoord",
+  "inCallMessage": "Boodskap",
+  "inCallCalling": "Bel tans …",
+  "inCallIncoming": "Inkomende oproep",
+  "inCallSelectSim": "Kies SIM...",
+  "inCallSwitchingSim": "Wissel tans SIM …",
+  "inCallCallEnded": "Oproep beëindig",
+  "inCallCallingVia": "Bel via {sim}",
+  "inCallCallingViaHtml": "Bel via <b>{sim}</b>",
+  "inCallChooseSim": "Kies SIM vir hierdie oproep",
+  "inCallDragAnswerDecline": "Sleep regs om te antwoord · Sleep links om te weier",
+  "inCallMobileNumber": "Selfoon {number}",
+  "inCallAudioRouteCurrent": "{label} (Huidig)",
+  "inCallCallViaFrom": "Bel via <b>{sim}</b> vanaf",
+  "inCallCallFrom": "Bel van",
+  "inCallUnknown": "Onbekend",
+  "selectContactRingtone": "Kies kontakluitoon",
+  "speakToSearchPrompt": "Praat om te soek",
+  "phonePermissionRequired": "Foontoestemming word vereis",
+  "callFailed": "Oproep het misluk: {error}",
+  "callPermissionDenied": "Oproeptoestemming geweier",
+  "alreadyDefaultDialer": "Reeds gestel as verstekbeller",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

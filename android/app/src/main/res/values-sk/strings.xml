@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Stlmiť</string>
+    <string name="in_call_keypad">Klávesnica</string>
+    <string name="in_call_speaker">Hovorca</string>
+    <string name="in_call_more">Viac</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefón</string>
+    <string name="in_call_add_call">Pridať hovor</string>
+    <string name="in_call_change_sim">Zmeniť SIM</string>
+    <string name="in_call_decline">Odmietnuť</string>
+    <string name="in_call_answer">Odpoveď</string>
+    <string name="in_call_message">Správa</string>
+    <string name="in_call_calling">Volá sa…</string>
+    <string name="in_call_incoming">Prichádzajúci hovor</string>
+    <string name="in_call_select_sim">Vyberte SIM…</string>
+    <string name="in_call_switching_sim">Prepína sa SIM karta…</string>
+    <string name="in_call_call_ended">Hovor bol ukončený</string>
+    <string name="in_call_calling_via">Volanie cez %1$s</string>
+    <string name="in_call_calling_via_html">Volanie cez &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Vyberte SIM pre tento hovor</string>
+    <string name="in_call_drag_answer_decline">Potiahnutím doprava prijmite · Potiahnutím doľava odmietnete</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (aktuálne)</string>
+    <string name="in_call_call_via_from">Volajte cez &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; od</string>
+    <string name="in_call_call_from">Volať z</string>
+    <string name="in_call_unknown">Neznámy</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Vyberte vyzváňací tón kontaktu</string>
+    <string name="native_speak_to_search">Hľadajte hovorením</string>
+    <string name="native_phone_permission_required">Vyžaduje sa povolenie telefónu</string>
+    <string name="native_call_failed">Hovor zlyhal: %1$s</string>
+    <string name="native_call_permission_denied">Povolenie na hovor bolo odmietnuté</string>
+    <string name="native_already_default_dialer">Už je nastavený ako predvolený číselník</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Без звука</string>
+    <string name="in_call_keypad">Клавиатура</string>
+    <string name="in_call_speaker">Динамик</string>
+    <string name="in_call_more">Ещё</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Телефон</string>
+    <string name="in_call_add_call">Добавить вызов</string>
+    <string name="in_call_change_sim">Сменить SIM</string>
+    <string name="in_call_decline">Отклонить</string>
+    <string name="in_call_answer">Ответить</string>
+    <string name="in_call_message">Сообщение</string>
+    <string name="in_call_calling">Вызов…</string>
+    <string name="in_call_incoming">Входящий вызов</string>
+    <string name="in_call_select_sim">Выберите SIM…</string>
+    <string name="in_call_switching_sim">Смена SIM…</string>
+    <string name="in_call_call_ended">Вызов завершён</string>
+    <string name="in_call_calling_via">Вызов через %1$s</string>
+    <string name="in_call_calling_via_html">Вызов через &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Выберите SIM для этого вызова</string>
+    <string name="in_call_drag_answer_decline">Вправо — ответить · влево — отклонить</string>
+    <string name="in_call_mobile_number">Мобильный %1$s</string>
+    <string name="in_call_audio_route_current">%1$s  (Текущий)</string>
+    <string name="in_call_call_via_from">Вызов через &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; с</string>
+    <string name="in_call_call_from">Вызов от</string>
+    <string name="in_call_unknown">Неизвестно</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Выберите мелодию контакта</string>
+    <string name="native_speak_to_search">Говорите для поиска</string>
+    <string name="native_phone_permission_required">Требуется разрешение телефона</string>
+    <string name="native_call_failed">Не удалось позвонить: %1$s</string>
+    <string name="native_call_permission_denied">В разрешении на вызов отказано</string>
+    <string name="native_already_default_dialer">Уже приложение для звонков по умолчанию</string>
+</resources>

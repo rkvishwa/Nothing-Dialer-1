@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Mute</string>
+    <string name="in_call_keypad">Tipkovnica</string>
+    <string name="in_call_speaker">Zvočnik</string>
+    <string name="in_call_more">več</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Dodaj klic</string>
+    <string name="in_call_change_sim">Zamenjajte SIM</string>
+    <string name="in_call_decline">Zavrni</string>
+    <string name="in_call_answer">Odgovori</string>
+    <string name="in_call_message">Sporočilo</string>
+    <string name="in_call_calling">Klicanje ...</string>
+    <string name="in_call_incoming">Dohodni klic</string>
+    <string name="in_call_select_sim">Izberite SIM ...</string>
+    <string name="in_call_switching_sim">Preklop kartice SIM ...</string>
+    <string name="in_call_call_ended">Klic končan</string>
+    <string name="in_call_calling_via">Klicanje prek %1$s</string>
+    <string name="in_call_calling_via_html">Klicanje prek &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Izberite SIM za ta klic</string>
+    <string name="in_call_drag_answer_decline">Povlecite desno za odgovor · Povlecite levo za zavrnitev</string>
+    <string name="in_call_mobile_number">Mobilni %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Trenutno)</string>
+    <string name="in_call_call_via_from">Pokličite prek &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; od</string>
+    <string name="in_call_call_from">Klic iz</string>
+    <string name="in_call_unknown">Neznano</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Izberite melodijo zvonjenja za stik</string>
+    <string name="native_speak_to_search">Govorite za iskanje</string>
+    <string name="native_phone_permission_required">Potrebno je dovoljenje za telefon</string>
+    <string name="native_call_failed">Klic ni uspel: %1$s</string>
+    <string name="native_call_permission_denied">Dovoljenje za klic zavrnjeno</string>
+    <string name="native_already_default_dialer">Že nastavljen kot privzeti klicalnik</string>
+</resources>

@@ -138,9 +138,35 @@ class GlyphInCallService : InCallService() {
         // On locked devices, InCallActivity handles showWhenLocked/turnScreenOn/keyguard dismissal.
         launchInCallActivity()
 
-
-        // Start Foreground Notification so user can answer/decline or return to call
+        // Start Foreground Notification so user can answer/decline or return to call.
+        // While our full-screen UI is launching/showing, suppress the CallStyle popup card.
         updateForegroundNotification(call.state)
+
+        // If neither the call UI nor the main app appears, fall back to the popup card.
+        if (call.state == Call.STATE_RINGING) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (currentCall === call &&
+                    call.state == Call.STATE_RINGING &&
+                    shouldShowIncomingPopup()
+                ) {
+                    InCallActivity.expectingUi = false
+                    updateForegroundNotification(Call.STATE_RINGING)
+                }
+            }, 900L)
+        }
+    }
+
+    fun refreshForegroundNotification() {
+        val call = currentCall ?: return
+        updateForegroundNotification(call.state)
+    }
+
+    /**
+     * Heads-up CallStyle card only when the user is outside both the full-screen
+     * call UI and the main dialer (which already shows the green ongoing-call bar).
+     */
+    private fun shouldShowIncomingPopup(): Boolean {
+        return !InCallActivity.isCallScreenShowing() && !MainActivity.isAppInForeground
     }
 
     private fun updateForegroundNotification(state: Int) {
@@ -159,7 +185,10 @@ class GlyphInCallService : InCallService() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val channelId = if (state == Call.STATE_RINGING) "incoming_call" else "ongoing_call"
+        val showIncomingPopup =
+            state == Call.STATE_RINGING && shouldShowIncomingPopup()
+
+        val channelId = if (showIncomingPopup) "incoming_call" else "ongoing_call"
         
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder(this, channelId)
@@ -183,8 +212,6 @@ class GlyphInCallService : InCallService() {
             builder.setContentTitle(title)
                    .setContentText(text)
                    .setContentIntent(pendingIntent)
-            // Full-screen incoming UI when keyguard is active (not shown as full-screen when unlocked)
-            builder.setFullScreenIntent(pendingIntent, true)
 
             // Add Answer action
             val answerIntent = Intent(this, CallActionReceiver::class.java).apply {
@@ -202,32 +229,57 @@ class GlyphInCallService : InCallService() {
                 this, 2, declineIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
 
-            // Android 12+ (S) CallStyle
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val person = android.app.Person.Builder()
-                    .setName(title)
-                    .setImportant(true)
-                    .build()
+            if (showIncomingPopup) {
+                // User is elsewhere — show the system incoming call card / heads-up.
+                builder.setFullScreenIntent(pendingIntent, true)
 
-                builder.style = Notification.CallStyle.forIncomingCall(
-                    person,
-                    declinePendingIntent,
-                    answerPendingIntent
-                )
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val answerAction = Notification.Action.Builder(
-                    R.drawable.ic_call_end, "Answer", answerPendingIntent
-                ).build()
-                val declineAction = Notification.Action.Builder(
-                    R.drawable.ic_call_end, "Decline", declinePendingIntent
-                ).build()
-                builder.addAction(declineAction)
-                builder.addAction(answerAction)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val person = android.app.Person.Builder()
+                        .setName(title)
+                        .setImportant(true)
+                        .build()
+
+                    builder.style = Notification.CallStyle.forIncomingCall(
+                        person,
+                        declinePendingIntent,
+                        answerPendingIntent
+                    )
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val answerAction = Notification.Action.Builder(
+                        R.drawable.ic_call_end, "Answer", answerPendingIntent
+                    ).build()
+                    val declineAction = Notification.Action.Builder(
+                        R.drawable.ic_call_end, "Decline", declinePendingIntent
+                    ).build()
+                    builder.addAction(declineAction)
+                    builder.addAction(answerAction)
+                } else {
+                    @Suppress("DEPRECATION")
+                    builder.addAction(R.drawable.ic_call_end, "Decline", declinePendingIntent)
+                    @Suppress("DEPRECATION")
+                    builder.addAction(R.drawable.ic_call_end, "Answer", answerPendingIntent)
+                }
             } else {
-                @Suppress("DEPRECATION")
-                builder.addAction(R.drawable.ic_call_end, "Decline", declinePendingIntent)
-                @Suppress("DEPRECATION")
-                builder.addAction(R.drawable.ic_call_end, "Answer", answerPendingIntent)
+                // Full-screen InCallActivity already covers answer/decline — keep a quiet FGS entry.
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        builder.addAction(
+                            Notification.Action.Builder(
+                                R.drawable.ic_call_end, "Decline", declinePendingIntent
+                            ).build()
+                        )
+                        builder.addAction(
+                            Notification.Action.Builder(
+                                R.drawable.ic_call_end, "Answer", answerPendingIntent
+                            ).build()
+                        )
+                    } else {
+                        @Suppress("DEPRECATION")
+                        builder.addAction(R.drawable.ic_call_end, "Decline", declinePendingIntent)
+                        @Suppress("DEPRECATION")
+                        builder.addAction(R.drawable.ic_call_end, "Answer", answerPendingIntent)
+                    }
+                }
             }
         } else {
             val route = latestAudioState?.route ?: callAudioState?.route ?: CallAudioState.ROUTE_EARPIECE
@@ -434,6 +486,8 @@ class GlyphInCallService : InCallService() {
 
     private fun launchInCallActivity() {
         try {
+            InCallActivity.expectingUi = true
+            InCallActivity.userLeftCallUi = false
             val intent = android.content.Intent(this, InCallActivity::class.java).apply {
                 addFlags(
                     android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
@@ -443,6 +497,7 @@ class GlyphInCallService : InCallService() {
             }
             startActivity(intent)
         } catch (e: Exception) {
+            InCallActivity.expectingUi = false
             Log.e(TAG, "Failed to launch InCallActivity: ${e.message}")
         }
     }

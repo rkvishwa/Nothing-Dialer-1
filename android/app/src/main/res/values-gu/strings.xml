@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">મ્યૂટ કરો</string>
+    <string name="in_call_keypad">કીપેડ</string>
+    <string name="in_call_speaker">વક્તા</string>
+    <string name="in_call_more">વધુ</string>
+    <string name="in_call_bluetooth">બ્લૂટૂથ</string>
+    <string name="in_call_phone">ફોન</string>
+    <string name="in_call_add_call">કૉલ ઉમેરો</string>
+    <string name="in_call_change_sim">સિમ બદલો</string>
+    <string name="in_call_decline">નકાર</string>
+    <string name="in_call_answer">જવાબ આપો</string>
+    <string name="in_call_message">સંદેશ</string>
+    <string name="in_call_calling">કૉલ કરી રહ્યાં છીએ…</string>
+    <string name="in_call_incoming">ઇનકમિંગ કૉલ</string>
+    <string name="in_call_select_sim">સિમ પસંદ કરો...</string>
+    <string name="in_call_switching_sim">સિમ સ્વિચ કરી રહ્યાં છીએ...</string>
+    <string name="in_call_call_ended">કૉલ સમાપ્ત થયો</string>
+    <string name="in_call_calling_via">%1$s દ્વારા કૉલ કરી રહ્યાં છીએ</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; મારફતે કૉલ કરી રહ્યાં છીએ</string>
+    <string name="in_call_choose_sim">આ કૉલ માટે સિમ પસંદ કરો</string>
+    <string name="in_call_drag_answer_decline">જવાબ આપવા માટે જમણે ખેંચો · નકારવા માટે ડાબે ખેંચો</string>
+    <string name="in_call_mobile_number">મોબાઇલ %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (વર્તમાન)</string>
+    <string name="in_call_call_via_from">થી &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; મારફતે કૉલ કરો</string>
+    <string name="in_call_call_from">તરફથી કૉલ કરો</string>
+    <string name="in_call_unknown">અજ્ઞાત</string>
+    <string name="in_call_sim_slot">સિમ %1$d</string>
+    <string name="native_select_contact_ringtone">સંપર્ક રિંગટોન પસંદ કરો</string>
+    <string name="native_speak_to_search">શોધવા માટે બોલો</string>
+    <string name="native_phone_permission_required">ફોન પરવાનગી જરૂરી છે</string>
+    <string name="native_call_failed">કૉલ નિષ્ફળ થયો: %1$s</string>
+    <string name="native_call_permission_denied">કૉલની પરવાનગી નકારી</string>
+    <string name="native_already_default_dialer">પહેલેથી જ ડિફૉલ્ટ ડાયલર તરીકે સેટ કરેલ છે</string>
+</resources>

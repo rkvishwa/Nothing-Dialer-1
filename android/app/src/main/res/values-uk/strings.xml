@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Вимкнути звук</string>
+    <string name="in_call_keypad">Клавіатура</string>
+    <string name="in_call_speaker">Спікер</string>
+    <string name="in_call_more">більше</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Телефон</string>
+    <string name="in_call_add_call">Додати виклик</string>
+    <string name="in_call_change_sim">Змінити SIM</string>
+    <string name="in_call_decline">відхилити</string>
+    <string name="in_call_answer">Відповідь</string>
+    <string name="in_call_message">повідомлення</string>
+    <string name="in_call_calling">Телефоную…</string>
+    <string name="in_call_incoming">Вхідний дзвінок</string>
+    <string name="in_call_select_sim">Виберіть SIM…</string>
+    <string name="in_call_switching_sim">Перемикання SIM-карти…</string>
+    <string name="in_call_call_ended">Дзвінок завершено</string>
+    <string name="in_call_calling_via">Дзвінок через %1$s</string>
+    <string name="in_call_calling_via_html">Дзвінок через &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Виберіть SIM для цього виклику</string>
+    <string name="in_call_drag_answer_decline">Перетягніть праворуч, щоб відповісти · Перетягніть ліворуч, щоб відхилити</string>
+    <string name="in_call_mobile_number">Мобільний %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Поточний)</string>
+    <string name="in_call_call_via_from">Телефонуйте за номером &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; з</string>
+    <string name="in_call_call_from">Телефонувати з</string>
+    <string name="in_call_unknown">Невідомий</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Виберіть мелодію контакту</string>
+    <string name="native_speak_to_search">Говоріть для пошуку</string>
+    <string name="native_phone_permission_required">Потрібен дозвіл на телефон</string>
+    <string name="native_call_failed">Помилка виклику: %1$s</string>
+    <string name="native_call_permission_denied">У дозволі на виклик відмовлено</string>
+    <string name="native_already_default_dialer">Уже встановлено як номеронабирач за замовчуванням</string>
+</resources>

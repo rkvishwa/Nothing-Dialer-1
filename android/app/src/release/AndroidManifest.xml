@@ -8,6 +8,10 @@
         <activity
             android:name="com.rkkvishva.nothing_dialer.MainActivity"
             tools:node="merge">
+            <intent-filter tools:node="remove">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="android.app.shortcuts"
                 tools:node="remove" />

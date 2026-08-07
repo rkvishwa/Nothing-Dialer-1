@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:nothing_dialer/l10n/app_localizations.dart';
+
+import '../extensions/dialer_text_style.dart';
 import '../services/favourites_manager.dart';
+import '../services/app_font_config.dart';
+import '../widgets/dialer_font_scope.dart';
 
 /// Manage favourite contacts: reorder, remove, add from address book.
 class FavouritesScreen extends StatefulWidget {
@@ -17,8 +22,11 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final cs = Theme.of(context).colorScheme;
-    return Scaffold(
+    return DialerFontScope(
+      surface: DialerFontSurface.favourites,
+      child: Scaffold(
       key: _scaffoldKey,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: Drawer(
@@ -30,11 +38,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
                 child: Text(
-                  'Favourites',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w400,
-                    color: cs.onSurface,
+                  l10n.favourites,
+                  style: context.dialerTextStyle(
+                    DialerFontRole.pageTitle,
+                    TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w400,
+                      color: cs.onSurface,
+                    ),
                   ),
                 ),
               ),
@@ -45,11 +56,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 title: Text(
-                  'Add favourite',
-                  style: TextStyle(
-                    color: cs.onSurface,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                  l10n.addFavourite,
+                  style: context.dialerTextStyle(
+                    DialerFontRole.primary,
+                    TextStyle(
+                      color: cs.onSurface,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 onTap: () {
@@ -61,11 +75,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Text(
-                  'Use the menu to add contacts. Tap outside the drawer or swipe it closed. Star a contact from their details, or long-press a call in Recents.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: cs.onSurfaceVariant,
-                    height: 1.35,
+                  l10n.favouritesDrawerHint,
+                  style: context.dialerTextStyle(
+                    DialerFontRole.secondary,
+                    TextStyle(
+                      fontSize: 13,
+                      color: cs.onSurfaceVariant,
+                      height: 1.35,
+                    ),
                   ),
                 ),
               ),
@@ -82,14 +99,17 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
             color: Theme.of(context).colorScheme.onSurface,
           ),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-          tooltip: 'Menu',
+          tooltip: l10n.menu,
         ),
         title: Text(
-          'Favourites',
-          style: TextStyle(
-            color: cs.onSurface,
-            fontWeight: FontWeight.w300,
-            fontSize: 22,
+          l10n.favourites,
+          style: context.dialerTextStyle(
+            DialerFontRole.pageTitle,
+            TextStyle(
+              color: cs.onSurface,
+              fontWeight: FontWeight.w300,
+              fontSize: 22,
+            ),
           ),
         ),
         foregroundColor: cs.onSurface,
@@ -102,12 +122,15 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(32),
                 child: Text(
-                  'No favourites yet.\nOpen the menu to add one, or star a contact.',
+                  l10n.noFavouritesYet,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 15,
-                    height: 1.4,
+                  style: context.dialerTextStyle(
+                    DialerFontRole.secondary,
+                    TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 15,
+                      height: 1.4,
+                    ),
                   ),
                 ),
               ),
@@ -147,15 +170,21 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                 ),
                 title: Text(
                   e.name.isNotEmpty ? e.name : e.number,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
+                  style: context.dialerTextStyle(
+                    DialerFontRole.primary,
+                    TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 ),
                 subtitle: Text(
                   e.number,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 13,
+                  style: context.dialerTextStyle(
+                    DialerFontRole.secondary,
+                    TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 13,
+                    ),
                   ),
                 ),
                 trailing: IconButton(
@@ -171,6 +200,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           );
         },
       ),
+    ),
     );
   }
 
@@ -178,8 +208,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     final status = await Permission.contacts.request();
     if (!status.isGranted) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Contacts permission needed')),
+          SnackBar(content: Text(l10n.contactsPermissionNeeded)),
         );
       }
       return;
@@ -191,11 +222,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     );
     if (!mounted) return;
 
+    final l10n = AppLocalizations.of(context);
     final picked = await showModalBottomSheet<Contact>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => DraggableScrollableSheet(
+      builder: (ctx) => DialerFontScope(
+        surface: DialerFontSurface.sheets,
+        child: DraggableScrollableSheet(
         initialChildSize: 0.7,
         minChildSize: 0.4,
         maxChildSize: 0.95,
@@ -218,10 +252,13 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  'Choose contact',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).colorScheme.onSurface,
+                  l10n.chooseContact,
+                  style: ctx.dialerTextStyle(
+                    DialerFontRole.pageTitle,
+                    TextStyle(
+                      fontSize: 20,
+                      color: Theme.of(ctx).colorScheme.onSurface,
+                    ),
                   ),
                 ),
               ),
@@ -232,10 +269,38 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                   itemBuilder: (context, i) {
                     final c = contacts[i];
                     return ListTile(
-                      title: Text(c.displayName),
+                      title: Text(
+                        c.displayName,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.primary,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
                       subtitle: c.phones.isEmpty
-                          ? const Text('No phone')
-                          : Text(c.phones.first.number),
+                          ? Text(
+                              l10n.noPhone,
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              c.phones.first.number,
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                                ),
+                              ),
+                            ),
                       onTap: () => Navigator.pop(ctx, c),
                     );
                   },
@@ -245,13 +310,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           ),
         ),
       ),
+      ),
     );
 
     if (picked == null || !mounted) return;
 
     if (picked.phones.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('This contact has no phone number')),
+        SnackBar(content: Text(l10n.contactHasNoPhone)),
       );
       return;
     }
@@ -271,7 +337,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     final number = await showModalBottomSheet<String>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
+      builder: (ctx) => DialerFontScope(
+        surface: DialerFontSurface.sheets,
+        child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
@@ -282,23 +350,43 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
             children: [
               const SizedBox(height: 12),
               Text(
-                'Pick number',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Theme.of(context).colorScheme.onSurface,
+                l10n.pickNumber,
+                style: ctx.dialerTextStyle(
+                  DialerFontRole.pageTitle,
+                  TextStyle(
+                    fontSize: 18,
+                    color: Theme.of(ctx).colorScheme.onSurface,
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
               ...picked.phones.map(
                 (phone) => ListTile(
-                  title: Text(phone.number),
-                  subtitle: Text(phone.label.toString()),
+                  title: Text(
+                    phone.number,
+                    style: ctx.dialerTextStyle(
+                      DialerFontRole.primary,
+                      TextStyle(
+                        color: Theme.of(ctx).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                  subtitle: Text(
+                    phone.label.toString(),
+                    style: ctx.dialerTextStyle(
+                      DialerFontRole.secondary,
+                      TextStyle(
+                        color: Theme.of(ctx).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
                   onTap: () => Navigator.pop(ctx, phone.number),
                 ),
               ),
             ],
           ),
         ),
+      ),
       ),
     );
 

@@ -1,0 +1,759 @@
+{
+  "@@locale": "kk",
+  "appTitle": "Ештеңе тергіш",
+  "settings": "Параметрлер",
+  "settingsSearchHint": "Іздеу параметрлері",
+  "settingsSearchNoResults": "Параметрлер табылмады",
+  "general": "Жалпы",
+  "theme": "Тақырып",
+  "themeSystemDefault": "Жүйе әдепкі",
+  "themeLight": "Жарық",
+  "themeDark": "Қараңғы",
+  "themeFollowSystem": "Жүйе параметрлерін орындаңыз",
+  "themeAlwaysLight": "Әрқашан жеңіл тақырыпты пайдаланыңыз",
+  "themeAlwaysDark": "Әрқашан қараңғы тақырыпты пайдаланыңыз",
+  "language": "Тіл",
+  "languageDeviceDefault": "Құрылғы әдепкі",
+  "languagePickerTitle": "Тіл",
+  "languageSearchHint": "Тілдерді іздеу",
+  "font": "Қаріп",
+  "fontSystem": "Жүйе әдепкі",
+  "fontNdot": "Ештеңе (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Қаріп жүктелмеді. Байланысты тексеріп, әрекетті қайталаңыз.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Қаріп",
+  "fontPreviewSample": "Ештеңе тергіш",
+  "fontAppWide": "Қолданба шрифті",
+  "fontApplyTo": "Қолдану",
+  "fontApplyEntireApp": "Толық қолданба",
+  "fontApplyEntireAppSubtitle": "Барлық жерде, соның ішінде қоңырау кезінде бірдей қаріп",
+  "fontApplyTitlesOnly": "Тақырыптар мен тақырыптар",
+  "fontApplyTitlesOnlySubtitle": "Тек үлкен тақырыптар мен бөлім тақырыптары",
+  "fontApplyCustomize": "Баптау",
+  "fontApplyCustomizeSubtitle": "Экранға және мәтін түріне қаріпті таңдаңыз",
+  "fontCustomizeSection": "Экран бойынша теңшеу",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Бет тақырыбы",
+  "fontRoleSectionHeader": "Бөлім тақырыбы",
+  "fontRolePrimary": "Негізгі мәтін",
+  "fontRoleSecondary": "Қосымша мәтін",
+  "fontRoleButton": "Түймешіктер",
+  "fontRoleDialKey": "Теру тақтасының пернелері",
+  "fontSurfaceRecents": "Соңғылар",
+  "fontSurfaceContacts": "Контактілер",
+  "fontSurfaceSettings": "Параметрлер",
+  "fontSurfaceDialpad": "Теру тақтасы",
+  "fontSurfaceShell": "Навигация",
+  "fontSurfaceDefaultDialer": "Әдепкі теруші шақыру",
+  "fontSurfaceFavourites": "Таңдаулылар",
+  "fontSurfaceBlocked": "Бұғатталған нөмірлер",
+  "fontSurfaceContactDetail": "Байланыс мәліметтері",
+  "fontSurfaceCallHistory": "Қоңыраулар тарихы",
+  "fontSurfaceSheets": "Парақтар мен тергіштер",
+  "fontSurfaceInCall": "Қоңыраудағы экран",
+  "fontSubtitleEntireApp": "{font} — бүкіл қолданба",
+  "fontSubtitleTitlesOnly": "{font} — тек тақырыптар",
+  "fontSubtitleCustomize": "Әр экранға теңшелетін",
+  "background": "Фон",
+  "accent": "Акцент",
+  "lightBackground": "Ашық фон",
+  "lightAccent": "Жеңіл акцент",
+  "darkBackground": "Қараңғы фон",
+  "darkAccent": "Қараңғы акцент",
+  "callBackground": "Қоңырау фоны",
+  "appIcon": "Қолданба белгішесі",
+  "answerMethod": "Жауап әдісі",
+  "answerSlide": "Жауап беру үшін сырғытыңыз",
+  "answerSlideSubtitle": "Google телефоны сияқты жолақта солға/оңға сырғытыңыз",
+  "answerButton": "Түймені түрту",
+  "answerButtonSubtitle": "Жауап беру немесе қабылдамау түймелерін түртіңіз",
+  "answerHuawei": "Huawei стилі",
+  "answerHuaweiSubtitle": "Жауап беру үшін шеңберді жасыл телефонға сүйреңіз",
+  "answerHuaweiTileSubtitle": "Huawei — жасыл / қызылға сүйреңіз",
+  "calling": "Қоңырау шалу",
+  "defaultSim": "Әдепкі SIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Әр жолы сұраңыз",
+  "askEveryTimeSubtitle": "Әрбір қоңырау алдында SIM таңдау құралын көрсетіңіз",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "SIM карталары табылмады",
+  "couldNotLoadSims": "SIM карталарын жүктеу мүмкін болмады: {error}",
+  "allFavourites": "Барлық таңдаулылар",
+  "allFavouritesSubtitle": "Контактілерден ретін өзгертіңіз, жойыңыз және қосыңыз",
+  "blockedNumbers": "Бұғатталған нөмірлер",
+  "blockedNumbersSubtitle": "Нөмірлерді көру және блоктан шығару",
+  "soundsAndVibration": "Дыбыстар және діріл",
+  "soundsAndVibrationSubtitle": "Қоңырау үні, діріл, теру тақтасының дыбыстары",
+  "couldNotOpenSettings": "Параметрлерді ашу мүмкін болмады: {error}",
+  "frequentlyContacted": "Жиі хабарласатын",
+  "numberOfRecords": "Жазбалар саны",
+  "timePeriod": "Уақыт кезеңі",
+  "periodLast24Hours": "Соңғы 24 сағат",
+  "periodLast24HoursSubtitle": "Өткен күндегі қоңыраулар",
+  "periodLast7Days": "Соңғы 7 күн",
+  "periodLast7DaysSubtitle": "Өткен аптадағы қоңыраулар",
+  "periodLast30Days": "Соңғы 30 күн",
+  "periodLast30DaysSubtitle": "Өткен айдағы қоңыраулар",
+  "periodLast12Months": "Соңғы 12 ай",
+  "periodLast12MonthsSubtitle": "Өткен жылғы қоңыраулар",
+  "periodAllTime": "Барлық уақытта",
+  "periodAllTimeSubtitle": "Толық қоңыраулар тарихы",
+  "frequentMaxOff": "Өшірулі",
+  "frequentMaxCount": "{count} контактілер",
+  "torchBlink": "Шам жыпылықтау",
+  "torchIncomingCall": "Кіріс қоңырау шамы",
+  "torchOutgoingCall": "Шығыс қоңырау шамы",
+  "torchOngoingCall": "Ағымдағы қоңырау шамы",
+  "torchIncomingInterval": "Кіріс жыпылықтау аралығы",
+  "torchOutgoingInterval": "Шығыс жыпылықтау аралығы",
+  "torchOngoingInterval": "Ағымдағы жыпылықтау аралығы",
+  "torchOff": "Өшірулі",
+  "torchOffIncomingSubtitle": "Шырылдаған кезде алау жоқ",
+  "torchOffOutgoingSubtitle": "Теру кезінде шам жоқ",
+  "torchOffOngoingSubtitle": "Белсенді қоңырау кезінде алау жоқ",
+  "torchFixedInterval": "Бекітілген интервал",
+  "torchFixedIntervalSubtitle": "Орнатылған жылдамдықпен жыпылықтау",
+  "torchIntervalSeconds": "{seconds} с",
+  "torchIntervalBlink": "{seconds} жыпылықтау",
+  "flashlightUnavailable": "Бұл құрылғыда фонарь қолжетімді емес",
+  "glyphLights": "Глиф шамдары",
+  "glyphCallingAnimation": "Глифті шақыратын анимация",
+  "glyphOngoingAnimation": "Ағымдағы қоңырау анимациясының глифі",
+  "glyphNone": "Жоқ",
+  "glyphNoneOutgoingSubtitle": "Шығыс қоңыраулар үшін Glyph шамдарын өшіріңіз",
+  "glyphNoneInCallSubtitle": "Белсенді қоңырау кезінде Glyph шамдарын өшіріңіз",
+  "glyphBreathProgress": "Тыныс және прогресс",
+  "glyphBreathProgressSubtitle": "Сызық 65 секундтан астам толтырылған кезде шамдар дем алады",
+  "glyphAccumulate": "Жинақтау",
+  "glyphAccumulateSubtitle": "C1-C4 шамдарындағы жинақталған анимация",
+  "glyphSingle": "Бойдақ",
+  "glyphSingleSubtitle": "C1-C4 бойымен қозғалатын жалғыз жарық",
+  "glyphBreath": "Тыныс алу",
+  "glyphBreathSubtitle": "Шамдар мен жылдамдықты таңдаңыз",
+  "glyphSteady": "Тұрақты",
+  "glyphSteadySubtitle": "Таңдалған шамдар жанып тұрады",
+  "breathSettings": "Тыныс алу параметрлері",
+  "activeLights": "Белсенді шамдар",
+  "lightsCount": "{count} шамдары",
+  "speedSettings": "Жылдамдық параметрлері",
+  "speedSettingsDelay": "{ms}мс кешігу",
+  "durationAndSpeed": "Ұзақтығы мен жылдамдығы",
+  "durationSpeedSummary": "{duration}с ұзақтығы, {interval}мс интервал",
+  "cancel": "Болдырмау",
+  "done": "Дайын",
+  "save": "Сақтау",
+  "block": "Блоктау",
+  "delete": "Жою",
+  "recents": "Соңғылар",
+  "contacts": "Контактілер",
+  "hideFavouritesOnRecents": "Соңғылардағы таңдаулыларды жасыру",
+  "showFavouritesOnRecents": "Соңғыларда таңдаулыларды көрсету",
+  "ongoingCall": "Ағымдағы қоңырау",
+  "setAsDefaultTitle": "ОРНАТУ\nӘдепкі",
+  "setAsDefaultBody": "Nothing Dialer пайдалану үшін ол әдепкі телефон қолданбасы ретінде орнатылуы керек. Бұл қоңырауларды басқаруға, тарихты қарауға және Glyph анимацияларын пайдалануға мүмкіндік береді.",
+  "setAsDefaultButton": "Әдепкі РЕТІНДЕ ОРНАТУ",
+  "nothingDialerBrand": "ЕМЕС ТЕРІС 1",
+  "favourites": "Таңдаулылар",
+  "addFavourite": "Таңдаулыны қосыңыз",
+  "favouritesDrawerHint": "Контактілерді қосу үшін мәзірді пайдаланыңыз. Тартпаның сыртын түртіңіз немесе сырғытыңыз. Контактіні мәліметтерінен жұлдызшамен белгілеңіз немесе «Соңғылар» бөлімінде қоңырауды ұзақ басып тұрыңыз.",
+  "menu": "Мәзір",
+  "noFavouritesYet": "Таңдаулылар әлі жоқ.\nБір контактіні қосу немесе жұлдызшамен қою үшін мәзірді ашыңыз.",
+  "contactsPermissionNeeded": "Контактілерге рұқсат қажет",
+  "chooseContact": "Байланысты таңдаңыз",
+  "noPhone": "Телефон жоқ",
+  "pickNumber": "Нөмірді таңдау",
+  "contactHasNoPhone": "Бұл контактінің телефон нөмірі жоқ",
+  "blockNumber": "Блок нөмірі",
+  "enterPhoneNumber": "Телефон нөмірін енгізіңіз",
+  "unblockedDisplay": "Бөгеуден шығарылды {display}",
+  "couldNotUnblockNumber": "Нөмірді бөгеуден шығару мүмкін болмады",
+  "blockedSummary": "{blocked} бұғатталды • {matched} сәйкес келді",
+  "contactsPermissionMissing": "Контактілердің рұқсаты жоқ. Түзету үшін түртіңіз.",
+  "noBlockedNumbers": "Блокталған нөмірлер жоқ",
+  "unknownContact": "Белгісіз контакт",
+  "unblock": "Блоктан шығару",
+  "permissionNeeded": "Рұқсат қажет",
+  "grantPhonePermission": "Қоңыраулар тарихын көруге телефон рұқсатын беріңіз.",
+  "grantContactsPermission": "Контактілерге мекенжай кітапшаңызды көруге рұқсат беріңіз.",
+  "openSettings": "Параметрлерді ашыңыз",
+  "tryAgain": "Қайтадан байқап көріңіз",
+  "couldNotLoadContacts": "Контактілерді жүктеу мүмкін болмады",
+  "contactsLoadError": "Мекенжай кітапшаңызды оқу кезінде бірдеңе дұрыс болмады.",
+  "noContactsFound": "Ешбір контакт табылмады",
+  "contactsEmptySubtitle": "Құрылғыңыздағы контактілер осы жерде пайда болады.",
+  "searchContacts": "Контактілерді іздеу…",
+  "searchRecentCalls": "Соңғы қоңырауларды іздеу",
+  "fromContacts": "Контактілерден",
+  "recentsSearchSection": "Соңғы іздеу",
+  "recentsSearchShowContacts": "Іздеуде контактілерді көрсету",
+  "recentsSearchShowContactsSubtitle": "Соңғыларды іздеу кезінде қоңыраулар журналы нәтижелерінің астында мекенжай кітабынан сәйкес адамдарды да көрсетіңіз.",
+  "voiceSearch": "Дауыспен іздеу",
+  "createNewContact": "Жаңа контакт жасау",
+  "callError": "Қоңырау қатесі: {error}",
+  "noRecentCalls": "Соңғы қоңыраулар жоқ",
+  "callHistoryEmpty": "Қоңыраулар журналы осы жерде пайда болады.",
+  "loadMore": "Көбірек жүктеңіз",
+  "frequentlyContactedHeader": "Жиі хабарласатын",
+  "recentHistory": "Соңғы тарих",
+  "noFavouritesRecentsHint": "Таңдаулылар әлі жоқ. Контактіні жұлдызшамен белгілеңіз, қоңырауды ұзақ басып тұрыңыз немесе Таңдаулылар қойындысын пайдаланыңыз.",
+  "copyNumber": "Нөмірді көшіру",
+  "editNumberBeforeCall": "Қоңырау алдында нөмірді өңдеңіз",
+  "removeFromFavourites": "Таңдаулылардан өшіру",
+  "addToFavourites": "Таңдаулыларға қосыңыз",
+  "blockNumberQuestion": "Блок нөмірі?",
+  "blockNumberConfirm": "Енді {number} нөмірінен қоңыраулар немесе мәтіндік хабарламалар қабылданбайды.",
+  "blocked": "Блокталған",
+  "couldNotBlock": "Блоктау мүмкін болмады",
+  "contactNotOnDevice": "Контакт бұл құрылғыда сақталмады",
+  "unblocked": "Бұғаудан шығарылды",
+  "numberCopied": "Нөмір көшірілді",
+  "showLess": "Азырақ көрсету",
+  "showAllTimes": "Барлық уақытта көрсету",
+  "mostRecent": "Ең соңғы · {time}",
+  "videoCall": "Бейне қоңырау",
+  "couldNotPlaceVideoCall": "Бейне қоңырау шалу мүмкін емес",
+  "message": "Хабарлама",
+  "couldNotOpenMessaging": "Хабар алмасу қолданбасын ашу мүмкін болмады",
+  "history": "Тарих",
+  "viewContact": "Контактіні көру",
+  "addToContact": "Байланысқа қосу",
+  "callTypeMissed": "Сағынды",
+  "callTypeRejected": "Қабылданбады",
+  "callTypeIncoming": "Кіріс",
+  "callTypeOutgoing": "Шығыс",
+  "today": "Бүгін",
+  "yesterday": "Кеше",
+  "justNow": "Жаңа ғана",
+  "minutesAgo": "{count} мин бұрын",
+  "hoursAgo": "{count} сағ бұрын",
+  "filterAll": "Барлығы",
+  "filterMissed": "Сағынды",
+  "filterContacts": "Контактілер",
+  "filterNonContacts": "Контактілер",
+  "iconUpdated": "Белгіше жаңартылды. Негізгі экранды жаңартуға біраз уақыт кетуі мүмкін.",
+  "iconSavedRelease": "Таңдау сақталды. Бастапқы экран белгішесі шығарылым жинақтарында жаңартылады.",
+  "couldNotChangeIcon": "Белгішені өзгерту мүмкін болмады: {error}",
+  "launcherClassicBlack": "Классикалық (қара)",
+  "launcherLight": "Жарық",
+  "launcherNothingRed": "Қызыл ештеңе жоқ",
+  "launcherDarkGrey": "Қою сұр",
+  "launcherCream": "Крем",
+  "launcherRetroPhone": "Ретро телефон",
+  "launcherRetroPhoneLight": "Ретро телефон (жарық)",
+  "voiceSearchUnavailable": "Бұл құрылғыда дауыспен іздеу мүмкін емес.",
+  "voiceSearchFailed": "Дауыспен іздеу орындалмады: {error}",
+  "customColor": "Арнаулы",
+  "selectColor": "Түсті таңдаңыз",
+  "reset": "Қалпына келтіру",
+  "simPickerTitle": "SIM картасын таңдаңыз",
+  "simChooseForCall": "Бұл қоңырау үшін SIM картасын таңдаңыз",
+  "defaultSimAsk": "Әр жолы сұраңыз",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Байланыс мәліметтері",
+  "call": "Қоңырау",
+  "share": "Бөлісу",
+  "favourite": "Таңдаулы",
+  "unfavourite": "Сүйікті емес",
+  "blockContact": "Контактіні блоктау",
+  "unblockContact": "Контактіні блоктан шығару",
+  "deleteContact": "Контактіні жою",
+  "phone": "Телефон",
+  "email": "Электрондық пошта",
+  "ringtone": "Қоңырау үні",
+  "defaultRingtone": "Әдепкі",
+  "simForContact": "Осы контакт үшін SIM",
+  "callHistoryTitle": "Қоңыраулар тарихы",
+  "noCallsWithNumber": "Бұл нөмірмен қоңыраулар жоқ",
+  "durationMinutesSeconds": "{minutes}м {seconds}с",
+  "durationSeconds": "{seconds}с",
+  "glyphAnimationStyle": "Глифтік анимация",
+  "inCallGlyphAnimationStyle": "Қоңыраудағы Glyph анимациясы",
+  "recordsOff": "Өшірулі",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Әдепкі SIM",
+  "nothingPhoneOnly": "Ештеңе емес Тек телефон",
+  "nothingPhoneOnlySubtitle": "Глиф мүмкіндіктері «Ештеңе» телефонын қажет етеді",
+  "custom": "Арнаулы",
+  "presetColorHex": "Алдын ала орнатылған · {hex}",
+  "customColorHex": "Арнаулы · {hex}",
+  "oneContact": "1 контакт",
+  "upToContacts": "{count} контактіге дейін",
+  "answerButtonTapSubtitle": "Жауап беру үшін түймені түртіңіз",
+  "filterCalls": "Қоңырауларды сүзу",
+  "filterTooltip": "Сүзгі",
+  "settingsTooltip": "Параметрлер",
+  "filterAllSubtitle": "Толық қоңыраулар журналы",
+  "filterMissedSubtitle": "Қабылданбады және қабылданбады",
+  "filterContactsSubtitle": "Қоңыраулар сақталған контактіге сәйкес келді",
+  "filterNonContactsSubtitle": "Нөмірлер мекенжай кітабында жоқ",
+  "ongoingCallWithDetail": "Ағымдағы қоңырау: {detail}",
+  "defaultSimForCalls": "Қоңырауларға арналған әдепкі SIM",
+  "blinkInterval": "Жыпылықтау аралығы",
+  "close": "Жабу",
+  "frequentlyContactedInfoBody": "Сіз таңдаған уақыт аралығында әрбір нөмірмен қанша кіріс, шығыс, қабылданбаған немесе қабылданбаған қоңыраулар негізінде «Соңғылар» қойындысының жоғарғы жағында ең көп шақырылатын телефон нөмірлеріңізді көрсетеді.\n\nЖазбалар саны: оны өшіру үшін 0 мәніне қойыңыз. Осыншама жоғарғы контактілерді көрсету үшін 1–20 пайдаланыңыз.\n\nУақыт кезеңі кем дегенде бір контакт көрсетілгенде ғана қолданылады.",
+  "breathSettingsSpeedSummary": "{count} шамдар, {ms}мс жылдамдық",
+  "deleteContactQuestion": "Контактіні жою керек пе?",
+  "deleteContactBody": "Бұл контакт құрылғыңыздан біржола жойылады.",
+  "blockContactQuestion": "Контактіні блоктау керек пе?",
+  "unblockContactQuestion": "Контакт бөгеуін алу керек пе?",
+  "blockContactBody": "Бұл контактіден енді қоңыраулар немесе мәтіндер қабылданбайды.",
+  "unblockContactBody": "Сіз осы контактіден қоңыраулар мен мәтіндерді қабылдай бастайсыз.",
+  "contactBlocked": "Контакт блокталды",
+  "contactUnblocked": "Контакт блоктан шығарылды",
+  "noPhoneNumbersToBlock": "Блокталатын телефон нөмірлері жоқ",
+  "simSameAsSystem": "Жүйе сияқты",
+  "simSameAsSystemSubtitle": "Параметрлердегі әдепкі SIM картасын орындайды",
+  "simAskEveryTimeForContact": "Әрқашан осы контакт үшін SIM таңдау құралын көрсетіңіз",
+  "ringtoneSetForContact": "Қоңырау үні осы контакт үшін ғаламдық деңгейде орнатылған",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Қоңырау үні таңдалмады: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Қате: {error}",
+  "noCallHistoryFound": "Қоңыраулар тарихы табылмады",
+  "speedDialVoicemail": "Жылдам теру: Дауыстық пошта",
+  "shareContactSubject": "Байланыс: {name}",
+  "contactInfo": "Байланыс ақпараты",
+  "dontAskAgainSim": "Қайта сұрамаңыз",
+  "simDontAskAgainSubtitle": "Бұл SIM картасын әдепкі ретінде пайдаланыңыз (Параметрлерде өзгерту)",
+  "addContact": "Контакт қосу",
+  "createContact": "Контакт құру",
+  "paste": "Қою",
+  "clear": "Таза",
+  "returnToCall": "Қоңырауға оралу",
+  "numberOfRecordsTitle": "Жазбалар саны",
+  "recordsPickerSubtitle": "Көрсетілетін жиі хабарласатын жазбалардың саны (0 = өшірулі)",
+  "torchInfoTitle": "Шам жыпылықтайды",
+  "torchInfoBody": "Кіріс, шығыс немесе ағымдағы қоңыраулар кезінде камера жарқылын жыпылықтайды. Глиф шамдарынан тәуелсіз.",
+  "glyphMapTitle": "Глифтің орналасуы",
+  "glyphMapBody": "Ештеңе жоқ Phone 1 Glyph LED аймақтары. Шығыс және қоңыраудағы анимациялар осы арналарды пайдаланады.",
+  "answerMethodTitle": "Жауап әдісі",
+  "glyphOutgoingCallStyleTitle": "Шығыс қоңырау стилі",
+  "glyphInCallAnimationTitle": "Қоңыраудағы анимациядағы глиф",
+  "themePickerTitle": "Тақырып",
+  "torchIncomingTitle": "Кіріс қоңырау шамы",
+  "torchOutgoingTitle": "Шығыс қоңырау шамы",
+  "torchOngoingTitle": "Ағымдағы қоңырау шамы",
+  "timePeriodTitle": "Уақыт кезеңі",
+  "ok": "Жарайды",
+  "confirmDeleteCall": "Бұл қоңырауды тарихтан жою керек пе?",
+  "confirmDeleteAllCalls": "Осы нөмір арқылы жасалған барлық қоңыраулар жойылсын ба?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Хабарлама жіберу",
+  "addToExistingContactAction": "Контактіге қосыңыз",
+  "mobileLabel": "Ұялы",
+  "callingSimForContactTitle": "Осы контактіге қоңырау шалу SIM",
+  "contactSettings": "Байланыс параметрлері",
+  "setCallingSim": "Қоңырау SIM картасын орнату",
+  "contactRingtone": "Байланыс рингтоны",
+  "shareContact": "Контактіні бөлісу",
+  "blockNumbers": "Блок нөмірлері",
+  "unblockNumbers": "Нөмірлерді бөгеуден шығару",
+  "connectedApps": "Қосылған қолданбалар",
+  "simNotSet": "Орнатылмаған",
+  "ringtoneDefault": "Әдепкі",
+  "customRingtone": "Арнаулы",
+  "aboutSection": "туралы",
+  "aboutFeedbackSection": "Туралы және кері байланыс",
+  "aboutDescription": "Ештеңе теру құралының көзі ашық емес. Егер сіз әзірлеуші ​​болсаңыз, кодты зерттеп, үлес қосуыңызға болады.",
+  "aboutViewSource": "GitHub сайтында көру",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Сілтемені ашу мүмкін болмады",
+  "reviewSection": "Қарау",
+  "reviewDescription": "Ештеңе теру функциясын ұнатасыз ба? Google Play-дегі бағаңыз басқаларға қолданбаны табуға көмектеседі.",
+  "reviewRateOnPlay": "Google Play-де бағалаңыз",
+  "reviewRateOnPlaySubtitle": "Қолданбадан шықпай-ақ рейтинг қалдырыңыз",
+  "reviewCouldNotOpen": "Google Play ашылмады",
+  "breathSpeed": "Тыныс алу жылдамдығы",
+  "breathSpeedBlinkHint": "Төменгі = жыпылықтау, жоғары = баяу тыныс",
+  "speedSliderHint": "Төменгі = жылдамырақ, жоғары = баяу",
+  "swatchDefault": "Әдепкі",
+  "customAccentColorPicker": "Арнайы екпін түсі",
+  "customLightBackgroundPicker": "Арнаулы ашық фон",
+  "customDarkBackgroundPicker": "Арнаулы күңгірт фон",
+  "customCallBackgroundPicker": "Арнаулы қоңырау фоны",
+  "ongoingCallStyleTitle": "Ағымдағы қоңырау стилі",
+  "glyphMapUnavailable": "Глиф картасы қолжетімді емес",
+  "animationDelayRange": "Анимацияның кешігуі (1с - 10с)",
+  "animationDelayRangeSingle": "Анимацияның кешігуі (0,1 - 10 секунд)",
+  "inCallMute": "Дыбысты өшіру",
+  "inCallKeypad": "Пернетақта",
+  "inCallSpeaker": "Спикер",
+  "inCallMore": "Көбірек",
+  "inCallBluetooth": "Блютез",
+  "inCallPhone": "Телефон",
+  "inCallAddCall": "Қоңырау қосу",
+  "inCallChangeSim": "SIM картасын өзгерту",
+  "inCallDecline": "Бас тарту",
+  "inCallAnswer": "Жауап",
+  "inCallMessage": "Хабарлама",
+  "inCallCalling": "Қоңырау шалуда...",
+  "inCallIncoming": "Кіріс қоңырау",
+  "inCallSelectSim": "SIM картасын таңдау…",
+  "inCallSwitchingSim": "SIM картасы ауыстырылуда…",
+  "inCallCallEnded": "Қоңырау аяқталды",
+  "inCallCallingVia": "{sim} арқылы қоңырау шалу",
+  "inCallCallingViaHtml": "<b>{sim}</b> арқылы қоңырау шалу",
+  "inCallChooseSim": "Бұл қоңырау үшін SIM картасын таңдаңыз",
+  "inCallDragAnswerDecline": "Жауап беру үшін оңға сүйреңіз · Бас тарту үшін солға сүйреңіз",
+  "inCallMobileNumber": "Ұялы телефон {number}",
+  "inCallAudioRouteCurrent": "{label} (ағымдағы)",
+  "inCallCallViaFrom": "<b>{sim}</b> арқылы қоңырау шалыңыз",
+  "inCallCallFrom": "қоңырау шалу",
+  "inCallUnknown": "Белгісіз",
+  "selectContactRingtone": "Контакт қоңырау үнін таңдаңыз",
+  "speakToSearchPrompt": "Іздеу үшін сөйлеңіз",
+  "phonePermissionRequired": "Телефон рұқсаты қажет",
+  "callFailed": "Қоңырау орындалмады: {error}",
+  "callPermissionDenied": "Қоңырауға рұқсат берілмеді",
+  "alreadyDefaultDialer": "Әдепкі тергіш ретінде әлдеқашан орнатылған",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Без звук</string>
+    <string name="in_call_keypad">Клавиатура</string>
+    <string name="in_call_speaker">Говорител</string>
+    <string name="in_call_more">повече</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Телефон</string>
+    <string name="in_call_add_call">Добавете обаждане</string>
+    <string name="in_call_change_sim">Смени SIM</string>
+    <string name="in_call_decline">Откажи</string>
+    <string name="in_call_answer">отговор</string>
+    <string name="in_call_message">Съобщение</string>
+    <string name="in_call_calling">Обаждане...</string>
+    <string name="in_call_incoming">Входящо повикване</string>
+    <string name="in_call_select_sim">Изберете SIM...</string>
+    <string name="in_call_switching_sim">SIM картата се превключва...</string>
+    <string name="in_call_call_ended">Обаждането приключи</string>
+    <string name="in_call_calling_via">Обаждане чрез %1$s</string>
+    <string name="in_call_calling_via_html">Обаждане чрез &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Изберете SIM за това обаждане</string>
+    <string name="in_call_drag_answer_decline">Плъзнете надясно, за да отговорите · Плъзнете наляво, за да откажете</string>
+    <string name="in_call_mobile_number">Мобилен %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (текущ)</string>
+    <string name="in_call_call_via_from">Обадете се чрез &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; от</string>
+    <string name="in_call_call_from">Обаждане от</string>
+    <string name="in_call_unknown">неизвестен</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Изберете мелодия за контакт</string>
+    <string name="native_speak_to_search">Говорете за търсене</string>
+    <string name="native_phone_permission_required">Изисква се разрешение от телефона</string>
+    <string name="native_call_failed">Неуспешно обаждане: %1$s</string>
+    <string name="native_call_permission_denied">Разрешението за обаждане е отказано</string>
+    <string name="native_already_default_dialer">Вече е зададено като набиране по подразбиране</string>
+</resources>

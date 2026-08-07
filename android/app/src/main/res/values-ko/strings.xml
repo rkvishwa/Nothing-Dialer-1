@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">무음</string>
+    <string name="in_call_keypad">키패드</string>
+    <string name="in_call_speaker">스피커</string>
+    <string name="in_call_more">더</string>
+    <string name="in_call_bluetooth">블루투스</string>
+    <string name="in_call_phone">핸드폰</string>
+    <string name="in_call_add_call">통화 추가</string>
+    <string name="in_call_change_sim">SIM 변경</string>
+    <string name="in_call_decline">감소</string>
+    <string name="in_call_answer">답변</string>
+    <string name="in_call_message">메시지</string>
+    <string name="in_call_calling">부름…</string>
+    <string name="in_call_incoming">전화 수신</string>
+    <string name="in_call_select_sim">SIM을 선택하세요…</string>
+    <string name="in_call_switching_sim">SIM 전환 중…</string>
+    <string name="in_call_call_ended">통화가 종료되었습니다.</string>
+    <string name="in_call_calling_via">%1$s로 전화 걸기</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;로 전화 걸기</string>
+    <string name="in_call_choose_sim">이 통화에 SIM을 선택하세요</string>
+    <string name="in_call_drag_answer_decline">응답하려면 오른쪽으로 드래그하세요. 거부하려면 왼쪽으로 드래그하세요.</string>
+    <string name="in_call_mobile_number">모바일 %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (현재)</string>
+    <string name="in_call_call_via_from">에서 &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;로 전화하세요.</string>
+    <string name="in_call_call_from">다음에서 전화 걸기</string>
+    <string name="in_call_unknown">알려지지 않은</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">연락처 벨소리 선택</string>
+    <string name="native_speak_to_search">음성으로 검색</string>
+    <string name="native_phone_permission_required">전화 권한이 필요합니다</string>
+    <string name="native_call_failed">통화 실패: %1$s</string>
+    <string name="native_call_permission_denied">통화 권한이 거부되었습니다.</string>
+    <string name="native_already_default_dialer">이미 기본 다이얼러로 설정되어 있습니다.</string>
+</resources>

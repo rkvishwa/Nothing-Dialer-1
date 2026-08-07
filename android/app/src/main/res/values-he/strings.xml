@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">לְהַשְׁתִיק</string>
+    <string name="in_call_keypad">לוח מקשים</string>
+    <string name="in_call_speaker">רַמקוֹל</string>
+    <string name="in_call_more">יוֹתֵר</string>
+    <string name="in_call_bluetooth">בלוטות\'</string>
+    <string name="in_call_phone">טֵלֵפוֹן</string>
+    <string name="in_call_add_call">הוסף שיחה</string>
+    <string name="in_call_change_sim">שנה SIM</string>
+    <string name="in_call_decline">יְרִידָה</string>
+    <string name="in_call_answer">תְשׁוּבָה</string>
+    <string name="in_call_message">הוֹדָעָה</string>
+    <string name="in_call_calling">יִעוּד…</string>
+    <string name="in_call_incoming">שיחה נכנסת</string>
+    <string name="in_call_select_sim">בחר SIM...</string>
+    <string name="in_call_switching_sim">מחליף SIM...</string>
+    <string name="in_call_call_ended">השיחה הסתיימה</string>
+    <string name="in_call_calling_via">מתקשר דרך %1$s</string>
+    <string name="in_call_calling_via_html">מתקשר דרך &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">בחר SIM עבור שיחה זו</string>
+    <string name="in_call_drag_answer_decline">גרור ימינה כדי לענות · גרור שמאלה כדי לדחות</string>
+    <string name="in_call_mobile_number">נייד %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (נוכחי)</string>
+    <string name="in_call_call_via_from">התקשר דרך &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; מ</string>
+    <string name="in_call_call_from">התקשר מ</string>
+    <string name="in_call_unknown">לֹא יְדוּעַ</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">בחר רינגטון ליצירת קשר</string>
+    <string name="native_speak_to_search">דבר כדי לחפש</string>
+    <string name="native_phone_permission_required">נדרשת אישור טלפוני</string>
+    <string name="native_call_failed">השיחה נכשלה: %1$s</string>
+    <string name="native_call_permission_denied">הרשאת השיחה נדחתה</string>
+    <string name="native_already_default_dialer">כבר מוגדר כחייגן ברירת מחדל</string>
+</resources>

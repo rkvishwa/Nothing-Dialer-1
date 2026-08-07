@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">ปิดเสียง</string>
+    <string name="in_call_keypad">ปุ่มกด</string>
+    <string name="in_call_speaker">วิทยากร</string>
+    <string name="in_call_more">มากกว่า</string>
+    <string name="in_call_bluetooth">บลูทูธ</string>
+    <string name="in_call_phone">โทรศัพท์</string>
+    <string name="in_call_add_call">เพิ่มการโทร</string>
+    <string name="in_call_change_sim">เปลี่ยนซิม</string>
+    <string name="in_call_decline">ปฏิเสธ</string>
+    <string name="in_call_answer">คำตอบ</string>
+    <string name="in_call_message">ข้อความ</string>
+    <string name="in_call_calling">กำลังโทร...</string>
+    <string name="in_call_incoming">สายเรียกเข้า</string>
+    <string name="in_call_select_sim">เลือกซิม...</string>
+    <string name="in_call_switching_sim">กำลังสลับซิม...</string>
+    <string name="in_call_call_ended">การโทรสิ้นสุดลง</string>
+    <string name="in_call_calling_via">โทรผ่าน %1$s</string>
+    <string name="in_call_calling_via_html">โทรผ่าน &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">เลือกซิมสำหรับการโทรนี้</string>
+    <string name="in_call_drag_answer_decline">ลากไปทางขวาเพื่อตอบ · ลากไปทางซ้ายเพื่อปฏิเสธ</string>
+    <string name="in_call_mobile_number">มือถือ %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (ปัจจุบัน)</string>
+    <string name="in_call_call_via_from">โทรผ่าน &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; จาก</string>
+    <string name="in_call_call_from">โทรจาก</string>
+    <string name="in_call_unknown">ไม่ทราบ</string>
+    <string name="in_call_sim_slot">ซิม %1$d</string>
+    <string name="native_select_contact_ringtone">เลือกเสียงเรียกเข้าผู้ติดต่อ</string>
+    <string name="native_speak_to_search">พูดเพื่อค้นหา</string>
+    <string name="native_phone_permission_required">ต้องได้รับอนุญาตจากโทรศัพท์</string>
+    <string name="native_call_failed">โทรล้มเหลว: %1$s</string>
+    <string name="native_call_permission_denied">การอนุญาตการโทรถูกปฏิเสธ</string>
+    <string name="native_already_default_dialer">ตั้งเป็นตัวเรียกเลขหมายเริ่มต้นแล้ว</string>
+</resources>

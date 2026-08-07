@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">沉默的</string>
+    <string name="in_call_keypad">键盘</string>
+    <string name="in_call_speaker">扬声器</string>
+    <string name="in_call_more">更多的</string>
+    <string name="in_call_bluetooth">蓝牙</string>
+    <string name="in_call_phone">电话</string>
+    <string name="in_call_add_call">添加通话</string>
+    <string name="in_call_change_sim">更换SIM卡</string>
+    <string name="in_call_decline">衰退</string>
+    <string name="in_call_answer">回答</string>
+    <string name="in_call_message">信息</string>
+    <string name="in_call_calling">呼叫…</string>
+    <string name="in_call_incoming">来电</string>
+    <string name="in_call_select_sim">选择SIM卡...</string>
+    <string name="in_call_switching_sim">切换 SIM 卡...</string>
+    <string name="in_call_call_ended">通话结束</string>
+    <string name="in_call_calling_via">通过 %1$s 拨打</string>
+    <string name="in_call_calling_via_html">通过 &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; 拨打</string>
+    <string name="in_call_choose_sim">选择用于此通话的 SIM 卡</string>
+    <string name="in_call_drag_answer_decline">向右拖动接听·向左拖动拒绝</string>
+    <string name="in_call_mobile_number">手机%1$s</string>
+    <string name="in_call_audio_route_current">%1$s（当前）</string>
+    <string name="in_call_call_via_from">通过 &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; 拨打</string>
+    <string name="in_call_call_from">来电来自</string>
+    <string name="in_call_unknown">未知</string>
+    <string name="in_call_sim_slot">卡%1$d</string>
+    <string name="native_select_contact_ringtone">选择联系人铃声</string>
+    <string name="native_speak_to_search">说话进行搜索</string>
+    <string name="native_phone_permission_required">需要电话许可</string>
+    <string name="native_call_failed">通话失败：%1$s</string>
+    <string name="native_call_permission_denied">呼叫权限被拒绝</string>
+    <string name="native_already_default_dialer">已设置为默认拨号器</string>
+</resources>

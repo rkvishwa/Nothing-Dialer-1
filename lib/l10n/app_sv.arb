@@ -1,0 +1,759 @@
+{
+  "@@locale": "sv",
+  "appTitle": "Ingenting Dialer",
+  "settings": "Inställningar",
+  "settingsSearchHint": "Sökinställningar",
+  "settingsSearchNoResults": "Inga inställningar hittades",
+  "general": "Allmän",
+  "theme": "Tema",
+  "themeSystemDefault": "System Standard",
+  "themeLight": "Ljus",
+  "themeDark": "Mörk",
+  "themeFollowSystem": "Följ systeminställningarna",
+  "themeAlwaysLight": "Använd alltid lätta tema",
+  "themeAlwaysDark": "Använd alltid mörkt tema",
+  "language": "Språk",
+  "languageDeviceDefault": "Enhetens standard",
+  "languagePickerTitle": "Språk",
+  "languageSearchHint": "Sök efter språk",
+  "font": "Font",
+  "fontSystem": "Systemstandard",
+  "fontNdot": "Ingenting (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Nedladdning av teckensnitt misslyckades. Kontrollera din anslutning och försök igen.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Font",
+  "fontPreviewSample": "Ingenting Dialer",
+  "fontAppWide": "App-typsnitt",
+  "fontApplyTo": "Ansök till",
+  "fontApplyEntireApp": "Hela appen",
+  "fontApplyEntireAppSubtitle": "Samma typsnitt överallt, inklusive under samtal",
+  "fontApplyTitlesOnly": "Titlar och rubriker",
+  "fontApplyTitlesOnlySubtitle": "Endast stora titlar och avsnittsrubriker",
+  "fontApplyCustomize": "Anpassa",
+  "fontApplyCustomizeSubtitle": "Välj typsnitt per skärm och texttyp",
+  "fontCustomizeSection": "Anpassa efter skärm",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Sidans titel",
+  "fontRoleSectionHeader": "Sektionshuvud",
+  "fontRolePrimary": "Primär text",
+  "fontRoleSecondary": "Sekundär text",
+  "fontRoleButton": "Knappar",
+  "fontRoleDialKey": "Knappar på knappsatsen",
+  "fontSurfaceRecents": "Senaste",
+  "fontSurfaceContacts": "Kontakter",
+  "fontSurfaceSettings": "Inställningar",
+  "fontSurfaceDialpad": "Knappsats",
+  "fontSurfaceShell": "Navigering",
+  "fontSurfaceDefaultDialer": "Standarduppringningsprompt",
+  "fontSurfaceFavourites": "Favoriter",
+  "fontSurfaceBlocked": "Spärrade nummer",
+  "fontSurfaceContactDetail": "Kontaktinformation",
+  "fontSurfaceCallHistory": "Samtalshistorik",
+  "fontSurfaceSheets": "Lakan & plockare",
+  "fontSurfaceInCall": "Under samtalsskärm",
+  "fontSubtitleEntireApp": "{font} — hela appen",
+  "fontSubtitleTitlesOnly": "{font} — endast titlar",
+  "fontSubtitleCustomize": "Anpassad per skärm",
+  "background": "Bakgrund",
+  "accent": "Accent",
+  "lightBackground": "Ljus bakgrund",
+  "lightAccent": "Lätt accent",
+  "darkBackground": "Mörk bakgrund",
+  "darkAccent": "Mörk accent",
+  "callBackground": "Samtalsbakgrund",
+  "appIcon": "App-ikon",
+  "answerMethod": "Svarsmetod",
+  "answerSlide": "Skjut för att svara",
+  "answerSlideSubtitle": "Svep åt vänster/höger på fältet, som Google Phone",
+  "answerButton": "Knapptryckning",
+  "answerButtonSubtitle": "Tryck på svara eller avvisa knapparna",
+  "answerHuawei": "Huawei stil",
+  "answerHuaweiSubtitle": "Dra cirkeln till den gröna telefonen för att svara",
+  "answerHuaweiTileSubtitle": "Huawei — dra till grönt/rött",
+  "calling": "Kallelse",
+  "defaultSim": "Standard SIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Fråga varje gång",
+  "askEveryTimeSubtitle": "Visa SIM-väljaren före varje samtal",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "Inga SIM-kort hittades",
+  "couldNotLoadSims": "Kunde inte ladda SIM-kort: {error}",
+  "allFavourites": "Alla favoriter",
+  "allFavouritesSubtitle": "Ordna om, ta bort och lägg till från kontakter",
+  "blockedNumbers": "Spärrade nummer",
+  "blockedNumbersSubtitle": "Visa och avblockera nummer",
+  "soundsAndVibration": "Ljud och vibrationer",
+  "soundsAndVibrationSubtitle": "Ringsignal, vibrationer, knappsatstoner",
+  "couldNotOpenSettings": "Kunde inte öppna inställningarna: {error}",
+  "frequentlyContacted": "Ofta kontaktad",
+  "numberOfRecords": "Antal poster",
+  "timePeriod": "Tidsperiod",
+  "periodLast24Hours": "Senaste 24 timmarna",
+  "periodLast24HoursSubtitle": "Samtal från den senaste dagen",
+  "periodLast7Days": "Senaste 7 dagarna",
+  "periodLast7DaysSubtitle": "Samtal från den senaste veckan",
+  "periodLast30Days": "Senaste 30 dagarna",
+  "periodLast30DaysSubtitle": "Samtal från den senaste månaden",
+  "periodLast12Months": "Senaste 12 månaderna",
+  "periodLast12MonthsSubtitle": "Samtal från det senaste året",
+  "periodAllTime": "Hela tiden",
+  "periodAllTimeSubtitle": "Hela samtalshistoriken",
+  "frequentMaxOff": "Av",
+  "frequentMaxCount": "{count} kontakter",
+  "torchBlink": "Facklan blinkar",
+  "torchIncomingCall": "Inkommande samtal ficklampa",
+  "torchOutgoingCall": "Ficklampa för utgående samtal",
+  "torchOngoingCall": "Pågående samtalsfackla",
+  "torchIncomingInterval": "Inkommande blinkintervall",
+  "torchOutgoingInterval": "Utgående blinkintervall",
+  "torchOngoingInterval": "Pågående blinkintervall",
+  "torchOff": "Av",
+  "torchOffIncomingSubtitle": "Ingen ficklampa när det ringer",
+  "torchOffOutgoingSubtitle": "Ingen ficklampa när du ringer",
+  "torchOffOngoingSubtitle": "Ingen ficklampa under aktivt samtal",
+  "torchFixedInterval": "Fast intervall",
+  "torchFixedIntervalSubtitle": "Blinka med en inställd hastighet",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} blinkar",
+  "flashlightUnavailable": "Ficklampa är inte tillgänglig på den här enheten",
+  "glyphLights": "Glyfljus",
+  "glyphCallingAnimation": "Glyf-anropsanimation",
+  "glyphOngoingAnimation": "Glyph pågående samtalsanimering",
+  "glyphNone": "Ingen",
+  "glyphNoneOutgoingSubtitle": "Inaktivera glyph-ljus för utgående samtal",
+  "glyphNoneInCallSubtitle": "Inaktivera glyph-ljus under aktivt samtal",
+  "glyphBreathProgress": "Andning & framsteg",
+  "glyphBreathProgressSubtitle": "Ljus andas medan linjen fylls över 65s",
+  "glyphAccumulate": "Ackumulera",
+  "glyphAccumulateSubtitle": "Ackumulerande animation på lamporna C1-C4",
+  "glyphSingle": "Enda",
+  "glyphSingleSubtitle": "Enkelt ljus som rör sig över C1-C4",
+  "glyphBreath": "Andetag",
+  "glyphBreathSubtitle": "Välj ljus och hastighet",
+  "glyphSteady": "Stadig",
+  "glyphSteadySubtitle": "Utvalda lampor förblir tända",
+  "breathSettings": "Andningsinställningar",
+  "activeLights": "Aktiva lampor",
+  "lightsCount": "{count} lampor",
+  "speedSettings": "Hastighetsinställningar",
+  "speedSettingsDelay": "{ms}ms fördröjning",
+  "durationAndSpeed": "Varaktighet & hastighet",
+  "durationSpeedSummary": "{duration}s varaktighet, {interval}ms intervall",
+  "cancel": "Avboka",
+  "done": "Gjort",
+  "save": "Spara",
+  "block": "Blockera",
+  "delete": "Radera",
+  "recents": "Senaste",
+  "contacts": "Kontakter",
+  "hideFavouritesOnRecents": "Dölj favoriter på Senaste",
+  "showFavouritesOnRecents": "Visa favoriter på Senaste",
+  "ongoingCall": "Pågående samtal",
+  "setAsDefaultTitle": "STÄLL SOM\nSTANDARD",
+  "setAsDefaultBody": "För att använda Nothing Dialer måste den vara inställd som din standardapp för telefon. Detta låter dig hantera samtal, visa historik och använda Glyph-animationer.",
+  "setAsDefaultButton": "STÄLL IN SOM STANDARD",
+  "nothingDialerBrand": "INGENTING DIALER 1",
+  "favourites": "Favoriter",
+  "addFavourite": "Lägg till favorit",
+  "favouritesDrawerHint": "Använd menyn för att lägga till kontakter. Knacka utanför lådan eller svep den stängd. Stjärnmärk en kontakt från deras uppgifter eller tryck länge på ett samtal i Senaste.",
+  "menu": "Meny",
+  "noFavouritesYet": "Inga favoriter än.\nÖppna menyn för att lägga till en eller stjärnmärk en kontakt.",
+  "contactsPermissionNeeded": "Kontaktbehörighet krävs",
+  "chooseContact": "Välj kontakt",
+  "noPhone": "Ingen telefon",
+  "pickNumber": "Välj nummer",
+  "contactHasNoPhone": "Den här kontakten har inget telefonnummer",
+  "blockNumber": "Blocknummer",
+  "enterPhoneNumber": "Ange telefonnummer",
+  "unblockedDisplay": "Avblockerad {display}",
+  "couldNotUnblockNumber": "Kunde inte avblockera nummer",
+  "blockedSummary": "{blocked} blockerad • {matched} matchade",
+  "contactsPermissionMissing": "Kontaktbehörighet saknas. Tryck för att fixa.",
+  "noBlockedNumbers": "Inga spärrade nummer",
+  "unknownContact": "Okänd kontakt",
+  "unblock": "Avblockera",
+  "permissionNeeded": "Tillstånd behövs",
+  "grantPhonePermission": "Ge telefonbehörighet att se din samtalshistorik.",
+  "grantContactsPermission": "Ge kontakter behörighet att se din adressbok.",
+  "openSettings": "Öppna Inställningar",
+  "tryAgain": "Försök igen",
+  "couldNotLoadContacts": "Kunde inte ladda kontakter",
+  "contactsLoadError": "Något gick fel när du läste din adressbok.",
+  "noContactsFound": "Inga kontakter hittades",
+  "contactsEmptySubtitle": "Kontakter från din enhet visas här.",
+  "searchContacts": "Sök kontakter...",
+  "searchRecentCalls": "Sök efter senaste samtal",
+  "fromContacts": "Från kontakter",
+  "recentsSearchSection": "Senaste sökningen",
+  "recentsSearchShowContacts": "Visa kontakter i sökningen",
+  "recentsSearchShowContactsSubtitle": "När du söker på Senaste, visa även matchande personer från din adressbok nedanför samtalshistorikresultat.",
+  "voiceSearch": "Röstsökning",
+  "createNewContact": "Skapa ny kontakt",
+  "callError": "Samtalsfel: {error}",
+  "noRecentCalls": "Inga senaste samtal",
+  "callHistoryEmpty": "Din samtalshistorik kommer att visas här.",
+  "loadMore": "Ladda mer",
+  "frequentlyContactedHeader": "Ofta kontaktad",
+  "recentHistory": "Senaste historien",
+  "noFavouritesRecentsHint": "Inga favoriter än. Stjärnmärk en kontakt, tryck länge på ett samtal eller använd fliken Favoriter.",
+  "copyNumber": "Kopiera nummer",
+  "editNumberBeforeCall": "Redigera nummer före samtal",
+  "removeFromFavourites": "Ta bort från favoriter",
+  "addToFavourites": "Lägg till i favoriter",
+  "blockNumberQuestion": "Blocknummer?",
+  "blockNumberConfirm": "Du kommer inte längre att ta emot samtal eller sms från {number}.",
+  "blocked": "Blockerad",
+  "couldNotBlock": "Kunde inte blockera",
+  "contactNotOnDevice": "Kontakten har inte sparats på den här enheten",
+  "unblocked": "Avblockerad",
+  "numberCopied": "Nummer kopierat",
+  "showLess": "Visa mindre",
+  "showAllTimes": "Visa alla tider",
+  "mostRecent": "Senaste · {time}",
+  "videoCall": "Videosamtal",
+  "couldNotPlaceVideoCall": "Det gick inte att ringa videosamtal",
+  "message": "Meddelande",
+  "couldNotOpenMessaging": "Det gick inte att öppna meddelandeappen",
+  "history": "Historia",
+  "viewContact": "Visa kontakt",
+  "addToContact": "Lägg till i kontakt",
+  "callTypeMissed": "Saknad",
+  "callTypeRejected": "Avvisad",
+  "callTypeIncoming": "Inkommande",
+  "callTypeOutgoing": "Utgående",
+  "today": "I dag",
+  "yesterday": "I går",
+  "justNow": "Just nu",
+  "minutesAgo": "{count} min sedan",
+  "hoursAgo": "{count} tim sedan",
+  "filterAll": "Alla",
+  "filterMissed": "Saknad",
+  "filterContacts": "Kontakter",
+  "filterNonContacts": "Icke-kontakter",
+  "iconUpdated": "Ikonen uppdaterad. Det kan ta en stund att uppdatera startskärmen.",
+  "iconSavedRelease": "Valet sparat. Hemskärmsikonen uppdateras i versioner.",
+  "couldNotChangeIcon": "Kunde inte ändra ikonen: {error}",
+  "launcherClassicBlack": "Klassisk (svart)",
+  "launcherLight": "Ljus",
+  "launcherNothingRed": "Inget rött",
+  "launcherDarkGrey": "Mörkgrå",
+  "launcherCream": "Grädde",
+  "launcherRetroPhone": "Retro telefon",
+  "launcherRetroPhoneLight": "Retro telefon (ljus)",
+  "voiceSearchUnavailable": "Röstsökning är inte tillgängligt på den här enheten.",
+  "voiceSearchFailed": "Röstsökning misslyckades: {error}",
+  "customColor": "Beställnings",
+  "selectColor": "Välj färg",
+  "reset": "Återställa",
+  "simPickerTitle": "Välj SIM",
+  "simChooseForCall": "Välj SIM för det här samtalet",
+  "defaultSimAsk": "Fråga varje gång",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Kontaktuppgifter",
+  "call": "Samtal",
+  "share": "Dela",
+  "favourite": "Favorit",
+  "unfavourite": "Ofavorit",
+  "blockContact": "Blockera kontakt",
+  "unblockContact": "Avblockera kontakt",
+  "deleteContact": "Ta bort kontakt",
+  "phone": "Telefon",
+  "email": "E-post",
+  "ringtone": "Ringsignal",
+  "defaultRingtone": "Standard",
+  "simForContact": "SIM för denna kontakt",
+  "callHistoryTitle": "Samtalshistorik",
+  "noCallsWithNumber": "Inga samtal med detta nummer",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Glyph animation",
+  "inCallGlyphAnimationStyle": "In-call Glyph-animation",
+  "recordsOff": "Av",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Standard SIM",
+  "nothingPhoneOnly": "Ingenting Endast telefon",
+  "nothingPhoneOnlySubtitle": "Glyph-funktioner kräver en Nothing Phone",
+  "custom": "Beställnings",
+  "presetColorHex": "Förinställd · {hex}",
+  "customColorHex": "Anpassad · {hex}",
+  "oneContact": "1 kontakt",
+  "upToContacts": "Upp till {count} kontakter",
+  "answerButtonTapSubtitle": "Tryck på knappen för att svara",
+  "filterCalls": "Filtrera samtal",
+  "filterTooltip": "Filtrera",
+  "settingsTooltip": "Inställningar",
+  "filterAllSubtitle": "Hela samtalsloggen",
+  "filterMissedSubtitle": "Missad och avvisad",
+  "filterContactsSubtitle": "Samtal matchade med en sparad kontakt",
+  "filterNonContactsSubtitle": "Numren finns inte i din adressbok",
+  "ongoingCallWithDetail": "Pågående samtal: {detail}",
+  "defaultSimForCalls": "Standard SIM för samtal",
+  "blinkInterval": "Blinkintervall",
+  "close": "Nära",
+  "frequentlyContactedInfoBody": "Visar dina mest uppringda telefonnummer högst upp på fliken Senaste, baserat på hur många inkommande, utgående, missade eller avvisade samtal du hade med varje nummer under den tidsperiod du väljer.\n\nAntal poster: ställ in på 0 för att stänga av detta. Använd 1–20 för att visa så många toppkontakter.\n\nTidsperioden gäller endast när minst en kontakt visas.",
+  "breathSettingsSpeedSummary": "{count} lampor, {ms}ms hastighet",
+  "deleteContactQuestion": "Ta bort kontakt?",
+  "deleteContactBody": "Den här kontakten kommer att raderas permanent från din enhet.",
+  "blockContactQuestion": "Blockera kontakt?",
+  "unblockContactQuestion": "Avblockera kontakt?",
+  "blockContactBody": "Du kommer inte längre att ta emot samtal eller sms från den här kontakten.",
+  "unblockContactBody": "Du kommer att börja ta emot samtal och sms från den här kontakten.",
+  "contactBlocked": "Kontakt blockerad",
+  "contactUnblocked": "Kontakt avblockerad",
+  "noPhoneNumbersToBlock": "Inga telefonnummer att blockera",
+  "simSameAsSystem": "Samma som system",
+  "simSameAsSystemSubtitle": "Följer Standard SIM i Inställningar",
+  "simAskEveryTimeForContact": "Visa alltid SIM-väljaren för den här kontakten",
+  "ringtoneSetForContact": "Ringsignal inställd globalt för denna kontakt",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Det gick inte att välja ringsignal: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Fel: {error}",
+  "noCallHistoryFound": "Ingen samtalshistorik hittades",
+  "speedDialVoicemail": "Snabbuppringning: Röstbrevlåda",
+  "shareContactSubject": "Kontakt: {name}",
+  "contactInfo": "Kontaktinformation",
+  "dontAskAgainSim": "Fråga inte igen",
+  "simDontAskAgainSubtitle": "Använd detta SIM-kort som standard (ändra i Inställningar)",
+  "addContact": "Lägg till kontakt",
+  "createContact": "Skapa kontakt",
+  "paste": "Klistra",
+  "clear": "Rensa",
+  "returnToCall": "Återgå till samtalet",
+  "numberOfRecordsTitle": "Antal poster",
+  "recordsPickerSubtitle": "Hur många ofta kontaktade poster som ska visas (0 = av)",
+  "torchInfoTitle": "Facklan blinkar",
+  "torchInfoBody": "Blinkar kamerablixten under inkommande, utgående eller pågående samtal. Oberoende av glyph-ljus.",
+  "glyphMapTitle": "Glyf layout",
+  "glyphMapBody": "Ingenting Telefon 1 Glyph LED-zoner. Utgående och ingående animationer använder dessa kanaler.",
+  "answerMethodTitle": "Svarsmetod",
+  "glyphOutgoingCallStyleTitle": "Utgående samtalsstil",
+  "glyphInCallAnimationTitle": "Glyph in-call-animation",
+  "themePickerTitle": "Tema",
+  "torchIncomingTitle": "Inkommande samtal ficklampa",
+  "torchOutgoingTitle": "Ficklampa för utgående samtal",
+  "torchOngoingTitle": "Pågående samtalsfackla",
+  "timePeriodTitle": "Tidsperiod",
+  "ok": "OK",
+  "confirmDeleteCall": "Vill du ta bort det här samtalet från historiken?",
+  "confirmDeleteAllCalls": "Vill du radera alla samtal med detta nummer?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Skicka ett meddelande",
+  "addToExistingContactAction": "Lägg till i en kontakt",
+  "mobileLabel": "Mobil",
+  "callingSimForContactTitle": "Ringer SIM för den här kontakten",
+  "contactSettings": "Kontaktinställningar",
+  "setCallingSim": "Ställ in samtals-SIM",
+  "contactRingtone": "Kontakta ringsignal",
+  "shareContact": "Dela kontakt",
+  "blockNumbers": "Blockera nummer",
+  "unblockNumbers": "Avblockera nummer",
+  "connectedApps": "Anslutna appar",
+  "simNotSet": "Inte inställt",
+  "ringtoneDefault": "Standard",
+  "customRingtone": "Beställnings",
+  "aboutSection": "Om",
+  "aboutFeedbackSection": "Om & feedback",
+  "aboutDescription": "Nothing Dialer är öppen källkod. Om du är en utvecklare är du välkommen att utforska koden och bidra.",
+  "aboutViewSource": "Visa på GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Det gick inte att öppna länken",
+  "reviewSection": "Recension",
+  "reviewDescription": "Gillar du Nothing Dialer? Ditt betyg på Google Play hjälper andra att hitta appen.",
+  "reviewRateOnPlay": "Betygsätt på Google Play",
+  "reviewRateOnPlaySubtitle": "Lämna ett betyg utan att lämna appen",
+  "reviewCouldNotOpen": "Det gick inte att öppna Google Play",
+  "breathSpeed": "Andningshastighet",
+  "breathSpeedBlinkHint": "Lägre = Blinka, Högre = Långsam andetag",
+  "speedSliderHint": "Lägre = snabbare, högre = långsammare",
+  "swatchDefault": "Standard",
+  "customAccentColorPicker": "Anpassad accentfärg",
+  "customLightBackgroundPicker": "Anpassad ljus bakgrund",
+  "customDarkBackgroundPicker": "Anpassad mörk bakgrund",
+  "customCallBackgroundPicker": "Anpassad samtalsbakgrund",
+  "ongoingCallStyleTitle": "Pågående samtalsstil",
+  "glyphMapUnavailable": "Glyfkartan är inte tillgänglig",
+  "animationDelayRange": "Animationsfördröjning (1s - 10s)",
+  "animationDelayRangeSingle": "Animationsfördröjning (0,1 s - 10 s)",
+  "inCallMute": "Stum",
+  "inCallKeypad": "Knappsats",
+  "inCallSpeaker": "Högtalare",
+  "inCallMore": "Mer",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Telefon",
+  "inCallAddCall": "Lägg till samtal",
+  "inCallChangeSim": "Byt SIM",
+  "inCallDecline": "Nedgång",
+  "inCallAnswer": "Svar",
+  "inCallMessage": "Meddelande",
+  "inCallCalling": "Kallelse…",
+  "inCallIncoming": "Inkommande samtal",
+  "inCallSelectSim": "Välj SIM...",
+  "inCallSwitchingSim": "Byter SIM...",
+  "inCallCallEnded": "Samtalet avslutades",
+  "inCallCallingVia": "Ringer via {sim}",
+  "inCallCallingViaHtml": "Ringer via <b>{sim}</b>",
+  "inCallChooseSim": "Välj SIM för det här samtalet",
+  "inCallDragAnswerDecline": "Dra åt höger för att svara · Dra åt vänster för att avböja",
+  "inCallMobileNumber": "Mobil {number}",
+  "inCallAudioRouteCurrent": "{label} (nuvarande)",
+  "inCallCallViaFrom": "Ring via <b>{sim}</b> från",
+  "inCallCallFrom": "Ring från",
+  "inCallUnknown": "Okänd",
+  "selectContactRingtone": "Välj kontakt ringsignal",
+  "speakToSearchPrompt": "Tala för att söka",
+  "phonePermissionRequired": "Telefontillstånd krävs",
+  "callFailed": "Samtalet misslyckades: {error}",
+  "callPermissionDenied": "Samtalstillstånd nekad",
+  "alreadyDefaultDialer": "Redan inställd som standarduppringare",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

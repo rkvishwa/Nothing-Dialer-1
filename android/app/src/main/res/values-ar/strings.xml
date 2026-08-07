@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">كتم</string>
+    <string name="in_call_keypad">لوحة المفاتيح</string>
+    <string name="in_call_speaker">مكبر الصوت</string>
+    <string name="in_call_more">المزيد</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">الهاتف</string>
+    <string name="in_call_add_call">إضافة مكالمة</string>
+    <string name="in_call_change_sim">تغيير الشريحة</string>
+    <string name="in_call_decline">رفض</string>
+    <string name="in_call_answer">رد</string>
+    <string name="in_call_message">رسالة</string>
+    <string name="in_call_calling">جارٍ الاتصال…</string>
+    <string name="in_call_incoming">مكالمة واردة</string>
+    <string name="in_call_select_sim">اختر الشريحة…</string>
+    <string name="in_call_switching_sim">جارٍ تبديل الشريحة…</string>
+    <string name="in_call_call_ended">انتهت المكالمة</string>
+    <string name="in_call_calling_via">اتصال عبر %1$s</string>
+    <string name="in_call_calling_via_html">اتصال عبر &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">اختر الشريحة لهذه المكالمة</string>
+    <string name="in_call_drag_answer_decline">اسحب يمينًا للرد · يسارًا للرفض</string>
+    <string name="in_call_mobile_number">جوال %1$s</string>
+    <string name="in_call_audio_route_current">%1$s  (الحالي)</string>
+    <string name="in_call_call_via_from">مكالمة عبر &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; من</string>
+    <string name="in_call_call_from">مكالمة من</string>
+    <string name="in_call_unknown">غير معروف</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">اختر نغمة جهة الاتصال</string>
+    <string name="native_speak_to_search">تحدث للبحث</string>
+    <string name="native_phone_permission_required">يلزم إذن الهاتف</string>
+    <string name="native_call_failed">فشلت المكالمة: %1$s</string>
+    <string name="native_call_permission_denied">تم رفض إذن المكالمة</string>
+    <string name="native_already_default_dialer">مُعيَّن بالفعل كتطبيق الهاتف الافتراضي</string>
+</resources>

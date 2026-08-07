@@ -6,10 +6,17 @@ import 'package:path_provider/path_provider.dart';
 import '../services/blocking_manager.dart';
 import '../services/favourites_manager.dart';
 import 'sim_picker_sheet.dart';
+import '../widgets/sim_badge.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:nothing_dialer/l10n/app_localizations.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
+import '../widgets/dialer_font_scope.dart';
 
 class ContactDetailScreen extends StatefulWidget {
   final Contact contact;
@@ -26,7 +33,11 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   String _callingSimMode = 'system';
   /// 0-based index when [_callingSimMode] is `fixed`.
   int? _preferredSim;
+  /// Display label for the contact ringtone tile (null → Default).
   String? _customRingtoneName;
+  /// `default` | `silent` | `ringtone`
+  String _ringtoneSelection = 'default';
+  String? _ringtoneUri;
 
   @override
   void initState() {
@@ -76,20 +87,77 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       simIdx = null;
     }
 
-    final rUri = prefs.getString('pref_ringtone_${_contact.id}');
-
-    String? rTitle;
-    if (rUri != null) {
-      try {
-        rTitle = await _channel.invokeMethod('getRingtoneTitle', rUri);
-      } catch (_) {}
-    }
+    await _loadRingtoneState(prefs);
 
     if (mounted) {
       setState(() {
         _callingSimMode = mode ?? 'system';
         _preferredSim = _callingSimMode == 'fixed' ? simIdx : null;
-        _customRingtoneName = rTitle;
+      });
+    }
+  }
+
+  /// Contacts.CUSTOM_RINGTONE is the source of truth; prefs are a UI cache only.
+  Future<void> _loadRingtoneState([SharedPreferences? existingPrefs]) async {
+    final l10n = mounted ? AppLocalizations.of(context) : null;
+    final prefs = existingPrefs ?? await SharedPreferences.getInstance();
+
+    String selection = 'default';
+    String? uri;
+    String? title;
+
+    try {
+      final raw = await _channel.invokeMethod<Map<dynamic, dynamic>>(
+        'getContactRingtone',
+        {'contactId': _contact.id},
+      );
+      if (raw != null) {
+        selection = (raw['selection'] as String?) ?? 'default';
+        uri = raw['uri'] as String?;
+        title = raw['title'] as String?;
+      }
+    } catch (_) {
+      // Fall back to local cache if Contacts read fails.
+      final cached = prefs.getString('pref_ringtone_${_contact.id}');
+      if (cached == null || cached == 'default') {
+        selection = 'default';
+      } else if (cached == 'silent') {
+        selection = 'silent';
+        uri = 'silent';
+      } else {
+        selection = 'ringtone';
+        uri = cached;
+        try {
+          title = await _channel.invokeMethod<String>('getRingtoneTitle', cached);
+        } catch (_) {}
+      }
+    }
+
+    // Keep prefs aligned with Contacts so UI survives offline/glitches.
+    switch (selection) {
+      case 'silent':
+        await prefs.setString('pref_ringtone_${_contact.id}', 'silent');
+        title = l10n?.ringtoneSilent ?? 'Silent';
+        break;
+      case 'ringtone':
+        if (uri != null) {
+          await prefs.setString('pref_ringtone_${_contact.id}', uri);
+        }
+        title ??= l10n?.customRingtone ?? 'Custom';
+        break;
+      default:
+        await prefs.remove('pref_ringtone_${_contact.id}');
+        title = null;
+        selection = 'default';
+        uri = null;
+        break;
+    }
+
+    if (mounted) {
+      setState(() {
+        _ringtoneSelection = selection;
+        _ringtoneUri = uri;
+        _customRingtoneName = title;
       });
     }
   }
@@ -134,9 +202,10 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       });
     } on PlatformException catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Call error: ${e.message}'),
+            content: Text(l10n.callError(e.message ?? '')),
             backgroundColor: Theme.of(
               context,
             ).colorScheme.surfaceContainerHighest,
@@ -151,9 +220,10 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       await _channel.invokeMethod('openSmsApp', {'number': number});
     } on PlatformException catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error: ${e.message}')));
+        ).showSnackBar(SnackBar(content: Text(l10n.genericError(e.message ?? ''))));
       }
     }
   }
@@ -164,12 +234,13 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   }
 
   Future<void> _setCallingSim() async {
+    final l10n = AppLocalizations.of(context);
     try {
       final raw = await _channel.invokeMethod<List<dynamic>>('getSimCards');
       if (!mounted) return;
       if (raw == null || raw.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No SIM cards found')),
+          SnackBar(content: Text(l10n.noSimCardsFound)),
         );
         return;
       }
@@ -206,7 +277,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
                   child: Text(
-                    'Calling SIM for this contact',
+                    l10n.callingSimForContactTitle,
                     style: TextStyle(
                       color: Theme.of(sheetContext).colorScheme.onSurface,
                       fontSize: 20,
@@ -220,8 +291,8 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
                     Icons.settings_rounded,
                     color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
                   ),
-                  title: const Text('Same as system'),
-                  subtitle: const Text('Follows Default SIM in Settings'),
+                  title: Text(l10n.simSameAsSystem),
+                  subtitle: Text(l10n.simSameAsSystemSubtitle),
                   onTap: () async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.remove('pref_sim_${_contact.id}');
@@ -244,8 +315,8 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
                     Icons.help_outline_rounded,
                     color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
                   ),
-                  title: const Text('Ask every time'),
-                  subtitle: const Text('Always show SIM picker for this contact'),
+                  title: Text(l10n.askEveryTime),
+                  subtitle: Text(l10n.simAskEveryTimeForContact),
                   onTap: () async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.remove('pref_sim_${_contact.id}');
@@ -262,16 +333,17 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
                 ...sims.asMap().entries.map((e) {
                   final idx = e.key;
                   final sim = e.value;
-                  final label = sim['label'] as String? ?? 'SIM ${idx + 1}';
+                  final label = sim['label'] as String? ?? l10n.simSlot(idx + 1);
                   final slot = (sim['slot'] as int?) ?? (idx + 1);
+                  final simIndex = (sim['index'] as num?)?.toInt() ?? idx;
                   return ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                    leading: Icon(
-                      Icons.sim_card_outlined,
-                      color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+                    leading: SimIconListLeading(
+                      simIndex: simIndex,
+                      label: label,
                     ),
                     title: Text(label),
-                    subtitle: Text('SIM $slot'),
+                    subtitle: Text(l10n.simSlot(slot)),
                     onTap: () async {
                       final prefs = await SharedPreferences.getInstance();
                       await prefs.setString(
@@ -298,52 +370,140 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     } on PlatformException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not load SIMs: ${e.message}')),
+          SnackBar(content: Text(l10n.couldNotLoadSims(e.message ?? ''))),
         );
       }
     }
   }
 
   Future<void> _pickRingtone() async {
+    final l10n = AppLocalizations.of(context);
     try {
-      final String? ringtoneUri = await _channel.invokeMethod('pickRingtone');
-      if (ringtoneUri != null) {
-        // 1. Update native system contact database (Global)
-        await _channel.invokeMethod('setContactRingtone', {
-          'contactId': _contact.id,
-          'ringtoneUri': ringtoneUri,
-        });
+      final raw = await _channel.invokeMethod<List<dynamic>>('listRingtones');
+      if (!mounted) return;
+      final tones = (raw ?? const <dynamic>[])
+          .whereType<Map>()
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList();
 
-        // 2. Persist locally for UI consistency (Local)
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('pref_ringtone_${_contact.id}', ringtoneUri);
-
-        final String? title = await _channel.invokeMethod(
-          'getRingtoneTitle',
-          ringtoneUri,
-        );
-
-        if (mounted) {
-          setState(() {
-            _customRingtoneName = title ?? "Custom";
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Ringtone set globally for this contact'),
-            ),
+      await showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (sheetContext) {
+          return _ContactRingtoneSheet(
+            tones: tones,
+            currentSelection: _ringtoneSelection,
+            currentUri: _ringtoneUri,
+            defaultLabel: l10n.ringtoneDefault,
+            silentLabel: l10n.ringtoneSilent,
+            title: l10n.selectContactRingtone,
+            onPreview: (uri) async {
+              try {
+                await _channel.invokeMethod('previewRingtone', {'uri': uri});
+              } catch (_) {}
+            },
+            onStopPreview: () async {
+              try {
+                await _channel.invokeMethod('stopRingtonePreview');
+              } catch (_) {}
+            },
+            onSelected: (selection, uri) =>
+                _applyContactRingtone(selection, uri, showSnack: false),
           );
-        }
-      }
+        },
+      ).whenComplete(() async {
+        try {
+          await _channel.invokeMethod('stopRingtonePreview');
+        } catch (_) {}
+      });
     } on PlatformException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to pick ringtone: ${e.message}')),
+          SnackBar(content: Text(l10n.failedPickRingtone(e.message ?? ''))),
         );
       }
     }
   }
 
+  Future<void> _applyContactRingtone(
+    String selection,
+    String? uri, {
+    bool showSnack = true,
+  }) async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      final ringtoneUri = switch (selection) {
+        'default' => null,
+        'silent' => 'silent',
+        _ => uri,
+      };
+
+      final raw = await _channel.invokeMethod<Map<dynamic, dynamic>>(
+        'setContactRingtone',
+        {
+          'contactId': _contact.id,
+          'ringtoneUri': ringtoneUri,
+        },
+      );
+
+      final prefs = await SharedPreferences.getInstance();
+      final appliedSelection =
+          (raw?['selection'] as String?) ?? selection;
+      final appliedUri = raw?['uri'] as String?;
+      final appliedTitle = raw?['title'] as String?;
+
+      String? displayTitle;
+      switch (appliedSelection) {
+        case 'silent':
+          await prefs.setString('pref_ringtone_${_contact.id}', 'silent');
+          displayTitle = l10n.ringtoneSilent;
+          break;
+        case 'ringtone':
+          if (appliedUri != null) {
+            await prefs.setString('pref_ringtone_${_contact.id}', appliedUri);
+          }
+          displayTitle = appliedTitle ?? l10n.customRingtone;
+          break;
+        default:
+          await prefs.remove('pref_ringtone_${_contact.id}');
+          displayTitle = null;
+          break;
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _ringtoneSelection =
+            appliedSelection == 'ringtone' || appliedSelection == 'silent'
+                ? appliedSelection
+                : 'default';
+        _ringtoneUri = appliedUri;
+        _customRingtoneName = displayTitle;
+      });
+
+      if (showSnack) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              appliedSelection == 'default'
+                  ? l10n.ringtoneClearedForContact
+                  : l10n.ringtoneSetForContact,
+            ),
+          ),
+        );
+      }
+    } on PlatformException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.failedSetRingtone(e.message ?? ''))),
+        );
+      }
+      rethrow;
+    }
+  }
+
   Future<void> _shareContact() async {
+    final l10n = AppLocalizations.of(context);
     final vcard = _contact.toVCard();
     final directory = await getTemporaryDirectory();
     final path =
@@ -353,20 +513,21 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
     await Share.shareXFiles([
       XFile(path),
-    ], subject: 'Contact: ${_contact.displayName}');
+    ], subject: l10n.shareContactSubject(_contact.displayName));
   }
 
   Future<void> _deleteContact() async {
+    final l10n = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         title: Text(
-          'Delete contact?',
+          l10n.deleteContactQuestion,
           style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         ),
         content: Text(
-          'This contact will be permanently deleted from your device.',
+          l10n.deleteContactBody,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
@@ -375,7 +536,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(
-              'Cancel',
+              l10n.cancel,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -383,9 +544,9 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Colors.redAccent),
+            child: Text(
+              l10n.delete,
+              style: const TextStyle(color: Colors.redAccent),
             ),
           ),
         ],
@@ -399,10 +560,11 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   }
 
   Future<void> _toggleBlockContact() async {
+    final l10n = AppLocalizations.of(context);
     final phoneNumbers = _contact.phones.map((p) => p.number).toList();
     if (phoneNumbers.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No phone numbers to block')),
+        SnackBar(content: Text(l10n.noPhoneNumbersToBlock)),
       );
       return;
     }
@@ -417,13 +579,11 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         title: Text(
-          isBlocked ? 'Unblock contact?' : 'Block contact?',
+          isBlocked ? l10n.unblockContactQuestion : l10n.blockContactQuestion,
           style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         ),
         content: Text(
-          isBlocked
-              ? 'You will start receiving calls and texts from this contact.'
-              : 'You will no longer receive calls or texts from this contact.',
+          isBlocked ? l10n.unblockContactBody : l10n.blockContactBody,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
@@ -432,7 +592,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(
-              'Cancel',
+              l10n.cancel,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -441,7 +601,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(
-              isBlocked ? 'Unblock' : 'Block',
+              isBlocked ? l10n.unblock : l10n.block,
               style: TextStyle(
                 color: isBlocked
                     ? Theme.of(context).colorScheme.onSurface
@@ -466,7 +626,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                isBlocked ? 'Contact unblocked' : 'Contact blocked',
+                isBlocked ? l10n.contactUnblocked : l10n.contactBlocked,
               ),
             ),
           );
@@ -475,7 +635,9 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         if (mounted) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
+          ).showSnackBar(
+            SnackBar(content: Text(l10n.genericError(e.toString()))),
+          );
         }
       }
     }
@@ -483,7 +645,10 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final l10n = AppLocalizations.of(context);
+    return DialerFontScope(
+      surface: DialerFontSurface.contactDetail,
+      child: Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -544,12 +709,13 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
             const SizedBox(height: 32),
             _buildPhoneSection(),
             const SizedBox(height: 24),
-            _buildConnectedAppsSection(),
+            _buildConnectedAppsSection(l10n),
             const SizedBox(height: 24),
-            _buildSettingsSection(),
+            _buildSettingsSection(l10n),
             const SizedBox(height: 40),
           ],
         ),
+      ),
       ),
     );
   }
@@ -561,10 +727,13 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         SizedBox(height: 16),
         Text(
           _contact.displayName,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontSize: 24,
-            fontWeight: FontWeight.w400,
+          style: context.dialerTextStyle(
+            DialerFontRole.pageTitle,
+            TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 24,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ],
@@ -598,18 +767,24 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
                       children: [
                         Text(
                           phone.number,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            fontSize: 16,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.primary,
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                         Text(
                           phone.label.name.toLowerCase(),
-                          style: TextStyle(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
-                            fontSize: 12,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.secondary,
+                            TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ],
@@ -639,7 +814,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     );
   }
 
-  Widget _buildConnectedAppsSection() {
+  Widget _buildConnectedAppsSection(AppLocalizations l10n) {
     if (_contact.socialMedias.isEmpty) return const SizedBox.shrink();
 
     return Column(
@@ -648,11 +823,14 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
           child: Text(
-            'Connected apps',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
+            l10n.connectedApps,
+            style: context.dialerTextStyle(
+              DialerFontRole.sectionHeader,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),
@@ -692,17 +870,23 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       leading: Icon(icon, color: iconColor, size: 28),
       title: Text(
         title,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
-          fontSize: 15,
+        style: context.dialerTextStyle(
+          DialerFontRole.primary,
+          TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontSize: 15,
+          ),
         ),
       ),
       subtitle: subtitle != null
           ? Text(
               subtitle,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontSize: 12,
+              style: context.dialerTextStyle(
+                DialerFontRole.secondary,
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 12,
+                ),
               ),
             )
           : null,
@@ -716,12 +900,13 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     );
   }
 
-  Widget _buildSettingsSection() {
+  Widget _buildSettingsSection(AppLocalizations l10n) {
     final String simText = switch (_callingSimMode) {
-      'ask' => 'Ask every time',
-      'fixed' when _preferredSim != null => 'SIM ${_preferredSim! + 1}',
-      'fixed' => 'Not set',
-      _ => 'Same as system',
+      'ask' => l10n.askEveryTime,
+      'fixed' when _preferredSim != null =>
+        l10n.simSlot(_preferredSim! + 1),
+      'fixed' => l10n.simNotSet,
+      _ => l10n.simSameAsSystem,
     };
 
     return Column(
@@ -730,11 +915,14 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
           child: Text(
-            'Contact settings',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
+            l10n.contactSettings,
+            style: context.dialerTextStyle(
+              DialerFontRole.sectionHeader,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),
@@ -746,17 +934,23 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
             size: 22,
           ),
           title: Text(
-            'Set calling SIM',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: 15,
+            l10n.setCallingSim,
+            style: context.dialerTextStyle(
+              DialerFontRole.primary,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 15,
+              ),
             ),
           ),
           subtitle: Text(
             simText,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 12,
+            style: context.dialerTextStyle(
+              DialerFontRole.secondary,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 12,
+              ),
             ),
           ),
           onTap: _setCallingSim,
@@ -769,23 +963,33 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
             size: 22,
           ),
           title: Text(
-            'Contact ringtone',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: 15,
+            l10n.contactRingtone,
+            style: context.dialerTextStyle(
+              DialerFontRole.primary,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 15,
+              ),
             ),
           ),
           subtitle: Text(
-            _customRingtoneName ?? 'Default',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 12,
+            switch (_ringtoneSelection) {
+              'silent' => l10n.ringtoneSilent,
+              'ringtone' => _customRingtoneName ?? l10n.customRingtone,
+              _ => l10n.ringtoneDefault,
+            },
+            style: context.dialerTextStyle(
+              DialerFontRole.secondary,
+              TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 12,
+              ),
             ),
           ),
           onTap: _pickRingtone,
         ),
         _buildSettingTile(
-          'Share contact',
+          l10n.shareContact,
           Icons.share_outlined,
           onTap: _shareContact,
         ),
@@ -796,7 +1000,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
               (n) => BlockingManager.isBlocked(n.number),
             );
             return _buildSettingTile(
-              isBlocked ? 'Unblock numbers' : 'Block numbers',
+              isBlocked ? l10n.unblockNumbers : l10n.blockNumbers,
               Icons.block,
               textColor: isBlocked
                   ? Theme.of(context).colorScheme.onSurface
@@ -809,7 +1013,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
           },
         ),
         _buildSettingTile(
-          'Delete',
+          l10n.delete,
           Icons.delete_outline,
           textColor: Colors.redAccent,
           iconColor: Colors.redAccent,
@@ -835,9 +1039,12 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       ),
       title: Text(
         title,
-        style: TextStyle(
-          color: textColor ?? Theme.of(context).colorScheme.onSurface,
-          fontSize: 15,
+        style: context.dialerTextStyle(
+          DialerFontRole.primary,
+          TextStyle(
+            color: textColor ?? Theme.of(context).colorScheme.onSurface,
+            fontSize: 15,
+          ),
         ),
       ),
       onTap: onTap ?? () {},
@@ -906,5 +1113,161 @@ class _Avatar extends StatelessWidget {
     if (parts.isEmpty || parts.first.isEmpty) return '?';
     if (parts.length == 1) return parts[0][0].toUpperCase();
     return '${parts[0][0]}${parts.last[0]}'.toUpperCase();
+  }
+}
+
+/// In-app ringtone picker — never launches the system picker, so the phone-wide
+/// default ringtone cannot be mutated as a side effect.
+class _ContactRingtoneSheet extends StatefulWidget {
+  const _ContactRingtoneSheet({
+    required this.tones,
+    required this.currentSelection,
+    required this.currentUri,
+    required this.defaultLabel,
+    required this.silentLabel,
+    required this.title,
+    required this.onPreview,
+    required this.onStopPreview,
+    required this.onSelected,
+  });
+
+  final List<Map<String, dynamic>> tones;
+  final String currentSelection;
+  final String? currentUri;
+  final String defaultLabel;
+  final String silentLabel;
+  final String title;
+  final Future<void> Function(String? uri) onPreview;
+  final Future<void> Function() onStopPreview;
+  final Future<void> Function(String selection, String? uri) onSelected;
+
+  @override
+  State<_ContactRingtoneSheet> createState() => _ContactRingtoneSheetState();
+}
+
+class _ContactRingtoneSheetState extends State<_ContactRingtoneSheet> {
+  late String _selection;
+  String? _uri;
+
+  @override
+  void initState() {
+    super.initState();
+    _selection = widget.currentSelection;
+    _uri = widget.currentUri;
+  }
+
+  @override
+  void dispose() {
+    widget.onStopPreview();
+    super.dispose();
+  }
+
+  Future<void> _choose(String selection, String? uri) async {
+    setState(() {
+      _selection = selection;
+      _uri = uri;
+    });
+    if (selection == 'ringtone') {
+      await widget.onPreview(uri);
+    } else {
+      await widget.onStopPreview();
+    }
+    try {
+      await widget.onSelected(selection, uri);
+    } catch (_) {
+      // Parent shows the error snackbar; keep sheet open for another try.
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final maxHeight = MediaQuery.sizeOf(context).height * 0.75;
+
+    return Container(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
+              child: Text(
+                widget.title,
+                style: context.dialerTextStyle(
+                  DialerFontRole.sectionHeader,
+                  TextStyle(
+                    color: scheme.onSurface,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.tones.length + 2,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return _tile(
+                      label: widget.defaultLabel,
+                      selected: _selection == 'default',
+                      onTap: () => _choose('default', null),
+                    );
+                  }
+                  if (index == 1) {
+                    return _tile(
+                      label: widget.silentLabel,
+                      selected: _selection == 'silent',
+                      onTap: () => _choose('silent', 'silent'),
+                    );
+                  }
+                  final tone = widget.tones[index - 2];
+                  final uri = tone['uri'] as String?;
+                  final title = (tone['title'] as String?) ?? '';
+                  final selected =
+                      _selection == 'ringtone' && _uri != null && _uri == uri;
+                  return _tile(
+                    label: title,
+                    selected: selected,
+                    onTap: () => _choose('ringtone', uri),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _tile({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    final scheme = Theme.of(context).colorScheme;
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+      title: Text(
+        label,
+        style: context.dialerTextStyle(
+          DialerFontRole.primary,
+          TextStyle(
+            color: scheme.onSurface,
+            fontSize: 15,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+          ),
+        ),
+      ),
+      trailing: selected
+          ? Icon(Icons.check_rounded, color: scheme.primary)
+          : null,
+      onTap: onTap,
+    );
   }
 }

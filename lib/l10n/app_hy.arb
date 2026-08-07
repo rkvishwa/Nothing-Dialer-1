@@ -1,0 +1,759 @@
+{
+  "@@locale": "hy",
+  "appTitle": "Ոչինչ Dialer",
+  "settings": "Կարգավորումներ",
+  "settingsSearchHint": "Որոնման կարգավորումներ",
+  "settingsSearchNoResults": "Պարամետրեր չեն գտնվել",
+  "general": "Գեներալ",
+  "theme": "Թեմա",
+  "themeSystemDefault": "Համակարգի լռելյայն",
+  "themeLight": "Լույս",
+  "themeDark": "Մութ",
+  "themeFollowSystem": "Հետևեք համակարգի կարգավորումներին",
+  "themeAlwaysLight": "Միշտ օգտագործեք թեթև թեմա",
+  "themeAlwaysDark": "Միշտ օգտագործեք մուգ թեմա",
+  "language": "Լեզու",
+  "languageDeviceDefault": "Սարքի լռելյայն",
+  "languagePickerTitle": "Լեզու",
+  "languageSearchHint": "Լեզուների որոնում",
+  "font": "Տառատեսակ",
+  "fontSystem": "Համակարգի լռելյայն",
+  "fontNdot": "Ոչինչ (ՈՉ)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Տառատեսակի ներբեռնումը ձախողվեց: Ստուգեք ձեր կապը և նորից փորձեք:",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Տառատեսակ",
+  "fontPreviewSample": "Ոչինչ Dialer",
+  "fontAppWide": "Հավելվածի տառատեսակ",
+  "fontApplyTo": "Դիմել",
+  "fontApplyEntireApp": "Ամբողջ հավելվածը",
+  "fontApplyEntireAppSubtitle": "Նույն տառատեսակը ամենուր, ներառյալ զանգը",
+  "fontApplyTitlesOnly": "Վերնագրեր և վերնագրեր",
+  "fontApplyTitlesOnlySubtitle": "Միայն մեծ վերնագրեր և բաժինների վերնագրեր",
+  "fontApplyCustomize": "Անհատականացնել",
+  "fontApplyCustomizeSubtitle": "Ընտրեք տառատեսակ ըստ էկրանի և տեքստի տեսակի",
+  "fontCustomizeSection": "Անհատականացրեք ըստ էկրանի",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Էջի վերնագիր",
+  "fontRoleSectionHeader": "Բաժնի վերնագիր",
+  "fontRolePrimary": "Առաջնային տեքստ",
+  "fontRoleSecondary": "Երկրորդական տեքստ",
+  "fontRoleButton": "Կոճակներ",
+  "fontRoleDialKey": "Dialpad ստեղներ",
+  "fontSurfaceRecents": "Վերջերս",
+  "fontSurfaceContacts": "Կոնտակտներ",
+  "fontSurfaceSettings": "Կարգավորումներ",
+  "fontSurfaceDialpad": "Dialpad",
+  "fontSurfaceShell": "Նավիգացիա",
+  "fontSurfaceDefaultDialer": "Կանխադրված հավաքիչի հուշում",
+  "fontSurfaceFavourites": "Ֆավորիտներ",
+  "fontSurfaceBlocked": "Արգելափակված համարներ",
+  "fontSurfaceContactDetail": "Կոնտակտային տվյալ",
+  "fontSurfaceCallHistory": "Զանգերի պատմություն",
+  "fontSurfaceSheets": "Թերթեր և ընտրողներ",
+  "fontSurfaceInCall": "Զանգի էկրան",
+  "fontSubtitleEntireApp": "{font} — ամբողջ հավելվածը",
+  "fontSubtitleTitlesOnly": "{font} — միայն վերնագրեր",
+  "fontSubtitleCustomize": "Պատվերով մեկ էկրանին",
+  "background": "Նախապատմություն",
+  "accent": "Առոգանություն",
+  "lightBackground": "Թեթև ֆոն",
+  "lightAccent": "Թեթև շեշտ",
+  "darkBackground": "Մուգ ֆոն",
+  "darkAccent": "Մուգ առոգանություն",
+  "callBackground": "Զանգի ֆոն",
+  "appIcon": "Հավելվածի պատկերակ",
+  "answerMethod": "Պատասխանի մեթոդ",
+  "answerSlide": "Սահեցրեք պատասխանելու համար",
+  "answerSlideSubtitle": "Սահեցրեք ձախ/աջ գծի վրա, ինչպես Google Phone-ը",
+  "answerButton": "Կոճակի հպում",
+  "answerButtonSubtitle": "Հպեք պատասխանի կամ մերժման կոճակներին",
+  "answerHuawei": "Huawei ոճը",
+  "answerHuaweiSubtitle": "Քաշեք շրջանակը դեպի կանաչ հեռախոս՝ պատասխանելու համար",
+  "answerHuaweiTileSubtitle": "Huawei — քաշել կանաչ / կարմիր",
+  "calling": "Զանգահարելով",
+  "defaultSim": "Կանխադրված SIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Հարցրեք ամեն անգամ",
+  "askEveryTimeSubtitle": "Ցույց տալ SIM ընտրիչը յուրաքանչյուր զանգից առաջ",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "SIM քարտեր չեն գտնվել",
+  "couldNotLoadSims": "Չհաջողվեց բեռնել SIM քարտերը՝ {error}",
+  "allFavourites": "Բոլոր ֆավորիտները",
+  "allFavouritesSubtitle": "Վերադասավորեք, հեռացրեք և ավելացրեք կոնտակտներից",
+  "blockedNumbers": "Արգելափակված համարներ",
+  "blockedNumbersSubtitle": "Դիտեք և ապաշրջափակեք համարները",
+  "soundsAndVibration": "Ձայններ և թրթռում",
+  "soundsAndVibrationSubtitle": "Զանգի, թրթռման, հավաքման պահոցի ձայներ",
+  "couldNotOpenSettings": "Չհաջողվեց բացել կարգավորումները՝ {error}",
+  "frequentlyContacted": "Հաճախակի շփվել",
+  "numberOfRecords": "Գրառումների քանակը",
+  "timePeriod": "Ժամանակահատվածը",
+  "periodLast24Hours": "Վերջին 24 ժամը",
+  "periodLast24HoursSubtitle": "Զանգեր անցյալ օրվանից",
+  "periodLast7Days": "Վերջին 7 օրը",
+  "periodLast7DaysSubtitle": "Անցած շաբաթվա զանգեր",
+  "periodLast30Days": "Վերջին 30 օրը",
+  "periodLast30DaysSubtitle": "Անցած ամսվա զանգեր",
+  "periodLast12Months": "Վերջին 12 ամիսները",
+  "periodLast12MonthsSubtitle": "Զանգեր անցած տարվանից",
+  "periodAllTime": "Ամբողջ ժամանակ",
+  "periodAllTimeSubtitle": "Զանգերի ամբողջ պատմությունը",
+  "frequentMaxOff": "Անջատված",
+  "frequentMaxCount": "{count} կոնտակտներ",
+  "torchBlink": "Ջահը թարթել",
+  "torchIncomingCall": "Մուտքային զանգի ջահը",
+  "torchOutgoingCall": "Ելքային զանգի ջահը",
+  "torchOngoingCall": "Շարունակական զանգի ջահը",
+  "torchIncomingInterval": "Մուտքային թարթման միջակայքը",
+  "torchOutgoingInterval": "Թարթման ելքային միջակայքը",
+  "torchOngoingInterval": "Շարունակվող թարթման ընդմիջում",
+  "torchOff": "Անջատված",
+  "torchOffIncomingSubtitle": "Զանգի ընթացքում ջահ չկա",
+  "torchOffOutgoingSubtitle": "Չկա ջահը հավաքելիս",
+  "torchOffOngoingSubtitle": "Ակտիվ զանգի ժամանակ ջահ չկա",
+  "torchFixedInterval": "Հաստատուն միջակայք",
+  "torchFixedIntervalSubtitle": "Թարթել սահմանված արագությամբ",
+  "torchIntervalSeconds": "{seconds} վ",
+  "torchIntervalBlink": "{seconds} թարթել",
+  "flashlightUnavailable": "Լապտերը հասանելի չէ այս սարքում",
+  "glyphLights": "Glyph Lights",
+  "glyphCallingAnimation": "Գլիֆ կանչող անիմացիա",
+  "glyphOngoingAnimation": "Շարունակական զանգերի անիմացիա",
+  "glyphNone": "Ոչ մեկը",
+  "glyphNoneOutgoingSubtitle": "Անջատեք Glyph լույսերը ելքային զանգերի համար",
+  "glyphNoneInCallSubtitle": "Անջատեք Glyph լույսերը, երբ ակտիվ զանգահարեք",
+  "glyphBreathProgress": "Շունչ և առաջընթաց",
+  "glyphBreathProgressSubtitle": "Լույսերը շնչում են, մինչ գիծը լցվում է ավելի քան 65 վայրկյան",
+  "glyphAccumulate": "Կուտակել",
+  "glyphAccumulateSubtitle": "C1-C4 լույսերի վրա անիմացիայի կուտակում",
+  "glyphSingle": "Միայնակ",
+  "glyphSingleSubtitle": "Մեկ լույս, որը շարժվում է C1-C4-ով",
+  "glyphBreath": "Շունչ",
+  "glyphBreathSubtitle": "Ընտրեք լույսեր և արագություն",
+  "glyphSteady": "Կայուն",
+  "glyphSteadySubtitle": "Ընտրված լույսերը մնում են վառ",
+  "breathSettings": "Շնչառության կարգավորումներ",
+  "activeLights": "Ակտիվ լույսեր",
+  "lightsCount": "{count} լույսեր",
+  "speedSettings": "Արագության կարգավորումներ",
+  "speedSettingsDelay": "{ms}ms ուշացում",
+  "durationAndSpeed": "Տևողություն և արագություն",
+  "durationSpeedSummary": "{duration}վ տևողություն, {interval}մ միջակայք",
+  "cancel": "Չեղարկել",
+  "done": "Կատարված է",
+  "save": "Պահպանել",
+  "block": "Արգելափակել",
+  "delete": "Ջնջել",
+  "recents": "Վերջերս",
+  "contacts": "Կոնտակտներ",
+  "hideFavouritesOnRecents": "Թաքցնել ընտրյալները Recents-ում",
+  "showFavouritesOnRecents": "Ցույց տալ ֆավորիտները Recents-ում",
+  "ongoingCall": "Ընթացիկ զանգ",
+  "setAsDefaultTitle": "SET AS\nԼԱՆԿԱԴՐՎԱԾ",
+  "setAsDefaultBody": "Nothing Dialer-ն օգտագործելու համար այն պետք է սահմանվի որպես ձեր կանխադրված հեռախոսի հավելված: Սա թույլ է տալիս կառավարել զանգերը, դիտել պատմությունը և օգտագործել Glyph-ի անիմացիաները:",
+  "setAsDefaultButton": "ՍՏԵՂԾԵԼ ՈՐՊԵՍ ԼԱՆԿԱԴՐՎԱԾ",
+  "nothingDialerBrand": "ՈՉԻՆՉ ՀԱՄԱՐ 1",
+  "favourites": "Ֆավորիտներ",
+  "addFavourite": "Ավելացնել սիրելի",
+  "favouritesDrawerHint": "Կոնտակտներ ավելացնելու համար օգտագործեք ընտրացանկը: Հպեք դարակից դուրս կամ սահեցրեք այն փակված: Աստղանշեք կոնտակտը նրանց մանրամասներից կամ երկար սեղմեք զանգը վերջինների մեջ:",
+  "menu": "Մենյու",
+  "noFavouritesYet": "Դեռևս ֆավորիտներ չկան:\nԲացեք ընտրացանկը՝ մեկը ավելացնելու համար կամ աստղանշեք կոնտակտ:",
+  "contactsPermissionNeeded": "Անհրաժեշտ է կոնտակտների թույլտվություն",
+  "chooseContact": "Ընտրեք կոնտակտ",
+  "noPhone": "Հեռախոս չկա",
+  "pickNumber": "Ընտրեք համարը",
+  "contactHasNoPhone": "Այս կոնտակտը հեռախոսահամար չունի",
+  "blockNumber": "Արգելափակման համարը",
+  "enterPhoneNumber": "Մուտքագրեք հեռախոսահամարը",
+  "unblockedDisplay": "Արգելափակված է {display}",
+  "couldNotUnblockNumber": "Չհաջողվեց ապաարգելափակել համարը",
+  "blockedSummary": "{blocked} արգելափակված է • {matched} համընկնում է",
+  "contactsPermissionMissing": "Կոնտակտների թույլտվությունը բացակայում է: Հպեք՝ ուղղելու համար:",
+  "noBlockedNumbers": "Արգելափակված համարներ չկան",
+  "unknownContact": "Անհայտ կոնտակտ",
+  "unblock": "Ապաշրջափակել",
+  "permissionNeeded": "Անհրաժեշտ է թույլտվություն",
+  "grantPhonePermission": "Հեռախոսին թույլտվություն տվեք տեսնել ձեր զանգերի պատմությունը:",
+  "grantContactsPermission": "Կոնտակտներին թույլտվություն տվեք տեսնել ձեր հասցեագիրքը:",
+  "openSettings": "Բացեք Պարամետրերը",
+  "tryAgain": "Նորից փորձեք",
+  "couldNotLoadContacts": "Չհաջողվեց բեռնել կոնտակտները",
+  "contactsLoadError": "Ինչ-որ սխալ առաջացավ ձեր հասցեագիրքը կարդալիս:",
+  "noContactsFound": "Կոնտակտներ չեն գտնվել",
+  "contactsEmptySubtitle": "Ձեր սարքի կոնտակտները կհայտնվեն այստեղ:",
+  "searchContacts": "Որոնել կոնտակտներ…",
+  "searchRecentCalls": "Որոնեք վերջին զանգերը",
+  "fromContacts": "Կոնտակտներից",
+  "recentsSearchSection": "Վերջին որոնումները",
+  "recentsSearchShowContacts": "Ցույց տալ կոնտակտները որոնման մեջ",
+  "recentsSearchShowContactsSubtitle": "«Վերջիններ» որոնելիս, զանգերի պատմության արդյունքների տակ ցույց տվեք նաև ձեր հասցեագրքից համապատասխան մարդկանց:",
+  "voiceSearch": "Ձայնային որոնում",
+  "createNewContact": "Ստեղծեք նոր կոնտակտ",
+  "callError": "Զանգի սխալ՝ {error}",
+  "noRecentCalls": "Վերջին զանգեր չկան",
+  "callHistoryEmpty": "Ձեր զանգերի պատմությունը կհայտնվի այստեղ:",
+  "loadMore": "Բեռնել ավելին",
+  "frequentlyContactedHeader": "Հաճախակի շփվել",
+  "recentHistory": "Վերջին պատմություն",
+  "noFavouritesRecentsHint": "Դեռևս ֆավորիտներ չկան: Աստղանշեք կոնտակտը, երկար սեղմեք զանգը կամ օգտագործեք «Ընտրյալներ» ներդիրը:",
+  "copyNumber": "Պատճենել համարը",
+  "editNumberBeforeCall": "Խմբագրել համարը զանգից առաջ",
+  "removeFromFavourites": "Հեռացնել ընտրյալներից",
+  "addToFavourites": "Ավելացնել ընտրյալների մեջ",
+  "blockNumberQuestion": "Արգելափակե՞լ համարը:",
+  "blockNumberConfirm": "Դուք այլևս չեք ստանա զանգեր կամ հաղորդագրություններ {number}-ից:",
+  "blocked": "Արգելափակված",
+  "couldNotBlock": "Չհաջողվեց արգելափակել",
+  "contactNotOnDevice": "Կոնտակտը պահված չէ այս սարքում",
+  "unblocked": "Արգելափակված է",
+  "numberCopied": "Համարը պատճենված է",
+  "showLess": "Ցույց տալ ավելի քիչ",
+  "showAllTimes": "Ցույց տալ բոլոր ժամանակները",
+  "mostRecent": "Ամենավերջին · {time}",
+  "videoCall": "Տեսազանգ",
+  "couldNotPlaceVideoCall": "Չհաջողվեց տեսազանգ կատարել",
+  "message": "Հաղորդագրություն",
+  "couldNotOpenMessaging": "Չհաջողվեց բացել հաղորդագրությունների հավելվածը",
+  "history": "Պատմություն",
+  "viewContact": "Դիտել կոնտակտը",
+  "addToContact": "Ավելացնել կոնտակտում",
+  "callTypeMissed": "Բաց թողած",
+  "callTypeRejected": "Մերժված է",
+  "callTypeIncoming": "Մուտքային",
+  "callTypeOutgoing": "Արտագնա",
+  "today": "Այսօր",
+  "yesterday": "Երեկ",
+  "justNow": "Հենց հիմա",
+  "minutesAgo": "{count} րոպե առաջ",
+  "hoursAgo": "{count} ժամ առաջ",
+  "filterAll": "Բոլորը",
+  "filterMissed": "Բաց թողած",
+  "filterContacts": "Կոնտակտներ",
+  "filterNonContacts": "Ոչ կոնտակտներ",
+  "iconUpdated": "Պատկերակը թարմացվել է: Ձեր հիմնական էկրանը կարող է մի պահ տևել թարմացման համար:",
+  "iconSavedRelease": "Ընտրությունը պահպանված է: Հիմնական էկրանի պատկերակը թարմացվում է թողարկման ձևաչափերում:",
+  "couldNotChangeIcon": "Չհաջողվեց փոխել պատկերակը. {error}",
+  "launcherClassicBlack": "Դասական (սև)",
+  "launcherLight": "Լույս",
+  "launcherNothingRed": "Կարմիր ոչինչ",
+  "launcherDarkGrey": "Մուգ մոխրագույն",
+  "launcherCream": "Կրեմ",
+  "launcherRetroPhone": "Ռետրո հեռախոս",
+  "launcherRetroPhoneLight": "Ռետրո հեռախոս (թեթև)",
+  "voiceSearchUnavailable": "Ձայնային որոնումը հասանելի չէ այս սարքում:",
+  "voiceSearchFailed": "Ձայնային որոնումը ձախողվեց՝ {error}",
+  "customColor": "Պատվերով",
+  "selectColor": "Ընտրեք գույնը",
+  "reset": "Վերականգնել",
+  "simPickerTitle": "Ընտրեք SIM",
+  "simChooseForCall": "Ընտրեք SIM քարտ այս զանգի համար",
+  "defaultSimAsk": "Հարցրեք ամեն անգամ",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Կոնտակտային տվյալներ",
+  "call": "Զանգահարեք",
+  "share": "Կիսվել",
+  "favourite": "Սիրված",
+  "unfavourite": "Անսիրելի",
+  "blockContact": "Արգելափակել կոնտակտը",
+  "unblockContact": "Արգելափակել կոնտակտը",
+  "deleteContact": "Ջնջել կոնտակտը",
+  "phone": "Հեռախոս",
+  "email": "Էլ",
+  "ringtone": "Ringtone",
+  "defaultRingtone": "Կանխադրված",
+  "simForContact": "SIM այս կոնտակտի համար",
+  "callHistoryTitle": "Զանգերի պատմություն",
+  "noCallsWithNumber": "Այս համարով զանգեր չկան",
+  "durationMinutesSeconds": "{minutes}m {seconds}վրկ",
+  "durationSeconds": "{seconds} վրկ",
+  "glyphAnimationStyle": "Գլիֆի անիմացիա",
+  "inCallGlyphAnimationStyle": "In-call Glyph անիմացիան",
+  "recordsOff": "Անջատված",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Կանխադրված SIM",
+  "nothingPhoneOnly": "Ոչինչ Միայն հեռախոս",
+  "nothingPhoneOnlySubtitle": "Գլիֆի առանձնահատկությունները պահանջում են Nothing Phone",
+  "custom": "Պատվերով",
+  "presetColorHex": "Նախադրված · {hex}",
+  "customColorHex": "Պատվերով · {hex}",
+  "oneContact": "1 կոնտակտ",
+  "upToContacts": "Մինչև {count} կոնտակտ",
+  "answerButtonTapSubtitle": "Պատասխանելու համար սեղմեք կոճակը",
+  "filterCalls": "Զտել զանգերը",
+  "filterTooltip": "Զտել",
+  "settingsTooltip": "Կարգավորումներ",
+  "filterAllSubtitle": "Ամբողջական զանգերի մատյան",
+  "filterMissedSubtitle": "Բաց թողնված և մերժված",
+  "filterContactsSubtitle": "Զանգերը համընկնում են պահված կոնտակտի հետ",
+  "filterNonContactsSubtitle": "Թվերը ձեր հասցեագրքում չկան",
+  "ongoingCallWithDetail": "Ընթացիկ զանգ՝ {detail}",
+  "defaultSimForCalls": "Կանխադրված SIM զանգերի համար",
+  "blinkInterval": "Թարթման ընդմիջում",
+  "close": "Փակել",
+  "frequentlyContactedInfoBody": "Ցույց է տալիս ձեր ամենաշատ զանգահարած հեռախոսահամարները «Վերջիններ» ներդիրի վերևում՝ հիմնվելով ձեր ընտրած ժամանակահատվածում յուրաքանչյուր համարի հետ մուտքային, ելքային, բաց թողնված կամ մերժված զանգերի վրա:\n\nԳրառումների քանակը՝ սա անջատելու համար սահմանեք 0: Օգտագործեք 1–20՝ ցույց տալու համար, որ շատ վերին կոնտակտներ:\n\nԺամկետը կիրառվում է միայն այն դեպքում, երբ ցուցադրվում է առնվազն մեկ կոնտակտ:",
+  "breathSettingsSpeedSummary": "{count} լույսեր, {ms}ms արագություն",
+  "deleteContactQuestion": "Ջնջե՞լ կոնտակտը",
+  "deleteContactBody": "Այս կոնտակտն ընդմիշտ կջնջվի ձեր սարքից:",
+  "blockContactQuestion": "Արգելափակե՞լ կոնտակտը",
+  "unblockContactQuestion": "Արգելահանե՞լ կոնտակտը",
+  "blockContactBody": "Դուք այլևս զանգեր կամ հաղորդագրություններ չեք ստանա այս կոնտակտից:",
+  "unblockContactBody": "Դուք կսկսեք ստանալ զանգեր և հաղորդագրություններ այս կոնտակտից:",
+  "contactBlocked": "Կապն արգելափակված է",
+  "contactUnblocked": "Կոնտակտն ապաարգելափակված է",
+  "noPhoneNumbersToBlock": "Հեռախոսահամարներ չկան արգելափակելու համար",
+  "simSameAsSystem": "Նույնը, ինչ համակարգը",
+  "simSameAsSystemSubtitle": "Կարգավորումներում հետևում է կանխադրված SIM քարտին",
+  "simAskEveryTimeForContact": "Միշտ ցուցադրել SIM քարտի ընտրիչը այս կոնտակտի համար",
+  "ringtoneSetForContact": "Այս կոնտակտի համար գլոբալ զանգի հնչյուն է սահմանվել",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Չհաջողվեց ընտրել զանգի հնչյուն՝ {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Սխալ՝ {error}",
+  "noCallHistoryFound": "Զանգերի պատմություն չի գտնվել",
+  "speedDialVoicemail": "Արագ հավաքում՝ ձայնային փոստ",
+  "shareContactSubject": "Կապ՝ {name}",
+  "contactInfo": "Կոնտակտային տվյալներ",
+  "dontAskAgainSim": "Այլևս մի հարցրու",
+  "simDontAskAgainSubtitle": "Օգտագործեք այս SIM քարտը որպես լռելյայն (փոփոխեք Կարգավորումներում)",
+  "addContact": "Ավելացնել կոնտակտ",
+  "createContact": "Ստեղծեք կոնտակտ",
+  "paste": "Կպցնել",
+  "clear": "Պարզ",
+  "returnToCall": "Վերադառնալ զանգին",
+  "numberOfRecordsTitle": "Գրառումների քանակը",
+  "recordsPickerSubtitle": "Քանի՞ հաճախակի շփվող գրառում պետք է ցուցադրվի (0 = անջատված)",
+  "torchInfoTitle": "Ջահը թարթում է",
+  "torchInfoBody": "Թարթում է տեսախցիկի ֆլեշը մուտքային, ելքային կամ ընթացիկ զանգերի ժամանակ: Գլիֆի լույսերից անկախ:",
+  "glyphMapTitle": "Գլիֆի դասավորությունը",
+  "glyphMapBody": "Ոչինչ Հեռախոս 1 Glyph LED գոտիներ. Այս ալիքներն օգտագործում են ելքային և զանգի անիմացիաները:",
+  "answerMethodTitle": "Պատասխանի մեթոդ",
+  "glyphOutgoingCallStyleTitle": "Ելքային զանգի ոճը",
+  "glyphInCallAnimationTitle": "Glyph in-call անիմացիա",
+  "themePickerTitle": "Թեմա",
+  "torchIncomingTitle": "Մուտքային զանգի ջահը",
+  "torchOutgoingTitle": "Ելքային զանգի ջահը",
+  "torchOngoingTitle": "Շարունակական զանգի ջահը",
+  "timePeriodTitle": "Ժամանակահատվածը",
+  "ok": "լավ",
+  "confirmDeleteCall": "Ջնջե՞լ այս զանգը պատմությունից:",
+  "confirmDeleteAllCalls": "Ջնջե՞լ այս համարով բոլոր զանգերը:",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Ուղարկել հաղորդագրություն",
+  "addToExistingContactAction": "Ավելացնել կոնտակտում",
+  "mobileLabel": "Բջջային",
+  "callingSimForContactTitle": "Զանգել SIM քարտ այս կոնտակտի համար",
+  "contactSettings": "Կոնտակտային կարգավորումներ",
+  "setCallingSim": "Սահմանել զանգի SIM-ը",
+  "contactRingtone": "Կոնտակտային զանգ",
+  "shareContact": "Կիսվեք կոնտակտով",
+  "blockNumbers": "Արգելափակել համարները",
+  "unblockNumbers": "Արգելափակել համարները",
+  "connectedApps": "Կապակցված հավելվածներ",
+  "simNotSet": "Սահմանված չէ",
+  "ringtoneDefault": "Կանխադրված",
+  "customRingtone": "Պատվերով",
+  "aboutSection": "Մոտ",
+  "aboutFeedbackSection": "Մասին և կարծիքը",
+  "aboutDescription": "Nothing Dialer-ը բաց կոդով է: Եթե ​​դուք ծրագրավորող եք, կարող եք ուսումնասիրել կոդը և ներդրում կատարել:",
+  "aboutViewSource": "Դիտել GitHub-ում",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Չհաջողվեց բացել հղումը",
+  "reviewSection": "Վերանայում",
+  "reviewDescription": "Վայելո՞ւմ եք Nothing Dialer-ը: Ձեր վարկանիշը Google Play-ում օգնում է ուրիշներին գտնել հավելվածը:",
+  "reviewRateOnPlay": "Գնահատեք Google Play-ում",
+  "reviewRateOnPlaySubtitle": "Թողեք վարկանիշ՝ առանց հավելվածից դուրս գալու",
+  "reviewCouldNotOpen": "Չհաջողվեց բացել Google Play-ը",
+  "breathSpeed": "Շնչառության արագություն",
+  "breathSpeedBlinkHint": "Ստորին = Թարթել, Բարձրագույն = Դանդաղ շունչ",
+  "speedSliderHint": "Ստորին = Ավելի արագ, Բարձրագույն = Դանդաղ",
+  "swatchDefault": "Կանխադրված",
+  "customAccentColorPicker": "Հատուկ շեշտադրման գույն",
+  "customLightBackgroundPicker": "Պատվերով թեթև ֆոն",
+  "customDarkBackgroundPicker": "Պատվերով մուգ ֆոն",
+  "customCallBackgroundPicker": "Հատուկ զանգի ֆոն",
+  "ongoingCallStyleTitle": "Շարունակական զանգի ոճը",
+  "glyphMapUnavailable": "Գլիֆի քարտեզը անհասանելի է",
+  "animationDelayRange": "Անիմացիայի հետաձգում (1-ից 10 վրկ)",
+  "animationDelayRangeSingle": "Անիմացիայի հետաձգում (0,1 - 10 վրկ)",
+  "inCallMute": "Խլացնել",
+  "inCallKeypad": "Ստեղնաշար",
+  "inCallSpeaker": "խոսնակ",
+  "inCallMore": "Ավելին",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Հեռախոս",
+  "inCallAddCall": "Ավելացնել զանգ",
+  "inCallChangeSim": "Փոխել SIM քարտը",
+  "inCallDecline": "Անկում",
+  "inCallAnswer": "Պատասխանել",
+  "inCallMessage": "Հաղորդագրություն",
+  "inCallCalling": "Զանգում…",
+  "inCallIncoming": "Մուտքային զանգ",
+  "inCallSelectSim": "Ընտրեք SIM…",
+  "inCallSwitchingSim": "SIM-ի փոխարկում…",
+  "inCallCallEnded": "Զանգն ավարտվեց",
+  "inCallCallingVia": "Զանգահարել {sim} համարով",
+  "inCallCallingViaHtml": "Զանգահարել <b>{sim}</b> համարով",
+  "inCallChooseSim": "Ընտրեք SIM քարտ այս զանգի համար",
+  "inCallDragAnswerDecline": "Քաշեք աջ՝ պատասխանելու համար · Քաշեք ձախ՝ մերժելու համար",
+  "inCallMobileNumber": "Բջջային {number}",
+  "inCallAudioRouteCurrent": "{label} (ներկայիս)",
+  "inCallCallViaFrom": "Զանգահարեք <b>{sim}</b>-ից",
+  "inCallCallFrom": "Զանգահարեք",
+  "inCallUnknown": "Անհայտ",
+  "selectContactRingtone": "Ընտրեք կոնտակտային զանգ",
+  "speakToSearchPrompt": "Խոսեք որոնման համար",
+  "phonePermissionRequired": "Պահանջվում է հեռախոսի թույլտվություն",
+  "callFailed": "Զանգը ձախողվեց. {error}",
+  "callPermissionDenied": "Զանգի թույլտվությունը մերժվել է",
+  "alreadyDefaultDialer": "Արդեն սահմանված է որպես լռելյայն հավաքող",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

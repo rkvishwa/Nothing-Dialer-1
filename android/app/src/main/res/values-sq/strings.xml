@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Hesht</string>
+    <string name="in_call_keypad">Tastiera</string>
+    <string name="in_call_speaker">Folësi</string>
+    <string name="in_call_more">Më shumë</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefoni</string>
+    <string name="in_call_add_call">Shto thirrje</string>
+    <string name="in_call_change_sim">Ndrysho SIM</string>
+    <string name="in_call_decline">Rënia</string>
+    <string name="in_call_answer">Përgjigju</string>
+    <string name="in_call_message">Mesazh</string>
+    <string name="in_call_calling">Po telefonon…</string>
+    <string name="in_call_incoming">Telefonatë hyrëse</string>
+    <string name="in_call_select_sim">Zgjidh SIM…</string>
+    <string name="in_call_switching_sim">SIM po ndërron…</string>
+    <string name="in_call_call_ended">Telefonata përfundoi</string>
+    <string name="in_call_calling_via">Duke telefonuar nëpërmjet %1$s</string>
+    <string name="in_call_calling_via_html">Duke telefonuar nëpërmjet &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Zgjidh kartën SIM për këtë telefonatë</string>
+    <string name="in_call_drag_answer_decline">Zvarrit djathtas për t\'u përgjigjur · Zvarrit majtas për të refuzuar</string>
+    <string name="in_call_mobile_number">celular %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (aktual)</string>
+    <string name="in_call_call_via_from">Telefono me &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; nga</string>
+    <string name="in_call_call_from">Telefononi nga</string>
+    <string name="in_call_unknown">E panjohur</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Zgjidhni zilen e kontaktit</string>
+    <string name="native_speak_to_search">Fol për të kërkuar</string>
+    <string name="native_phone_permission_required">Kërkohet leje telefonike</string>
+    <string name="native_call_failed">Telefonata dështoi: %1$s</string>
+    <string name="native_call_permission_denied">Leja e telefonatës u refuzua</string>
+    <string name="native_already_default_dialer">Është vendosur tashmë si telefonues i paracaktuar</string>
+</resources>

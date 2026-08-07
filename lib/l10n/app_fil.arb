@@ -1,0 +1,759 @@
+{
+  "@@locale": "fil",
+  "appTitle": "Walang Dialer",
+  "settings": "Mga setting",
+  "settingsSearchHint": "Mga setting ng paghahanap",
+  "settingsSearchNoResults": "Walang nakitang mga setting",
+  "general": "Heneral",
+  "theme": "Tema",
+  "themeSystemDefault": "System Default",
+  "themeLight": "Liwanag",
+  "themeDark": "Madilim",
+  "themeFollowSystem": "Sundin ang mga setting ng system",
+  "themeAlwaysLight": "Palaging gumamit ng magaan na tema",
+  "themeAlwaysDark": "Palaging gumamit ng madilim na tema",
+  "language": "Wika",
+  "languageDeviceDefault": "Default ng device",
+  "languagePickerTitle": "Wika",
+  "languageSearchHint": "Maghanap ng mga wika",
+  "font": "Font",
+  "fontSystem": "Default ng system",
+  "fontNdot": "wala (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Nabigo ang pag-download ng font. Suriin ang iyong koneksyon at subukang muli.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Font",
+  "fontPreviewSample": "Walang Dialer",
+  "fontAppWide": "Font ng app",
+  "fontApplyTo": "Mag-apply sa",
+  "fontApplyEntireApp": "Buong app",
+  "fontApplyEntireAppSubtitle": "Parehong font sa lahat ng dako, kasama ang in-call",
+  "fontApplyTitlesOnly": "Mga pamagat at header",
+  "fontApplyTitlesOnlySubtitle": "Mga malalaking pamagat at header ng seksyon lamang",
+  "fontApplyCustomize": "I-customize",
+  "fontApplyCustomizeSubtitle": "Pumili ng font sa bawat screen at uri ng teksto",
+  "fontCustomizeSection": "I-customize ayon sa screen",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Pamagat ng pahina",
+  "fontRoleSectionHeader": "Header ng seksyon",
+  "fontRolePrimary": "Pangunahing teksto",
+  "fontRoleSecondary": "Pangalawang teksto",
+  "fontRoleButton": "Mga Pindutan",
+  "fontRoleDialKey": "Mga key ng dialpad",
+  "fontSurfaceRecents": "Recents",
+  "fontSurfaceContacts": "Mga contact",
+  "fontSurfaceSettings": "Mga setting",
+  "fontSurfaceDialpad": "Dialpad",
+  "fontSurfaceShell": "Pag-navigate",
+  "fontSurfaceDefaultDialer": "Default na prompt ng dialer",
+  "fontSurfaceFavourites": "Mga paborito",
+  "fontSurfaceBlocked": "Mga naka-block na numero",
+  "fontSurfaceContactDetail": "Detalye ng contact",
+  "fontSurfaceCallHistory": "History ng tawag",
+  "fontSurfaceSheets": "Mga sheet at picker",
+  "fontSurfaceInCall": "In-call screen",
+  "fontSubtitleEntireApp": "{font} — buong app",
+  "fontSubtitleTitlesOnly": "{font} — mga pamagat lamang",
+  "fontSubtitleCustomize": "Custom bawat screen",
+  "background": "Background",
+  "accent": "Accent",
+  "lightBackground": "Banayad na background",
+  "lightAccent": "Banayad na accent",
+  "darkBackground": "Madilim na background",
+  "darkAccent": "Madilim na accent",
+  "callBackground": "Background ng tawag",
+  "appIcon": "Icon ng app",
+  "answerMethod": "Paraan ng pagsagot",
+  "answerSlide": "I-slide para sagutin",
+  "answerSlideSubtitle": "Mag-swipe pakaliwa/pakanan sa bar, tulad ng Google Phone",
+  "answerButton": "Tapikin ang pindutan",
+  "answerButtonSubtitle": "I-tap ang mga button na sagot o tanggihan",
+  "answerHuawei": "Estilo ng Huawei",
+  "answerHuaweiSubtitle": "I-drag ang bilog sa berdeng telepono upang sagutin",
+  "answerHuaweiTileSubtitle": "Huawei — i-drag sa berde / pula",
+  "calling": "Tumatawag",
+  "defaultSim": "Default na SIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Magtanong sa bawat oras",
+  "askEveryTimeSubtitle": "Ipakita ang tagapili ng SIM bago ang bawat tawag",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "Walang nakitang SIM card",
+  "couldNotLoadSims": "Hindi ma-load ang mga SIM: {error}",
+  "allFavourites": "Lahat ng paborito",
+  "allFavouritesSubtitle": "Muling ayusin, alisin, at idagdag mula sa mga contact",
+  "blockedNumbers": "Mga naka-block na numero",
+  "blockedNumbersSubtitle": "Tingnan at i-unblock ang mga numero",
+  "soundsAndVibration": "Mga tunog at vibration",
+  "soundsAndVibrationSubtitle": "Ringtone, vibration, dial pad tone",
+  "couldNotOpenSettings": "Hindi mabuksan ang mga setting: {error}",
+  "frequentlyContacted": "Madalas Makipag-ugnayan",
+  "numberOfRecords": "Bilang ng mga tala",
+  "timePeriod": "tagal ng panahon",
+  "periodLast24Hours": "Huling 24 na oras",
+  "periodLast24HoursSubtitle": "Mga tawag mula sa nakaraang araw",
+  "periodLast7Days": "Huling 7 araw",
+  "periodLast7DaysSubtitle": "Mga tawag noong nakaraang linggo",
+  "periodLast30Days": "Huling 30 araw",
+  "periodLast30DaysSubtitle": "Mga tawag mula sa nakaraang buwan",
+  "periodLast12Months": "Huling 12 buwan",
+  "periodLast12MonthsSubtitle": "Mga tawag mula sa nakaraang taon",
+  "periodAllTime": "Sa lahat ng oras",
+  "periodAllTimeSubtitle": "Buong history ng tawag",
+  "frequentMaxOff": "Naka-off",
+  "frequentMaxCount": "{count} contact",
+  "torchBlink": "Kumikislap na Sulo",
+  "torchIncomingCall": "Sulo ng papasok na tawag",
+  "torchOutgoingCall": "Outgoing call torch",
+  "torchOngoingCall": "Patuloy na tawag na sulo",
+  "torchIncomingInterval": "Papasok na blink interval",
+  "torchOutgoingInterval": "Papalabas na pagitan ng blink",
+  "torchOngoingInterval": "Patuloy na pagitan ng blink",
+  "torchOff": "Naka-off",
+  "torchOffIncomingSubtitle": "Walang tanglaw habang tumutunog",
+  "torchOffOutgoingSubtitle": "Walang tanglaw habang nagda-dial",
+  "torchOffOngoingSubtitle": "Walang tanglaw habang aktibong tawag",
+  "torchFixedInterval": "Nakapirming agwat",
+  "torchFixedIntervalSubtitle": "Kumurap sa isang itinakdang bilis",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} kumurap",
+  "flashlightUnavailable": "Hindi available ang flashlight sa device na ito",
+  "glyphLights": "Mga Ilaw ng Glyph",
+  "glyphCallingAnimation": "Glyph calling animation",
+  "glyphOngoingAnimation": "Glyph patuloy na animation ng tawag",
+  "glyphNone": "wala",
+  "glyphNoneOutgoingSubtitle": "Huwag paganahin ang mga ilaw ng Glyph para sa mga papalabas na tawag",
+  "glyphNoneInCallSubtitle": "Huwag paganahin ang mga ilaw ng Glyph habang aktibong nasa tawag",
+  "glyphBreathProgress": "Hininga at Pag-unlad",
+  "glyphBreathProgressSubtitle": "Humihinga ang mga ilaw habang napuno ang linya ng higit sa 65s",
+  "glyphAccumulate": "Mag-ipon",
+  "glyphAccumulateSubtitle": "Nag-iipon ng animation sa mga ilaw C1-C4",
+  "glyphSingle": "Walang asawa",
+  "glyphSingleSubtitle": "Isang ilaw na gumagalaw sa buong C1-C4",
+  "glyphBreath": "hininga",
+  "glyphBreathSubtitle": "Pumili ng mga ilaw at bilis",
+  "glyphSteady": "Panay",
+  "glyphSteadySubtitle": "Mananatiling bukas ang mga piling ilaw",
+  "breathSettings": "Mga Setting ng hininga",
+  "activeLights": "Mga Aktibong Ilaw",
+  "lightsCount": "{count} mga ilaw",
+  "speedSettings": "Mga Setting ng Bilis",
+  "speedSettingsDelay": "{ms}ms pagkaantala",
+  "durationAndSpeed": "Tagal at Bilis",
+  "durationSpeedSummary": "{duration}s na tagal, {interval}ms interval",
+  "cancel": "Kanselahin",
+  "done": "Tapos na",
+  "save": "I-save",
+  "block": "I-block",
+  "delete": "Tanggalin",
+  "recents": "Recents",
+  "contacts": "Mga contact",
+  "hideFavouritesOnRecents": "Itago ang mga paborito sa Recents",
+  "showFavouritesOnRecents": "Ipakita ang mga paborito sa Recents",
+  "ongoingCall": "Patuloy na tawag",
+  "setAsDefaultTitle": "Itakda BILANG\nDEFAULT",
+  "setAsDefaultBody": "Upang magamit ang Nothing Dialer, dapat itong itakda bilang iyong default na app ng telepono. Binibigyang-daan ka nitong pamahalaan ang mga tawag, tingnan ang kasaysayan, at gamitin ang mga animation ng Glyph.",
+  "setAsDefaultButton": "I-SET BILANG DEFAULT",
+  "nothingDialerBrand": "WALANG DIALER 1",
+  "favourites": "Mga paborito",
+  "addFavourite": "Magdagdag ng paborito",
+  "favouritesDrawerHint": "Gamitin ang menu upang magdagdag ng mga contact. I-tap sa labas ng drawer o i-swipe ito sarado. Lagyan ng star ang isang contact mula sa kanilang mga detalye, o pindutin nang matagal ang isang tawag sa Recents.",
+  "menu": "Menu",
+  "noFavouritesYet": "Wala pang paborito.\nBuksan ang menu upang magdagdag ng isa, o lagyan ng star ang isang contact.",
+  "contactsPermissionNeeded": "Kailangan ng pahintulot sa mga contact",
+  "chooseContact": "Pumili ng contact",
+  "noPhone": "Walang phone",
+  "pickNumber": "Pumili ng numero",
+  "contactHasNoPhone": "Walang numero ng telepono ang contact na ito",
+  "blockNumber": "Block number",
+  "enterPhoneNumber": "Ipasok ang numero ng telepono",
+  "unblockedDisplay": "Na-unblock {display}",
+  "couldNotUnblockNumber": "Hindi ma-unblock ang numero",
+  "blockedSummary": "{blocked} na-block • {matched} tumugma",
+  "contactsPermissionMissing": "Nawawala ang pahintulot sa mga contact. I-tap para ayusin.",
+  "noBlockedNumbers": "Walang mga naka-block na numero",
+  "unknownContact": "Hindi kilalang contact",
+  "unblock": "I-unblock",
+  "permissionNeeded": "Kailangan ng pahintulot",
+  "grantPhonePermission": "Magbigay ng pahintulot sa telepono upang makita ang iyong history ng tawag.",
+  "grantContactsPermission": "Bigyan ng pahintulot ang mga contact na makita ang iyong address book.",
+  "openSettings": "Buksan ang Mga Setting",
+  "tryAgain": "Subukan muli",
+  "couldNotLoadContacts": "Hindi ma-load ang mga contact",
+  "contactsLoadError": "Nagkaproblema sa pagbabasa ng iyong address book.",
+  "noContactsFound": "Walang nakitang mga contact",
+  "contactsEmptySubtitle": "Lalabas dito ang mga contact mula sa iyong device.",
+  "searchContacts": "Maghanap ng mga contact…",
+  "searchRecentCalls": "Maghanap ng mga kamakailang tawag",
+  "fromContacts": "Mula sa mga contact",
+  "recentsSearchSection": "Kamakailang paghahanap",
+  "recentsSearchShowContacts": "Ipakita ang mga contact sa paghahanap",
+  "recentsSearchShowContactsSubtitle": "Habang naghahanap ng Recents, ipakita din ang mga tumutugmang tao mula sa iyong address book sa ibaba ng mga resulta ng history ng tawag.",
+  "voiceSearch": "Paghahanap gamit ang boses",
+  "createNewContact": "Gumawa ng bagong contact",
+  "callError": "Error sa tawag: {error}",
+  "noRecentCalls": "Walang kamakailang mga tawag",
+  "callHistoryEmpty": "Lalabas dito ang iyong history ng tawag.",
+  "loadMore": "Mag-load pa",
+  "frequentlyContactedHeader": "Madalas makipag-ugnayan",
+  "recentHistory": "Kamakailang kasaysayan",
+  "noFavouritesRecentsHint": "Wala pang paborito. Lagyan ng star ang isang contact, pindutin nang matagal ang isang tawag, o gamitin ang tab na Mga Paborito.",
+  "copyNumber": "Kopyahin ang numero",
+  "editNumberBeforeCall": "I-edit ang numero bago tumawag",
+  "removeFromFavourites": "Alisin sa mga paborito",
+  "addToFavourites": "Idagdag sa mga paborito",
+  "blockNumberQuestion": "Block number?",
+  "blockNumberConfirm": "Hindi ka na makakatanggap ng mga tawag o text mula sa {number}.",
+  "blocked": "Na-block",
+  "couldNotBlock": "Hindi ma-block",
+  "contactNotOnDevice": "Hindi naka-save ang contact sa device na ito",
+  "unblocked": "Na-unblock",
+  "numberCopied": "Nakopya ang numero",
+  "showLess": "Magpakita ng mas kaunti",
+  "showAllTimes": "Ipakita sa lahat ng oras",
+  "mostRecent": "Pinakabago · {time}",
+  "videoCall": "Video call",
+  "couldNotPlaceVideoCall": "Hindi makapag-video call",
+  "message": "Mensahe",
+  "couldNotOpenMessaging": "Hindi mabuksan ang messaging app",
+  "history": "Kasaysayan",
+  "viewContact": "Tingnan ang contact",
+  "addToContact": "Idagdag sa contact",
+  "callTypeMissed": "Nakaligtaan",
+  "callTypeRejected": "Tinanggihan",
+  "callTypeIncoming": "Papasok",
+  "callTypeOutgoing": "Papalabas",
+  "today": "Ngayong araw",
+  "yesterday": "Kahapon",
+  "justNow": "Ngayon lang",
+  "minutesAgo": "{count} min ang nakalipas",
+  "hoursAgo": "{count} oras ang nakalipas",
+  "filterAll": "Lahat",
+  "filterMissed": "Nakaligtaan",
+  "filterContacts": "Mga contact",
+  "filterNonContacts": "Mga hindi contact",
+  "iconUpdated": "Na-update ang icon. Maaaring magtagal bago mag-refresh ang iyong home screen.",
+  "iconSavedRelease": "Na-save ang pagpipilian. Nag-a-update ang icon ng home screen sa mga build ng release.",
+  "couldNotChangeIcon": "Hindi mabago ang icon: {error}",
+  "launcherClassicBlack": "Classic (itim)",
+  "launcherLight": "Liwanag",
+  "launcherNothingRed": "Walang pula",
+  "launcherDarkGrey": "Madilim na kulay abo",
+  "launcherCream": "Cream",
+  "launcherRetroPhone": "Retro na telepono",
+  "launcherRetroPhoneLight": "Retro na telepono (liwanag)",
+  "voiceSearchUnavailable": "Hindi available ang paghahanap gamit ang boses sa device na ito.",
+  "voiceSearchFailed": "Nabigo ang paghahanap gamit ang boses: {error}",
+  "customColor": "Custom",
+  "selectColor": "Pumili ng kulay",
+  "reset": "I-reset",
+  "simPickerTitle": "Piliin ang SIM",
+  "simChooseForCall": "Pumili ng SIM para sa tawag na ito",
+  "defaultSimAsk": "Magtanong sa bawat oras",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Mga detalye ng contact",
+  "call": "Tumawag",
+  "share": "Ibahagi",
+  "favourite": "Paborito",
+  "unfavourite": "Hindi paborito",
+  "blockContact": "I-block ang contact",
+  "unblockContact": "I-unblock ang contact",
+  "deleteContact": "Tanggalin ang contact",
+  "phone": "Telepono",
+  "email": "Email",
+  "ringtone": "Ringtone",
+  "defaultRingtone": "Default",
+  "simForContact": "SIM para sa contact na ito",
+  "callHistoryTitle": "History ng tawag",
+  "noCallsWithNumber": "Walang mga tawag sa numerong ito",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Glyph animation",
+  "inCallGlyphAnimationStyle": "In-call na Glyph animation",
+  "recordsOff": "Naka-off",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Default na SIM",
+  "nothingPhoneOnly": "Walang Phone lang",
+  "nothingPhoneOnlySubtitle": "Ang mga feature ng glyph ay nangangailangan ng Nothing Phone",
+  "custom": "Custom",
+  "presetColorHex": "Preset · {hex}",
+  "customColorHex": "Custom · {hex}",
+  "oneContact": "1 contact",
+  "upToContacts": "Hanggang {count} contact",
+  "answerButtonTapSubtitle": "I-tap ang button para sumagot",
+  "filterCalls": "I-filter ang mga tawag",
+  "filterTooltip": "Salain",
+  "settingsTooltip": "Mga setting",
+  "filterAllSubtitle": "Buong log ng tawag",
+  "filterMissedSubtitle": "Na-miss at tinanggihan",
+  "filterContactsSubtitle": "Mga tawag na tumugma sa isang naka-save na contact",
+  "filterNonContactsSubtitle": "Mga numerong wala sa iyong address book",
+  "ongoingCallWithDetail": "Kasalukuyang tawag: {detail}",
+  "defaultSimForCalls": "Default na SIM para sa mga tawag",
+  "blinkInterval": "Mag-blink interval",
+  "close": "Isara",
+  "frequentlyContactedInfoBody": "Ipinapakita ang iyong mga pinaka-tinatawag na numero ng telepono sa tuktok ng tab na Mga Kamakailan, batay sa kung gaano karaming mga papasok, papalabas, hindi nasagot, o tinanggihang mga tawag ang mayroon ka sa bawat numero sa yugto ng panahon na iyong pinili.\n\nBilang ng mga tala: itakda sa 0 upang i-off ito. Gamitin ang 1–20 para ipakita na maraming nangungunang contact.\n\nNalalapat lamang ang yugto ng panahon kapag ipinakita ang kahit isang contact.",
+  "breathSettingsSpeedSummary": "{count} ilaw, {ms}ms bilis",
+  "deleteContactQuestion": "Tanggalin ang contact?",
+  "deleteContactBody": "Permanenteng ide-delete ang contact na ito sa iyong device.",
+  "blockContactQuestion": "I-block ang contact?",
+  "unblockContactQuestion": "I-unblock ang contact?",
+  "blockContactBody": "Hindi ka na makakatanggap ng mga tawag o text mula sa contact na ito.",
+  "unblockContactBody": "Magsisimula kang makatanggap ng mga tawag at text mula sa contact na ito.",
+  "contactBlocked": "Na-block ang contact",
+  "contactUnblocked": "Na-unblock ang contact",
+  "noPhoneNumbersToBlock": "Walang mga numero ng telepono na harangan",
+  "simSameAsSystem": "Pareho sa sistema",
+  "simSameAsSystemSubtitle": "Sinusundan ang Default na SIM sa Mga Setting",
+  "simAskEveryTimeForContact": "Palaging ipakita ang tagapili ng SIM para sa contact na ito",
+  "ringtoneSetForContact": "Itinakda sa buong mundo ang ringtone para sa contact na ito",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Nabigong pumili ng ringtone: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Error: {error}",
+  "noCallHistoryFound": "Walang nakitang history ng tawag",
+  "speedDialVoicemail": "Speed ​​dial: Voicemail",
+  "shareContactSubject": "Makipag-ugnayan sa: {name}",
+  "contactInfo": "Impormasyon sa pakikipag-ugnayan",
+  "dontAskAgainSim": "Wag ka nang magtanong ulit",
+  "simDontAskAgainSubtitle": "Gamitin ang SIM na ito bilang default (baguhin sa Mga Setting)",
+  "addContact": "Magdagdag ng contact",
+  "createContact": "Lumikha ng contact",
+  "paste": "Idikit",
+  "clear": "Maaliwalas",
+  "returnToCall": "Bumalik sa tawag",
+  "numberOfRecordsTitle": "Bilang ng mga tala",
+  "recordsPickerSubtitle": "Gaano karaming mga entry na madalas makontak ang ipapakita (0 = off)",
+  "torchInfoTitle": "Kumikislap ang tanglaw",
+  "torchInfoBody": "Nagbi-blink ang flash ng camera sa panahon ng mga papasok, papalabas, o patuloy na mga tawag. Independiyente sa mga ilaw ng Glyph.",
+  "glyphMapTitle": "Layout ng glyph",
+  "glyphMapBody": "Walang Phone 1 Glyph LED zone. Ginagamit ng mga palabas na animation at in-call ang mga channel na ito.",
+  "answerMethodTitle": "Paraan ng pagsagot",
+  "glyphOutgoingCallStyleTitle": "Istilo ng papalabas na tawag",
+  "glyphInCallAnimationTitle": "Glyph in-call na animation",
+  "themePickerTitle": "Tema",
+  "torchIncomingTitle": "Sulo ng papasok na tawag",
+  "torchOutgoingTitle": "Outgoing call torch",
+  "torchOngoingTitle": "Patuloy na tawag na sulo",
+  "timePeriodTitle": "tagal ng panahon",
+  "ok": "OK",
+  "confirmDeleteCall": "I-delete ang tawag na ito sa history?",
+  "confirmDeleteAllCalls": "I-delete ang lahat ng tawag na may ganitong numero?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Magpadala ng mensahe",
+  "addToExistingContactAction": "Idagdag sa isang contact",
+  "mobileLabel": "Mobile",
+  "callingSimForContactTitle": "Tumatawag sa SIM para sa contact na ito",
+  "contactSettings": "Mga setting ng contact",
+  "setCallingSim": "Itakda ang pagtawag sa SIM",
+  "contactRingtone": "Ringtone ng contact",
+  "shareContact": "Ibahagi ang contact",
+  "blockNumbers": "I-block ang mga numero",
+  "unblockNumbers": "I-unblock ang mga numero",
+  "connectedApps": "Mga konektadong app",
+  "simNotSet": "Hindi nakatakda",
+  "ringtoneDefault": "Default",
+  "customRingtone": "Custom",
+  "aboutSection": "Tungkol sa",
+  "aboutFeedbackSection": "Tungkol sa & feedback",
+  "aboutDescription": "Walang Dialer ang open source. Kung ikaw ay isang developer, maaari kang tuklasin ang code at mag-ambag.",
+  "aboutViewSource": "Tingnan sa GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Hindi mabuksan ang link",
+  "reviewSection": "Balik-aral",
+  "reviewDescription": "Nag-e-enjoy sa Nothing Dialer? Ang iyong rating sa Google Play ay nakakatulong sa iba na mahanap ang app.",
+  "reviewRateOnPlay": "I-rate sa Google Play",
+  "reviewRateOnPlaySubtitle": "Mag-iwan ng rating nang hindi umaalis sa app",
+  "reviewCouldNotOpen": "Hindi mabuksan ang Google Play",
+  "breathSpeed": "Bilis ng hininga",
+  "breathSpeedBlinkHint": "Lower = Blink, Higher = Mabagal na Hininga",
+  "speedSliderHint": "Mas mababa = Mas mabilis, Mas Mataas = Mas Mabagal",
+  "swatchDefault": "Default",
+  "customAccentColorPicker": "Custom na kulay ng accent",
+  "customLightBackgroundPicker": "Custom na liwanag na background",
+  "customDarkBackgroundPicker": "Custom na madilim na background",
+  "customCallBackgroundPicker": "Custom na background ng tawag",
+  "ongoingCallStyleTitle": "Kasalukuyang istilo ng pagtawag",
+  "glyphMapUnavailable": "Hindi available ang glyph map",
+  "animationDelayRange": "Pagkaantala ng Animation (1s - 10s)",
+  "animationDelayRangeSingle": "Pagkaantala ng Animation (0.1s - 10s)",
+  "inCallMute": "I-mute",
+  "inCallKeypad": "Keypad",
+  "inCallSpeaker": "Tagapagsalita",
+  "inCallMore": "Higit pa",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Telepono",
+  "inCallAddCall": "Magdagdag ng tawag",
+  "inCallChangeSim": "Palitan ang SIM",
+  "inCallDecline": "Tanggihan",
+  "inCallAnswer": "Sagot",
+  "inCallMessage": "Mensahe",
+  "inCallCalling": "Tumatawag…",
+  "inCallIncoming": "Papasok na tawag",
+  "inCallSelectSim": "Piliin ang SIM…",
+  "inCallSwitchingSim": "Nagpapalit ng SIM…",
+  "inCallCallEnded": "Natapos ang tawag",
+  "inCallCallingVia": "Tumatawag sa pamamagitan ng {sim}",
+  "inCallCallingViaHtml": "Tumatawag sa pamamagitan ng <b>{sim}</b>",
+  "inCallChooseSim": "Pumili ng SIM para sa tawag na ito",
+  "inCallDragAnswerDecline": "I-drag pakanan para sumagot · I-drag pakaliwa para tanggihan",
+  "inCallMobileNumber": "Mobile {number}",
+  "inCallAudioRouteCurrent": "{label} (Kasalukuyan)",
+  "inCallCallViaFrom": "Tumawag sa pamamagitan ng <b>{sim}</b> mula sa",
+  "inCallCallFrom": "Tawag mula sa",
+  "inCallUnknown": "Hindi alam",
+  "selectContactRingtone": "Piliin ang ringtone ng contact",
+  "speakToSearchPrompt": "Magsalita para maghanap",
+  "phonePermissionRequired": "Kinakailangan ang pahintulot sa telepono",
+  "callFailed": "Nabigo ang tawag: {error}",
+  "callPermissionDenied": "Tinanggihan ang pahintulot sa pagtawag",
+  "alreadyDefaultDialer": "Nakatakda na bilang default na dialer",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Адключыць гук</string>
+    <string name="in_call_keypad">Клавіятура</string>
+    <string name="in_call_speaker">Дакладчык</string>
+    <string name="in_call_more">больш</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Тэлефон</string>
+    <string name="in_call_add_call">Дадаць выклік</string>
+    <string name="in_call_change_sim">Змяніць SIM</string>
+    <string name="in_call_decline">адмовіцца</string>
+    <string name="in_call_answer">Адказ</string>
+    <string name="in_call_message">паведамленне</string>
+    <string name="in_call_calling">Выклік…</string>
+    <string name="in_call_incoming">Уваходны званок</string>
+    <string name="in_call_select_sim">Выберыце SIM…</string>
+    <string name="in_call_switching_sim">Пераключэнне SIM-карты…</string>
+    <string name="in_call_call_ended">Выклік завершаны</string>
+    <string name="in_call_calling_via">Выклік праз %1$s</string>
+    <string name="in_call_calling_via_html">Выклік праз &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Выберыце SIM для гэтага выкліку</string>
+    <string name="in_call_drag_answer_decline">Перацягніце ўправа, каб адказаць · Перацягніце ўлева, каб адмовіцца</string>
+    <string name="in_call_mobile_number">Мабільны %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (цяперашні)</string>
+    <string name="in_call_call_via_from">Тэлефануйце праз &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; з</string>
+    <string name="in_call_call_from">Тэлефанаваць ад</string>
+    <string name="in_call_unknown">Невядомы</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Выберыце рынгтон кантакту</string>
+    <string name="native_speak_to_search">Прамаўляйце для пошуку</string>
+    <string name="native_phone_permission_required">Патрабуецца дазвол на тэлефон</string>
+    <string name="native_call_failed">Збой выкліку: %1$s</string>
+    <string name="native_call_permission_denied">У дазволе на выклік адмоўлена</string>
+    <string name="native_already_default_dialer">Ужо ўстаноўлена ў якасці дазвону па змаўчанні</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">നിശബ്ദമാക്കുക</string>
+    <string name="in_call_keypad">കീപാഡ്</string>
+    <string name="in_call_speaker">സ്പീക്കർ</string>
+    <string name="in_call_more">കൂടുതൽ</string>
+    <string name="in_call_bluetooth">ബ്ലൂടൂത്ത്</string>
+    <string name="in_call_phone">ഫോൺ</string>
+    <string name="in_call_add_call">കോൾ ചേർക്കുക</string>
+    <string name="in_call_change_sim">സിം മാറ്റുക</string>
+    <string name="in_call_decline">നിരസിക്കുക</string>
+    <string name="in_call_answer">ഉത്തരം</string>
+    <string name="in_call_message">സന്ദേശം</string>
+    <string name="in_call_calling">വിളിക്കുന്നു...</string>
+    <string name="in_call_incoming">ഇൻകമിംഗ് കോൾ</string>
+    <string name="in_call_select_sim">സിം തിരഞ്ഞെടുക്കുക...</string>
+    <string name="in_call_switching_sim">സിം മാറുന്നു...</string>
+    <string name="in_call_call_ended">കോൾ അവസാനിച്ചു</string>
+    <string name="in_call_calling_via">%1$s വഴി വിളിക്കുന്നു</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; വഴി വിളിക്കുന്നു</string>
+    <string name="in_call_choose_sim">ഈ കോളിനായി സിം തിരഞ്ഞെടുക്കുക</string>
+    <string name="in_call_drag_answer_decline">ഉത്തരം നൽകാൻ വലത്തേക്ക് വലിച്ചിടുക · നിരസിക്കാൻ ഇടത്തേക്ക് വലിച്ചിടുക</string>
+    <string name="in_call_mobile_number">മൊബൈൽ %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (നിലവിലെ)</string>
+    <string name="in_call_call_via_from">എന്നതിൽ നിന്ന് &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; വഴി വിളിക്കുക</string>
+    <string name="in_call_call_from">നിന്ന് വിളിക്കുക</string>
+    <string name="in_call_unknown">അജ്ഞാതം</string>
+    <string name="in_call_sim_slot">സിം %1$d</string>
+    <string name="native_select_contact_ringtone">കോൺടാക്റ്റ് റിംഗ്ടോൺ തിരഞ്ഞെടുക്കുക</string>
+    <string name="native_speak_to_search">തിരയാൻ സംസാരിക്കുക</string>
+    <string name="native_phone_permission_required">ഫോൺ അനുമതി ആവശ്യമാണ്</string>
+    <string name="native_call_failed">കോൾ പരാജയപ്പെട്ടു: %1$s</string>
+    <string name="native_call_permission_denied">കോൾ അനുമതി നിരസിച്ചു</string>
+    <string name="native_already_default_dialer">ഡിഫോൾട്ട് ഡയലറായി ഇതിനകം സജ്ജീകരിച്ചിരിക്കുന്നു</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">خاموش</string>
+    <string name="in_call_keypad">کی پیڈ</string>
+    <string name="in_call_speaker">سپیکر</string>
+    <string name="in_call_more">مزید</string>
+    <string name="in_call_bluetooth">بلوٹوتھ</string>
+    <string name="in_call_phone">فون</string>
+    <string name="in_call_add_call">کال شامل کریں۔</string>
+    <string name="in_call_change_sim">سم تبدیل کریں۔</string>
+    <string name="in_call_decline">رد کرنا</string>
+    <string name="in_call_answer">جواب دیں۔</string>
+    <string name="in_call_message">پیغام</string>
+    <string name="in_call_calling">کال کی جا رہی ہے…</string>
+    <string name="in_call_incoming">آنے والی کال</string>
+    <string name="in_call_select_sim">سم منتخب کریں…</string>
+    <string name="in_call_switching_sim">سم بدل رہا ہے…</string>
+    <string name="in_call_call_ended">کال ختم ہو گئی۔</string>
+    <string name="in_call_calling_via">%1$s کے ذریعے کال کی جا رہی ہے</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; کے ذریعے کال کی جا رہی ہے</string>
+    <string name="in_call_choose_sim">اس کال کے لیے سم کا انتخاب کریں۔</string>
+    <string name="in_call_drag_answer_decline">جواب دینے کے لیے دائیں گھسیٹیں · مسترد کرنے کے لیے بائیں گھسیٹیں۔</string>
+    <string name="in_call_mobile_number">موبائل %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (موجودہ)</string>
+    <string name="in_call_call_via_from">سے &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; کے ذریعے کال کریں۔</string>
+    <string name="in_call_call_from">سے کال کریں۔</string>
+    <string name="in_call_unknown">نامعلوم</string>
+    <string name="in_call_sim_slot">سم %1$d</string>
+    <string name="native_select_contact_ringtone">رابطہ رنگ ٹون منتخب کریں۔</string>
+    <string name="native_speak_to_search">تلاش کرنے کے لیے بولیں۔</string>
+    <string name="native_phone_permission_required">فون کی اجازت درکار ہے۔</string>
+    <string name="native_call_failed">کال ناکام ہو گئی: %1$s</string>
+    <string name="native_call_permission_denied">کال کی اجازت مسترد کر دی گئی۔</string>
+    <string name="native_already_default_dialer">پہلے سے ہی ڈیفالٹ ڈائلر کے طور پر سیٹ ہے۔</string>
+</resources>

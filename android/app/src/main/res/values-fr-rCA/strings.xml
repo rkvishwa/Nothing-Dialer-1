@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Muet</string>
+    <string name="in_call_keypad">Clavier</string>
+    <string name="in_call_speaker">Conférencier</string>
+    <string name="in_call_more">Plus</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Téléphone</string>
+    <string name="in_call_add_call">Ajouter un appel</string>
+    <string name="in_call_change_sim">Changer de carte SIM</string>
+    <string name="in_call_decline">Déclin</string>
+    <string name="in_call_answer">Répondre</string>
+    <string name="in_call_message">Message</string>
+    <string name="in_call_calling">Appel…</string>
+    <string name="in_call_incoming">Appel entrant</string>
+    <string name="in_call_select_sim">Sélectionnez SIM…</string>
+    <string name="in_call_switching_sim">Changer de carte SIM…</string>
+    <string name="in_call_call_ended">Appel terminé</string>
+    <string name="in_call_calling_via">Appel via %1$s</string>
+    <string name="in_call_calling_via_html">Appel via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Choisir la SIM pour cet appel</string>
+    <string name="in_call_drag_answer_decline">Faites glisser vers la droite pour répondre · Faites glisser vers la gauche pour refuser</string>
+    <string name="in_call_mobile_number">Mobile %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (actuel)</string>
+    <string name="in_call_call_via_from">Appelez au &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; depuis</string>
+    <string name="in_call_call_from">Appeler de</string>
+    <string name="in_call_unknown">Inconnu</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Sélectionnez la sonnerie du contact</string>
+    <string name="native_speak_to_search">Parler pour rechercher</string>
+    <string name="native_phone_permission_required">Autorisation téléphonique requise</string>
+    <string name="native_call_failed">Échec de l\'appel : %1$s</string>
+    <string name="native_call_permission_denied">Autorisation d\'appel refusée</string>
+    <string name="native_already_default_dialer">Déjà défini comme numéroteur par défaut</string>
+</resources>

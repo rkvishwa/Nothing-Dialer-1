@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Þagga</string>
+    <string name="in_call_keypad">Takkaborð</string>
+    <string name="in_call_speaker">Ræðumaður</string>
+    <string name="in_call_more">Meira</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Sími</string>
+    <string name="in_call_add_call">Bæta við símtali</string>
+    <string name="in_call_change_sim">Skiptu um SIM</string>
+    <string name="in_call_decline">Afneita</string>
+    <string name="in_call_answer">Svaraðu</string>
+    <string name="in_call_message">Skilaboð</string>
+    <string name="in_call_calling">Hringir…</string>
+    <string name="in_call_incoming">Móttekið símtal</string>
+    <string name="in_call_select_sim">Veldu SIM...</string>
+    <string name="in_call_switching_sim">Skiptir um SIM...</string>
+    <string name="in_call_call_ended">Símtali slitið</string>
+    <string name="in_call_calling_via">Hringir í gegnum %1$s</string>
+    <string name="in_call_calling_via_html">Hringir í gegnum &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Veldu SIM fyrir þetta símtal</string>
+    <string name="in_call_drag_answer_decline">Dragðu til hægri til að svara · Dragðu til vinstri til að hafna</string>
+    <string name="in_call_mobile_number">Farsími %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Núverandi)</string>
+    <string name="in_call_call_via_from">Hringdu í gegnum &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; frá</string>
+    <string name="in_call_call_from">Hringdu frá</string>
+    <string name="in_call_unknown">Óþekkt</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Veldu hringitón tengiliða</string>
+    <string name="native_speak_to_search">Talaðu til að leita</string>
+    <string name="native_phone_permission_required">Símaleyfi krafist</string>
+    <string name="native_call_failed">Símtal mistókst: %1$s</string>
+    <string name="native_call_permission_denied">Símtalsleyfi hafnað</string>
+    <string name="native_already_default_dialer">Nú þegar stillt sem sjálfgefið hringikerfi</string>
+</resources>

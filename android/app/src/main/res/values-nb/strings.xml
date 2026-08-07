@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Stum</string>
+    <string name="in_call_keypad">Tastatur</string>
+    <string name="in_call_speaker">Høyttaler</string>
+    <string name="in_call_more">Flere</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Legg til anrop</string>
+    <string name="in_call_change_sim">Bytt SIM</string>
+    <string name="in_call_decline">Avslå</string>
+    <string name="in_call_answer">Svare</string>
+    <string name="in_call_message">Beskjed</string>
+    <string name="in_call_calling">Ringer …</string>
+    <string name="in_call_incoming">Innkommende samtale</string>
+    <string name="in_call_select_sim">Velg SIM...</string>
+    <string name="in_call_switching_sim">Bytter SIM-kort …</string>
+    <string name="in_call_call_ended">Samtalen ble avsluttet</string>
+    <string name="in_call_calling_via">Ringer via %1$s</string>
+    <string name="in_call_calling_via_html">Ringer via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Velg SIM for denne samtalen</string>
+    <string name="in_call_drag_answer_decline">Dra til høyre for å svare · Dra til venstre for å avslå</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Gjeldende)</string>
+    <string name="in_call_call_via_from">Ring via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; fra</string>
+    <string name="in_call_call_from">Ring fra</string>
+    <string name="in_call_unknown">Ukjent</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Velg ringetone for kontakt</string>
+    <string name="native_speak_to_search">Snakk for å søke</string>
+    <string name="native_phone_permission_required">Telefontillatelse kreves</string>
+    <string name="native_call_failed">Anrop mislyktes: %1$s</string>
+    <string name="native_call_permission_denied">Samtaletillatelse nektet</string>
+    <string name="native_already_default_dialer">Allerede satt som standard oppringer</string>
+</resources>

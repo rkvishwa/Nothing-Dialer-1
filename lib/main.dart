@@ -2,12 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:nothing_dialer/l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:nothing_glyph_interface/nothing_glyph_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/dialer_shell.dart';
 import 'screens/default_dialer_screen.dart';
+import 'services/app_locale.dart';
+import 'services/app_font_config.dart';
+import 'services/app_fonts.dart';
 import 'services/favourites_manager.dart';
+import 'services/noto_font_pack.dart';
+import 'services/sim_icon_colors.dart';
 import 'services/theme_colors.dart';
 
 const String _glyphChannel = 'nothing_dialer/glyph';
@@ -32,6 +41,11 @@ final ValueNotifier<Color> lightAccentColorNotifier =
     ValueNotifier<Color>(kDefaultLightAccent);
 final ValueNotifier<Color> darkAccentColorNotifier =
     ValueNotifier<Color>(kDefaultDarkAccent);
+
+/// Per-SIM badge fills on Recents (light/dark); missing color keeps outline.
+final ValueNotifier<SimIconColorsState> simIconColorsNotifier =
+    ValueNotifier<SimIconColorsState>(SimIconColorsState.empty);
+
 final ValueNotifier<bool> glyphEnabledNotifier = ValueNotifier(true);
 final ValueNotifier<String> glyphAnimationStyleNotifier = ValueNotifier(
   'Breath & Progress',
@@ -94,6 +108,10 @@ final ValueNotifier<int> frequentContactsMaxNotifier = ValueNotifier(5);
 /// Recents filter: `all` | `missed` | `contacts` | `non_contacts`
 final ValueNotifier<String> recentsFilterNotifier = ValueNotifier('all');
 
+/// When true, Recents search also shows matching address-book contacts below call results.
+final ValueNotifier<bool> recentsSearchShowContactsNotifier =
+    ValueNotifier(true);
+
 /// Torch blink (independent of Glyph): `off` | `interval`
 final ValueNotifier<String> torchIncomingModeNotifier = ValueNotifier('off');
 final ValueNotifier<int> torchIncomingIntervalNotifier = ValueNotifier(500);
@@ -101,6 +119,12 @@ final ValueNotifier<String> torchOutgoingModeNotifier = ValueNotifier('off');
 final ValueNotifier<int> torchOutgoingIntervalNotifier = ValueNotifier(500);
 final ValueNotifier<String> torchOngoingModeNotifier = ValueNotifier('off');
 final ValueNotifier<int> torchOngoingIntervalNotifier = ValueNotifier(500);
+
+/// `system` or BCP-47 tag (e.g. `hi`, `pt_BR`).
+final ValueNotifier<String> localeNotifier = ValueNotifier(kAppLocaleSystem);
+
+final ValueNotifier<AppFontConfig> fontConfigNotifier =
+    ValueNotifier<AppFontConfig>(AppFontConfig.defaults);
 
 bool get _glyphConnected => glyphConnectedNotifier.value;
 bool get _isPhone1 => isPhone1Notifier.value;
@@ -147,6 +171,9 @@ Future<void> loadAppSettingsFromPrefs() async {
   darkAccentColorNotifier.value = Color(
     prefs.getInt('dark_accent_color') ?? colorToArgb32(kDefaultDarkAccent),
   );
+  simIconColorsNotifier.value = SimIconColorsState(
+    byIndex: await loadSimIconColorsFromPrefs(prefs),
+  );
   glyphAnimationStyleNotifier.value =
       prefs.getString('glyph_animation_style') ?? 'Breath & Progress';
   glyphC1C4IntervalNotifier.value =
@@ -181,6 +208,9 @@ Future<void> loadAppSettingsFromPrefs() async {
 
   recentsFilterNotifier.value = prefs.getString('recents_filter') ?? 'all';
 
+  recentsSearchShowContactsNotifier.value =
+      prefs.getBool('recents_search_show_contacts') ?? true;
+
   var torchIncomingMode = prefs.getString('torch_incoming_mode') ?? 'off';
   if (torchIncomingMode != 'off' && torchIncomingMode != 'interval') {
     torchIncomingMode = 'interval';
@@ -198,11 +228,43 @@ Future<void> loadAppSettingsFromPrefs() async {
   torchOngoingIntervalNotifier.value =
       (prefs.getInt('torch_ongoing_interval') ?? 500).clamp(100, 3000);
 
+  final stored = prefs.getString(kAppLocalePrefKey) ?? kAppLocaleSystem;
+  final normalized = normalizeLocalePref(stored);
+  if (normalized != stored) {
+    await prefs.setString(kAppLocalePrefKey, normalized);
+  }
+  localeNotifier.value = normalized;
+
+  fontConfigNotifier.value = AppFontConfig.fromPrefString(
+    prefs.getString(kFontConfigPrefKey),
+  );
+  await NotoFontPack.loadReadyFlag();
+  if (NotoFontPack.ready.value ||
+      fontConfigNotifier.value.defaultChoice == DialerFontChoice.noto) {
+    // Warm cache in background; UI still works offline with system fallbacks.
+    unawaited(NotoFontPack.ensureDownloaded());
+  }
+
   await FavouritesManager.load();
+}
+
+/// Loads installed SIMs so Recents can map call-log labels to per-SIM colors.
+Future<void> refreshSimIconColorSims() async {
+  try {
+    final raw = await const MethodChannel(
+      'nothing_dialer/control',
+    ).invokeMethod<List<dynamic>>('getSimCards');
+    final sims = parseSimCards(raw);
+    final current = simIconColorsNotifier.value;
+    simIconColorsNotifier.value = current.copyWith(sims: sims);
+  } catch (_) {
+    // READ_PHONE_STATE / Telecom may be unavailable during early startup.
+  }
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterContacts.config.includeNonVisibleOnAndroid = true;
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -237,6 +299,7 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
     _listenForGlyphCommands();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       unawaited(_initGlyphService());
+      unawaited(refreshSimIconColorSims());
     });
   }
 
@@ -334,6 +397,8 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
         darkBgColorNotifier,
         lightAccentColorNotifier,
         darkAccentColorNotifier,
+        localeNotifier,
+        fontConfigNotifier,
       ]),
       builder: (context, _) {
         final themeStr = themeModeNotifier.value;
@@ -365,19 +430,58 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
           brightness: Brightness.dark,
         );
 
+        final fontConfig = fontConfigNotifier.value;
+        final lightBase = ThemeData(useMaterial3: true, colorScheme: lightScheme)
+            .textTheme;
+        final darkBase = ThemeData(useMaterial3: true, colorScheme: darkScheme)
+            .textTheme;
+
+        final platformLocale =
+            WidgetsBinding.instance.platformDispatcher.locale;
+        final explicitLocale = localeFromPref(localeNotifier.value);
+        final resolvedLocale = explicitLocale != null
+            ? resolveSupportedAppLocale(explicitLocale)
+            : resolveSupportedAppLocale(platformLocale);
+        final appTitle = lookupAppLocalizations(resolvedLocale).appTitle;
+
         return MaterialApp(
-          title: 'Nothing Dialer',
+          title: appTitle,
           debugShowCheckedModeBanner: false,
+          locale: explicitLocale != null
+              ? resolveSupportedAppLocale(explicitLocale)
+              : null,
+          localeResolutionCallback: (locale, _) {
+            if (locale == null) return const Locale('en');
+            return resolveSupportedAppLocale(locale);
+          },
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            LocaleNamesLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           themeMode: themeMode,
           theme: ThemeData(
             colorScheme: lightScheme,
             scaffoldBackgroundColor: lightBg,
             useMaterial3: true,
+            textTheme: buildDialerTextTheme(
+              config: fontConfig,
+              colorScheme: lightScheme,
+              base: lightBase,
+            ),
           ),
           darkTheme: ThemeData(
             colorScheme: darkScheme,
             scaffoldBackgroundColor: darkBg,
             useMaterial3: true,
+            textTheme: buildDialerTextTheme(
+              config: fontConfig,
+              colorScheme: darkScheme,
+              base: darkBase,
+            ),
           ),
           home: ValueListenableBuilder<bool>(
             valueListenable: isDefaultDialerNotifier,
@@ -492,6 +596,9 @@ Future<void> _runAnimationLoop(
     case 'Breath':
     case 'Custom Breath':
       await _runCustomBreathLoop(seqId, isActiveCall: isActiveCall);
+      break;
+    case 'Steady':
+      await _runSteadyHoldLoop(seqId, isActiveCall: isActiveCall);
       break;
     default:
       await _runHardwareBreathingLoop(seqId);
@@ -639,6 +746,60 @@ Future<void> _runC1C4SingleLoop(int seqId, {bool isActiveCall = false}) async {
   }
 }
 
+void _applyCustomChannelsToBuilder(
+  GlyphFrameBuilder builder,
+  List<String> channels,
+) {
+  if (_isPhone1) {
+    if (channels.contains('A1')) builder.buildChannelA();
+    if (channels.contains('B1')) builder.buildChannelB();
+    if (channels.contains('C-All')) builder.buildChannelC();
+    if (channels.contains('E1')) builder.buildChannelE();
+    if (channels.contains('D-All')) {
+      builder.buildChannel(NothingPhone1.d1_1);
+      builder.buildChannel(NothingPhone1.d1_2);
+      builder.buildChannel(NothingPhone1.d1_3);
+      builder.buildChannel(NothingPhone1.d1_4);
+      builder.buildChannel(NothingPhone1.d1_5);
+      builder.buildChannel(NothingPhone1.d1_6);
+      builder.buildChannel(NothingPhone1.d1_7);
+      builder.buildChannel(NothingPhone1.d1_8);
+    }
+  } else {
+    builder.buildChannelA();
+  }
+}
+
+Future<void> _runSteadyHoldLoop(
+  int seqId, {
+  bool isActiveCall = false,
+}) async {
+  final channels =
+      isActiveCall ? _inCallCustomChannels : _glyphCustomChannels;
+
+  if (channels.isEmpty) {
+    await _glyph.turnOff();
+    while (_glyphAnimRunning && _animSequenceId == seqId) {
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
+    return;
+  }
+
+  try {
+    final builder = GlyphFrameBuilder();
+    _applyCustomChannelsToBuilder(builder, channels);
+    await _glyph.buildGlyphFrame(builder.build());
+    if (!_glyphAnimRunning || _animSequenceId != seqId) return;
+    await _glyph.toggle();
+  } catch (e) {
+    print('Dialer: steady hold animation error - $e');
+  }
+
+  while (_glyphAnimRunning && _animSequenceId == seqId) {
+    await Future.delayed(const Duration(milliseconds: 500));
+  }
+}
+
 Future<void> _runCustomBreathLoop(
   int seqId, {
   bool isActiveCall = false,
@@ -658,25 +819,7 @@ Future<void> _runCustomBreathLoop(
       }
 
       final builder = GlyphFrameBuilder();
-
-      if (_isPhone1) {
-        if (channels.contains('A1')) builder.buildChannelA();
-        if (channels.contains('B1')) builder.buildChannelB();
-        if (channels.contains('C-All')) builder.buildChannelC();
-        if (channels.contains('E1')) builder.buildChannelE();
-        if (channels.contains('D-All')) {
-          builder.buildChannel(NothingPhone1.d1_1);
-          builder.buildChannel(NothingPhone1.d1_2);
-          builder.buildChannel(NothingPhone1.d1_3);
-          builder.buildChannel(NothingPhone1.d1_4);
-          builder.buildChannel(NothingPhone1.d1_5);
-          builder.buildChannel(NothingPhone1.d1_6);
-          builder.buildChannel(NothingPhone1.d1_7);
-          builder.buildChannel(NothingPhone1.d1_8);
-        }
-      } else {
-        builder.buildChannelA();
-      }
+      _applyCustomChannelsToBuilder(builder, channels);
 
       builder.buildPeriod(interval);
       builder.buildCycles(1);

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">නිහඬ කරන්න</string>
+    <string name="in_call_keypad">යතුරු පුවරුව</string>
+    <string name="in_call_speaker">කථානායක</string>
+    <string name="in_call_more">තව</string>
+    <string name="in_call_bluetooth">බ්ලූටූත්</string>
+    <string name="in_call_phone">දුරකථනය</string>
+    <string name="in_call_add_call">ඇමතුම එක් කරන්න</string>
+    <string name="in_call_change_sim">SIM වෙනස් කරන්න</string>
+    <string name="in_call_decline">ප්රතික්ෂේප කරන්න</string>
+    <string name="in_call_answer">උත්තර දෙන්න</string>
+    <string name="in_call_message">පණිවිඩය</string>
+    <string name="in_call_calling">අමතමින්...</string>
+    <string name="in_call_incoming">එන ඇමතුම</string>
+    <string name="in_call_select_sim">SIM තෝරන්න...</string>
+    <string name="in_call_switching_sim">SIM මාරු කරමින්...</string>
+    <string name="in_call_call_ended">ඇමතුම අවසන් විය</string>
+    <string name="in_call_calling_via">%1$s හරහා ඇමතීම</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; හරහා ඇමතීම</string>
+    <string name="in_call_choose_sim">මෙම ඇමතුම සඳහා SIM තෝරන්න</string>
+    <string name="in_call_drag_answer_decline">පිළිතුරු දීමට දකුණට අදින්න · ප්‍රතික්ෂේප කිරීමට වමට අදින්න</string>
+    <string name="in_call_mobile_number">ජංගම %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (වත්මන්)</string>
+    <string name="in_call_call_via_from">සිට &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; හරහා අමතන්න</string>
+    <string name="in_call_call_from">වෙතින් අමතන්න</string>
+    <string name="in_call_unknown">නොදන්නා</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">සම්බන්ධතා නාද රටාව තෝරන්න</string>
+    <string name="native_speak_to_search">සෙවීමට කතා කරන්න</string>
+    <string name="native_phone_permission_required">දුරකථන අවසරය අවශ්‍යයි</string>
+    <string name="native_call_failed">ඇමතුම අසාර්ථක විය: %1$s</string>
+    <string name="native_call_permission_denied">ඇමතුම් අවසරය ප්‍රතික්ෂේප විය</string>
+    <string name="native_already_default_dialer">දැනටමත් පෙරනිමි ඩයලර් ලෙස සකසා ඇත</string>
+</resources>

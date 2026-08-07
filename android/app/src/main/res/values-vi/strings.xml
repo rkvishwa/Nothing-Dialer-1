@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Tắt tiếng</string>
+    <string name="in_call_keypad">Bàn phím</string>
+    <string name="in_call_speaker">Loa</string>
+    <string name="in_call_more">Hơn</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Điện thoại</string>
+    <string name="in_call_add_call">Thêm cuộc gọi</string>
+    <string name="in_call_change_sim">Đổi SIM</string>
+    <string name="in_call_decline">Sự suy sụp</string>
+    <string name="in_call_answer">Trả lời</string>
+    <string name="in_call_message">Tin nhắn</string>
+    <string name="in_call_calling">Đang gọi…</string>
+    <string name="in_call_incoming">Cuộc gọi đến</string>
+    <string name="in_call_select_sim">Chọn SIM…</string>
+    <string name="in_call_switching_sim">Đang chuyển đổi SIM…</string>
+    <string name="in_call_call_ended">Cuộc gọi đã kết thúc</string>
+    <string name="in_call_calling_via">Gọi qua %1$s</string>
+    <string name="in_call_calling_via_html">Gọi qua &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Chọn SIM cho cuộc gọi này</string>
+    <string name="in_call_drag_answer_decline">Kéo sang phải để trả lời · Kéo sang trái để từ chối</string>
+    <string name="in_call_mobile_number">Điện thoại di động %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Hiện tại)</string>
+    <string name="in_call_call_via_from">Gọi qua &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; từ</string>
+    <string name="in_call_call_from">Gọi từ</string>
+    <string name="in_call_unknown">Không xác định</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Chọn nhạc chuông liên hệ</string>
+    <string name="native_speak_to_search">Nói để tìm kiếm</string>
+    <string name="native_phone_permission_required">Cần có sự cho phép của điện thoại</string>
+    <string name="native_call_failed">Cuộc gọi không thành công: %1$s</string>
+    <string name="native_call_permission_denied">Quyền gọi bị từ chối</string>
+    <string name="native_already_default_dialer">Đã được đặt làm trình quay số mặc định</string>
+</resources>

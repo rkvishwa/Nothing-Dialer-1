@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Thulisa</string>
+    <string name="in_call_keypad">Ikhiphedi</string>
+    <string name="in_call_speaker">Somlomo</string>
+    <string name="in_call_more">Okuningi</string>
+    <string name="in_call_bluetooth">I-Bluetooth</string>
+    <string name="in_call_phone">Ucingo</string>
+    <string name="in_call_add_call">Engeza ikholi</string>
+    <string name="in_call_change_sim">Shintsha i-SIM</string>
+    <string name="in_call_decline">Yenqaba</string>
+    <string name="in_call_answer">Phendula</string>
+    <string name="in_call_message">Umlayezo</string>
+    <string name="in_call_calling">Iyashaya...</string>
+    <string name="in_call_incoming">Ucingo olungenayo</string>
+    <string name="in_call_select_sim">Khetha i-SIM...</string>
+    <string name="in_call_switching_sim">Ishintsha i-SIM...</string>
+    <string name="in_call_call_ended">Ucingo luphelile</string>
+    <string name="in_call_calling_via">Ishaya nge-%1$s</string>
+    <string name="in_call_calling_via_html">Ishaya nge-&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Khetha i-SIM yale kholi</string>
+    <string name="in_call_drag_answer_decline">Hudula kwesokudla ukuze uphendule · Hudula kwesokunxele ukuze wenqabe</string>
+    <string name="in_call_mobile_number">Iselula %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Okwamanje)</string>
+    <string name="in_call_call_via_from">Shaya nge-&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; kusuka</string>
+    <string name="in_call_call_from">Shayela kusuka</string>
+    <string name="in_call_unknown">Akwaziwa</string>
+    <string name="in_call_sim_slot">I-SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Khetha iringithoni yokuxhumana</string>
+    <string name="native_speak_to_search">Khuluma ukuze useshe</string>
+    <string name="native_phone_permission_required">Kudingeka imvume yefoni</string>
+    <string name="native_call_failed">Ucingo lwehlulekile: %1$s</string>
+    <string name="native_call_permission_denied">Imvume yocingo inqatshiwe</string>
+    <string name="native_already_default_dialer">Sekuvele kusethwe njengokudayela okuzenzakalelayo</string>
+</resources>

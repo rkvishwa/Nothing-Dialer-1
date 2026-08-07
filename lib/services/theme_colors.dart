@@ -22,6 +22,17 @@ const List<Color> kDarkPresets = [
   Color(0xFF1A0E2E),
 ];
 
+/// In-call screen background (native [InCallActivity]); pitch black by default.
+const Color kDefaultCallBg = Color(0xFF000000);
+
+const List<Color> kCallBgPresets = [
+  kDefaultCallBg,
+  Color(0xFF0D0D0D),
+  Color(0xFF141218),
+  Color(0xFF0A1929),
+  Color(0xFF1A0E2E),
+];
+
 /// Default accent when no preference is stored.
 const Color kDefaultLightAccent = Color(0xFF1C1B1F);
 const Color kDefaultDarkAccent = Color(0xFFE8E8E8);
@@ -34,6 +45,9 @@ const List<Color> kAccentPresets = [
   Color(0xFF1E88E5),
   Color(0xFF8E24AA),
 ];
+
+/// Legacy single SIM badge color key (migrated in [sim_icon_colors.dart]).
+const String kSimIconColorKey = 'sim_icon_color';
 
 const double _lightMinL = 0.85;
 const double _darkMaxL = 0.12;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Mute</string>
+    <string name="in_call_keypad">Keypad</string>
+    <string name="in_call_speaker">Speaker</string>
+    <string name="in_call_more">More</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Phone</string>
+    <string name="in_call_add_call">Add call</string>
+    <string name="in_call_change_sim">Change SIM</string>
+    <string name="in_call_decline">Decline</string>
+    <string name="in_call_answer">Answer</string>
+    <string name="in_call_message">Message</string>
+    <string name="in_call_calling">Calling…</string>
+    <string name="in_call_incoming">Incoming call</string>
+    <string name="in_call_select_sim">Select SIM…</string>
+    <string name="in_call_switching_sim">Switching SIM…</string>
+    <string name="in_call_call_ended">Call ended</string>
+    <string name="in_call_calling_via">Calling via %1$s</string>
+    <string name="in_call_calling_via_html">Calling via &lt;b&gt;%1$s&lt;/b&gt;</string>
+    <string name="in_call_choose_sim">Choose SIM for this call</string>
+    <string name="in_call_drag_answer_decline">Drag right to answer · Drag left to decline</string>
+    <string name="in_call_mobile_number">Mobile %1$s</string>
+    <string name="in_call_audio_route_current">%1$s  (Current)</string>
+    <string name="in_call_call_via_from">Call via &lt;b&gt;%1$s&lt;/b&gt; from</string>
+    <string name="in_call_call_from">Call from</string>
+    <string name="in_call_unknown">Unknown</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+
+    <string name="native_select_contact_ringtone">Select contact ringtone</string>
+    <string name="native_speak_to_search">Speak to search</string>
+    <string name="native_phone_permission_required">Phone permission required</string>
+    <string name="native_call_failed">Call failed: %1$s</string>
+    <string name="native_call_permission_denied">Call permission denied</string>
+    <string name="native_already_default_dialer">Already set as default dialer</string>
+</resources>

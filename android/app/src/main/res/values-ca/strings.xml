@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Silenciar</string>
+    <string name="in_call_keypad">Teclat</string>
+    <string name="in_call_speaker">Altaveu</string>
+    <string name="in_call_more">Més</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telèfon</string>
+    <string name="in_call_add_call">Afegeix una trucada</string>
+    <string name="in_call_change_sim">Canvia SIM</string>
+    <string name="in_call_decline">Declinar</string>
+    <string name="in_call_answer">Respon</string>
+    <string name="in_call_message">Missatge</string>
+    <string name="in_call_calling">S\'està trucant…</string>
+    <string name="in_call_incoming">Trucada entrant</string>
+    <string name="in_call_select_sim">Seleccioneu SIM...</string>
+    <string name="in_call_switching_sim">S\'està canviant la SIM...</string>
+    <string name="in_call_call_ended">La trucada ha finalitzat</string>
+    <string name="in_call_calling_via">Trucant per %1$s</string>
+    <string name="in_call_calling_via_html">Trucant per &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Trieu SIM per a aquesta trucada</string>
+    <string name="in_call_drag_answer_decline">Arrossegueu cap a la dreta per respondre · Arrossegueu cap a l\'esquerra per rebutjar</string>
+    <string name="in_call_mobile_number">Mòbil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Actual)</string>
+    <string name="in_call_call_via_from">Truqueu a través del &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; des de</string>
+    <string name="in_call_call_from">Truca des de</string>
+    <string name="in_call_unknown">Desconegut</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Seleccioneu el to de trucada de contacte</string>
+    <string name="native_speak_to_search">Parla per buscar</string>
+    <string name="native_phone_permission_required">Cal permís per telèfon</string>
+    <string name="native_call_failed">La trucada ha fallat: %1$s</string>
+    <string name="native_call_permission_denied">S\'ha denegat el permís de trucada</string>
+    <string name="native_already_default_dialer">Ja està configurat com a marcador predeterminat</string>
+</resources>

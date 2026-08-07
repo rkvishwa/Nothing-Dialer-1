@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">بی صدا</string>
+    <string name="in_call_keypad">صفحه کلید</string>
+    <string name="in_call_speaker">بلندگو</string>
+    <string name="in_call_more">بیشتر</string>
+    <string name="in_call_bluetooth">بلوتوث</string>
+    <string name="in_call_phone">تلفن</string>
+    <string name="in_call_add_call">افزودن تماس</string>
+    <string name="in_call_change_sim">سیم کارت را عوض کنید</string>
+    <string name="in_call_decline">رد کردن</string>
+    <string name="in_call_answer">پاسخ دهید</string>
+    <string name="in_call_message">پیام</string>
+    <string name="in_call_calling">تماس گرفتن…</string>
+    <string name="in_call_incoming">تماس ورودی</string>
+    <string name="in_call_select_sim">سیم کارت را انتخاب کنید…</string>
+    <string name="in_call_switching_sim">در حال تعویض سیم کارت…</string>
+    <string name="in_call_call_ended">تماس به پایان رسید</string>
+    <string name="in_call_calling_via">تماس از طریق %1$s</string>
+    <string name="in_call_calling_via_html">تماس از طریق &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">سیم کارت را برای این تماس انتخاب کنید</string>
+    <string name="in_call_drag_answer_decline">برای پاسخ به سمت راست بکشید · برای رد کردن به چپ بکشید</string>
+    <string name="in_call_mobile_number">موبایل %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (جاری)</string>
+    <string name="in_call_call_via_from">تماس از طریق &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; از</string>
+    <string name="in_call_call_from">تماس از</string>
+    <string name="in_call_unknown">ناشناس</string>
+    <string name="in_call_sim_slot">سیم کارت %1$d</string>
+    <string name="native_select_contact_ringtone">آهنگ زنگ تماس را انتخاب کنید</string>
+    <string name="native_speak_to_search">برای جستجو صحبت کنید</string>
+    <string name="native_phone_permission_required">مجوز تلفن مورد نیاز است</string>
+    <string name="native_call_failed">تماس ناموفق بود: %1$s</string>
+    <string name="native_call_permission_denied">اجازه تماس رد شد</string>
+    <string name="native_already_default_dialer">قبلاً به عنوان شماره گیر پیش فرض تنظیم شده است</string>
+</resources>

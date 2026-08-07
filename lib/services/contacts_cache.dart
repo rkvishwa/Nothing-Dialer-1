@@ -29,11 +29,11 @@ class ContactsCache {
     if (_inFlight != null) {
       return _inFlight!;
     }
-    _inFlight = fetch().then((list) {
+    final future = fetch().then((list) {
       _cached = list;
-      _inFlight = null;
       return list;
     });
-    return _inFlight!;
+    _inFlight = future.whenComplete(() => _inFlight = null);
+    return future;
   }
 }

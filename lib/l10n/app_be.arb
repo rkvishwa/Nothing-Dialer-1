@@ -1,0 +1,759 @@
+{
+  "@@locale": "be",
+  "appTitle": "Тэлефон нічога",
+  "settings": "Налады",
+  "settingsSearchHint": "Налады пошуку",
+  "settingsSearchNoResults": "Налады не знойдзены",
+  "general": "Генерал",
+  "theme": "Тэма",
+  "themeSystemDefault": "Сістэма па змаўчанні",
+  "themeLight": "Святло",
+  "themeDark": "Цёмны",
+  "themeFollowSystem": "Сачыце за наладамі сістэмы",
+  "themeAlwaysLight": "Заўсёды выкарыстоўвайце светлую тэму",
+  "themeAlwaysDark": "Заўсёды выкарыстоўвайце цёмную тэму",
+  "language": "мова",
+  "languageDeviceDefault": "Прылада па змаўчанні",
+  "languagePickerTitle": "мова",
+  "languageSearchHint": "Пошук моў",
+  "font": "Шрыфт",
+  "fontSystem": "Сістэма па змаўчанні",
+  "fontNdot": "Нічога (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Памылка спампоўкі шрыфта. Праверце падключэнне і паўтарыце спробу.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Шрыфт",
+  "fontPreviewSample": "Тэлефон нічога",
+  "fontAppWide": "Шрыфт праграмы",
+  "fontApplyTo": "Прымяніць да",
+  "fontApplyEntireApp": "Увесь дадатак",
+  "fontApplyEntireAppSubtitle": "Адзін і той жа шрыфт усюды, у тым ліку падчас выкліку",
+  "fontApplyTitlesOnly": "Загалоўкі і загалоўкі",
+  "fontApplyTitlesOnlySubtitle": "Толькі вялікія назвы і загалоўкі раздзелаў",
+  "fontApplyCustomize": "Наладзіць",
+  "fontApplyCustomizeSubtitle": "Выберыце шрыфт для экрана і тыпу тэксту",
+  "fontCustomizeSection": "Наладзіць па экране",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Назва старонкі",
+  "fontRoleSectionHeader": "Загаловак раздзела",
+  "fontRolePrimary": "Першасны тэкст",
+  "fontRoleSecondary": "Другасны тэкст",
+  "fontRoleButton": "Гузікі",
+  "fontRoleDialKey": "Клавішы клавіятуры",
+  "fontSurfaceRecents": "Апошнія",
+  "fontSurfaceContacts": "Кантакты",
+  "fontSurfaceSettings": "Налады",
+  "fontSurfaceDialpad": "Панэль набору нумара",
+  "fontSurfaceShell": "Навігацыя",
+  "fontSurfaceDefaultDialer": "Падказка дазвону па змаўчанні",
+  "fontSurfaceFavourites": "Выбранае",
+  "fontSurfaceBlocked": "Заблакіраваныя нумары",
+  "fontSurfaceContactDetail": "Кантактная інфармацыя",
+  "fontSurfaceCallHistory": "Гісторыя званкоў",
+  "fontSurfaceSheets": "Аркушы і падборшчыкі",
+  "fontSurfaceInCall": "Экран выкліку",
+  "fontSubtitleEntireApp": "{font} — уся праграма",
+  "fontSubtitleTitlesOnly": "{font} — толькі загалоўкі",
+  "fontSubtitleCustomize": "Індывідуальныя для кожнага экрана",
+  "background": "Фон",
+  "accent": "Акцэнт",
+  "lightBackground": "Светлы фон",
+  "lightAccent": "Лёгкі акцэнт",
+  "darkBackground": "Цёмны фон",
+  "darkAccent": "Цёмны акцэнт",
+  "callBackground": "Фон выкліку",
+  "appIcon": "Значок праграмы",
+  "answerMethod": "Спосаб адказу",
+  "answerSlide": "Прасуньце, каб адказаць",
+  "answerSlideSubtitle": "Правядзіце па панэлі ўлева/управа, як Google Phone",
+  "answerButton": "Націск кнопкі",
+  "answerButtonSubtitle": "Націсніце кнопку адказу або адмовы",
+  "answerHuawei": "Стыль Huawei",
+  "answerHuaweiSubtitle": "Каб адказаць, перацягніце круг на зялёны тэлефон",
+  "answerHuaweiTileSubtitle": "Huawei — перацягнуць на зялёны / чырвоны",
+  "calling": "Тэлефанаванне",
+  "defaultSim": "Стандартная SIM-карта",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Пытайцеся кожны раз",
+  "askEveryTimeSubtitle": "Паказваць выбар SIM перад кожным званком",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "SIM-карты не знойдзены",
+  "couldNotLoadSims": "Немагчыма загрузіць SIM-карты: {error}",
+  "allFavourites": "Усе любімыя",
+  "allFavouritesSubtitle": "Змяняйце парадак, выдаляйце і дадавайце з кантактаў",
+  "blockedNumbers": "Заблакіраваныя нумары",
+  "blockedNumbersSubtitle": "Прагляд і разблакіроўка нумароў",
+  "soundsAndVibration": "Гукі і вібрацыя",
+  "soundsAndVibrationSubtitle": "Рынгтон, вібрацыя, сігналы панэлі набору",
+  "couldNotOpenSettings": "Немагчыма адкрыць налады: {error}",
+  "frequentlyContacted": "Часта кантакт",
+  "numberOfRecords": "Колькасць запісаў",
+  "timePeriod": "Перыяд часу",
+  "periodLast24Hours": "Апошнія 24 гадзіны",
+  "periodLast24HoursSubtitle": "Званкі за мінулы дзень",
+  "periodLast7Days": "Апошнія 7 дзён",
+  "periodLast7DaysSubtitle": "Званкі за мінулы тыдзень",
+  "periodLast30Days": "Апошнія 30 дзён",
+  "periodLast30DaysSubtitle": "Званкі за мінулы месяц",
+  "periodLast12Months": "Апошнія 12 месяцаў",
+  "periodLast12MonthsSubtitle": "Званкі з мінулага года",
+  "periodAllTime": "Увесь час",
+  "periodAllTimeSubtitle": "Уся гісторыя выклікаў",
+  "frequentMaxOff": "Выкл",
+  "frequentMaxCount": "{count} кантакты",
+  "torchBlink": "Мігценне факела",
+  "torchIncomingCall": "Ліхтарык ўваходнага званка",
+  "torchOutgoingCall": "Ліхтарык выходнага выкліку",
+  "torchOngoingCall": "Ліхтар бягучага выкліку",
+  "torchIncomingInterval": "Інтэрвал уваходнага міргання",
+  "torchOutgoingInterval": "Выходны інтэрвал міргання",
+  "torchOngoingInterval": "Працяглы інтэрвал мігцення",
+  "torchOff": "Выкл",
+  "torchOffIncomingSubtitle": "Няма факела падчас званка",
+  "torchOffOutgoingSubtitle": "Няма факела падчас набору",
+  "torchOffOngoingSubtitle": "Няма факела падчас актыўнага выкліку",
+  "torchFixedInterval": "Фіксаваны інтэрвал",
+  "torchFixedIntervalSubtitle": "Міргайце з зададзенай хуткасцю",
+  "torchIntervalSeconds": "{seconds} с",
+  "torchIntervalBlink": "{seconds} міргнуць",
+  "flashlightUnavailable": "Ліхтарык недаступны на гэтай прыладзе",
+  "glyphLights": "Агні гліфаў",
+  "glyphCallingAnimation": "Анімацыя выкліку гліфа",
+  "glyphOngoingAnimation": "Гліф анімацыі бягучага выкліку",
+  "glyphNone": "Няма",
+  "glyphNoneOutgoingSubtitle": "Адключыць індыкатары Glyph для выходных выклікаў",
+  "glyphNoneInCallSubtitle": "Адключайце агні Glyph падчас актыўнага выкліку",
+  "glyphBreathProgress": "Дыханне і прагрэс",
+  "glyphBreathProgressSubtitle": "Агні дыхаюць, пакуль чарга запаўняецца за 65 секунд",
+  "glyphAccumulate": "Назапашваць",
+  "glyphAccumulateSubtitle": "Назапашванне анімацыі на агнях C1-C4",
+  "glyphSingle": "Халасты",
+  "glyphSingleSubtitle": "Адзіны святло, які рухаецца праз C1-C4",
+  "glyphBreath": "Дыханне",
+  "glyphBreathSubtitle": "Выберыце святло і хуткасць",
+  "glyphSteady": "Устойлівы",
+  "glyphSteadySubtitle": "Выбраныя агні застаюцца гарэць",
+  "breathSettings": "Налады дыхання",
+  "activeLights": "Актыўныя фары",
+  "lightsCount": "{count} агні",
+  "speedSettings": "Налады хуткасці",
+  "speedSettingsDelay": "{ms}ms затрымка",
+  "durationAndSpeed": "Працягласць і хуткасць",
+  "durationSpeedSummary": "Працягласць {duration}с, інтэрвал {interval}мс",
+  "cancel": "Адмяніць",
+  "done": "Гатова",
+  "save": "Захаваць",
+  "block": "Блок",
+  "delete": "Выдаліць",
+  "recents": "Апошнія",
+  "contacts": "Кантакты",
+  "hideFavouritesOnRecents": "Схаваць абранае на Апошнія",
+  "showFavouritesOnRecents": "Паказаць абранае на Апошнія",
+  "ongoingCall": "Бягучы выклік",
+  "setAsDefaultTitle": "УСТАНАВІЦЬ ЯК\nПА ЗМАВЧАННІ",
+  "setAsDefaultBody": "Каб выкарыстоўваць Nothing Dialer, яго трэба ўсталяваць у якасці праграмы для тэлефона па змаўчанні. Гэта дазваляе вам кіраваць званкамі, праглядаць гісторыю і выкарыстоўваць анімацыю гліфаў.",
+  "setAsDefaultButton": "УСТАНАВІЦЬ ПА ЗМАВЧАННІ",
+  "nothingDialerBrand": "NOTHING DIALER 1",
+  "favourites": "Выбранае",
+  "addFavourite": "Дадаць абранае",
+  "favouritesDrawerHint": "Выкарыстоўвайце меню, каб дадаць кантакты. Націсніце звонку скрыні або зачыніце яе пальцам. Пазначце кантакт зорачкай з яго звестак або доўга націскайце выклік у Нядаўніх.",
+  "menu": "Меню",
+  "noFavouritesYet": "Пакуль няма абраных.\nАдкрыйце меню, каб дадаць кантакт, або пазначце яго зорачкай.",
+  "contactsPermissionNeeded": "Патрабуецца дазвол кантактаў",
+  "chooseContact": "Выберыце кантакт",
+  "noPhone": "Няма тэлефона",
+  "pickNumber": "Выберыце нумар",
+  "contactHasNoPhone": "У гэтага кантакту няма нумара тэлефона",
+  "blockNumber": "Нумар блока",
+  "enterPhoneNumber": "Увядзіце нумар тэлефона",
+  "unblockedDisplay": "Разблакіравана {display}",
+  "couldNotUnblockNumber": "Не ўдалося разблакіраваць нумар",
+  "blockedSummary": "{blocked} заблакіравана • {matched} знойдзена",
+  "contactsPermissionMissing": "Адсутнічае дазвол на кантакты. Націсніце, каб выправіць.",
+  "noBlockedNumbers": "Няма заблакаваных нумароў",
+  "unknownContact": "Невядомы кантакт",
+  "unblock": "Разблакіраваць",
+  "permissionNeeded": "Патрабуецца дазвол",
+  "grantPhonePermission": "Дазвольце тэлефону праглядаць вашу гісторыю выклікаў.",
+  "grantContactsPermission": "Дайце кантактам дазвол на прагляд вашай адраснай кнігі.",
+  "openSettings": "Адкрыйце Налады",
+  "tryAgain": "Паспрабуйце яшчэ раз",
+  "couldNotLoadContacts": "Не атрымалася загрузіць кантакты",
+  "contactsLoadError": "Нешта пайшло не так падчас чытання адраснай кнігі.",
+  "noContactsFound": "Кантакты не знойдзены",
+  "contactsEmptySubtitle": "Тут з'явяцца кантакты з вашай прылады.",
+  "searchContacts": "Пошук кантактаў…",
+  "searchRecentCalls": "Пошук апошніх выклікаў",
+  "fromContacts": "З кантактаў",
+  "recentsSearchSection": "Нядаўні пошук",
+  "recentsSearchShowContacts": "Паказаць кантакты ў пошуку",
+  "recentsSearchShowContactsSubtitle": "Падчас пошуку \"Нядаўнія\" таксама паказвайце адпаведных людзей з вашай адраснай кнігі пад вынікамі гісторыі выклікаў.",
+  "voiceSearch": "Галасавы пошук",
+  "createNewContact": "Стварыць новы кантакт",
+  "callError": "Памылка выкліку: {error}",
+  "noRecentCalls": "Няма апошніх званкоў",
+  "callHistoryEmpty": "Тут з'явіцца ваша гісторыя выклікаў.",
+  "loadMore": "Загрузіць больш",
+  "frequentlyContactedHeader": "Часта кантактавалі",
+  "recentHistory": "Найноўшая гісторыя",
+  "noFavouritesRecentsHint": "Пакуль няма абраных. Пазначце кантакт зорачкай, націсніце і ўтрымлівайце выклік або выкарыстоўвайце ўкладку «Выбранае».",
+  "copyNumber": "Нумар копіі",
+  "editNumberBeforeCall": "Рэдагаваць нумар перад званком",
+  "removeFromFavourites": "Выдаліць з абранага",
+  "addToFavourites": "Дадаць у абранае",
+  "blockNumberQuestion": "Нумар блока?",
+  "blockNumberConfirm": "Вы больш не будзеце атрымліваць званкі і тэкставыя паведамленні з {number}.",
+  "blocked": "Заблакіраваны",
+  "couldNotBlock": "Не атрымалася заблакіраваць",
+  "contactNotOnDevice": "Кантакт не захаваны на гэтай прыладзе",
+  "unblocked": "Разблакіравана",
+  "numberCopied": "Нумар скапіраваны",
+  "showLess": "Паказваць менш",
+  "showAllTimes": "Паказаць увесь час",
+  "mostRecent": "Апошні · {time}",
+  "videoCall": "Відэазванок",
+  "couldNotPlaceVideoCall": "Не атрымалася зрабіць відэавыклік",
+  "message": "паведамленне",
+  "couldNotOpenMessaging": "Немагчыма адкрыць праграму абмену паведамленнямі",
+  "history": "Гісторыя",
+  "viewContact": "Прагляд кантакту",
+  "addToContact": "Дадаць у кантакт",
+  "callTypeMissed": "Прамахнуўся",
+  "callTypeRejected": "Адхілена",
+  "callTypeIncoming": "Паступае",
+  "callTypeOutgoing": "Выходны",
+  "today": "сёння",
+  "yesterday": "Учора",
+  "justNow": "Толькі што",
+  "minutesAgo": "{count} хвілін таму",
+  "hoursAgo": "{count} гадзін таму",
+  "filterAll": "Усе",
+  "filterMissed": "Прамахнуўся",
+  "filterContacts": "Кантакты",
+  "filterNonContacts": "Бескантактавыя",
+  "iconUpdated": "Значок абноўлены. Абнаўленне галоўнага экрана можа заняць некаторы час.",
+  "iconSavedRelease": "Выбар захаваны. Значок галоўнага экрана абнаўляецца ў зборках выпуску.",
+  "couldNotChangeIcon": "Не атрымалася змяніць значок: {error}",
+  "launcherClassicBlack": "Класічны (чорны)",
+  "launcherLight": "Святло",
+  "launcherNothingRed": "Нічога чырвонага",
+  "launcherDarkGrey": "Цёмна-шэры",
+  "launcherCream": "Сліўкі",
+  "launcherRetroPhone": "Рэтра тэлефон",
+  "launcherRetroPhoneLight": "Рэтра тэлефон (светлы)",
+  "voiceSearchUnavailable": "Галасавы пошук недаступны на гэтай прыладзе.",
+  "voiceSearchFailed": "Збой галасавога пошуку: {error}",
+  "customColor": "Прыстасаваныя",
+  "selectColor": "Выберыце колер",
+  "reset": "Скінуць",
+  "simPickerTitle": "Выберыце SIM",
+  "simChooseForCall": "Выберыце SIM для гэтага выкліку",
+  "defaultSimAsk": "Пытайцеся кожны раз",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Кантактныя дадзеныя",
+  "call": "Тэлефануйце",
+  "share": "падзяліцца",
+  "favourite": "Любімая",
+  "unfavourite": "Выключыць з абранага",
+  "blockContact": "Заблакіраваць кантакт",
+  "unblockContact": "Разблакіраваць кантакт",
+  "deleteContact": "Выдаліць кантакт",
+  "phone": "Тэлефон",
+  "email": "Электронная пошта",
+  "ringtone": "Рынгтон",
+  "defaultRingtone": "Па змаўчанні",
+  "simForContact": "SIM для гэтага кантакту",
+  "callHistoryTitle": "Гісторыя званкоў",
+  "noCallsWithNumber": "Ніякіх званкоў з гэтага нумара",
+  "durationMinutesSeconds": "{minutes}м {seconds}с",
+  "durationSeconds": "{seconds}с",
+  "glyphAnimationStyle": "Анімацыя гліфаў",
+  "inCallGlyphAnimationStyle": "Анімацыя Glyph падчас выкліку",
+  "recordsOff": "Выкл",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Стандартная SIM-карта",
+  "nothingPhoneOnly": "Нічога, толькі тэлефон",
+  "nothingPhoneOnlySubtitle": "Функцыі гліфа патрабуюць Nothing Phone",
+  "custom": "Прыстасаваныя",
+  "presetColorHex": "Зададзены · {hex}",
+  "customColorHex": "Індывідуальны · {hex}",
+  "oneContact": "1 кантакт",
+  "upToContacts": "Да {count} кантактаў",
+  "answerButtonTapSubtitle": "Націсніце кнопку, каб адказаць",
+  "filterCalls": "Фільтр званкоў",
+  "filterTooltip": "Фільтраваць",
+  "settingsTooltip": "Налады",
+  "filterAllSubtitle": "Увесь журнал выклікаў",
+  "filterMissedSubtitle": "Прапушчаны і адхілены",
+  "filterContactsSubtitle": "Выклікі супадаюць з захаваным кантактам",
+  "filterNonContactsSubtitle": "Нумараў няма ў вашай адраснай кнізе",
+  "ongoingCallWithDetail": "Бягучы выклік: {detail}",
+  "defaultSimForCalls": "Стандартная SIM-карта для выклікаў",
+  "blinkInterval": "Інтэрвал мігцення",
+  "close": "Блізка",
+  "frequentlyContactedInfoBody": "Паказвае нумары тэлефонаў, на якія вы часцей за ўсё тэлефанавалі, у верхняй частцы ўкладкі \"Апошнія\" на аснове колькасці ўваходных, выходных, прапушчаных або адхіленых выклікаў з кожным нумарам за выбраны вамі перыяд часу.\n\nКолькасць запісаў: усталюйце 0, каб адключыць гэта. Выкарыстоўвайце 1–20, каб паказаць столькі галоўных кантактаў.\n\nПерыяд часу прымяняецца толькі тады, калі паказаны хаця б адзін кантакт.",
+  "breathSettingsSpeedSummary": "{count} агні, {ms}ms хуткасць",
+  "deleteContactQuestion": "Выдаліць кантакт?",
+  "deleteContactBody": "Гэты кантакт будзе назаўсёды выдалены з вашай прылады.",
+  "blockContactQuestion": "Заблакіраваць кантакт?",
+  "unblockContactQuestion": "Разблакіраваць кантакт?",
+  "blockContactBody": "Вы больш не будзеце атрымліваць званкі або тэкставыя паведамленні ад гэтага кантакту.",
+  "unblockContactBody": "Вы пачнеце атрымліваць званкі і тэкставыя паведамленні ад гэтага кантакту.",
+  "contactBlocked": "Кантакт заблакаваны",
+  "contactUnblocked": "Кантакт разблакіраваны",
+  "noPhoneNumbersToBlock": "Няма тэлефонных нумароў для блакіроўкі",
+  "simSameAsSystem": "Тое самае, што сістэма",
+  "simSameAsSystemSubtitle": "Выконвайце SIM-карту па змаўчанні ў наладах",
+  "simAskEveryTimeForContact": "Заўсёды паказваць сродак выбару SIM для гэтага кантакту",
+  "ringtoneSetForContact": "Рынгтон усталяваны глабальна для гэтага кантакту",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Не ўдалося выбраць рынгтон: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Памылка: {error}",
+  "noCallHistoryFound": "Гісторыя выклікаў не знойдзена",
+  "speedDialVoicemail": "Хуткі набор: галасавая пошта",
+  "shareContactSubject": "Кантакт: {name}",
+  "contactInfo": "Кантактная інфармацыя",
+  "dontAskAgainSim": "Больш не пытайся",
+  "simDontAskAgainSubtitle": "Выкарыстоўваць гэту SIM па змаўчанні (змяніць у наладах)",
+  "addContact": "Дадаць кантакт",
+  "createContact": "Стварыць кантакт",
+  "paste": "Уставіць",
+  "clear": "Ясна",
+  "returnToCall": "Вярнуцца да выкліку",
+  "numberOfRecordsTitle": "Колькасць запісаў",
+  "recordsPickerSubtitle": "Колькі запісаў, з якімі часта кантактуюць, паказаць (0 = выключана)",
+  "torchInfoTitle": "Мігценне факела",
+  "torchInfoBody": "Мігае ўспышка камеры падчас уваходных, выходных або бягучых выклікаў. Незалежна ад агнёў Glyph.",
+  "glyphMapTitle": "Макет гліфа",
+  "glyphMapBody": "Nothing Phone 1 Glyph LED зоны. Гэтыя каналы выкарыстоўваюць анімацыю выходных і званкоў.",
+  "answerMethodTitle": "Спосаб адказу",
+  "glyphOutgoingCallStyleTitle": "Стыль выходнага выкліку",
+  "glyphInCallAnimationTitle": "Гліф анімацыі падчас выкліку",
+  "themePickerTitle": "Тэма",
+  "torchIncomingTitle": "Ліхтарык ўваходнага званка",
+  "torchOutgoingTitle": "Ліхтарык выходнага выкліку",
+  "torchOngoingTitle": "Ліхтар бягучага выкліку",
+  "timePeriodTitle": "Перыяд часу",
+  "ok": "добра",
+  "confirmDeleteCall": "Выдаліць гэты выклік з гісторыі?",
+  "confirmDeleteAllCalls": "Выдаліць усе выклікі з гэтага нумара?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Адправіць паведамленне",
+  "addToExistingContactAction": "Дадаць у кантакт",
+  "mobileLabel": "Мабільны",
+  "callingSimForContactTitle": "Выклік SIM для гэтага кантакту",
+  "contactSettings": "Налады кантактаў",
+  "setCallingSim": "Усталюйце SIM для выкліку",
+  "contactRingtone": "Рынгтон на кантакт",
+  "shareContact": "Абагуліць кантакт",
+  "blockNumbers": "Блок нумароў",
+  "unblockNumbers": "Разблакіраваць нумары",
+  "connectedApps": "Падключаныя праграмы",
+  "simNotSet": "Не ўстаноўлена",
+  "ringtoneDefault": "Па змаўчанні",
+  "customRingtone": "Прыстасаваныя",
+  "aboutSection": "Пра",
+  "aboutFeedbackSection": "Пра і водгукі",
+  "aboutDescription": "Nothing Dialer з'яўляецца адкрытым зыходным кодам. Калі вы распрацоўшчык, вы можаце вывучыць код і ўнесці свой уклад.",
+  "aboutViewSource": "Паглядзець на GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Немагчыма адкрыць спасылку",
+  "reviewSection": "Агляд",
+  "reviewDescription": "Вам падабаецца Nothing Dialer? Ваш рэйтынг у Google Play дапамагае іншым знайсці праграму.",
+  "reviewRateOnPlay": "Ацаніце ў Google Play",
+  "reviewRateOnPlaySubtitle": "Пакіньце ацэнку, не выходзячы з праграмы",
+  "reviewCouldNotOpen": "Немагчыма адкрыць Google Play",
+  "breathSpeed": "Хуткасць дыхання",
+  "breathSpeedBlinkHint": "Ніжэй = міргаць, вышэй = павольнае дыханне",
+  "speedSliderHint": "Ніжэй = хутчэй, вышэй = павольней",
+  "swatchDefault": "Па змаўчанні",
+  "customAccentColorPicker": "Індывідуальны колер акцэнту",
+  "customLightBackgroundPicker": "Індывідуальны светлы фон",
+  "customDarkBackgroundPicker": "Індывідуальны цёмны фон",
+  "customCallBackgroundPicker": "Індывідуальны фон выкліку",
+  "ongoingCallStyleTitle": "Стыль бягучага выкліку",
+  "glyphMapUnavailable": "Карта гліфаў недаступная",
+  "animationDelayRange": "Затрымка анімацыі (1-10 с)",
+  "animationDelayRangeSingle": "Затрымка анімацыі (0,1 с - 10 с)",
+  "inCallMute": "Адключыць гук",
+  "inCallKeypad": "Клавіятура",
+  "inCallSpeaker": "Дакладчык",
+  "inCallMore": "больш",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Тэлефон",
+  "inCallAddCall": "Дадаць выклік",
+  "inCallChangeSim": "Змяніць SIM",
+  "inCallDecline": "адмовіцца",
+  "inCallAnswer": "Адказ",
+  "inCallMessage": "паведамленне",
+  "inCallCalling": "Выклік…",
+  "inCallIncoming": "Уваходны званок",
+  "inCallSelectSim": "Выберыце SIM…",
+  "inCallSwitchingSim": "Пераключэнне SIM-карты…",
+  "inCallCallEnded": "Выклік завершаны",
+  "inCallCallingVia": "Выклік праз {sim}",
+  "inCallCallingViaHtml": "Выклік праз <b>{sim}</b>",
+  "inCallChooseSim": "Выберыце SIM для гэтага выкліку",
+  "inCallDragAnswerDecline": "Перацягніце ўправа, каб адказаць · Перацягніце ўлева, каб адмовіцца",
+  "inCallMobileNumber": "Мабільны {number}",
+  "inCallAudioRouteCurrent": "{label} (цяперашні)",
+  "inCallCallViaFrom": "Тэлефануйце праз <b>{sim}</b> з",
+  "inCallCallFrom": "Тэлефанаваць ад",
+  "inCallUnknown": "Невядомы",
+  "selectContactRingtone": "Выберыце рынгтон кантакту",
+  "speakToSearchPrompt": "Прамаўляйце для пошуку",
+  "phonePermissionRequired": "Патрабуецца дазвол на тэлефон",
+  "callFailed": "Збой выкліку: {error}",
+  "callPermissionDenied": "У дазволе на выклік адмоўлена",
+  "alreadyDefaultDialer": "Ужо ўстаноўлена ў якасці дазвону па змаўчанні",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nothing_dialer/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
+import '../widgets/settings_picker_sheet.dart';
+import '../widgets/sim_badge.dart';
 
 /// SharedPreferences keys for global default outgoing SIM (also used from Settings).
 const String kDefaultSimModeKey = 'default_sim_mode';
@@ -82,7 +88,9 @@ class _SimPickerSheetState extends State<_SimPickerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final l10n = AppLocalizations.of(context);
+    return SettingsPickerFontScope(
+      child: Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -109,11 +117,14 @@ class _SimPickerSheetState extends State<_SimPickerSheet> {
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Text(
-                'Choose SIM for this call',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
+                l10n.simChooseForCall,
+                style: context.dialerTextStyle(
+                  DialerFontRole.pageTitle,
+                  TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
@@ -125,10 +136,12 @@ class _SimPickerSheetState extends State<_SimPickerSheet> {
                   ...widget.sims.asMap().entries.map((entry) {
                     final idx = entry.key;
                     final sim = entry.value;
-                    final label = sim['label'] as String? ?? 'SIM ${idx + 1}';
+                    final label = sim['label'] as String? ?? l10n.simSlot(idx + 1);
                     final slot = (sim['slot'] as int?) ?? (idx + 1);
+                    final simIndex = (sim['index'] as num?)?.toInt() ?? idx;
 
                     return _SimOption(
+                      simIndex: simIndex,
                       simSlot: slot,
                       label: label,
                       onTap: () => _onSelectSim(idx),
@@ -147,17 +160,22 @@ class _SimPickerSheetState extends State<_SimPickerSheet> {
                       setState(() => _dontAskAgain = v ?? false),
                   controlAffinity: ListTileControlAffinity.leading,
                   title: Text(
-                    "Don't ask again",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontSize: 15,
+                    l10n.dontAskAgainSim,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.primary,
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                   subtitle: Text(
-                    'Use this SIM as default (change in Settings)',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontSize: 12,
+                    l10n.simDontAskAgainSubtitle,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.secondary,
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
@@ -167,6 +185,7 @@ class _SimPickerSheetState extends State<_SimPickerSheet> {
           ],
         ),
       ),
+    ),
     );
   }
 }
@@ -174,11 +193,13 @@ class _SimPickerSheetState extends State<_SimPickerSheet> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _SimOption extends StatelessWidget {
+  final int simIndex;
   final int simSlot;
   final String label;
   final VoidCallback onTap;
 
   const _SimOption({
+    required this.simIndex,
     required this.simSlot,
     required this.label,
     required this.onTap,
@@ -186,14 +207,7 @@ class _SimOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = [
-      Theme.of(context).colorScheme.primary,
-      const Color(0xFF81C784),
-      const Color(0xFF4FC3F7),
-    ];
-    final colorIdx = simSlot >= 1 ? (simSlot - 1) % colors.length : 0;
-    final color = colors[colorIdx];
-
+    final l10n = AppLocalizations.of(context);
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -202,17 +216,7 @@ class _SimOption extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Row(
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-                alignment: Alignment.center,
-                child: Icon(
-                  Icons.sim_card,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 20,
-                ),
-              ),
+              SimIconListLeading(simIndex: simIndex, label: label),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -220,19 +224,25 @@ class _SimOption extends StatelessWidget {
                   children: [
                     Text(
                       label,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.primary,
+                        TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'SIM $simSlot',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                      l10n.simSlot(simSlot),
+                      style: context.dialerTextStyle(
+                        DialerFontRole.secondary,
+                        TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ],

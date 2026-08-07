@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Stom</string>
+    <string name="in_call_keypad">Toetsenbord</string>
+    <string name="in_call_speaker">Spreker</string>
+    <string name="in_call_more">Meer</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefoon</string>
+    <string name="in_call_add_call">Voeg oproep toe</string>
+    <string name="in_call_change_sim">Wijzig simkaart</string>
+    <string name="in_call_decline">Afwijzen</string>
+    <string name="in_call_answer">Antwoord</string>
+    <string name="in_call_message">Bericht</string>
+    <string name="in_call_calling">Roeping…</string>
+    <string name="in_call_incoming">Inkomend gesprek</string>
+    <string name="in_call_select_sim">Selecteer SIM…</string>
+    <string name="in_call_switching_sim">Van simkaart wisselen...</string>
+    <string name="in_call_call_ended">Gesprek beëindigd</string>
+    <string name="in_call_calling_via">Bellen via %1$s</string>
+    <string name="in_call_calling_via_html">Bellen via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Kies SIM voor dit gesprek</string>
+    <string name="in_call_drag_answer_decline">Sleep naar rechts om te antwoorden · Sleep naar links om te weigeren</string>
+    <string name="in_call_mobile_number">Mobiel %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Huidig)</string>
+    <string name="in_call_call_via_from">Bel via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; vanaf</string>
+    <string name="in_call_call_from">Bel van</string>
+    <string name="in_call_unknown">Onbekend</string>
+    <string name="in_call_sim_slot">Simkaart %1$d</string>
+    <string name="native_select_contact_ringtone">Selecteer contactbeltoon</string>
+    <string name="native_speak_to_search">Spreek om te zoeken</string>
+    <string name="native_phone_permission_required">Telefoontoestemming vereist</string>
+    <string name="native_call_failed">Oproep mislukt: %1$s</string>
+    <string name="native_call_permission_denied">Oproeptoestemming geweigerd</string>
+    <string name="native_already_default_dialer">Al ingesteld als standaardkiezer</string>
+</resources>

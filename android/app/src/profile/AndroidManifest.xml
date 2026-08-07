@@ -15,12 +15,7 @@
             android:label="Nothing Dialer (dev)"
             android:icon="@mipmap/launcher_icon_default"
             android:roundIcon="@mipmap/launcher_icon_default"
-            tools:node="merge">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            tools:node="merge" />
 
         <activity-alias android:name=".LauncherAliasDefault" tools:node="remove" />
         <activity-alias android:name=".LauncherAliasLight" tools:node="remove" />

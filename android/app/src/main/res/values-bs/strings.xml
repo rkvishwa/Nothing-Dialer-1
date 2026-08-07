@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Mute</string>
+    <string name="in_call_keypad">Tastatura</string>
+    <string name="in_call_speaker">Zvučnik</string>
+    <string name="in_call_more">Više</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Dodaj poziv</string>
+    <string name="in_call_change_sim">Promijeni SIM</string>
+    <string name="in_call_decline">Odbij</string>
+    <string name="in_call_answer">Odgovori</string>
+    <string name="in_call_message">Poruka</string>
+    <string name="in_call_calling">Pozivanje…</string>
+    <string name="in_call_incoming">Dolazni poziv</string>
+    <string name="in_call_select_sim">Odaberite SIM…</string>
+    <string name="in_call_switching_sim">Zamjena SIM…</string>
+    <string name="in_call_call_ended">Poziv je završen</string>
+    <string name="in_call_calling_via">Pozivanje putem %1$s</string>
+    <string name="in_call_calling_via_html">Pozivanje putem &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Odaberite SIM za ovaj poziv</string>
+    <string name="in_call_drag_answer_decline">Prevucite udesno da odgovorite · Prevucite ulevo da odbijete</string>
+    <string name="in_call_mobile_number">Mobitel %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Trenutno)</string>
+    <string name="in_call_call_via_from">Pozovite putem &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; od</string>
+    <string name="in_call_call_from">Call from</string>
+    <string name="in_call_unknown">Nepoznato</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Odaberite melodiju zvona kontakta</string>
+    <string name="native_speak_to_search">Govorite za pretragu</string>
+    <string name="native_phone_permission_required">Potrebna je dozvola za telefon</string>
+    <string name="native_call_failed">Poziv nije uspio: %1$s</string>
+    <string name="native_call_permission_denied">Dozvola za poziv je odbijena</string>
+    <string name="native_already_default_dialer">Već postavljeno kao zadani brojčanik</string>
+</resources>

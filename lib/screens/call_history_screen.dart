@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:call_log/call_log.dart';
 import 'package:intl/intl.dart';
+import 'package:nothing_dialer/l10n/app_localizations.dart';
+
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
+import '../services/l10n_format.dart';
+import '../widgets/dialer_font_scope.dart';
 
 /// Grouped call entry — consecutive same-type calls merged with count.
 class _HistoryGroup {
   final CallType? callType;
   final int count;
-  final int? timestamp;   // most recent
-  final int? duration;    // most recent
+  final int? timestamp; // most recent
+  final int? duration; // most recent
 
   _HistoryGroup({
     required this.callType,
@@ -97,23 +103,25 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
   }
 
   /// Group by date sections.
-  Map<String, List<_HistoryGroup>> _groupByDate() {
+  Map<String, List<_HistoryGroup>> _groupByDate(AppLocalizations l10n) {
     final groups = _groupEntries(_entries);
     final map = <String, List<_HistoryGroup>>{};
     final now = DateTime.now();
+    final locale = Localizations.localeOf(context).toString();
     final today = DateFormat('yyyy-MM-dd').format(now);
-    final yesterday = DateFormat('yyyy-MM-dd').format(now.subtract(const Duration(days: 1)));
+    final yesterday = DateFormat('yyyy-MM-dd')
+        .format(now.subtract(const Duration(days: 1)));
 
     for (final g in groups) {
       final dt = DateTime.fromMillisecondsSinceEpoch(g.timestamp ?? 0);
       final date = DateFormat('yyyy-MM-dd').format(dt);
       String label;
       if (date == today) {
-        label = 'Today';
+        label = l10n.today;
       } else if (date == yesterday) {
-        label = 'Yesterday';
+        label = l10n.yesterday;
       } else {
-        label = DateFormat('MMMM d, yyyy').format(dt);
+        label = DateFormat.yMMMMd(locale).format(dt);
       }
       map.putIfAbsent(label, () => []).add(g);
     }
@@ -147,36 +155,24 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
     }
   }
 
-  String _callTypeName(CallType? type) {
-    switch (type) {
-      case CallType.missed:
-        return 'Missed';
-      case CallType.rejected:
-        return 'Rejected';
-      case CallType.incoming:
-        return 'Incoming';
-      case CallType.outgoing:
-        return 'Outgoing';
-      default:
-        return '';
-    }
-  }
-
-  String _formatDuration(int? seconds) {
+  String _formatDuration(AppLocalizations l10n, int? seconds) {
     if (seconds == null || seconds == 0) return '';
     final m = seconds ~/ 60;
     final s = seconds % 60;
-    if (m > 0) return '${m}m ${s}s';
-    return '${s}s';
+    if (m > 0) return l10n.durationMinutesSeconds(m, s);
+    return l10n.durationSeconds(s);
   }
 
   // ── Build ───────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final title = widget.contactName ?? widget.number;
 
-    return Scaffold(
+    return DialerFontScope(
+      surface: DialerFontSurface.callHistory,
+      child: Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -191,27 +187,51 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.w500)),
+            Text(title,
+                style: context.dialerTextStyle(
+                    DialerFontRole.pageTitle,
+                    TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500))),
             if (widget.contactName != null)
-              Text(widget.number, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13)),
+              Text(widget.number,
+                  style: context.dialerTextStyle(
+                      DialerFontRole.secondary,
+                      TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontSize: 13))),
           ],
         ),
       ),
       body: _loading
-          ? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onSurface, strokeWidth: 1.5))
+          ? Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  strokeWidth: 1.5))
           : _entries.isEmpty
-              ? Center(child: Text('No call history found', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)))
-              : _buildGroupedList(),
+              ? Center(
+                  child: Text(l10n.noCallHistoryFound,
+                      style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant))))
+              : _buildGroupedList(l10n),
+      ),
     );
   }
 
-  Widget _buildGroupedList() {
-    final dateMap = _groupByDate();
+  Widget _buildGroupedList(AppLocalizations l10n) {
+    final dateMap = _groupByDate(l10n);
     final sections = dateMap.keys.toList();
+    final locale = Localizations.localeOf(context).toString();
 
     return ListView.builder(
       padding: const EdgeInsets.only(top: 8, bottom: 24),
-      itemCount: sections.fold<int>(0, (sum, s) => sum + 1 + dateMap[s]!.length),
+      itemCount:
+          sections.fold<int>(0, (sum, s) => sum + 1 + dateMap[s]!.length),
       itemBuilder: (context, idx) {
         int running = 0;
         for (final section in sections) {
@@ -221,11 +241,14 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
               child: Text(
                 section,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.6,
+                style: context.dialerTextStyle(
+                  DialerFontRole.sectionHeader,
+                  TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.6,
+                  ),
                 ),
               ),
             );
@@ -234,12 +257,13 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
           final items = dateMap[section]!;
           if (idx < running + items.length) {
             final group = items[idx - running];
-            final dt = DateTime.fromMillisecondsSinceEpoch(group.timestamp ?? 0);
-            final timeStr = DateFormat('h:mm a').format(dt);
+            final dt =
+                DateTime.fromMillisecondsSinceEpoch(group.timestamp ?? 0);
+            final timeStr = DateFormat.jm(locale).format(dt);
             final color = _callTypeColor(group.callType);
             final icon = _callTypeIcon(group.callType);
-            final typeName = _callTypeName(group.callType);
-            final dur = _formatDuration(group.duration);
+            final typeName = callTypeLabel(l10n, group.callType);
+            final dur = _formatDuration(l10n, group.duration);
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -253,43 +277,41 @@ class _CallHistoryScreenState extends State<CallHistoryScreen> {
                       color: color.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
-                    alignment: Alignment.center,
-                    child: Icon(icon, color: color, size: 18),
+                    child: Icon(icon, color: color, size: 20),
                   ),
-                  const SizedBox(width: 14),
-
-                  // Details
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              typeName,
-                              style: TextStyle(color: color, fontSize: 15, fontWeight: FontWeight.w500),
+                        Text(
+                          group.count > 1
+                              ? '$typeName (${group.count})'
+                              : typeName,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.primary,
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 15,
                             ),
-                            if (group.count > 1) ...[
-                              const SizedBox(width: 6),
-                              Text(
-                                '(${group.count})',
-                                style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ],
+                          ),
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          timeStr,
-                          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),
+                          dur.isNotEmpty ? '$timeStr · $dur' : timeStr,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.secondary,
+                            TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                              fontSize: 13,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-
-                  // Duration
-                  if (dur.isNotEmpty)
-                    Text(dur, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13)),
                 ],
               ),
             );

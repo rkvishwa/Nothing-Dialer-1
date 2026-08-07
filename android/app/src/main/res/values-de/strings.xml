@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Stumm</string>
+    <string name="in_call_keypad">Tastatur</string>
+    <string name="in_call_speaker">Lautsprecher</string>
+    <string name="in_call_more">Mehr</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Anruf hinzufügen</string>
+    <string name="in_call_change_sim">SIM wechseln</string>
+    <string name="in_call_decline">Ablehnen</string>
+    <string name="in_call_answer">Annehmen</string>
+    <string name="in_call_message">Nachricht</string>
+    <string name="in_call_calling">Wird angerufen…</string>
+    <string name="in_call_incoming">Eingehender Anruf</string>
+    <string name="in_call_select_sim">SIM wählen…</string>
+    <string name="in_call_switching_sim">SIM wird gewechselt…</string>
+    <string name="in_call_call_ended">Anruf beendet</string>
+    <string name="in_call_calling_via">Anruf über %1$s</string>
+    <string name="in_call_calling_via_html">Anruf über &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">SIM für diesen Anruf wählen</string>
+    <string name="in_call_drag_answer_decline">Nach rechts zum Annehmen · Nach links zum Ablehnen</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s  (Aktiv)</string>
+    <string name="in_call_call_via_from">Anruf über &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; von</string>
+    <string name="in_call_call_from">Anruf von</string>
+    <string name="in_call_unknown">Unbekannt</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Kontaktton wählen</string>
+    <string name="native_speak_to_search">Zum Suchen sprechen</string>
+    <string name="native_phone_permission_required">Telefonberechtigung erforderlich</string>
+    <string name="native_call_failed">Anruf fehlgeschlagen: %1$s</string>
+    <string name="native_call_permission_denied">Anrufberechtigung verweigert</string>
+    <string name="native_already_default_dialer">Bereits Standard-Telefon-App</string>
+</resources>

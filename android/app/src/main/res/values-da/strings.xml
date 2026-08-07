@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Stum</string>
+    <string name="in_call_keypad">Tastatur</string>
+    <string name="in_call_speaker">Højttaler</string>
+    <string name="in_call_more">Mere</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Tilføj opkald</string>
+    <string name="in_call_change_sim">Skift SIM</string>
+    <string name="in_call_decline">Nedgang</string>
+    <string name="in_call_answer">Svar</string>
+    <string name="in_call_message">Besked</string>
+    <string name="in_call_calling">Ringer...</string>
+    <string name="in_call_incoming">Indgående opkald</string>
+    <string name="in_call_select_sim">Vælg SIM...</string>
+    <string name="in_call_switching_sim">Skifter SIM-kort...</string>
+    <string name="in_call_call_ended">Opkaldet afsluttet</string>
+    <string name="in_call_calling_via">Ringer via %1$s</string>
+    <string name="in_call_calling_via_html">Ringer via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Vælg SIM til dette opkald</string>
+    <string name="in_call_drag_answer_decline">Træk til højre for at svare · Træk til venstre for at afvise</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (aktuelt)</string>
+    <string name="in_call_call_via_from">Ring via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; fra</string>
+    <string name="in_call_call_from">Ring fra</string>
+    <string name="in_call_unknown">Ukendt</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Vælg kontakt ringetone</string>
+    <string name="native_speak_to_search">Tal for at søge</string>
+    <string name="native_phone_permission_required">Der kræves telefontilladelse</string>
+    <string name="native_call_failed">Opkald mislykkedes: %1$s</string>
+    <string name="native_call_permission_denied">Opkaldstilladelse nægtet</string>
+    <string name="native_already_default_dialer">Allerede indstillet som standardopkaldsfunktion</string>
+</resources>

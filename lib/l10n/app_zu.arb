@@ -1,0 +1,759 @@
+{
+  "@@locale": "zu",
+  "appTitle": "Akukho Ukudayela",
+  "settings": "Izilungiselelo",
+  "settingsSearchHint": "Sesha izilungiselelo",
+  "settingsSearchNoResults": "Azikho izilungiselelo ezitholiwe",
+  "general": "Okujwayelekile",
+  "theme": "Itimu",
+  "themeSystemDefault": "Okuzenzakalelayo Kwesistimu",
+  "themeLight": "Ukukhanya",
+  "themeDark": "Kumnyama",
+  "themeFollowSystem": "Landela izilungiselelo zesistimu",
+  "themeAlwaysLight": "Sebenzisa njalo itimu ekhanyayo",
+  "themeAlwaysDark": "Sebenzisa njalo itimu emnyama",
+  "language": "Ulimi",
+  "languageDeviceDefault": "Okuzenzakalelayo kwedivayisi",
+  "languagePickerTitle": "Ulimi",
+  "languageSearchHint": "Sesha izilimi",
+  "font": "Ifonti",
+  "fontSystem": "Okuzenzakalelayo kwesistimu",
+  "fontNdot": "Lutho (NDot)",
+  "fontSerif": "I-Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Ukulanda ifonti kuhlulekile. Hlola uxhumo lwakho bese uyazama futhi.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Ifonti",
+  "fontPreviewSample": "Akukho Ukudayela",
+  "fontAppWide": "Ifonti yohlelo lokusebenza",
+  "fontApplyTo": "Faka isicelo ku",
+  "fontApplyEntireApp": "Lonke uhlelo lokusebenza",
+  "fontApplyEntireAppSubtitle": "Ifonti efanayo yonke indawo, okufaka phakathi ocingweni",
+  "fontApplyTitlesOnly": "Izihloko nezihloko",
+  "fontApplyTitlesOnlySubtitle": "Izihloko ezinkulu nezihloko zezigaba kuphela",
+  "fontApplyCustomize": "Enza ngendlela oyifisayo",
+  "fontApplyCustomizeSubtitle": "Khetha ifonti ngesikrini ngasinye kanye nohlobo lombhalo",
+  "fontCustomizeSection": "Enza ngendlela oyifisayo ngesikrini",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Isihloko sekhasi",
+  "fontRoleSectionHeader": "Unhlokweni wesigaba",
+  "fontRolePrimary": "Umbhalo oyinhloko",
+  "fontRoleSecondary": "Umbhalo wesibili",
+  "fontRoleButton": "Izinkinobho",
+  "fontRoleDialKey": "Okhiye bephedi yokudayela",
+  "fontSurfaceRecents": "Kwakamuva",
+  "fontSurfaceContacts": "Oxhumana nabo",
+  "fontSurfaceSettings": "Izilungiselelo",
+  "fontSurfaceDialpad": "Iphedi yokudayela",
+  "fontSurfaceShell": "Ukuzulazula",
+  "fontSurfaceDefaultDialer": "Ukwaziswa kokudayela okuzenzakalelayo",
+  "fontSurfaceFavourites": "Izintandokazi",
+  "fontSurfaceBlocked": "Izinombolo ezivinjiwe",
+  "fontSurfaceContactDetail": "Imininingwane yokuxhumana",
+  "fontSurfaceCallHistory": "Umlando wekholi",
+  "fontSurfaceSheets": "Amashidi nezikhi",
+  "fontSurfaceInCall": "Isikrini esingaphakathi kwekholi",
+  "fontSubtitleEntireApp": "{font} — lonke uhlelo lokusebenza",
+  "fontSubtitleTitlesOnly": "{font} — izihloko kuphela",
+  "fontSubtitleCustomize": "Ngokwezifiso isikrini ngasinye",
+  "background": "Ingemuva",
+  "accent": "I-Accent",
+  "lightBackground": "Ingemuva elikhanyayo",
+  "lightAccent": "Iphimbo elilula",
+  "darkBackground": "Ingemuva elimnyama",
+  "darkAccent": "Iphimbo elimnyama",
+  "callBackground": "Ingemuva lekholi",
+  "appIcon": "Isithonjana sohlelo lokusebenza",
+  "answerMethod": "Indlela yokuphendula",
+  "answerSlide": "Shelelezisa ukuze uphendule",
+  "answerSlideSubtitle": "Swayiphela kwesokunxele/kwesokudla kubha, njenge-Google Phone",
+  "answerButton": "Thepha inkinobho",
+  "answerButtonSubtitle": "Thepha izinkinobho zokuphendula noma zenqaba",
+  "answerHuawei": "Isitayela seHuawei",
+  "answerHuaweiSubtitle": "Hudula umbuthano uye ocingweni oluluhlaza ukuze uphendule",
+  "answerHuaweiTileSubtitle": "I-Huawei — donsela kokuluhlaza / obomvu",
+  "calling": "Iyafona",
+  "defaultSim": "I-SIM ezenzakalelayo",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Buza njalo",
+  "askEveryTimeSubtitle": "Bonisa isikhi seSIM ngaphambi kocingo ngalunye",
+  "simSlot": "I-SIM {slot}",
+  "noSimCardsFound": "Awekho amakhadi e-SIM atholiwe",
+  "couldNotLoadSims": "Ayikwazanga ukulayisha ama-SIM: {error}",
+  "allFavourites": "Zonke izintandokazi",
+  "allFavouritesSubtitle": "Hlela kabusha, susa, futhi wengeze koxhumana nabo",
+  "blockedNumbers": "Izinombolo ezivinjiwe",
+  "blockedNumbersSubtitle": "Buka futhi uvule izinombolo",
+  "soundsAndVibration": "Imisindo nokudlidliza",
+  "soundsAndVibrationSubtitle": "Iringithoni, ukudlidliza, amathoni ephedi yokudayela",
+  "couldNotOpenSettings": "Ayikwazanga ukuvula izilungiselelo: {error}",
+  "frequentlyContacted": "Okuthintwa njalo",
+  "numberOfRecords": "Inombolo yamarekhodi",
+  "timePeriod": "Isikhathi",
+  "periodLast24Hours": "Amahora angu-24 edlule",
+  "periodLast24HoursSubtitle": "Izingcingo zosuku oludlule",
+  "periodLast7Days": "Izinsuku ezingu-7 ezedlule",
+  "periodLast7DaysSubtitle": "Izingcingo zeviki eledlule",
+  "periodLast30Days": "Izinsuku zokugcina ezingu-30",
+  "periodLast30DaysSubtitle": "Izingcingo zenyanga edlule",
+  "periodLast12Months": "Izinyanga ezingu-12 ezedlule",
+  "periodLast12MonthsSubtitle": "Izingcingo zonyaka odlule",
+  "periodAllTime": "Sonke isikhathi",
+  "periodAllTimeSubtitle": "Wonke umlando wekholi",
+  "frequentMaxOff": "Valiwe",
+  "frequentMaxCount": "{count} abathintwayo",
+  "torchBlink": "Ithoshi Ukucwayiza",
+  "torchIncomingCall": "Ithoshi lekholi engenayo",
+  "torchOutgoingCall": "Ithoshi lekholi ephumayo",
+  "torchOngoingCall": "Ithoshi yokufona eqhubekayo",
+  "torchIncomingInterval": "Isikhawu sokucwayiza esingenayo",
+  "torchOutgoingInterval": "Isikhawu sokucwayiza esiphumayo",
+  "torchOngoingInterval": "Isikhawu sokucwayiza esiqhubekayo",
+  "torchOff": "Valiwe",
+  "torchOffIncomingSubtitle": "Alikho ithoshi ngenkathi kukhala",
+  "torchOffOutgoingSubtitle": "Alikho ithoshi ngenkathi udayela",
+  "torchOffOngoingSubtitle": "Ayikho ithoshi ngesikhathi socingo olusebenzayo",
+  "torchFixedInterval": "Isikhawu esilungisiwe",
+  "torchFixedIntervalSubtitle": "Ukucwayiza ngesivinini esimisiwe",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} ukucwayiza",
+  "flashlightUnavailable": "I-Flashlight ayitholakali kule divayisi",
+  "glyphLights": "Glyph Lights",
+  "glyphCallingAnimation": "Upopayi obiza i-Glyph",
+  "glyphOngoingAnimation": "I-Glyph eqhubekayo yokugqwayiza kwekholi",
+  "glyphNone": "Lutho",
+  "glyphNoneOutgoingSubtitle": "Khubaza izibani ze-Glyph kumakholi aphumayo",
+  "glyphNoneInCallSubtitle": "Khubaza izibani ze-Glyph ngenkathi usocingweni",
+  "glyphBreathProgress": "Ukuphefumula Nentuthuko",
+  "glyphBreathProgressSubtitle": "Izibani ziyaphefumula ngenkathi umugqa ugcwala ngaphezu kwama-65s",
+  "glyphAccumulate": "Qoqa",
+  "glyphAccumulateSubtitle": "Ukugqwayiza okunqwabelanayo kumalambu C1-C4",
+  "glyphSingle": "Awushadile",
+  "glyphSingleSubtitle": "Ukukhanya okukodwa okuhambayo ku-C1-C4",
+  "glyphBreath": "Ukuphefumula",
+  "glyphBreathSubtitle": "Khetha izibani nesivinini",
+  "glyphSteady": "Izinzile",
+  "glyphSteadySubtitle": "Izibani ezikhethiwe zihlala zikhanya",
+  "breathSettings": "Izilungiselelo Zokuphefumula",
+  "activeLights": "Izibani Ezisebenzayo",
+  "lightsCount": "{count} izibani",
+  "speedSettings": "Izilungiselelo Zesivinini",
+  "speedSettingsDelay": "{ms}ms ukubambezeleka",
+  "durationAndSpeed": "Ubude nesivinini",
+  "durationSpeedSummary": "{duration}s ubude, {interval}ms isikhawu",
+  "cancel": "Khansela",
+  "done": "Kwenziwe",
+  "save": "Londoloza",
+  "block": "Vimba",
+  "delete": "Susa",
+  "recents": "Kwakamuva",
+  "contacts": "Oxhumana nabo",
+  "hideFavouritesOnRecents": "Fihla izintandokazi kokwakamuva",
+  "showFavouritesOnRecents": "Bonisa izintandokazi kokwakamuva",
+  "ongoingCall": "Ucingo oluqhubekayo",
+  "setAsDefaultTitle": "ISETHA NJENGOBA\nUKUZENZAKALELA",
+  "setAsDefaultBody": "Ukuze usebenzise i-Nothing Dialer, kufanele isethwe njengohlelo lwakho lokusebenza lwefoni oluzenzakalelayo. Lokhu kukuvumela ukuthi uphathe amakholi, ubuke umlando, futhi usebenzise ukugqwayiza kwe-Glyph.",
+  "setAsDefaultButton": "SETHA NJENGEZIFAKAZIYO",
+  "nothingDialerBrand": "AKUKHO I-DIALER 1",
+  "favourites": "Izintandokazi",
+  "addFavourite": "Engeza intandokazi",
+  "favouritesDrawerHint": "Sebenzisa imenyu ukwengeza oxhumana nabo. Thepha ngaphandle kwekhabethe noma uliswayiphe livaliwe. Faka inkanyezi koxhumana naye emininingwaneni yakhe, noma cindezela isikhathi eside ucingo kokuthi Recents.",
+  "menu": "Imenyu",
+  "noFavouritesYet": "Azikho izintandokazi okwamanje.\nVula imenyu ukuze wengeze oyedwa, noma ufake inkanyezi oxhumana naye.",
+  "contactsPermissionNeeded": "Kudingeka imvume yoxhumana nabo",
+  "chooseContact": "Khetha oxhumana naye",
+  "noPhone": "Ayikho ifoni",
+  "pickNumber": "Khetha inombolo",
+  "contactHasNoPhone": "Lo oxhumana naye akanayo inombolo yefoni",
+  "blockNumber": "Vimba inombolo",
+  "enterPhoneNumber": "Faka inombolo yocingo",
+  "unblockedDisplay": "Kuvuliwe {display}",
+  "couldNotUnblockNumber": "Ayikwazanga ukuvulela inombolo",
+  "blockedSummary": "{blocked} ivinjiwe • {matched} ifanisiwe",
+  "contactsPermissionMissing": "Imvume yoxhumana nabo ayikho. Thepha ukuze ulungise.",
+  "noBlockedNumbers": "Azikho izinombolo ezivinjiwe",
+  "unknownContact": "Oxhumana naye ongaziwa",
+  "unblock": "Vulela",
+  "permissionNeeded": "Imvume iyadingeka",
+  "grantPhonePermission": "Nikeza imvume yefoni ukuze ubone umlando wakho wekholi.",
+  "grantContactsPermission": "Nikeza oxhumana nabo imvume yokubona ibhuku lakho lamakheli.",
+  "openSettings": "Vula Izilungiselelo",
+  "tryAgain": "Zama futhi",
+  "couldNotLoadContacts": "Ayikwazanga ukulayisha abathintwayo",
+  "contactsLoadError": "Kukhona okungahambanga kahle ngokufunda ibhuku lakho lamakheli.",
+  "noContactsFound": "Abekho abathintwayo abatholiwe",
+  "contactsEmptySubtitle": "Oxhumana nabo abavela kudivayisi yakho bazovela lapha.",
+  "searchContacts": "Sesha abathintwayo...",
+  "searchRecentCalls": "Sesha izingcingo zakamuva",
+  "fromContacts": "Kusuka koxhumana nabo",
+  "recentsSearchSection": "Usesho lwakamuva",
+  "recentsSearchShowContacts": "Bonisa oxhumana nabo oseshweni",
+  "recentsSearchShowContactsSubtitle": "Ngenkathi usesha okwakamuva, futhi bonisa abantu abafanayo abavela encwadini yakho yamakheli engezansi kwemiphumela yomlando wekholi.",
+  "voiceSearch": "Ukusesha ngezwi",
+  "createNewContact": "Dala oxhumana naye omusha",
+  "callError": "Iphutha lokushaya: {error}",
+  "noRecentCalls": "Awekho amakholi wakamuva",
+  "callHistoryEmpty": "Umlando wakho wekholi uzovela lapha.",
+  "loadMore": "Layisha okuningi",
+  "frequentlyContactedHeader": "Okuxhunyanwa nabo njalo",
+  "recentHistory": "Umlando wakamuva",
+  "noFavouritesRecentsHint": "Azikho izintandokazi okwamanje. Faka inkanyezi koxhumana naye, cindezela isikhathi eside ucingo, noma sebenzisa ithebhu ethi Izintandokazi.",
+  "copyNumber": "Kopisha inombolo",
+  "editNumberBeforeCall": "Hlela inombolo ngaphambi kokushaya ucingo",
+  "removeFromFavourites": "Susa ezintandokazini",
+  "addToFavourites": "Engeza ezintandokazini",
+  "blockNumberQuestion": "Vimba inombolo?",
+  "blockNumberConfirm": "Ngeke usathola amakholi noma imibhalo evela ku-{number}.",
+  "blocked": "Kuvinjiwe",
+  "couldNotBlock": "Ayikwazanga ukuvimba",
+  "contactNotOnDevice": "Oxhumana naye akalondolozwanga kule divayisi",
+  "unblocked": "Kuvuliwe",
+  "numberCopied": "Inombolo ikopishiwe",
+  "showLess": "Bonisa okuncane",
+  "showAllTimes": "Bonisa zonke izikhathi",
+  "mostRecent": "Kwakamuva · {time}",
+  "videoCall": "Ucingo lwevidiyo",
+  "couldNotPlaceVideoCall": "Ayikwazanga ukwenza ikholi yevidiyo",
+  "message": "Umlayezo",
+  "couldNotOpenMessaging": "Ayikwazanga ukuvula uhlelo lokusebenza lokuthumela imiyalezo",
+  "history": "Umlando",
+  "viewContact": "Buka othintana naye",
+  "addToContact": "Engeza koxhumana naye",
+  "callTypeMissed": "Uphuthelwe",
+  "callTypeRejected": "Kwaliwe",
+  "callTypeIncoming": "Okungenayo",
+  "callTypeOutgoing": "Okuphumayo",
+  "today": "Namuhla",
+  "yesterday": "Izolo",
+  "justNow": "Khona manje",
+  "minutesAgo": "{count} iminithi eledlule",
+  "hoursAgo": "{count} ihora eledlule",
+  "filterAll": "Konke",
+  "filterMissed": "Uphuthelwe",
+  "filterContacts": "Oxhumana nabo",
+  "filterNonContacts": "Abangewona othintana nabo",
+  "iconUpdated": "Isithonjana sibuyekeziwe. Isikrini sakho sasekhaya singase sithathe isikhashana ukuvuselela.",
+  "iconSavedRelease": "Ukukhetha kulondoloziwe. Isithonjana sesikrini sasekhaya sibuyekeza ekwakhiweni kokukhishwa.",
+  "couldNotChangeIcon": "Ayikwazanga ukushintsha isithonjana: {error}",
+  "launcherClassicBlack": "Okwakudala (okumnyama)",
+  "launcherLight": "Ukukhanya",
+  "launcherNothingRed": "Akukho okubomvu",
+  "launcherDarkGrey": "Okumpunga okumnyama",
+  "launcherCream": "Ukhilimu",
+  "launcherRetroPhone": "Ifoni ye-Retro",
+  "launcherRetroPhoneLight": "Ifoni ye-Retro (ukukhanya)",
+  "voiceSearchUnavailable": "Ukusesha ngezwi akutholakali kule divayisi.",
+  "voiceSearchFailed": "Ukusesha ngezwi kuhlulekile: {error}",
+  "customColor": "Ngokwezifiso",
+  "selectColor": "Khetha umbala",
+  "reset": "Setha kabusha",
+  "simPickerTitle": "Khetha i-SIM",
+  "simChooseForCall": "Khetha i-SIM yale kholi",
+  "defaultSimAsk": "Buza njalo",
+  "defaultSimFixed": "I-SIM {slot}",
+  "contactDetails": "Imniningwano Yokuxhumana",
+  "call": "Shaya ucingo",
+  "share": "Yabelana",
+  "favourite": "Intandokazi",
+  "unfavourite": "Okungeyona intandokazi",
+  "blockContact": "Vimba othintana naye",
+  "unblockContact": "Vulela oxhumana naye",
+  "deleteContact": "Susa othintana naye",
+  "phone": "Ucingo",
+  "email": "I-imeyili",
+  "ringtone": "Iringithoni",
+  "defaultRingtone": "Okuzenzakalelayo",
+  "simForContact": "I-SIM yalo oxhumana naye",
+  "callHistoryTitle": "Umlando wekholi",
+  "noCallsWithNumber": "Awekho amakholi anale nombolo",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Glyph izithombe",
+  "inCallGlyphAnimationStyle": "Opopayi be-in-call ye-Glyph",
+  "recordsOff": "Valiwe",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "I-SIM ezenzakalelayo",
+  "nothingPhoneOnly": "Lutho Ucingo kuphela",
+  "nothingPhoneOnlySubtitle": "Izici ze-Glyph zidinga Ucingo Olungenalutho",
+  "custom": "Ngokwezifiso",
+  "presetColorHex": "Hlela kusengaphambili · {hex}",
+  "customColorHex": "Ngokwezifiso · {hex}",
+  "oneContact": "1 othintana naye",
+  "upToContacts": "Kufika kwabangu-{count} abathintwayo",
+  "answerButtonTapSubtitle": "Thepha inkinobho ukuze uphendule",
+  "filterCalls": "Hlunga amakholi",
+  "filterTooltip": "Hlunga",
+  "settingsTooltip": "Izilungiselelo",
+  "filterAllSubtitle": "Lonke irekhodi lamakholi",
+  "filterMissedSubtitle": "Uphuthelwe futhi waliwe",
+  "filterContactsSubtitle": "Izingcingo ezifaniswa noxhumana naye ogciniwe",
+  "filterNonContactsSubtitle": "Izinombolo ezingekho ebhukwini lakho lamakheli",
+  "ongoingCallWithDetail": "Ucingo oluqhubekayo: {detail}",
+  "defaultSimForCalls": "I-SIM ezenzakalelayo yamakholi",
+  "blinkInterval": "Isikhawu sokucwayiza",
+  "close": "Vala",
+  "frequentlyContactedInfoBody": "Ibonisa izinombolo zakho zocingo ezibizwa kakhulu phezulu kuthebhu ethi Okwakamuva, ngokusekelwe ekutheni mangaki amakholi angenayo, aphumayo, aphuthelwe, noma anqatshiwe obunawo ngenombolo ngayinye ngesikhathi osikhethayo.\n\nInombolo yamarekhodi: isethwe ku-0 ukuze uvale lokhu. Sebenzisa 1–20 ukukhombisa oxhumana nabo abaningi abaphezulu.\n\nIsikhathi sisebenza kuphela lapho kuboniswa okungenani oyedwa oxhumana naye.",
+  "breathSettingsSpeedSummary": "{count} izibani, {ms}ms isivinini",
+  "deleteContactQuestion": "Susa oxhumana naye?",
+  "deleteContactBody": "Lo oxhumana naye uzosuswa unomphela kudivayisi yakho.",
+  "blockContactQuestion": "Vimba oxhumana naye?",
+  "unblockContactQuestion": "Vulela oxhumana naye?",
+  "blockContactBody": "Ngeke usathola amakholi noma imibhalo evela kulo oxhumana naye.",
+  "unblockContactBody": "Uzoqala ukuthola amakholi nemibhalo evela kulo oxhumana naye.",
+  "contactBlocked": "Oxhumana naye uvinjelwe",
+  "contactUnblocked": "Oxhumana naye uvulelwe",
+  "noPhoneNumbersToBlock": "Azikho izinombolo zocingo ezingavinjwa",
+  "simSameAsSystem": "Ngokufanayo nesistimu",
+  "simSameAsSystemSubtitle": "Ilandela i-SIM ezenzakalelayo kokuthi Izilungiselelo",
+  "simAskEveryTimeForContact": "Hlala ubonisa isikhi se-SIM salo oxhumana naye",
+  "ringtoneSetForContact": "Iringithoni isethwe emhlabeni wonke kulo oxhumana naye",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Yehlulekile ukukhetha iringithoni: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Iphutha: {error}",
+  "noCallHistoryFound": "Awukho umlando wekholi otholiwe",
+  "speedDialVoicemail": "Ukudayela ngokushesha: Ivoyisimeyili",
+  "shareContactSubject": "Othintana naye: {name}",
+  "contactInfo": "Ulwazi lokuxhumana",
+  "dontAskAgainSim": "Ungaphinde ubuze",
+  "simDontAskAgainSubtitle": "Sebenzisa le SIM njengokuzenzakalelayo (shintsha kokuthi Izilungiselelo)",
+  "addContact": "Engeza oxhumana naye",
+  "createContact": "Dala oxhumana naye",
+  "paste": "Namathisela",
+  "clear": "Kucace",
+  "returnToCall": "Buyela ocingweni",
+  "numberOfRecordsTitle": "Inombolo yamarekhodi",
+  "recordsPickerSubtitle": "Bangaki okufakiwe okuxhunyanwa nabo njalo okuzoboniswa (0 = kuvaliwe)",
+  "torchInfoTitle": "Ithoshi liyacwayiza",
+  "torchInfoBody": "Icwayiza i-flash yekhamera ngesikhathi samakholi angenayo, aphumayo, noma aqhubekayo. Izimele izibani ze-Glyph.",
+  "glyphMapTitle": "Isakhiwo se-Glyph",
+  "glyphMapBody": "Akukho lutho lwe-Phone 1 Glyph LED zones. Opopayi abaphumayo nabangaphakathi kwekholi basebenzisa lezi ziteshi.",
+  "answerMethodTitle": "Indlela yokuphendula",
+  "glyphOutgoingCallStyleTitle": "Isitayela sekholi ephumayo",
+  "glyphInCallAnimationTitle": "I-Glyph in-call animation",
+  "themePickerTitle": "Itimu",
+  "torchIncomingTitle": "Ithoshi lekholi engenayo",
+  "torchOutgoingTitle": "Ithoshi lekholi ephumayo",
+  "torchOngoingTitle": "Ithoshi yokufona eqhubekayo",
+  "timePeriodTitle": "Isikhathi",
+  "ok": "KULUNGILE",
+  "confirmDeleteCall": "Susa le kholi emlandweni?",
+  "confirmDeleteAllCalls": "Susa wonke amakholi anale nombolo?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Thumela umlayezo",
+  "addToExistingContactAction": "Engeza koxhumana naye",
+  "mobileLabel": "Iselula",
+  "callingSimForContactTitle": "Ishayela i-SIM yalo oxhumana naye",
+  "contactSettings": "Izilungiselelo zoxhumana naye",
+  "setCallingSim": "Setha i-SIM yokushaya ucingo",
+  "contactRingtone": "Iringithoni yokuxhumana",
+  "shareContact": "Yabelana oxhumana naye",
+  "blockNumbers": "Vimba izinombolo",
+  "unblockNumbers": "Vulela izinombolo",
+  "connectedApps": "Izinhlelo zokusebenza ezixhunyiwe",
+  "simNotSet": "Akusethiwe",
+  "ringtoneDefault": "Okuzenzakalelayo",
+  "customRingtone": "Ngokwezifiso",
+  "aboutSection": "Mayelana",
+  "aboutFeedbackSection": "Mayelana & impendulo",
+  "aboutDescription": "Nothing Dialer ingumthombo ovulekile. Uma ungunjiniyela, wamukelekile ukuhlola ikhodi futhi unikele.",
+  "aboutViewSource": "Buka ku-GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Ayikwazanga ukuvula isixhumanisi",
+  "reviewSection": "Buyekeza",
+  "reviewDescription": "Awujabuleli Ukudayela Lutho? Isilinganiso sakho ku-Google Play sisiza abanye bathole uhlelo lokusebenza.",
+  "reviewRateOnPlay": "Linganisa ku-Google Play",
+  "reviewRateOnPlaySubtitle": "Shiya isilinganiso ngaphandle kokushiya uhlelo lokusebenza",
+  "reviewCouldNotOpen": "Ayikwazanga ukuvula i-Google Play",
+  "breathSpeed": "Isivinini sokuphefumula",
+  "breathSpeedBlinkHint": "Okuphansi = Ukucwayiza, Okuphakeme = Ukuphefumula Kancane",
+  "speedSliderHint": "Phansi = Ngokushesha, Phezulu = Kancane",
+  "swatchDefault": "Okuzenzakalelayo",
+  "customAccentColorPicker": "Umbala we-accent yangokwezifiso",
+  "customLightBackgroundPicker": "Ingemuva elikhanyayo langokwezifiso",
+  "customDarkBackgroundPicker": "Ingemuva elimnyama ngokwezifiso",
+  "customCallBackgroundPicker": "Ingemuva lekholi yangokwezifiso",
+  "ongoingCallStyleTitle": "Isitayela sekholi esiqhubekayo",
+  "glyphMapUnavailable": "Imephu ye-Glyph ayitholakali",
+  "animationDelayRange": "Ukubambezeleka kokugqwayiza (1s - 10s)",
+  "animationDelayRangeSingle": "Ukubambezeleka Kopopayi (0.1s - 10s)",
+  "inCallMute": "Thulisa",
+  "inCallKeypad": "Ikhiphedi",
+  "inCallSpeaker": "Somlomo",
+  "inCallMore": "Okuningi",
+  "inCallBluetooth": "I-Bluetooth",
+  "inCallPhone": "Ucingo",
+  "inCallAddCall": "Engeza ikholi",
+  "inCallChangeSim": "Shintsha i-SIM",
+  "inCallDecline": "Yenqaba",
+  "inCallAnswer": "Phendula",
+  "inCallMessage": "Umlayezo",
+  "inCallCalling": "Iyashaya...",
+  "inCallIncoming": "Ucingo olungenayo",
+  "inCallSelectSim": "Khetha i-SIM...",
+  "inCallSwitchingSim": "Ishintsha i-SIM...",
+  "inCallCallEnded": "Ucingo luphelile",
+  "inCallCallingVia": "Ishaya nge-{sim}",
+  "inCallCallingViaHtml": "Ishaya nge-<b>{sim}</b>",
+  "inCallChooseSim": "Khetha i-SIM yale kholi",
+  "inCallDragAnswerDecline": "Hudula kwesokudla ukuze uphendule · Hudula kwesokunxele ukuze wenqabe",
+  "inCallMobileNumber": "Iselula {number}",
+  "inCallAudioRouteCurrent": "{label} (Okwamanje)",
+  "inCallCallViaFrom": "Shaya nge-<b>{sim}</b> kusuka",
+  "inCallCallFrom": "Shayela kusuka",
+  "inCallUnknown": "Akwaziwa",
+  "selectContactRingtone": "Khetha iringithoni yokuxhumana",
+  "speakToSearchPrompt": "Khuluma ukuze useshe",
+  "phonePermissionRequired": "Kudingeka imvume yefoni",
+  "callFailed": "Ucingo lwehlulekile: {error}",
+  "callPermissionDenied": "Imvume yocingo inqatshiwe",
+  "alreadyDefaultDialer": "Sekuvele kusethwe njengokudayela okuzenzakalelayo",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

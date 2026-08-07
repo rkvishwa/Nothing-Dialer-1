@@ -1,0 +1,759 @@
+{
+  "@@locale": "ta",
+  "appTitle": "Nothing Dialer",
+  "settings": "அமைப்புகள்",
+  "settingsSearchHint": "தேடல் அமைப்புகள்",
+  "settingsSearchNoResults": "அமைப்புகள் எதுவும் இல்லை",
+  "general": "பொது",
+  "theme": "தீம்",
+  "themeSystemDefault": "கணினி இயல்புநிலை",
+  "themeLight": "வெளிச்சம்",
+  "themeDark": "இருள்",
+  "themeFollowSystem": "கணினி அமைப்புகளைப் பின்பற்று",
+  "themeAlwaysLight": "எப்போதும் வெளிச்சத் தீம்",
+  "themeAlwaysDark": "எப்போதும் இருள் தீம்",
+  "language": "மொழி",
+  "languageDeviceDefault": "சாதன இயல்புநிலை",
+  "languagePickerTitle": "மொழி",
+  "languageSearchHint": "மொழிகளைத் தேடு",
+  "font": "எழுத்துரு",
+  "fontSystem": "கணினி இயல்புநிலை",
+  "fontNdot": "Nothing (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "எழுத்துரு பதிவிறக்கம் தோல்வி. இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "எழுத்துரு",
+  "fontPreviewSample": "Nothing Dialer",
+  "fontAppWide": "ஆப் எழுத்துரு",
+  "fontApplyTo": "இதற்குப் பயன்படுத்து",
+  "fontApplyEntireApp": "முழு ஆப்பும்",
+  "fontApplyEntireAppSubtitle": "அழைப்புத் திரை உட்பட எல்லா இடங்களிலும் அதே எழுத்துரு",
+  "fontApplyTitlesOnly": "தலைப்புகள் மட்டும்",
+  "fontApplyTitlesOnlySubtitle": "பெரிய தலைப்புகளும் பிரிவு தலைப்புகளும் மட்டும்",
+  "fontApplyCustomize": "தனிப்பயன்",
+  "fontApplyCustomizeSubtitle": "திரை மற்றும் உரை வகைக்கு எழுத்துரு தேர்வு",
+  "fontCustomizeSection": "திரை வாரியாகத் தனிப்பயன்",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "பக்கத் தலைப்பு",
+  "fontRoleSectionHeader": "பிரிவு தலைப்பு",
+  "fontRolePrimary": "முதன்மை உரை",
+  "fontRoleSecondary": "இரண்டாம்நிலை உரை",
+  "fontRoleButton": "பொத்தான்கள்",
+  "fontRoleDialKey": "டயல்பேட் விசைகள்",
+  "fontSurfaceRecents": "சமீபத்தியவை",
+  "fontSurfaceContacts": "தொடர்புகள்",
+  "fontSurfaceSettings": "அமைப்புகள்",
+  "fontSurfaceDialpad": "டயல்பேட்",
+  "fontSurfaceShell": "வழிசெலுத்தல்",
+  "fontSurfaceDefaultDialer": "இயல்புநிலை டயலர் அறிவிப்பு",
+  "fontSurfaceFavourites": "பிடித்தவை",
+  "fontSurfaceBlocked": "தடுக்கப்பட்ட எண்கள்",
+  "fontSurfaceContactDetail": "தொடர்பு விவரம்",
+  "fontSurfaceCallHistory": "அழைப்பு வரலாறு",
+  "fontSurfaceSheets": "ஷீட்கள் & தேர்விகள்",
+  "fontSurfaceInCall": "அழைப்புத் திரை",
+  "fontSubtitleEntireApp": "{font} — முழு ஆப்",
+  "fontSubtitleTitlesOnly": "{font} — தலைப்புகள் மட்டும்",
+  "fontSubtitleCustomize": "திரை வாரியாகத் தனிப்பயன்",
+  "background": "பின்னணி",
+  "accent": "உச்சரிப்பு நிறம்",
+  "lightBackground": "வெளிச்சப் பின்னணி",
+  "lightAccent": "வெளிச்ச உச்சரிப்பு",
+  "darkBackground": "இருள் பின்னணி",
+  "darkAccent": "இருள் உச்சரிப்பு",
+  "callBackground": "அழைப்புப் பின்னணி",
+  "appIcon": "ஆப் ஐகான்",
+  "answerMethod": "பதில் முறை",
+  "answerSlide": "ஸ்லைடு செய்து பதிலளி",
+  "answerSlideSubtitle": "பாரில் இடம்/வலம் ஸ்வைப் — Google Phone போல",
+  "answerButton": "பொத்தான் தட்டுதல்",
+  "answerButtonSubtitle": "பதில் அல்லது நிராகரி பொத்தான்களைத் தட்டவும்",
+  "answerHuawei": "Huawei பாணி",
+  "answerHuaweiSubtitle": "பதிலளிக்க வட்டத்தை பச்சை தொலைபேசிக்கு இழுக்கவும்",
+  "answerHuaweiTileSubtitle": "Huawei — பச்சை / சிவப்புக்கு இழுக்கவும்",
+  "calling": "அழைக்கிறது",
+  "defaultSim": "இயல்புநிலை SIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "ஒவ்வொரு முறையும் கேள்",
+  "askEveryTimeSubtitle": "ஒவ்வொரு அழைப்புக்கும் முன் SIM தேர்வியைக் காட்டு",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "SIM கார்டுகள் இல்லை",
+  "couldNotLoadSims": "SIMகளை ஏற்ற முடியவில்லை: {error}",
+  "allFavourites": "அனைத்து பிடித்தவை",
+  "allFavouritesSubtitle": "மறுவரிசை, நீக்கம், தொடர்புகளிலிருந்து சேர்த்தல்",
+  "blockedNumbers": "தடுக்கப்பட்ட எண்கள்",
+  "blockedNumbersSubtitle": "எண்களைப் பார்க்கவும் தடை நீக்கவும்",
+  "soundsAndVibration": "ஒலி மற்றும் அதிர்வு",
+  "soundsAndVibrationSubtitle": "ரிங்டோன், அதிர்வு, டயல்பேட் தொன்கள்",
+  "couldNotOpenSettings": "அமைப்புகளைத் திறக்க முடியவில்லை: {error}",
+  "frequentlyContacted": "அடிக்கடி தொடர்புகொண்டவை",
+  "numberOfRecords": "பதிவுகளின் எண்ணிக்கை",
+  "timePeriod": "கால அளவு",
+  "periodLast24Hours": "கடந்த 24 மணிநேரம்",
+  "periodLast24HoursSubtitle": "கடந்த நாளின் அழைப்புகள்",
+  "periodLast7Days": "கடந்த 7 நாட்கள்",
+  "periodLast7DaysSubtitle": "கடந்த வாரத்தின் அழைப்புகள்",
+  "periodLast30Days": "கடந்த 30 நாட்கள்",
+  "periodLast30DaysSubtitle": "கடந்த மாதத்தின் அழைப்புகள்",
+  "periodLast12Months": "கடந்த 12 மாதங்கள்",
+  "periodLast12MonthsSubtitle": "கடந்த ஆண்டின் அழைப்புகள்",
+  "periodAllTime": "எல்லா நேரமும்",
+  "periodAllTimeSubtitle": "முழு அழைப்பு வரலாறு",
+  "frequentMaxOff": "ஆஃப்",
+  "frequentMaxCount": "{count} தொடர்புகள்",
+  "torchBlink": "டார்ச் மின்னல்",
+  "torchIncomingCall": "உள்வரும் அழைப்பு டார்ச்",
+  "torchOutgoingCall": "வெளிச்செல்லும் அழைப்பு டார்ச்",
+  "torchOngoingCall": "நடப்பு அழைப்பு டார்ச்",
+  "torchIncomingInterval": "உள்வரும் மின்னல் இடைவெளி",
+  "torchOutgoingInterval": "வெளிச்செல்லும் மின்னல் இடைவெளி",
+  "torchOngoingInterval": "நடப்பு மின்னல் இடைவெளி",
+  "torchOff": "ஆஃப்",
+  "torchOffIncomingSubtitle": "ரிங் செய்யும்போது டார்ச் இல்லை",
+  "torchOffOutgoingSubtitle": "டயல் செய்யும்போது டார்ச் இல்லை",
+  "torchOffOngoingSubtitle": "செயலில் உள்ள அழைப்பில் டார்ச் இல்லை",
+  "torchFixedInterval": "நிலையான இடைவெளி",
+  "torchFixedIntervalSubtitle": "அமைத்த வேகத்தில் மின்னும்",
+  "torchIntervalSeconds": "{seconds} வி",
+  "torchIntervalBlink": "{seconds} மின்னல்",
+  "flashlightUnavailable": "இந்தச் சாதனத்தில் ஃப்ளாஷ்லைட் இல்லை",
+  "glyphLights": "Glyph விளக்குகள்",
+  "glyphCallingAnimation": "Glyph அழைப்பு அனிமேஷன்",
+  "glyphOngoingAnimation": "Glyph நடப்பு அழைப்பு அனிமேஷன்",
+  "glyphNone": "இல்லை",
+  "glyphNoneOutgoingSubtitle": "வெளிச்செல்லும் அழைப்புகளுக்கு Glyph அணை",
+  "glyphNoneInCallSubtitle": "செயலில் உள்ள அழைப்பில் Glyph அணை",
+  "glyphBreathProgress": "Breath & Progress",
+  "glyphBreathProgressSubtitle": "65 வினாடிகளில் கோடு நிரம்பும்போது விளக்குகள் சுவாசிக்கும்",
+  "glyphAccumulate": "Accumulate",
+  "glyphAccumulateSubtitle": "C1–C4 விளக்குகளில் குவிக்கும் அனிமேஷன்",
+  "glyphSingle": "Single",
+  "glyphSingleSubtitle": "C1–C4 முழுவதும் ஒரே விளக்கு நகரும்",
+  "glyphBreath": "Breath",
+  "glyphBreathSubtitle": "விளக்குகளையும் வேகத்தையும் தேர்ந்தெடு",
+  "glyphSteady": "Steady",
+  "glyphSteadySubtitle": "தேர்ந்த விளக்குகள் எரிந்து நிற்கும்",
+  "breathSettings": "Breath அமைப்புகள்",
+  "activeLights": "செயலில் உள்ள விளக்குகள்",
+  "lightsCount": "{count} விளக்குகள்",
+  "speedSettings": "வேகம் அமைப்புகள்",
+  "speedSettingsDelay": "{ms}மி.வி தாமதம்",
+  "durationAndSpeed": "காலம் & வேகம்",
+  "durationSpeedSummary": "{duration}வி காலம், {interval}மி.வி இடைவெளி",
+  "cancel": "ரத்து",
+  "done": "முடிந்தது",
+  "save": "சேமி",
+  "block": "தடு",
+  "delete": "நீக்கு",
+  "recents": "சமீபத்தியவை",
+  "contacts": "தொடர்புகள்",
+  "hideFavouritesOnRecents": "சமீபத்தியவற்றில் பிடித்தவற்றை மறை",
+  "showFavouritesOnRecents": "சமீபத்தியவற்றில் பிடித்தவற்றைக் காட்டு",
+  "ongoingCall": "நடப்பு அழைப்பு",
+  "setAsDefaultTitle": "இயல்புநிலையாக\nஅமை",
+  "setAsDefaultBody": "Nothing Dialer-ஐப் பயன்படுத்த, அதை இயல்புநிலை தொலைபேசி ஆப்பாக அமைக்க வேண்டும். அழைப்புகள், வரலாறு, Glyph அனிமேஷன்களை நிர்வகிக்க இது தேவை.",
+  "setAsDefaultButton": "இயல்புநிலையாக அமை",
+  "nothingDialerBrand": "NOTHING DIALER 1",
+  "favourites": "பிடித்தவை",
+  "addFavourite": "பிடித்ததைச் சேர்",
+  "favouritesDrawerHint": "தொடர்புகளைச் சேர்க்க மெனுவைப் பயன்படுத்தவும். டிராயருக்கு வெளியே தட்டவும் அல்லது ஸ்வைப் செய்து மூடவும். தொடர்பு விவரத்தில் நட்சத்திரம் இடவும் அல்லது சமீபத்திய அழைப்பை நீண்ட நேரம் அழுத்தவும்.",
+  "menu": "மெனு",
+  "noFavouritesYet": "பிடித்தவை இல்லை.\nசேர்க்க மெனுவைத் திறக்கவும் அல்லது தொடர்பை நட்சத்திரமிடவும்.",
+  "contactsPermissionNeeded": "தொடர்புகள் அனுமதி தேவை",
+  "chooseContact": "தொடர்பைத் தேர்ந்தெடு",
+  "noPhone": "தொலைபேசி இல்லை",
+  "pickNumber": "எண்ணைத் தேர்ந்தெடு",
+  "contactHasNoPhone": "இந்தத் தொடர்புக்கு தொலைபேசி எண் இல்லை",
+  "blockNumber": "எண்ணைத் தடு",
+  "enterPhoneNumber": "தொலைபேசி எண்ணை உள்ளிடு",
+  "unblockedDisplay": "{display} தடை நீக்கப்பட்டது",
+  "couldNotUnblockNumber": "எண்ணின் தடையை நீக்க முடியவில்லை",
+  "blockedSummary": "{blocked} தடுக்கப்பட்டது • {matched} பொருந்தியது",
+  "contactsPermissionMissing": "தொடர்புகள் அனுமதி இல்லை. சரிசெய்யத் தட்டவும்.",
+  "noBlockedNumbers": "தடுக்கப்பட்ட எண்கள் இல்லை",
+  "unknownContact": "தெரியாத தொடர்பு",
+  "unblock": "தடை நீக்கு",
+  "permissionNeeded": "அனுமதி தேவை",
+  "grantPhonePermission": "அழைப்பு வரலாற்றைப் பார்க்க தொலைபேசி அனுமதி வழங்கவும்.",
+  "grantContactsPermission": "முகவரிப் புத்தகத்தைப் பார்க்க தொடர்புகள் அனுமதி வழங்கவும்.",
+  "openSettings": "அமைப்புகளைத் திற",
+  "tryAgain": "மீண்டும் முயற்சி",
+  "couldNotLoadContacts": "தொடர்புகளை ஏற்ற முடியவில்லை",
+  "contactsLoadError": "முகவரிப் புத்தகத்தைப் படிக்கும்போது பிழை ஏற்பட்டது.",
+  "noContactsFound": "தொடர்புகள் இல்லை",
+  "contactsEmptySubtitle": "சாதனத் தொடர்புகள் இங்கே தோன்றும்.",
+  "searchContacts": "தொடர்புகளைத் தேடு…",
+  "searchRecentCalls": "சமீபத்திய அழைப்புகளைத் தேடு",
+  "fromContacts": "தொடர்புகளிலிருந்து",
+  "recentsSearchSection": "சமீபத்திய தேடல்",
+  "recentsSearchShowContacts": "தேடலில் தொடர்புகளைக் காட்டு",
+  "recentsSearchShowContactsSubtitle": "சமீபத்தியவற்றைத் தேடும் போது, ​​உங்கள் முகவரிப் புத்தகத்திலிருந்து பொருந்தும் நபர்களை, அழைப்பு வரலாற்று முடிவுகளுக்குக் கீழே காட்டவும்.",
+  "voiceSearch": "குரல் தேடல்",
+  "createNewContact": "புதிய தொடர்பை உருவாக்கு",
+  "callError": "அழைப்புப் பிழை: {error}",
+  "noRecentCalls": "சமீபத்திய அழைப்புகள் இல்லை",
+  "callHistoryEmpty": "உங்கள் அழைப்பு வரலாறு இங்கே தோன்றும்.",
+  "loadMore": "மேலும் ஏற்று",
+  "frequentlyContactedHeader": "அடிக்கடி தொடர்புகொண்டவை",
+  "recentHistory": "சமீபத்திய வரலாறு",
+  "noFavouritesRecentsHint": "பிடித்தவை இல்லை. தொடர்பை நட்சத்திரமிடவும், அழைப்பை நீண்ட நேரம் அழுத்தவும் அல்லது பிடித்தவை தாவலைப் பயன்படுத்தவும்.",
+  "copyNumber": "எண்ணை நகலெடு",
+  "editNumberBeforeCall": "அழைப்புக்கு முன் எண்ணைத் திருத்து",
+  "removeFromFavourites": "பிடித்தவற்றிலிருந்து நீக்கு",
+  "addToFavourites": "பிடித்தவற்றில் சேர்",
+  "blockNumberQuestion": "எண்ணைத் தடுக்கவா?",
+  "blockNumberConfirm": "{number} இலிருந்து அழைப்புகள் அல்லது செய்திகளை இனி பெற மாட்டீர்கள்.",
+  "blocked": "தடுக்கப்பட்டது",
+  "couldNotBlock": "தடுக்க முடியவில்லை",
+  "contactNotOnDevice": "இந்தச் சாதனத்தில் தொடர்பு சேமிக்கப்படவில்லை",
+  "unblocked": "தடை நீக்கப்பட்டது",
+  "numberCopied": "எண் நகலெடுக்கப்பட்டது",
+  "showLess": "குறைவாகக் காட்டு",
+  "showAllTimes": "அனைத்து நேரங்களையும் காட்டு",
+  "mostRecent": "மிகச் சமீபம் · {time}",
+  "videoCall": "வீடியோ அழைப்பு",
+  "couldNotPlaceVideoCall": "வீடியோ அழைப்பை இணைக்க முடியவில்லை",
+  "message": "செய்தி",
+  "couldNotOpenMessaging": "செய்தி ஆப்பைத் திறக்க முடியவில்லை",
+  "history": "வரலாறு",
+  "viewContact": "தொடர்பைக் காண்",
+  "addToContact": "தொடர்பில் சேர்",
+  "callTypeMissed": "தவறியவை",
+  "callTypeRejected": "நிராகரிக்கப்பட்டவை",
+  "callTypeIncoming": "உள்வரும்",
+  "callTypeOutgoing": "வெளிச்செல்லும்",
+  "today": "இன்று",
+  "yesterday": "நேற்று",
+  "justNow": "இப்போது",
+  "minutesAgo": "{count} நிமிடம் முன்",
+  "hoursAgo": "{count} மணி முன்",
+  "filterAll": "அனைத்தும்",
+  "filterMissed": "தவறியவை",
+  "filterContacts": "தொடர்புகள்",
+  "filterNonContacts": "தொடர்பில்லாதவை",
+  "iconUpdated": "ஐகான் புதுப்பிக்கப்பட்டது. முகப்புத் திரை புதுப்பிக்க சிறிது நேரம் ஆகலாம்.",
+  "iconSavedRelease": "தேர்வு சேமிக்கப்பட்டது. ரிலீஸ் பில்டுகளில் முகப்பு ஐகான் புதுப்பிக்கப்படும்.",
+  "couldNotChangeIcon": "ஐகானை மாற்ற முடியவில்லை: {error}",
+  "launcherClassicBlack": "கிளாசிக் (கருப்பு)",
+  "launcherLight": "வெளிச்சம்",
+  "launcherNothingRed": "Nothing சிவப்பு",
+  "launcherDarkGrey": "அடர் சாம்பல்",
+  "launcherCream": "க்ரீம்",
+  "launcherRetroPhone": "ரெட்ரோ போன்",
+  "launcherRetroPhoneLight": "ரெட்ரோ போன் (வெளிச்சம்)",
+  "voiceSearchUnavailable": "இந்தச் சாதனத்தில் குரல் தேடல் இல்லை.",
+  "voiceSearchFailed": "குரல் தேடல் தோல்வி: {error}",
+  "customColor": "தனிப்பயன்",
+  "selectColor": "நிறத்தைத் தேர்ந்தெடு",
+  "reset": "மீட்டமை",
+  "simPickerTitle": "SIM தேர்ந்தெடு",
+  "simChooseForCall": "இந்த அழைப்புக்கு SIM தேர்ந்தெடு",
+  "defaultSimAsk": "ஒவ்வொரு முறையும் கேள்",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "தொடர்பு விவரங்கள்",
+  "call": "அழை",
+  "share": "பகிர்",
+  "favourite": "பிடித்தது",
+  "unfavourite": "பிடித்ததிலிருந்து நீக்கு",
+  "blockContact": "தொடர்பைத் தடு",
+  "unblockContact": "தொடர்பு தடை நீக்கு",
+  "deleteContact": "தொடர்பை நீக்கு",
+  "phone": "தொலைபேசி",
+  "email": "மின்னஞ்சல்",
+  "ringtone": "ரிங்டோன்",
+  "defaultRingtone": "இயல்புநிலை",
+  "simForContact": "இந்தத் தொடர்புக்கான SIM",
+  "callHistoryTitle": "அழைப்பு வரலாறு",
+  "noCallsWithNumber": "இந்த எண்ணுடன் அழைப்புகள் இல்லை",
+  "durationMinutesSeconds": "{minutes}நி {seconds}வி",
+  "durationSeconds": "{seconds}வி",
+  "glyphAnimationStyle": "Glyph அனிமேஷன்",
+  "inCallGlyphAnimationStyle": "அழைப்பில் Glyph அனிமேஷன்",
+  "recordsOff": "ஆஃப்",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "இயல்புநிலை SIM",
+  "nothingPhoneOnly": "Nothing Phone மட்டும்",
+  "nothingPhoneOnlySubtitle": "Glyph அம்சங்களுக்கு Nothing Phone தேவை",
+  "custom": "தனிப்பயன்",
+  "presetColorHex": "முன்னமைப்பு · {hex}",
+  "customColorHex": "தனிப்பயன் · {hex}",
+  "oneContact": "1 தொடர்பு",
+  "upToContacts": "அதிகபட்சம் {count} தொடர்புகள்",
+  "answerButtonTapSubtitle": "பதிலளிக்க பொத்தானைத் தட்டவும்",
+  "filterCalls": "அழைப்புகளை வடிகட்டு",
+  "filterTooltip": "வடிகட்டி",
+  "settingsTooltip": "அமைப்புகள்",
+  "filterAllSubtitle": "முழு அழைப்புப் பதிவு",
+  "filterMissedSubtitle": "தவறிய மற்றும் நிராகரிக்கப்பட்டவை",
+  "filterContactsSubtitle": "சேமித்த தொடர்புடன் பொருந்திய அழைப்புகள்",
+  "filterNonContactsSubtitle": "முகவரிப் புத்தகத்தில் இல்லாத எண்கள்",
+  "ongoingCallWithDetail": "நடப்பு அழைப்பு: {detail}",
+  "defaultSimForCalls": "அழைப்புகளுக்கான இயல்புநிலை SIM",
+  "blinkInterval": "மின்னல் இடைவெளி",
+  "close": "மூடு",
+  "frequentlyContactedInfoBody": "நீங்கள் தேர்ந்தெடுக்கும் காலத்தில் ஒவ்வொரு எண்ணுடனும் இருந்த உள்வரும், வெளிச்செல்லும், தவறிய அல்லது நிராகரிக்கப்பட்ட அழைப்புகளின் எண்ணிக்கையின் அடிப்படையில், அதிகம் அழைத்த எண்களை சமீபத்தியவை தாவலின் மேலே காட்டுகிறது.\n\nபதிவுகளின் எண்ணிக்கை: அணைக்க 0 என அமைக்கவும். 1–20 வரை மேல் தொடர்புகளைக் காட்டவும்.\n\nகுறைந்தது ஒரு தொடர்பு காட்டும்போது மட்டுமே கால அளவு பொருந்தும்.",
+  "breathSettingsSpeedSummary": "{count} விளக்குகள், {ms}மி.வி வேகம்",
+  "deleteContactQuestion": "தொடர்பை நீக்கவா?",
+  "deleteContactBody": "இந்தத் தொடர்பு சாதனத்திலிருந்து நிரந்தரமாக நீக்கப்படும்.",
+  "blockContactQuestion": "தொடர்பைத் தடுக்கவா?",
+  "unblockContactQuestion": "தொடர்பு தடை நீக்கவா?",
+  "blockContactBody": "இந்தத் தொடர்பிலிருந்து அழைப்புகள் அல்லது செய்திகளை இனி பெற மாட்டீர்கள்.",
+  "unblockContactBody": "இந்தத் தொடர்பிலிருந்து அழைப்புகள் மற்றும் செய்திகளை மீண்டும் பெறுவீர்கள்.",
+  "contactBlocked": "தொடர்பு தடுக்கப்பட்டது",
+  "contactUnblocked": "தொடர்பு தடை நீக்கப்பட்டது",
+  "noPhoneNumbersToBlock": "தடுக்க எண்கள் இல்லை",
+  "simSameAsSystem": "கணினியைப் போலவே",
+  "simSameAsSystemSubtitle": "அமைப்புகளில் உள்ள இயல்புநிலை SIM-ஐப் பின்பற்றும்",
+  "simAskEveryTimeForContact": "இந்தத் தொடர்புக்கு எப்போதும் SIM தேர்வியைக் காட்டு",
+  "ringtoneSetForContact": "இந்தத் தொடர்புக்கு உலகளாவிய ரிங்டோன் அமைக்கப்பட்டது",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "ரிங்டோன் தேர்வு தோல்வி: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "பிழை: {error}",
+  "noCallHistoryFound": "அழைப்பு வரலாறு இல்லை",
+  "speedDialVoicemail": "வேக டயல்: குரல்செய்தி",
+  "shareContactSubject": "தொடர்பு: {name}",
+  "contactInfo": "தொடர்பு தகவல்",
+  "dontAskAgainSim": "மீண்டும் கேட்காதே",
+  "simDontAskAgainSubtitle": "இந்த SIM-ஐ இயல்பாகப் பயன்படுத்து (அமைப்புகளில் மாற்றவும்)",
+  "addContact": "தொடர்பைச் சேர்",
+  "createContact": "தொடர்பை உருவாக்கு",
+  "paste": "ஒட்டு",
+  "clear": "அழி",
+  "returnToCall": "அழைப்புக்குத் திரும்பு",
+  "numberOfRecordsTitle": "பதிவுகளின் எண்ணிக்கை",
+  "recordsPickerSubtitle": "அடிக்கடி தொடர்புகொண்ட எத்தனை பதிவுகளைக் காட்ட வேண்டும் (0 = ஆஃப்)",
+  "torchInfoTitle": "டார்ச் மின்னல்",
+  "torchInfoBody": "உள்வரும், வெளிச்செல்லும் அல்லது நடப்பு அழைப்புகளில் கேமரா ஃப்ளாஷ் மின்னும். Glyph விளக்குகளிலிருந்து தனி.",
+  "glyphMapTitle": "Glyph அமைப்பு",
+  "glyphMapBody": "Nothing Phone 1 Glyph LED மண்டலங்கள். வெளிச்செல்லும் மற்றும் அழைப்பு அனிமேஷன்கள் இந்த சேனல்களைப் பயன்படுத்தும்.",
+  "answerMethodTitle": "பதில் முறை",
+  "glyphOutgoingCallStyleTitle": "வெளிச்செல்லும் அழைப்பு பாணி",
+  "glyphInCallAnimationTitle": "அழைப்பில் Glyph அனிமேஷன்",
+  "themePickerTitle": "தீம்",
+  "torchIncomingTitle": "உள்வரும் அழைப்பு டார்ச்",
+  "torchOutgoingTitle": "வெளிச்செல்லும் அழைப்பு டார்ச்",
+  "torchOngoingTitle": "நடப்பு அழைப்பு டார்ச்",
+  "timePeriodTitle": "கால அளவு",
+  "ok": "சரி",
+  "confirmDeleteCall": "இந்த அழைப்பை வரலாற்றிலிருந்து நீக்கவா?",
+  "confirmDeleteAllCalls": "இந்த எண்ணுடனான அனைத்து அழைப்புகளையும் நீக்கவா?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "செய்தி அனுப்பு",
+  "addToExistingContactAction": "ஏற்கனவே உள்ள தொடர்பில் சேர்",
+  "mobileLabel": "மொபைல்",
+  "callingSimForContactTitle": "இந்தத் தொடர்புக்கான அழைப்பு SIM",
+  "contactSettings": "தொடர்பு அமைப்புகள்",
+  "setCallingSim": "அழைப்பு SIM அமை",
+  "contactRingtone": "தொடர்பு ரிங்டோன்",
+  "shareContact": "தொடர்பைப் பகிர்",
+  "blockNumbers": "எண்களைத் தடு",
+  "unblockNumbers": "எண்கள் தடை நீக்கு",
+  "connectedApps": "இணைக்கப்பட்ட ஆப்கள்",
+  "simNotSet": "அமைக்கப்படவில்லை",
+  "ringtoneDefault": "இயல்புநிலை",
+  "customRingtone": "தனிப்பயன்",
+  "aboutSection": "பற்றி",
+  "aboutFeedbackSection": "பற்றி & கருத்து",
+  "aboutDescription": "Nothing Dialer திறந்த மூலம். நீங்கள் ஒரு டெவலப்பர் என்றால், குறியீட்டை ஆராய்ந்து பங்களிக்க வரவேற்கிறோம்.",
+  "aboutViewSource": "GitHub-இல் காண்",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "இணைப்பைத் திறக்க முடியவில்லை",
+  "reviewSection": "மதிப்பீடு",
+  "reviewDescription": "Nothing Dialer பிடித்திருக்கிறதா? Google Play-இல் உங்கள் மதிப்பீடு மற்றவர்கள் ஆப்பைக் கண்டுபிடிக்க உதவும்.",
+  "reviewRateOnPlay": "Google Play-இல் மதிப்பிடு",
+  "reviewRateOnPlaySubtitle": "ஆப்பை விட்டு வெளியேறாமல் மதிப்பிடுங்கள்",
+  "reviewCouldNotOpen": "Google Play-ஐத் திறக்க முடியவில்லை",
+  "breathSpeed": "Breath வேகம்",
+  "breathSpeedBlinkHint": "குறைவு = மின்னல், அதிகம் = மெதுவான சுவாசம்",
+  "speedSliderHint": "குறைவு = வேகம், அதிகம் = மெதுவு",
+  "swatchDefault": "இயல்புநிலை",
+  "customAccentColorPicker": "தனிப்பயன் உச்சரிப்பு நிறம்",
+  "customLightBackgroundPicker": "தனிப்பயன் வெளிச்சப் பின்னணி",
+  "customDarkBackgroundPicker": "தனிப்பயன் இருள் பின்னணி",
+  "customCallBackgroundPicker": "பிரத்தியேக அழைப்பு பின்னணி",
+  "ongoingCallStyleTitle": "நடப்பு அழைப்பு பாணி",
+  "glyphMapUnavailable": "Glyph வரைபடம் கிடைக்கவில்லை",
+  "animationDelayRange": "அனிமேஷன் தாமதம் (1வி - 10வி)",
+  "animationDelayRangeSingle": "அனிமேஷன் தாமதம் (0.1வி - 10வி)",
+  "inCallMute": "ஒலி அணை",
+  "inCallKeypad": "கீபேட்",
+  "inCallSpeaker": "ஸ்பீக்கர்",
+  "inCallMore": "மேலும்",
+  "inCallBluetooth": "புளூடூத்",
+  "inCallPhone": "தொலைபேசி",
+  "inCallAddCall": "அழைப்பைச் சேர்",
+  "inCallChangeSim": "SIM மாற்று",
+  "inCallDecline": "நிராகரி",
+  "inCallAnswer": "பதிலளி",
+  "inCallMessage": "செய்தி",
+  "inCallCalling": "அழைக்கிறது…",
+  "inCallIncoming": "உள்வரும் அழைப்பு",
+  "inCallSelectSim": "SIM தேர்ந்தெடு…",
+  "inCallSwitchingSim": "SIM மாற்றுகிறது…",
+  "inCallCallEnded": "அழைப்பு முடிந்தது",
+  "inCallCallingVia": "{sim} வழியாக அழைக்கிறது",
+  "inCallCallingViaHtml": "<b>{sim}</b> வழியாக அழைக்கிறது",
+  "inCallChooseSim": "இந்த அழைப்புக்கு SIM தேர்ந்தெடு",
+  "inCallDragAnswerDecline": "பதிலளிக்க வலது · நிராகரிக்க இடது இழுக்கவும்",
+  "inCallMobileNumber": "மொபைல் {number}",
+  "inCallAudioRouteCurrent": "{label}  (தற்போது)",
+  "inCallCallViaFrom": "<b>{sim}</b> வழியாக அழைப்பு",
+  "inCallCallFrom": "அழைப்பு இதிலிருந்து",
+  "inCallUnknown": "தெரியாதது",
+  "selectContactRingtone": "தொடர்பு ரிங்டோனைத் தேர்ந்தெடு",
+  "speakToSearchPrompt": "தேட பேசுங்கள்",
+  "phonePermissionRequired": "தொலைபேசி அனுமதி தேவை",
+  "callFailed": "அழைப்பு தோல்வி: {error}",
+  "callPermissionDenied": "அழைப்பு அனுமதி மறுக்கப்பட்டது",
+  "alreadyDefaultDialer": "ஏற்கனவே இயல்புநிலை டயலராக உள்ளது",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

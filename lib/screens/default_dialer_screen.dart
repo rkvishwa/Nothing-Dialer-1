@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
+import '../widgets/dialer_font_scope.dart';
 
 class DefaultDialerScreen extends StatelessWidget {
   const DefaultDialerScreen({super.key});
@@ -19,7 +22,9 @@ class DefaultDialerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
+    return DialerFontScope(
+      surface: DialerFontSurface.defaultDialer,
+      child: Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
@@ -30,21 +35,26 @@ class DefaultDialerScreen extends StatelessWidget {
               const SizedBox(height: 40),
               Text(
                 'SET AS\nDEFAULT',
-                style: TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: 'RobotoMono',
-                  height: 1.0,
-                  color: theme.colorScheme.onSurface,
+                style: context.dialerTextStyle(
+                  DialerFontRole.pageTitle,
+                  TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w900,
+                    height: 1.0,
+                    color: theme.colorScheme.onSurface,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
               Text(
                 'To use Nothing Dialer, it must be set as your default phone app. This allows you to manage calls, view history, and use Glyph animations.',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                  height: 1.5,
+                style: context.dialerTextStyle(
+                  DialerFontRole.secondary,
+                  TextStyle(
+                    fontSize: 16,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                    height: 1.5,
+                  ),
                 ),
               ),
               const Spacer(),
@@ -83,12 +93,15 @@ class DefaultDialerScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-                  child: const Text(
+                  child: Text(
                     'SET AS DEFAULT',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.0,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.button,
+                      const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                   ),
                 ),
@@ -109,6 +122,7 @@ class DefaultDialerScreen extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

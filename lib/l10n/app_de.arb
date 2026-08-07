@@ -1,0 +1,759 @@
+{
+  "@@locale": "de",
+  "appTitle": "Nichts Dialer",
+  "settings": "Einstellungen",
+  "settingsSearchHint": "Sucheinstellungen",
+  "settingsSearchNoResults": "Keine Einstellungen gefunden",
+  "general": "Allgemein",
+  "theme": "Design",
+  "themeSystemDefault": "Systemstandard",
+  "themeLight": "Licht",
+  "themeDark": "Dunkel",
+  "themeFollowSystem": "Befolgen Sie die Systemeinstellungen",
+  "themeAlwaysLight": "Verwenden Sie immer ein helles Thema",
+  "themeAlwaysDark": "Verwenden Sie immer ein dunkles Thema",
+  "language": "Sprache",
+  "languageDeviceDefault": "Gerätestandard",
+  "languagePickerTitle": "Sprache",
+  "languageSearchHint": "Sprachen suchen",
+  "font": "Schriftart",
+  "fontSystem": "Systemstandard",
+  "fontNdot": "Nichts (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Der Download der Schriftart ist fehlgeschlagen. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Schriftart",
+  "fontPreviewSample": "Nichts Dialer",
+  "fontAppWide": "App-Schriftart",
+  "fontApplyTo": "Gelten",
+  "fontApplyEntireApp": "Gesamte App",
+  "fontApplyEntireAppSubtitle": "Überall die gleiche Schriftart, auch während des Anrufs",
+  "fontApplyTitlesOnly": "Titel und Überschriften",
+  "fontApplyTitlesOnlySubtitle": "Nur große Titel und Abschnittsüberschriften",
+  "fontApplyCustomize": "Anpassen",
+  "fontApplyCustomizeSubtitle": "Wählen Sie die Schriftart pro Bildschirm und Texttyp aus",
+  "fontCustomizeSection": "Anpassen nach Bildschirm",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Seitentitel",
+  "fontRoleSectionHeader": "Abschnittsüberschrift",
+  "fontRolePrimary": "Primärtext",
+  "fontRoleSecondary": "Sekundärtext",
+  "fontRoleButton": "Knöpfe",
+  "fontRoleDialKey": "Wähltasten",
+  "fontSurfaceRecents": "Neueste",
+  "fontSurfaceContacts": "Kontakte",
+  "fontSurfaceSettings": "Einstellungen",
+  "fontSurfaceDialpad": "Wähltastatur",
+  "fontSurfaceShell": "Navigation",
+  "fontSurfaceDefaultDialer": "Standard-Dialer-Eingabeaufforderung",
+  "fontSurfaceFavourites": "Favoriten",
+  "fontSurfaceBlocked": "Gesperrte Nummern",
+  "fontSurfaceContactDetail": "Kontaktdaten",
+  "fontSurfaceCallHistory": "Anrufverlauf",
+  "fontSurfaceSheets": "Blätter und Pflücker",
+  "fontSurfaceInCall": "Bildschirm während des Anrufs",
+  "fontSubtitleEntireApp": "{font} – gesamte App",
+  "fontSubtitleTitlesOnly": "{font} – nur Titel",
+  "fontSubtitleCustomize": "Benutzerdefiniert pro Bildschirm",
+  "background": "Hintergrund",
+  "accent": "Akzent",
+  "lightBackground": "Heller Hintergrund",
+  "lightAccent": "Leichter Akzent",
+  "darkBackground": "Dunkler Hintergrund",
+  "darkAccent": "Dunkler Akzent",
+  "callBackground": "Anrufhintergrund",
+  "appIcon": "App-Symbol",
+  "answerMethod": "Antwortmethode",
+  "answerSlide": "Zur Antwort schieben",
+  "answerSlideSubtitle": "Wischen Sie auf der Leiste nach links/rechts, wie bei Google Phone",
+  "answerButton": "Tastendruck",
+  "answerButtonSubtitle": "Tippen Sie auf die Schaltflächen „Antworten“ oder „Ablehnen“.",
+  "answerHuawei": "Huawei-Stil",
+  "answerHuaweiSubtitle": "Ziehen Sie den Kreis zum grünen Telefon, um zu antworten",
+  "answerHuaweiTileSubtitle": "Huawei – auf Grün/Rot ziehen",
+  "calling": "Berufung",
+  "defaultSim": "Standard-SIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Fragen Sie jedes Mal",
+  "askEveryTimeSubtitle": "SIM-Auswahl vor jedem Anruf anzeigen",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "Keine SIM-Karten gefunden",
+  "couldNotLoadSims": "SIMs konnten nicht geladen werden: {error}",
+  "allFavourites": "Alle Favoriten",
+  "allFavouritesSubtitle": "Ordnen Sie Kontakte neu an, entfernen Sie sie und fügen Sie sie hinzu",
+  "blockedNumbers": "Gesperrte Nummern",
+  "blockedNumbersSubtitle": "Nummern anzeigen und entsperren",
+  "soundsAndVibration": "Geräusche und Vibration",
+  "soundsAndVibrationSubtitle": "Klingelton, Vibration, Wähltastentöne",
+  "couldNotOpenSettings": "Einstellungen konnten nicht geöffnet werden: {error}",
+  "frequentlyContacted": "Häufig kontaktiert",
+  "numberOfRecords": "Anzahl der Datensätze",
+  "timePeriod": "Zeitraum",
+  "periodLast24Hours": "Letzte 24 Stunden",
+  "periodLast24HoursSubtitle": "Anrufe vom letzten Tag",
+  "periodLast7Days": "Letzte 7 Tage",
+  "periodLast7DaysSubtitle": "Anrufe der letzten Woche",
+  "periodLast30Days": "Letzte 30 Tage",
+  "periodLast30DaysSubtitle": "Anrufe aus dem letzten Monat",
+  "periodLast12Months": "Letzte 12 Monate",
+  "periodLast12MonthsSubtitle": "Anrufe aus dem letzten Jahr",
+  "periodAllTime": "Alle Zeiten",
+  "periodAllTimeSubtitle": "Gesamte Anrufhistorie",
+  "frequentMaxOff": "Aus",
+  "frequentMaxCount": "{count} Kontakte",
+  "torchBlink": "Fackelblinzeln",
+  "torchIncomingCall": "Taschenlampe für eingehende Anrufe",
+  "torchOutgoingCall": "Taschenlampe für ausgehende Anrufe",
+  "torchOngoingCall": "Laufende Anruffackel",
+  "torchIncomingInterval": "Eingehendes Blinkintervall",
+  "torchOutgoingInterval": "Ausgehendes Blinkintervall",
+  "torchOngoingInterval": "Laufendes Blinkintervall",
+  "torchOff": "Aus",
+  "torchOffIncomingSubtitle": "Keine Taschenlampe beim Klingeln",
+  "torchOffOutgoingSubtitle": "Keine Taschenlampe beim Wählen",
+  "torchOffOngoingSubtitle": "Keine Taschenlampe während des aktiven Anrufs",
+  "torchFixedInterval": "Festes Intervall",
+  "torchFixedIntervalSubtitle": "Blinken Sie mit einer festgelegten Geschwindigkeit",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} blinken",
+  "flashlightUnavailable": "Taschenlampe ist auf diesem Gerät nicht verfügbar",
+  "glyphLights": "Glyphenlichter",
+  "glyphCallingAnimation": "Animation zum Aufrufen von Glyphen",
+  "glyphOngoingAnimation": "Glyph-Animation für laufende Anrufe",
+  "glyphNone": "Keiner",
+  "glyphNoneOutgoingSubtitle": "Deaktivieren Sie die Glyph-Leuchten für ausgehende Anrufe",
+  "glyphNoneInCallSubtitle": "Deaktivieren Sie die Glyph-Lichter, während Sie aktiv im Gespräch sind",
+  "glyphBreathProgress": "Atem und Fortschritt",
+  "glyphBreathProgressSubtitle": "Die Lichter atmen, während sich die Schlange über 65 Sekunden füllt",
+  "glyphAccumulate": "Akkumulieren",
+  "glyphAccumulateSubtitle": "Anhäufende Animation auf den Lichtern C1–C4",
+  "glyphSingle": "Einzel",
+  "glyphSingleSubtitle": "Einzelnes Licht, das sich über C1-C4 bewegt",
+  "glyphBreath": "Atem",
+  "glyphBreathSubtitle": "Wählen Sie Licht und Geschwindigkeit",
+  "glyphSteady": "Stetig",
+  "glyphSteadySubtitle": "Ausgewählte Lichter bleiben an",
+  "breathSettings": "Atemeinstellungen",
+  "activeLights": "Aktive Lichter",
+  "lightsCount": "{count} leuchtet",
+  "speedSettings": "Geschwindigkeitseinstellungen",
+  "speedSettingsDelay": "{ms}ms Verzögerung",
+  "durationAndSpeed": "Dauer und Geschwindigkeit",
+  "durationSpeedSummary": "{duration}s Dauer, {interval}ms Intervall",
+  "cancel": "Stornieren",
+  "done": "Erledigt",
+  "save": "Speichern",
+  "block": "Block",
+  "delete": "Löschen",
+  "recents": "Zuletzt",
+  "contacts": "Kontakte",
+  "hideFavouritesOnRecents": "Favoriten in „Neueste“ ausblenden",
+  "showFavouritesOnRecents": "Favoriten unter „Neueste“ anzeigen",
+  "ongoingCall": "Laufender Anruf",
+  "setAsDefaultTitle": "EINSTELLEN ALS\nSTANDARD",
+  "setAsDefaultBody": "Um Nothing Dialer verwenden zu können, muss es als Ihre Standard-Telefon-App festgelegt werden. Auf diese Weise können Sie Anrufe verwalten, den Verlauf anzeigen und Glyph-Animationen verwenden.",
+  "setAsDefaultButton": "ALS STANDARD EINSTELLEN",
+  "nothingDialerBrand": "NICHTS DIALER 1",
+  "favourites": "Favoriten",
+  "addFavourite": "Favorit hinzufügen",
+  "favouritesDrawerHint": "Verwenden Sie das Menü, um Kontakte hinzuzufügen. Tippen Sie außerhalb der Schublade oder wischen Sie sie zu. Markieren Sie einen Kontakt in seinen Details oder drücken Sie lange auf einen Anruf in „Letzte“.",
+  "menu": "Speisekarte",
+  "noFavouritesYet": "Noch keine Favoriten.\nÖffnen Sie das Menü, um einen Kontakt hinzuzufügen oder einen Kontakt zu markieren.",
+  "contactsPermissionNeeded": "Kontaktberechtigung erforderlich",
+  "chooseContact": "Wählen Sie Kontakt",
+  "noPhone": "Kein Telefon",
+  "pickNumber": "Nummer auswählen",
+  "contactHasNoPhone": "Dieser Kontakt hat keine Telefonnummer",
+  "blockNumber": "Blocknummer",
+  "enterPhoneNumber": "Geben Sie die Telefonnummer ein",
+  "unblockedDisplay": "Entsperrt {display}",
+  "couldNotUnblockNumber": "Die Nummer konnte nicht entsperrt werden",
+  "blockedSummary": "{blocked} blockiert • {matched} abgeglichen",
+  "contactsPermissionMissing": "Berechtigung für Kontakte fehlt. Zum Korrigieren tippen.",
+  "noBlockedNumbers": "Keine gesperrten Nummern",
+  "unknownContact": "Unbekannter Kontakt",
+  "unblock": "Entsperren",
+  "permissionNeeded": "Erlaubnis erforderlich",
+  "grantPhonePermission": "Erteilen Sie telefonisch die Erlaubnis, Ihren Anrufverlauf anzuzeigen.",
+  "grantContactsPermission": "Erteilen Sie Kontakten die Berechtigung, Ihr Adressbuch anzuzeigen.",
+  "openSettings": "Öffnen Sie Einstellungen",
+  "tryAgain": "Versuchen Sie es erneut",
+  "couldNotLoadContacts": "Kontakte konnten nicht geladen werden",
+  "contactsLoadError": "Beim Lesen Ihres Adressbuchs ist ein Fehler aufgetreten.",
+  "noContactsFound": "Keine Kontakte gefunden",
+  "contactsEmptySubtitle": "Hier werden die Kontakte von Ihrem Gerät angezeigt.",
+  "searchContacts": "Kontakte suchen…",
+  "searchRecentCalls": "Durchsuchen Sie die letzten Anrufe",
+  "fromContacts": "Von Kontakten",
+  "recentsSearchSection": "Letzte Suche",
+  "recentsSearchShowContacts": "Kontakte in der Suche anzeigen",
+  "recentsSearchShowContactsSubtitle": "Zeigen Sie bei der Suche nach „Letzte“ auch übereinstimmende Personen aus Ihrem Adressbuch unter den Ergebnissen der Anrufliste an.",
+  "voiceSearch": "Sprachsuche",
+  "createNewContact": "Neuen Kontakt erstellen",
+  "callError": "Anruffehler: {error}",
+  "noRecentCalls": "Keine aktuellen Anrufe",
+  "callHistoryEmpty": "Ihr Anrufverlauf wird hier angezeigt.",
+  "loadMore": "Mehr laden",
+  "frequentlyContactedHeader": "Häufig kontaktiert",
+  "recentHistory": "Jüngste Geschichte",
+  "noFavouritesRecentsHint": "Noch keine Favoriten. Markieren Sie einen Kontakt, drücken Sie lange auf einen Anruf oder verwenden Sie die Registerkarte „Favoriten“.",
+  "copyNumber": "Nummer kopieren",
+  "editNumberBeforeCall": "Bearbeiten Sie die Nummer vor dem Anruf",
+  "removeFromFavourites": "Aus Favoriten entfernen",
+  "addToFavourites": "Zu Favoriten hinzufügen",
+  "blockNumberQuestion": "Nummer sperren?",
+  "blockNumberConfirm": "Ab {number} erhalten Sie keine Anrufe oder SMS mehr.",
+  "blocked": "Blockiert",
+  "couldNotBlock": "Konnte nicht blockiert werden",
+  "contactNotOnDevice": "Der Kontakt wurde auf diesem Gerät nicht gespeichert",
+  "unblocked": "Entsperrt",
+  "numberCopied": "Nummer kopiert",
+  "showLess": "Weniger anzeigen",
+  "showAllTimes": "Alle Zeiten anzeigen",
+  "mostRecent": "Neueste · {time}",
+  "videoCall": "Videoanruf",
+  "couldNotPlaceVideoCall": "Videoanruf konnte nicht getätigt werden",
+  "message": "Nachricht",
+  "couldNotOpenMessaging": "Die Messaging-App konnte nicht geöffnet werden",
+  "history": "Geschichte",
+  "viewContact": "Kontakt anzeigen",
+  "addToContact": "Zum Kontakt hinzufügen",
+  "callTypeMissed": "Verpasst",
+  "callTypeRejected": "Abgelehnt",
+  "callTypeIncoming": "Eingehend",
+  "callTypeOutgoing": "Ausgehend",
+  "today": "Heute",
+  "yesterday": "Gestern",
+  "justNow": "Gerade eben",
+  "minutesAgo": "Vor {count} Minuten",
+  "hoursAgo": "Vor {count} Stunden",
+  "filterAll": "Alle",
+  "filterMissed": "Verpasst",
+  "filterContacts": "Kontakte",
+  "filterNonContacts": "Keine Kontakte",
+  "iconUpdated": "Symbol aktualisiert. Es kann einen Moment dauern, bis Ihr Startbildschirm aktualisiert ist.",
+  "iconSavedRelease": "Auswahl gespeichert. Das Startbildschirmsymbol wird in Release-Builds aktualisiert.",
+  "couldNotChangeIcon": "Symbol konnte nicht geändert werden: {error}",
+  "launcherClassicBlack": "Klassisch (schwarz)",
+  "launcherLight": "Licht",
+  "launcherNothingRed": "Nichts Rotes",
+  "launcherDarkGrey": "Dunkelgrau",
+  "launcherCream": "Creme",
+  "launcherRetroPhone": "Retro-Telefon",
+  "launcherRetroPhoneLight": "Retro-Telefon (leicht)",
+  "voiceSearchUnavailable": "Die Sprachsuche ist auf diesem Gerät nicht verfügbar.",
+  "voiceSearchFailed": "Sprachsuche fehlgeschlagen: {error}",
+  "customColor": "Brauch",
+  "selectColor": "Farbe auswählen",
+  "reset": "Zurücksetzen",
+  "simPickerTitle": "Wählen Sie SIM",
+  "simChooseForCall": "Wählen Sie SIM für diesen Anruf",
+  "defaultSimAsk": "Fragen Sie jedes Mal",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Kontaktdaten",
+  "call": "Anruf",
+  "share": "Aktie",
+  "favourite": "Favorit",
+  "unfavourite": "Unfavorit",
+  "blockContact": "Kontakt blockieren",
+  "unblockContact": "Kontakt entsperren",
+  "deleteContact": "Kontakt löschen",
+  "phone": "Telefon",
+  "email": "E-Mail",
+  "ringtone": "Klingelton",
+  "defaultRingtone": "Standard",
+  "simForContact": "SIM für diesen Kontakt",
+  "callHistoryTitle": "Anrufverlauf",
+  "noCallsWithNumber": "Keine Anrufe mit dieser Nummer",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Glyphenanimation",
+  "inCallGlyphAnimationStyle": "Glyph-Animation während des Anrufs",
+  "recordsOff": "Aus",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Standard-SIM",
+  "nothingPhoneOnly": "Nichts, nur Telefon",
+  "nothingPhoneOnlySubtitle": "Glyph-Funktionen erfordern ein Nothing Phone",
+  "custom": "Benutzerdefiniert",
+  "presetColorHex": "Voreinstellung · {hex}",
+  "customColorHex": "Benutzerdefiniert · {hex}",
+  "oneContact": "1 Kontakt",
+  "upToContacts": "Bis zu {count} Kontakte",
+  "answerButtonTapSubtitle": "Tippen Sie auf die Schaltfläche, um zu antworten",
+  "filterCalls": "Anrufe filtern",
+  "filterTooltip": "Filter",
+  "settingsTooltip": "Einstellungen",
+  "filterAllSubtitle": "Gesamtes Anrufprotokoll",
+  "filterMissedSubtitle": "Verpasst und abgelehnt",
+  "filterContactsSubtitle": "Anrufe, die einem gespeicherten Kontakt zugeordnet sind",
+  "filterNonContactsSubtitle": "Nummern nicht in Ihrem Adressbuch",
+  "ongoingCallWithDetail": "Laufender Anruf: {detail}",
+  "defaultSimForCalls": "Standard-SIM für Anrufe",
+  "blinkInterval": "Blinkintervall",
+  "close": "Schließen",
+  "frequentlyContactedInfoBody": "Zeigt Ihre am häufigsten angerufenen Telefonnummern oben auf der Registerkarte „Letzte“ an, basierend darauf, wie viele eingehende, ausgehende, verpasste oder abgelehnte Anrufe Sie mit jeder Nummer in dem von Ihnen gewählten Zeitraum hatten.\n\nAnzahl der Datensätze: Auf 0 setzen, um dies zu deaktivieren. Verwenden Sie 1–20, um so viele Top-Kontakte anzuzeigen.\n\nDer Zeitraum gilt nur, wenn mindestens ein Kontakt angezeigt wird.",
+  "breathSettingsSpeedSummary": "{count} Lichter, {ms}ms Geschwindigkeit",
+  "deleteContactQuestion": "Kontakt löschen?",
+  "deleteContactBody": "Dieser Kontakt wird dauerhaft von Ihrem Gerät gelöscht.",
+  "blockContactQuestion": "Kontakt blockieren?",
+  "unblockContactQuestion": "Kontakt entsperren?",
+  "blockContactBody": "Sie erhalten von diesem Kontakt keine Anrufe oder SMS mehr.",
+  "unblockContactBody": "Sie erhalten Anrufe und SMS von diesem Kontakt.",
+  "contactBlocked": "Kontakt blockiert",
+  "contactUnblocked": "Kontakt entsperrt",
+  "noPhoneNumbersToBlock": "Keine Telefonnummern zum Blockieren",
+  "simSameAsSystem": "Dasselbe wie System",
+  "simSameAsSystemSubtitle": "Folgt der Standard-SIM-Karte in den Einstellungen",
+  "simAskEveryTimeForContact": "SIM-Auswahl für diesen Kontakt immer anzeigen",
+  "ringtoneSetForContact": "Global eingestellter Klingelton für diesen Kontakt",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Klingelton konnte nicht ausgewählt werden: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Fehler: {error}",
+  "noCallHistoryFound": "Keine Anrufliste gefunden",
+  "speedDialVoicemail": "Kurzwahl: Voicemail",
+  "shareContactSubject": "Kontakt: {name}",
+  "contactInfo": "Kontaktinformationen",
+  "dontAskAgainSim": "Fragen Sie nicht noch einmal",
+  "simDontAskAgainSubtitle": "Diese SIM-Karte als Standard verwenden (Änderung in den Einstellungen)",
+  "addContact": "Kontakt hinzufügen",
+  "createContact": "Kontakt erstellen",
+  "paste": "Paste",
+  "clear": "Klar",
+  "returnToCall": "Zurück zum Anruf",
+  "numberOfRecordsTitle": "Anzahl der Datensätze",
+  "recordsPickerSubtitle": "Wie viele häufig kontaktierte Einträge werden angezeigt (0 = aus)",
+  "torchInfoTitle": "Taschenlampe blinkt",
+  "torchInfoBody": "Der Kamerablitz blinkt bei eingehenden, ausgehenden oder laufenden Anrufen. Unabhängig von Glyph-Lichtern.",
+  "glyphMapTitle": "Glyphen-Layout",
+  "glyphMapBody": "Nothing Phone 1 Glyph LED-Zonen. Ausgehende und eingehende Anrufanimationen nutzen diese Kanäle.",
+  "answerMethodTitle": "Antwortmethode",
+  "glyphOutgoingCallStyleTitle": "Stil für ausgehende Anrufe",
+  "glyphInCallAnimationTitle": "Glyphen-In-Call-Animation",
+  "themePickerTitle": "Thema",
+  "torchIncomingTitle": "Taschenlampe für eingehende Anrufe",
+  "torchOutgoingTitle": "Taschenlampe für ausgehende Anrufe",
+  "torchOngoingTitle": "Laufende Anruffackel",
+  "timePeriodTitle": "Zeitraum",
+  "ok": "OK",
+  "confirmDeleteCall": "Diesen Anruf aus dem Verlauf löschen?",
+  "confirmDeleteAllCalls": "Alle Anrufe mit dieser Nummer löschen?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Senden Sie eine Nachricht",
+  "addToExistingContactAction": "Zu einem Kontakt hinzufügen",
+  "mobileLabel": "Mobile",
+  "callingSimForContactTitle": "SIM-Karte für diesen Kontakt anrufen",
+  "contactSettings": "Kontakteinstellungen",
+  "setCallingSim": "Anruf-SIM einstellen",
+  "contactRingtone": "Kontaktklingelton",
+  "shareContact": "Kontakt teilen",
+  "blockNumbers": "Nummern blockieren",
+  "unblockNumbers": "Nummern entsperren",
+  "connectedApps": "Verbundene Apps",
+  "simNotSet": "Nicht festgelegt",
+  "ringtoneDefault": "Standard",
+  "customRingtone": "Brauch",
+  "aboutSection": "Über",
+  "aboutFeedbackSection": "Über & Feedback",
+  "aboutDescription": "Nothing Dialer ist Open Source. Als Entwickler kannst du den Code erkunden und mitwirken.",
+  "aboutViewSource": "Auf GitHub ansehen",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Link konnte nicht geöffnet werden",
+  "reviewSection": "Bewertung",
+  "reviewDescription": "Gefällt dir Nothing Dialer? Deine Bewertung bei Google Play hilft anderen, die App zu finden.",
+  "reviewRateOnPlay": "Bei Google Play bewerten",
+  "reviewRateOnPlaySubtitle": "Bewerten, ohne die App zu verlassen",
+  "reviewCouldNotOpen": "Google Play konnte nicht geöffnet werden",
+  "breathSpeed": "Atemgeschwindigkeit",
+  "breathSpeedBlinkHint": "Niedriger = Blinzeln, höher = langsamer Atem",
+  "speedSliderHint": "Niedriger = schneller, höher = langsamer",
+  "swatchDefault": "Standard",
+  "customAccentColorPicker": "Benutzerdefinierte Akzentfarbe",
+  "customLightBackgroundPicker": "Benutzerdefinierter heller Hintergrund",
+  "customDarkBackgroundPicker": "Benutzerdefinierter dunkler Hintergrund",
+  "customCallBackgroundPicker": "Benutzerdefinierter Anrufhintergrund",
+  "ongoingCallStyleTitle": "Laufender Anrufstil",
+  "glyphMapUnavailable": "Glyphenkarte nicht verfügbar",
+  "animationDelayRange": "Animationsverzögerung (1s – 10s)",
+  "animationDelayRangeSingle": "Animationsverzögerung (0,1 s – 10 s)",
+  "inCallMute": "Stumm",
+  "inCallKeypad": "Tastatur",
+  "inCallSpeaker": "Lautsprecher",
+  "inCallMore": "Mehr",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Telefon",
+  "inCallAddCall": "Anruf hinzufügen",
+  "inCallChangeSim": "SIM wechseln",
+  "inCallDecline": "Ablehnen",
+  "inCallAnswer": "Annehmen",
+  "inCallMessage": "Nachricht",
+  "inCallCalling": "Wird angerufen…",
+  "inCallIncoming": "Eingehender Anruf",
+  "inCallSelectSim": "SIM wählen…",
+  "inCallSwitchingSim": "SIM wird gewechselt…",
+  "inCallCallEnded": "Anruf beendet",
+  "inCallCallingVia": "Anruf über {sim}",
+  "inCallCallingViaHtml": "Anruf über <b>{sim}</b>",
+  "inCallChooseSim": "SIM für diesen Anruf wählen",
+  "inCallDragAnswerDecline": "Nach rechts zum Annehmen · Nach links zum Ablehnen",
+  "inCallMobileNumber": "Mobil {number}",
+  "inCallAudioRouteCurrent": "{label}  (Aktiv)",
+  "inCallCallViaFrom": "Anruf über <b>{sim}</b> von",
+  "inCallCallFrom": "Anruf von",
+  "inCallUnknown": "Unbekannt",
+  "selectContactRingtone": "Kontaktton wählen",
+  "speakToSearchPrompt": "Zum Suchen sprechen",
+  "phonePermissionRequired": "Telefonberechtigung erforderlich",
+  "callFailed": "Anruf fehlgeschlagen: {error}",
+  "callPermissionDenied": "Anrufberechtigung verweigert",
+  "alreadyDefaultDialer": "Bereits Standard-Telefon-App",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

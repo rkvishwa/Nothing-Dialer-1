@@ -1,0 +1,759 @@
+{
+  "@@locale": "ms",
+  "appTitle": "Tiada apa-apa Dialer",
+  "settings": "tetapan",
+  "settingsSearchHint": "Tetapan carian",
+  "settingsSearchNoResults": "Tiada tetapan ditemui",
+  "general": "Umum",
+  "theme": "Tema",
+  "themeSystemDefault": "Lalai Sistem",
+  "themeLight": "Cahaya",
+  "themeDark": "Gelap",
+  "themeFollowSystem": "Ikut tetapan sistem",
+  "themeAlwaysLight": "Sentiasa gunakan tema ringan",
+  "themeAlwaysDark": "Sentiasa gunakan tema gelap",
+  "language": "Bahasa",
+  "languageDeviceDefault": "Lalai peranti",
+  "languagePickerTitle": "Bahasa",
+  "languageSearchHint": "Cari bahasa",
+  "font": "fon",
+  "fontSystem": "Sistem lalai",
+  "fontNdot": "Tiada apa-apa (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Muat turun fon gagal. Semak sambungan anda dan cuba lagi.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "fon",
+  "fontPreviewSample": "Tiada apa-apa Dialer",
+  "fontAppWide": "Fon apl",
+  "fontApplyTo": "Mohon kepada",
+  "fontApplyEntireApp": "Keseluruhan apl",
+  "fontApplyEntireAppSubtitle": "Fon yang sama di mana-mana, termasuk dalam panggilan",
+  "fontApplyTitlesOnly": "Tajuk & tajuk",
+  "fontApplyTitlesOnlySubtitle": "Tajuk besar dan tajuk bahagian sahaja",
+  "fontApplyCustomize": "Sesuaikan",
+  "fontApplyCustomizeSubtitle": "Pilih fon setiap skrin dan jenis teks",
+  "fontCustomizeSection": "Sesuaikan mengikut skrin",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Tajuk halaman",
+  "fontRoleSectionHeader": "Pengepala bahagian",
+  "fontRolePrimary": "Teks utama",
+  "fontRoleSecondary": "Teks sekunder",
+  "fontRoleButton": "Butang",
+  "fontRoleDialKey": "Kekunci pad dail",
+  "fontSurfaceRecents": "Terkini",
+  "fontSurfaceContacts": "Kenalan",
+  "fontSurfaceSettings": "tetapan",
+  "fontSurfaceDialpad": "Pad dail",
+  "fontSurfaceShell": "Navigasi",
+  "fontSurfaceDefaultDialer": "Gesaan pendail lalai",
+  "fontSurfaceFavourites": "Kegemaran",
+  "fontSurfaceBlocked": "Nombor disekat",
+  "fontSurfaceContactDetail": "Butiran kenalan",
+  "fontSurfaceCallHistory": "Sejarah panggilan",
+  "fontSurfaceSheets": "Helaian & pemetik",
+  "fontSurfaceInCall": "Skrin dalam panggilan",
+  "fontSubtitleEntireApp": "{font} — keseluruhan apl",
+  "fontSubtitleTitlesOnly": "{font} — tajuk sahaja",
+  "fontSubtitleCustomize": "Tersuai setiap skrin",
+  "background": "Latar belakang",
+  "accent": "Loghat",
+  "lightBackground": "Latar belakang terang",
+  "lightAccent": "Loghat ringan",
+  "darkBackground": "Latar belakang gelap",
+  "darkAccent": "Loghat gelap",
+  "callBackground": "Latar belakang panggilan",
+  "appIcon": "Ikon apl",
+  "answerMethod": "Kaedah jawapan",
+  "answerSlide": "Slaid untuk menjawab",
+  "answerSlideSubtitle": "Leret ke kiri/kanan pada bar, seperti Google Phone",
+  "answerButton": "Ketik butang",
+  "answerButtonSubtitle": "Ketik butang jawab atau tolak",
+  "answerHuawei": "gaya Huawei",
+  "answerHuaweiSubtitle": "Seret bulatan ke telefon hijau untuk menjawab",
+  "answerHuaweiTileSubtitle": "Huawei — seret ke hijau / merah",
+  "calling": "Memanggil",
+  "defaultSim": "SIM lalai",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Tanya setiap masa",
+  "askEveryTimeSubtitle": "Tunjukkan pemilih SIM sebelum setiap panggilan",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "Tiada kad SIM ditemui",
+  "couldNotLoadSims": "Tidak dapat memuatkan SIM: {error}",
+  "allFavourites": "Semua kegemaran",
+  "allFavouritesSubtitle": "Susun semula, alih keluar dan tambah daripada kenalan",
+  "blockedNumbers": "Nombor disekat",
+  "blockedNumbersSubtitle": "Lihat dan nyahsekat nombor",
+  "soundsAndVibration": "Bunyi dan getaran",
+  "soundsAndVibrationSubtitle": "Nada dering, getaran, nada pad dail",
+  "couldNotOpenSettings": "Tidak dapat membuka tetapan: {error}",
+  "frequentlyContacted": "Kerap Dihubungi",
+  "numberOfRecords": "Bilangan rekod",
+  "timePeriod": "Tempoh masa",
+  "periodLast24Hours": "24 jam terakhir",
+  "periodLast24HoursSubtitle": "Panggilan dari hari lalu",
+  "periodLast7Days": "7 hari lepas",
+  "periodLast7DaysSubtitle": "Panggilan dari minggu lalu",
+  "periodLast30Days": "30 hari lepas",
+  "periodLast30DaysSubtitle": "Panggilan dari bulan lalu",
+  "periodLast12Months": "12 bulan lepas",
+  "periodLast12MonthsSubtitle": "Panggilan dari tahun lalu",
+  "periodAllTime": "Sepanjang masa",
+  "periodAllTimeSubtitle": "Keseluruhan sejarah panggilan",
+  "frequentMaxOff": "Mati",
+  "frequentMaxCount": "{count} kenalan",
+  "torchBlink": "Kelip Obor",
+  "torchIncomingCall": "Obor panggilan masuk",
+  "torchOutgoingCall": "Obor panggilan keluar",
+  "torchOngoingCall": "Obor panggilan berterusan",
+  "torchIncomingInterval": "Selang kejap masuk",
+  "torchOutgoingInterval": "Selang kejap keluar",
+  "torchOngoingInterval": "Selang kelipan berterusan",
+  "torchOff": "Mati",
+  "torchOffIncomingSubtitle": "Tiada obor semasa berdering",
+  "torchOffOutgoingSubtitle": "Tiada obor semasa mendail",
+  "torchOffOngoingSubtitle": "Tiada obor semasa panggilan aktif",
+  "torchFixedInterval": "Selang tetap",
+  "torchFixedIntervalSubtitle": "Berkelip pada kelajuan yang ditetapkan",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} kejap",
+  "flashlightUnavailable": "Lampu suluh tidak tersedia pada peranti ini",
+  "glyphLights": "Lampu Glyph",
+  "glyphCallingAnimation": "Animasi panggilan Glyph",
+  "glyphOngoingAnimation": "Animasi panggilan berterusan Glyph",
+  "glyphNone": "tiada",
+  "glyphNoneOutgoingSubtitle": "Lumpuhkan lampu Glyph untuk panggilan keluar",
+  "glyphNoneInCallSubtitle": "Lumpuhkan lampu Glyph semasa aktif dalam panggilan",
+  "glyphBreathProgress": "Nafas & Kemajuan",
+  "glyphBreathProgressSubtitle": "Lampu bernafas semasa talian mengisi lebih 65s",
+  "glyphAccumulate": "Terkumpul",
+  "glyphAccumulateSubtitle": "Mengumpul animasi pada lampu C1-C4",
+  "glyphSingle": "Bujang",
+  "glyphSingleSubtitle": "Cahaya tunggal bergerak merentasi C1-C4",
+  "glyphBreath": "nafas",
+  "glyphBreathSubtitle": "Pilih lampu dan kelajuan",
+  "glyphSteady": "mantap",
+  "glyphSteadySubtitle": "Lampu terpilih kekal menyala",
+  "breathSettings": "Tetapan Nafas",
+  "activeLights": "Lampu Aktif",
+  "lightsCount": "{count} lampu",
+  "speedSettings": "Tetapan Kelajuan",
+  "speedSettingsDelay": "{ms}ms kelewatan",
+  "durationAndSpeed": "Tempoh & Kelajuan",
+  "durationSpeedSummary": "Tempoh {duration}s, selang {interval}ms",
+  "cancel": "Batal",
+  "done": "Selesai",
+  "save": "Jimat",
+  "block": "Sekat",
+  "delete": "Padam",
+  "recents": "Terkini",
+  "contacts": "Kenalan",
+  "hideFavouritesOnRecents": "Sembunyikan kegemaran pada Terbaru",
+  "showFavouritesOnRecents": "Tunjukkan kegemaran pada Terbaru",
+  "ongoingCall": "Panggilan berterusan",
+  "setAsDefaultTitle": "TETAPKAN SEBAGAI\nlalai",
+  "setAsDefaultBody": "Untuk menggunakan Nothing Dialer, ia mesti ditetapkan sebagai apl telefon lalai anda. Ini membolehkan anda mengurus panggilan, melihat sejarah dan menggunakan animasi Glyph.",
+  "setAsDefaultButton": "TETAPKAN SEBAGAI LALAI",
+  "nothingDialerBrand": "TIADA PENDAIL 1",
+  "favourites": "Kegemaran",
+  "addFavourite": "Tambah kegemaran",
+  "favouritesDrawerHint": "Gunakan menu untuk menambah kenalan. Ketik di luar laci atau leret hingga tertutup. Bintangkan kenalan daripada butiran mereka, atau tekan lama panggilan dalam Terbaru.",
+  "menu": "Menu",
+  "noFavouritesYet": "Tiada kegemaran lagi.\nBuka menu untuk menambah satu atau bintangkan kenalan.",
+  "contactsPermissionNeeded": "Kebenaran kenalan diperlukan",
+  "chooseContact": "Pilih kenalan",
+  "noPhone": "Tiada telefon",
+  "pickNumber": "Pilih nombor",
+  "contactHasNoPhone": "Kenalan ini tidak mempunyai nombor telefon",
+  "blockNumber": "Nombor blok",
+  "enterPhoneNumber": "Masukkan nombor telefon",
+  "unblockedDisplay": "Disekat {display}",
+  "couldNotUnblockNumber": "Tidak dapat menyahsekat nombor",
+  "blockedSummary": "{blocked} disekat • {matched} dipadankan",
+  "contactsPermissionMissing": "Kebenaran kenalan tiada. Ketik untuk membetulkan.",
+  "noBlockedNumbers": "Tiada nombor yang disekat",
+  "unknownContact": "Kenalan tidak dikenali",
+  "unblock": "Nyahsekat",
+  "permissionNeeded": "Kebenaran diperlukan",
+  "grantPhonePermission": "Berikan kebenaran telefon untuk melihat sejarah panggilan anda.",
+  "grantContactsPermission": "Berikan kebenaran kenalan untuk melihat buku alamat anda.",
+  "openSettings": "Buka Tetapan",
+  "tryAgain": "Cuba lagi",
+  "couldNotLoadContacts": "Tidak dapat memuatkan kenalan",
+  "contactsLoadError": "Kesilapan telah berlaku semasa membaca buku alamat anda.",
+  "noContactsFound": "Tiada kenalan ditemui",
+  "contactsEmptySubtitle": "Kenalan daripada peranti anda akan dipaparkan di sini.",
+  "searchContacts": "Cari kenalan…",
+  "searchRecentCalls": "Cari panggilan terbaharu",
+  "fromContacts": "Daripada kenalan",
+  "recentsSearchSection": "Carian terkini",
+  "recentsSearchShowContacts": "Tunjukkan kenalan dalam carian",
+  "recentsSearchShowContactsSubtitle": "Semasa mencari Terbaharu, tunjukkan juga orang yang sepadan daripada buku alamat anda di bawah hasil sejarah panggilan.",
+  "voiceSearch": "Carian suara",
+  "createNewContact": "Buat kenalan baharu",
+  "callError": "Ralat panggilan: {error}",
+  "noRecentCalls": "Tiada panggilan terbaru",
+  "callHistoryEmpty": "Sejarah panggilan anda akan dipaparkan di sini.",
+  "loadMore": "Muatkan lagi",
+  "frequentlyContactedHeader": "Kerap dihubungi",
+  "recentHistory": "Sejarah terkini",
+  "noFavouritesRecentsHint": "Tiada kegemaran lagi. Bintangkan kenalan, tekan lama pada panggilan atau gunakan tab Kegemaran.",
+  "copyNumber": "Salin nombor",
+  "editNumberBeforeCall": "Edit nombor sebelum panggilan",
+  "removeFromFavourites": "Alih keluar daripada kegemaran",
+  "addToFavourites": "Tambahkan pada kegemaran",
+  "blockNumberQuestion": "Nombor blok?",
+  "blockNumberConfirm": "Anda tidak akan menerima panggilan atau teks daripada {number} lagi.",
+  "blocked": "Disekat",
+  "couldNotBlock": "Tidak dapat menyekat",
+  "contactNotOnDevice": "Kenalan tidak disimpan pada peranti ini",
+  "unblocked": "Disekat",
+  "numberCopied": "Nombor disalin",
+  "showLess": "Tunjukkan lebih sedikit",
+  "showAllTimes": "Tunjukkan sepanjang masa",
+  "mostRecent": "Terkini · {time}",
+  "videoCall": "Panggilan video",
+  "couldNotPlaceVideoCall": "Tidak dapat membuat panggilan video",
+  "message": "Mesej",
+  "couldNotOpenMessaging": "Tidak dapat membuka apl pemesejan",
+  "history": "Sejarah",
+  "viewContact": "Lihat kenalan",
+  "addToContact": "Tambahkan pada kenalan",
+  "callTypeMissed": "terlepas",
+  "callTypeRejected": "ditolak",
+  "callTypeIncoming": "masuk",
+  "callTypeOutgoing": "Keluar",
+  "today": "Hari ini",
+  "yesterday": "Semalam",
+  "justNow": "tadi",
+  "minutesAgo": "{count} min yang lalu",
+  "hoursAgo": "{count} jam yang lalu",
+  "filterAll": "Semua",
+  "filterMissed": "terlepas",
+  "filterContacts": "Kenalan",
+  "filterNonContacts": "Bukan kenalan",
+  "iconUpdated": "Ikon dikemas kini. Skrin utama anda mungkin mengambil sedikit masa untuk dimuat semula.",
+  "iconSavedRelease": "Pilihan disimpan. Kemas kini ikon skrin utama dalam binaan keluaran.",
+  "couldNotChangeIcon": "Tidak dapat menukar ikon: {error}",
+  "launcherClassicBlack": "Klasik (hitam)",
+  "launcherLight": "Cahaya",
+  "launcherNothingRed": "Tiada yang merah",
+  "launcherDarkGrey": "Kelabu gelap",
+  "launcherCream": "krim",
+  "launcherRetroPhone": "Telefon retro",
+  "launcherRetroPhoneLight": "Telefon retro (cahaya)",
+  "voiceSearchUnavailable": "Carian suara tidak tersedia pada peranti ini.",
+  "voiceSearchFailed": "Carian suara gagal: {error}",
+  "customColor": "Adat",
+  "selectColor": "Pilih warna",
+  "reset": "Tetapkan semula",
+  "simPickerTitle": "Pilih SIM",
+  "simChooseForCall": "Pilih SIM untuk panggilan ini",
+  "defaultSimAsk": "Tanya setiap masa",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Butiran hubungan",
+  "call": "Panggil",
+  "share": "Kongsi",
+  "favourite": "Kegemaran",
+  "unfavourite": "Tidak digemari",
+  "blockContact": "Sekat kenalan",
+  "unblockContact": "Nyahsekat kenalan",
+  "deleteContact": "Padam kenalan",
+  "phone": "telefon",
+  "email": "E-mel",
+  "ringtone": "Nada dering",
+  "defaultRingtone": "Lalai",
+  "simForContact": "SIM untuk kenalan ini",
+  "callHistoryTitle": "Sejarah panggilan",
+  "noCallsWithNumber": "Tiada panggilan dengan nombor ini",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Animasi Glyph",
+  "inCallGlyphAnimationStyle": "Animasi Glyph dalam panggilan",
+  "recordsOff": "Mati",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "SIM lalai",
+  "nothingPhoneOnly": "Tiada Telefon sahaja",
+  "nothingPhoneOnlySubtitle": "Ciri Glyph memerlukan Nothing Phone",
+  "custom": "Adat",
+  "presetColorHex": "Pratetap · {hex}",
+  "customColorHex": "Tersuai · {hex}",
+  "oneContact": "1 kenalan",
+  "upToContacts": "Sehingga {count} kenalan",
+  "answerButtonTapSubtitle": "Ketik butang untuk menjawab",
+  "filterCalls": "Tapis panggilan",
+  "filterTooltip": "Penapis",
+  "settingsTooltip": "tetapan",
+  "filterAllSubtitle": "Keseluruhan log panggilan",
+  "filterMissedSubtitle": "Rindu dan ditolak",
+  "filterContactsSubtitle": "Panggilan dipadankan dengan kenalan yang disimpan",
+  "filterNonContactsSubtitle": "Nombor tiada dalam buku alamat anda",
+  "ongoingCallWithDetail": "Panggilan sedang berjalan: {detail}",
+  "defaultSimForCalls": "SIM lalai untuk panggilan",
+  "blinkInterval": "Selang kejap",
+  "close": "tutup",
+  "frequentlyContactedInfoBody": "Menunjukkan nombor telefon anda yang paling kerap dipanggil di bahagian atas tab Terbaharu, berdasarkan bilangan panggilan masuk, keluar, terlepas atau ditolak yang anda ada dengan setiap nombor dalam tempoh masa yang anda pilih.\n\nBilangan rekod: tetapkan kepada 0 untuk mematikan ini. Gunakan 1–20 untuk menunjukkan bahawa ramai kenalan teratas.\n\nTempoh masa hanya digunakan apabila sekurang-kurangnya satu kenalan ditunjukkan.",
+  "breathSettingsSpeedSummary": "{count} lampu, {ms}ms kelajuan",
+  "deleteContactQuestion": "Padam kenalan?",
+  "deleteContactBody": "Kenalan ini akan dipadamkan secara kekal daripada peranti anda.",
+  "blockContactQuestion": "Sekat kenalan?",
+  "unblockContactQuestion": "Nyahsekat kenalan?",
+  "blockContactBody": "Anda tidak lagi akan menerima panggilan atau teks daripada kenalan ini.",
+  "unblockContactBody": "Anda akan mula menerima panggilan dan teks daripada kenalan ini.",
+  "contactBlocked": "Kenalan disekat",
+  "contactUnblocked": "Kenalan dinyahsekat",
+  "noPhoneNumbersToBlock": "Tiada nombor telefon untuk disekat",
+  "simSameAsSystem": "Sama seperti sistem",
+  "simSameAsSystemSubtitle": "Ikut SIM Lalai dalam Tetapan",
+  "simAskEveryTimeForContact": "Sentiasa tunjukkan pemilih SIM untuk kenalan ini",
+  "ringtoneSetForContact": "Nada dering ditetapkan secara global untuk kenalan ini",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Gagal memilih nada dering: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Ralat: {error}",
+  "noCallHistoryFound": "Tiada sejarah panggilan ditemui",
+  "speedDialVoicemail": "Dail cepat: Mel suara",
+  "shareContactSubject": "Hubungi: {name}",
+  "contactInfo": "Maklumat hubungan",
+  "dontAskAgainSim": "Jangan tanya lagi",
+  "simDontAskAgainSubtitle": "Gunakan SIM ini sebagai lalai (tukar dalam Tetapan)",
+  "addContact": "Tambah kenalan",
+  "createContact": "Buat kenalan",
+  "paste": "Tampal",
+  "clear": "Jelas",
+  "returnToCall": "Kembali ke panggilan",
+  "numberOfRecordsTitle": "Bilangan rekod",
+  "recordsPickerSubtitle": "Berapa banyak entri yang kerap dihubungi untuk ditunjukkan (0 = off)",
+  "torchInfoTitle": "Obor berkelip",
+  "torchInfoBody": "Berkelip denyar kamera semasa panggilan masuk, keluar atau sedang berjalan. Bebas daripada lampu Glyph.",
+  "glyphMapTitle": "Susun atur glyph",
+  "glyphMapBody": "Tiada apa-apa zon LED Glyph Telefon 1. Animasi keluar dan dalam panggilan menggunakan saluran ini.",
+  "answerMethodTitle": "Kaedah jawapan",
+  "glyphOutgoingCallStyleTitle": "Gaya panggilan keluar",
+  "glyphInCallAnimationTitle": "Animasi dalam panggilan Glyph",
+  "themePickerTitle": "Tema",
+  "torchIncomingTitle": "Obor panggilan masuk",
+  "torchOutgoingTitle": "Obor panggilan keluar",
+  "torchOngoingTitle": "Obor panggilan berterusan",
+  "timePeriodTitle": "Tempoh masa",
+  "ok": "OK",
+  "confirmDeleteCall": "Padamkan panggilan ini daripada sejarah?",
+  "confirmDeleteAllCalls": "Padamkan semua panggilan dengan nombor ini?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Hantar mesej",
+  "addToExistingContactAction": "Tambahkan pada kenalan",
+  "mobileLabel": "Mudah alih",
+  "callingSimForContactTitle": "Memanggil SIM untuk kenalan ini",
+  "contactSettings": "Tetapan kenalan",
+  "setCallingSim": "Tetapkan SIM panggilan",
+  "contactRingtone": "Nada dering kenalan",
+  "shareContact": "Kongsi kenalan",
+  "blockNumbers": "Sekat nombor",
+  "unblockNumbers": "Nyahsekat nombor",
+  "connectedApps": "Apl bersambung",
+  "simNotSet": "Tidak ditetapkan",
+  "ringtoneDefault": "Lalai",
+  "customRingtone": "Adat",
+  "aboutSection": "Tentang",
+  "aboutFeedbackSection": "Perihal & maklum balas",
+  "aboutDescription": "Tiada Pendail adalah sumber terbuka. Jika anda seorang pembangun, anda dialu-alukan untuk meneroka kod dan menyumbang.",
+  "aboutViewSource": "Lihat di GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Tidak dapat membuka pautan",
+  "reviewSection": "Semakan",
+  "reviewDescription": "Menikmati Nothing Dialer? Penilaian anda di Google Play membantu orang lain mencari apl itu.",
+  "reviewRateOnPlay": "Nilaikan di Google Play",
+  "reviewRateOnPlaySubtitle": "Tinggalkan penilaian tanpa meninggalkan apl",
+  "reviewCouldNotOpen": "Tidak dapat membuka Google Play",
+  "breathSpeed": "Kelajuan Nafas",
+  "breathSpeedBlinkHint": "Bawah = Berkelip, Tinggi = Nafas Perlahan",
+  "speedSliderHint": "Rendah = Lebih Cepat, Lebih Tinggi = Lebih perlahan",
+  "swatchDefault": "Lalai",
+  "customAccentColorPicker": "Warna loghat tersuai",
+  "customLightBackgroundPicker": "Latar belakang cahaya tersuai",
+  "customDarkBackgroundPicker": "Latar belakang gelap tersuai",
+  "customCallBackgroundPicker": "Latar belakang panggilan tersuai",
+  "ongoingCallStyleTitle": "Gaya panggilan berterusan",
+  "glyphMapUnavailable": "Peta glif tidak tersedia",
+  "animationDelayRange": "Kelewatan Animasi (1s - 10s)",
+  "animationDelayRangeSingle": "Kelewatan Animasi (0.1s - 10s)",
+  "inCallMute": "bisu",
+  "inCallKeypad": "Papan kekunci",
+  "inCallSpeaker": "Penceramah",
+  "inCallMore": "Lagi",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "telefon",
+  "inCallAddCall": "Tambah panggilan",
+  "inCallChangeSim": "Tukar SIM",
+  "inCallDecline": "Tolak",
+  "inCallAnswer": "Jawab",
+  "inCallMessage": "Mesej",
+  "inCallCalling": "Memanggil…",
+  "inCallIncoming": "Panggilan masuk",
+  "inCallSelectSim": "Pilih SIM…",
+  "inCallSwitchingSim": "Menukar SIM…",
+  "inCallCallEnded": "Panggilan ditamatkan",
+  "inCallCallingVia": "Memanggil melalui {sim}",
+  "inCallCallingViaHtml": "Memanggil melalui <b>{sim}</b>",
+  "inCallChooseSim": "Pilih SIM untuk panggilan ini",
+  "inCallDragAnswerDecline": "Seret ke kanan untuk menjawab · Seret ke kiri untuk menolak",
+  "inCallMobileNumber": "Mudah Alih {number}",
+  "inCallAudioRouteCurrent": "{label} (Semasa)",
+  "inCallCallViaFrom": "Hubungi melalui <b>{sim}</b> dari",
+  "inCallCallFrom": "Panggilan daripada",
+  "inCallUnknown": "Tidak diketahui",
+  "selectContactRingtone": "Pilih nada dering kenalan",
+  "speakToSearchPrompt": "Bercakap untuk mencari",
+  "phonePermissionRequired": "Kebenaran telefon diperlukan",
+  "callFailed": "Panggilan gagal: {error}",
+  "callPermissionDenied": "Kebenaran panggilan ditolak",
+  "alreadyDefaultDialer": "Sudah ditetapkan sebagai pendail lalai",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

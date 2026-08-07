@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">ປິດສຽງ</string>
+    <string name="in_call_keypad">ປຸ່ມກົດ</string>
+    <string name="in_call_speaker">ລໍາໂພງ</string>
+    <string name="in_call_more">ເພີ່ມເຕີມ</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">ໂທລະສັບ</string>
+    <string name="in_call_add_call">ເພີ່ມການໂທ</string>
+    <string name="in_call_change_sim">ປ່ຽນຊິມ</string>
+    <string name="in_call_decline">ຫຼຸດລົງ</string>
+    <string name="in_call_answer">ຄໍາຕອບ</string>
+    <string name="in_call_message">ຂໍ້ຄວາມ</string>
+    <string name="in_call_calling">ກຳລັງໂທ…</string>
+    <string name="in_call_incoming">ສາຍໂທເຂົ້າ</string>
+    <string name="in_call_select_sim">ເລືອກ SIM…</string>
+    <string name="in_call_switching_sim">ກຳລັງສະຫຼັບຊິມ…</string>
+    <string name="in_call_call_ended">ສິ້ນສຸດການໂທ</string>
+    <string name="in_call_calling_via">ໂທຜ່ານ %1$s</string>
+    <string name="in_call_calling_via_html">ໂທຜ່ານ&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">ເລືອກ SIM ສໍາລັບການໂທນີ້</string>
+    <string name="in_call_drag_answer_decline">ລາກຂວາເພື່ອຕອບ · ລາກຊ້າຍເພື່ອປະຕິເສດ</string>
+    <string name="in_call_mobile_number">ມືຖື %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (ປະຈຸບັນ)</string>
+    <string name="in_call_call_via_from">ໂທຜ່ານ &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ຈາກ</string>
+    <string name="in_call_call_from">ໂທຈາກ</string>
+    <string name="in_call_unknown">ບໍ່ຮູ້ຈັກ</string>
+    <string name="in_call_sim_slot">ຊິມ %1$d</string>
+    <string name="native_select_contact_ringtone">ເລືອກສຽງເອີ້ນເຂົ້າຕິດຕໍ່</string>
+    <string name="native_speak_to_search">ເວົ້າເພື່ອຄົ້ນຫາ</string>
+    <string name="native_phone_permission_required">ຕ້ອງມີການອະນຸຍາດໂທລະສັບ</string>
+    <string name="native_call_failed">ການໂທລົ້ມເຫລວ: %1$s</string>
+    <string name="native_call_permission_denied">ປະຕິເສດການອະນຸຍາດການໂທ</string>
+    <string name="native_already_default_dialer">ຕັ້ງເປັນຕົວໂທເລີ່ມຕົ້ນແລ້ວ</string>
+</resources>

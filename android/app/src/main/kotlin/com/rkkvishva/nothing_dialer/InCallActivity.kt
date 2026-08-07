@@ -1,8 +1,11 @@
 package com.rkkvishva.nothing_dialer
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.KeyguardManager
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -10,6 +13,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Build
 import android.telecom.Call
+import android.view.animation.LinearInterpolator
 
 import android.telecom.CallAudioState
 import android.telecom.PhoneAccountHandle
@@ -29,6 +33,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.view.MotionEvent
 import android.content.SharedPreferences
+import androidx.core.graphics.ColorUtils
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 /**
  * Google Phone-style In-Call UI.
@@ -37,10 +46,53 @@ import android.content.SharedPreferences
  */
 class InCallActivity : Activity() {
 
+    private var simSheetCancelsCallOnDismiss = false
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(DialerLocale.wrap(newBase))
+    }
+
     companion object {
         const val TAG = "InCallActivity"
         // Static handler that survives activity destroy — used for SIM switch redial
         private val simSwitchHandler = Handler(Looper.getMainLooper())
+        @Volatile
+        var activeInstance: InCallActivity? = null
+
+        /**
+         * Set when we are about to / just launched the call UI so the incoming
+         * CallStyle heads-up is suppressed during the brief gap before [onResume].
+         */
+        @Volatile
+        var expectingUi: Boolean = false
+
+        /**
+         * True after the user navigates away (Home / Recents / another app).
+         * Not set on proximity screen-off, which also triggers [onPause].
+         */
+        @Volatile
+        var userLeftCallUi: Boolean = false
+
+        /**
+         * Full-screen call UI is showing (or launching), so the incoming
+         * CallStyle popup card should be suppressed.
+         */
+        fun isCallScreenShowing(): Boolean {
+            if (expectingUi) return true
+            val instance = activeInstance ?: return false
+            if (instance.isFinishing) return false
+            // Still "showing" while paused by proximity; only leave after userLeftCallUi.
+            return !userLeftCallUi
+        }
+
+        fun notifyFontConfigChanged() {
+            DialerTypefaces.invalidateCache()
+            activeInstance?.refreshFontTypefaces()
+        }
+
+        fun notifyAnswerMethodChanged() {
+            activeInstance?.rebuildIncomingAnswerControls()
+        }
     }
 
     // ── Views ────────────────────────────────────────────────────────────────
@@ -79,9 +131,11 @@ class InCallActivity : Activity() {
 
     // Incoming call overlay
     private lateinit var incomingOverlay: FrameLayout
+    private lateinit var incomingContent: LinearLayout
     private var isIncoming = false
     private var btnDeclineLayout: LinearLayout? = null
     private var btnAnswerLayout: LinearLayout? = null
+    private var incomingAnswerControls: View? = null
 
     // State
     private lateinit var themeColors: ThemeColors
@@ -155,18 +209,38 @@ class InCallActivity : Activity() {
 
         
         themeColors = ThemeColors.get(this)
-        window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = themeColors.background
+        applyEdgeToEdge(themeColors)
 
         buildUI(themeColors)
         buildIncomingOverlay(themeColors)
+        applyCallScreenInsets()
         initProximitySensor()
 
         if (GlyphInCallService.currentCall == null) {
+            expectingUi = false
             finish()
             return
         }
         bindToCurrentCall(GlyphInCallService.currentCall)
+        activeInstance = this
+        refreshFontTypefaces()
+    }
+
+    fun refreshFontTypefaces() {
+        if (!::nameText.isInitialized) return
+        DialerTypefaces.apply(avatarText, DialerTypefaces.Role.primary)
+        DialerTypefaces.apply(nameText, DialerTypefaces.Role.pageTitle)
+        DialerTypefaces.apply(numberText, DialerTypefaces.Role.secondary)
+        DialerTypefaces.apply(simLabel, DialerTypefaces.Role.secondary)
+        DialerTypefaces.apply(statusText, DialerTypefaces.Role.secondary)
+        DialerTypefaces.apply(durationText, DialerTypefaces.Role.secondary)
+        DialerTypefaces.apply(muteLabel, DialerTypefaces.Role.button)
+        DialerTypefaces.apply(keypadLabel, DialerTypefaces.Role.button)
+        DialerTypefaces.apply(speakerLabel, DialerTypefaces.Role.button)
+        DialerTypefaces.apply(moreLabel, DialerTypefaces.Role.button)
+        dtmfDisplay?.let {
+            DialerTypefaces.apply(it, DialerTypefaces.Role.dialKey)
+        }
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
@@ -211,7 +285,7 @@ class InCallActivity : Activity() {
         call.registerCallback(callCallback)
 
         val handle = call.details?.handle
-        val number = handle?.schemeSpecificPart ?: "Unknown"
+        val number = handle?.schemeSpecificPart ?: getString(R.string.in_call_unknown)
         val contactName = getContactName(number)
 
         if (contactName != null) {
@@ -227,7 +301,7 @@ class InCallActivity : Activity() {
 
         selectedSimLabel = getSimLabelForCall(call)
         if (selectedSimLabel != null) {
-            simLabel.text = formatSimLabel("Calling via", selectedSimLabel!!)
+            simLabel.text = formatSimLabel(selectedSimLabel!!)
         } else {
             simLabel.text = ""
         }
@@ -295,12 +369,12 @@ class InCallActivity : Activity() {
 
     private fun updateUI(state: Int) {
         when (state) {
-            Call.STATE_SELECT_PHONE_ACCOUNT -> { statusText.text = "Select SIM…"; showNativeSimPicker() }
+            Call.STATE_SELECT_PHONE_ACCOUNT -> { statusText.text = getString(R.string.in_call_select_sim); showNativeSimPicker() }
             Call.STATE_CONNECTING, Call.STATE_DIALING -> {
-                statusText.text = "Calling…"; durationText.text = ""; isCallActive = false
+                statusText.text = getString(R.string.in_call_calling); durationText.text = ""; isCallActive = false
             }
             Call.STATE_RINGING -> {
-                statusText.text = "Incoming call"; durationText.text = ""; isCallActive = false
+                statusText.text = getString(R.string.in_call_incoming); durationText.text = ""; isCallActive = false
                 isIncoming = true
                 showIncomingOverlay()
             }
@@ -325,7 +399,7 @@ class InCallActivity : Activity() {
                     (btnAnswerLayout?.background as? android.graphics.drawable.GradientDrawable)?.setColor(Color.parseColor("#49454f"))
                     (btnAnswerLayout?.getChildAt(0) as? ImageView)?.setColorFilter(Color.parseColor("#938F99"))
                 }
-                statusText.text = if (isChangingSim) "Switching SIM…" else "Call Ended"
+                statusText.text = if (isChangingSim) getString(R.string.in_call_switching_sim) else getString(R.string.in_call_call_ended)
                 isCallActive = false; timerRunning = false
                 handler.removeCallbacks(timerRunnable)
                 if (!isChangingSim && GlyphInCallService.currentCall == null) {
@@ -344,20 +418,21 @@ class InCallActivity : Activity() {
         if (accounts.size == 1) { call.phoneAccountSelected(accounts[0], false); return }
 
         val labels = accounts.mapIndexed { index, account ->
-            try { tm.getPhoneAccount(account)?.label?.toString() ?: "SIM ${index + 1}" } catch (_: Exception) { "SIM ${index + 1}" }
+            try { tm.getPhoneAccount(account)?.label?.toString() ?: getString(R.string.in_call_sim_slot, index + 1) } catch (_: Exception) { getString(R.string.in_call_sim_slot, index + 1) }
         }
 
-        showStyledSimSheet("Choose SIM for this call", labels) { which ->
+        simSheetCancelsCallOnDismiss = true
+        showStyledSimSheet(getString(R.string.in_call_choose_sim), labels) { which ->
             call.phoneAccountSelected(accounts[which], false)
             selectedSimLabel = labels[which]
-            simLabel.text = formatSimLabel("Calling via", labels[which])
+            simLabel.text = formatSimLabel(labels[which])
             simLabel.visibility = View.VISIBLE
         }
     }
 
-    private fun formatSimLabel(prefix: String, simName: String): android.text.Spanned {
+    private fun formatSimLabel(simName: String): android.text.Spanned {
         return android.text.Html.fromHtml(
-            "$prefix <b>$simName</b>",
+            getString(R.string.in_call_calling_via_html, simName),
             android.text.Html.FROM_HTML_MODE_LEGACY
         )
     }
@@ -374,12 +449,13 @@ class InCallActivity : Activity() {
         if (accounts.size < 2) return
 
         val labels = accounts.mapIndexed { index, account ->
-            try { tm.getPhoneAccount(account)?.label?.toString() ?: "SIM ${index + 1}" } catch (_: Exception) { "SIM ${index + 1}" }
+            try { tm.getPhoneAccount(account)?.label?.toString() ?: getString(R.string.in_call_sim_slot, index + 1) } catch (_: Exception) { getString(R.string.in_call_sim_slot, index + 1) }
         }
 
-        showStyledSimSheet("Change SIM", labels) { which ->
+        simSheetCancelsCallOnDismiss = false
+        showStyledSimSheet(getString(R.string.in_call_change_sim), labels) { which ->
             isChangingSim = true
-            statusText.text = "Switching SIM…"
+            statusText.text = getString(R.string.in_call_switching_sim)
             call.disconnect()
             // Use static handler that survives activity destroy
             finish()
@@ -420,17 +496,11 @@ class InCallActivity : Activity() {
             text = title
             setTextColor(themeColors.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
-            typeface = Typeface.create("sans-serif", Typeface.NORMAL)
+            DialerTypefaces.apply(this, DialerTypefaces.Role.pageTitle)
             setPadding(dp(24), dp(16), dp(24), dp(8))
         })
 
-        // SIM options — matching Flutter's sim_picker_sheet colours
-        val accentColors = intArrayOf(
-            Color.parseColor("#D0BCFF"),  // Purple
-            Color.parseColor("#81C784"),  // Green
-            Color.parseColor("#4FC3F7")   // Blue
-        )
-
+        // SIM options — colors from Flutter SIM icon settings
         for (i in labels.indices) {
             val row = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
@@ -441,17 +511,20 @@ class InCallActivity : Activity() {
                 setOnClickListener { dialog.dismiss(); onSelect(i) }
             }
 
-            // SIM card icon in colored circle
-            val color = accentColors[i % accentColors.size]
+            val resolved = SimIconColors.resolve(
+                this,
+                i,
+                !themeColors.isLight,
+                themeColors.onSurfaceVariant,
+            )
             val iconContainer = FrameLayout(this).apply {
-                background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(color) }
                 layoutParams = LinearLayout.LayoutParams(dp(40), dp(40)).apply { marginEnd = dp(16) }
             }
             val simIcon = ImageView(this).apply {
                 setImageResource(R.drawable.ic_sim_card)
-                setColorFilter(Color.parseColor("#141218"))
                 layoutParams = FrameLayout.LayoutParams(dp(20), dp(20)).apply { gravity = Gravity.CENTER }
             }
+            SimIconColors.applySimRowIcon(iconContainer, simIcon, resolved, strokeDp = 2)
             iconContainer.addView(simIcon)
             row.addView(iconContainer)
 
@@ -461,10 +534,10 @@ class InCallActivity : Activity() {
                 text = labels[i]
                 setTextColor(themeColors.onSurface)
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+                DialerTypefaces.apply(this, DialerTypefaces.Role.button)
             })
             textCol.addView(TextView(this).apply {
-                text = "SIM ${i + 1}"
+                text = getString(R.string.in_call_sim_slot, i + 1)
                 setTextColor(themeColors.onSurfaceVariant)
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             })
@@ -485,7 +558,13 @@ class InCallActivity : Activity() {
             attributes = attributes.also { it.windowAnimations = android.R.style.Animation_InputMethod }
         }
         dialog.setCancelable(true)
-        dialog.setOnCancelListener { if (title == "Choose SIM for this call") { GlyphInCallService.currentCall?.disconnect(); finish() } }
+        dialog.setOnCancelListener {
+            if (simSheetCancelsCallOnDismiss) {
+                simSheetCancelsCallOnDismiss = false
+                GlyphInCallService.currentCall?.disconnect()
+                finish()
+            }
+        }
         dialog.show()
     }
 
@@ -526,10 +605,10 @@ class InCallActivity : Activity() {
         fun option(label: String, route: Int) {
             val isSelected = currentRoute == route
             sheet.addView(TextView(this).apply {
-                text = if (isSelected) "$label  (Current)" else label
+                text = if (isSelected) getString(R.string.in_call_audio_route_current, label) else label
                 setTextColor(if (isSelected) themeColors.onSurface else themeColors.onSurfaceVariant)
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+                DialerTypefaces.apply(this, DialerTypefaces.Role.button)
                 setPadding(dp(20), dp(16), dp(20), dp(16))
                 background = GradientDrawable().apply { setColor(themeColors.surfaceContainerHigh); cornerRadius = dp(12).toFloat() }
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { bottomMargin = dp(8) }
@@ -540,9 +619,9 @@ class InCallActivity : Activity() {
             })
         }
 
-        option("Phone", CallAudioState.ROUTE_EARPIECE)
-        option("Speaker", CallAudioState.ROUTE_SPEAKER)
-        option("Bluetooth", CallAudioState.ROUTE_BLUETOOTH)
+        option(getString(R.string.in_call_phone), CallAudioState.ROUTE_EARPIECE)
+        option(getString(R.string.in_call_speaker), CallAudioState.ROUTE_SPEAKER)
+        option(getString(R.string.in_call_bluetooth), CallAudioState.ROUTE_BLUETOOTH)
 
         dialog.setContentView(sheet)
         dialog.window?.apply {
@@ -565,15 +644,15 @@ class InCallActivity : Activity() {
         when (currentRoute) {
             CallAudioState.ROUTE_BLUETOOTH -> {
                 speakerIcon.setImageResource(R.drawable.ic_bluetooth)
-                speakerLabel.text = "Bluetooth"
+                speakerLabel.text = getString(R.string.in_call_bluetooth)
             }
             CallAudioState.ROUTE_SPEAKER -> {
                 speakerIcon.setImageResource(R.drawable.ic_volume_up)
-                speakerLabel.text = "Speaker"
+                speakerLabel.text = getString(R.string.in_call_speaker)
             }
             else -> {
                 speakerIcon.setImageResource(R.drawable.ic_phone_in_talk)
-                speakerLabel.text = "Phone"
+                speakerLabel.text = getString(R.string.in_call_phone)
             }
         }
     }
@@ -599,17 +678,25 @@ class InCallActivity : Activity() {
     }
 
     override fun onDestroy() {
+        if (activeInstance === this) activeInstance = null
+        if (!isChangingConfigurations) {
+            expectingUi = false
+            userLeftCallUi = false
+        }
         timerRunning = false; handler.removeCallbacksAndMessages(null)
         try { boundCall?.unregisterCallback(callCallback) } catch (_: Exception) {}
         GlyphInCallService.currentCallListeners.remove(currentCallListener)
         // Final cleanup — always release the wake lock when the activity is
         // truly destroyed so we never leak it.
         releaseProximityWakeLock()
+        GlyphInCallService.instance?.refreshForegroundNotification()
         super.onDestroy()
     }
 
     override fun onResume() {
         super.onResume()
+        expectingUi = false
+        userLeftCallUi = false
         MainActivity.isAppInForeground = true
         if (!GlyphInCallService.currentCallListeners.contains(currentCallListener)) {
             GlyphInCallService.currentCallListeners.add(currentCallListener)
@@ -631,6 +718,8 @@ class InCallActivity : Activity() {
         if (call != null) {
             updateProximityWakeLock(call.state)
         }
+        // Full-screen UI is up — drop the incoming CallStyle heads-up card.
+        GlyphInCallService.instance?.refreshForegroundNotification()
     }
 
 
@@ -646,6 +735,7 @@ class InCallActivity : Activity() {
         // fires onPause. Releasing the lock here would immediately un-blank
         // the screen, defeating the entire purpose. The wake lock is only
         // released in onDestroy or when the call ends/audio route changes.
+        // Also do NOT treat this as "user left" — proximity pauses look the same.
         GlyphInCallService.currentCallListeners.remove(currentCallListener)
         GlyphInCallService.audioStateListeners.remove(audioStateListener)
     }
@@ -657,14 +747,18 @@ class InCallActivity : Activity() {
     }
 
     override fun onBackPressed() { if (isIncoming) { /* ignore back during ringing */ } else { finish() } }
-    override fun onUserLeaveHint() { super.onUserLeaveHint(); if (!isIncoming) finish() }
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        // True navigation away (Home / Recents / another app) — not proximity blank.
+        userLeftCallUi = true
+        expectingUi = false
+        GlyphInCallService.instance?.refreshForegroundNotification()
+        if (!isIncoming) finish()
+    }
 
     // ── Incoming Call Overlay ─────────────────────────────────────────────────
 
     private fun buildIncomingOverlay(theme: ThemeColors) {
-        val prefs = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
-        val useSlide = prefs.getString("flutter.answer_method", "slide") == "slide"
-
         incomingOverlay = FrameLayout(this).apply {
             setBackgroundColor(theme.background)
             visibility = View.GONE
@@ -674,15 +768,19 @@ class InCallActivity : Activity() {
         val content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(0, dp(80), 0, dp(0))
         }
+        incomingContent = content
 
         val call = GlyphInCallService.currentCall
-        val number = call?.details?.handle?.schemeSpecificPart ?: "Unknown"
+        val number = call?.details?.handle?.schemeSpecificPart ?: getString(R.string.in_call_unknown)
         val contactName = getContactName(number)
         val selectedSimLabel = call?.let { getSimLabelForCall(it) }
         
-        val headerText = if (selectedSimLabel != null) "Call via <b>$selectedSimLabel</b> from" else "Call from"
+        val headerText = if (selectedSimLabel != null) {
+            getString(R.string.in_call_call_via_from, selectedSimLabel)
+        } else {
+            getString(R.string.in_call_call_from)
+        }
         
         content.addView(TextView(this).apply {
             text = android.text.Html.fromHtml(headerText, android.text.Html.FROM_HTML_MODE_LEGACY)
@@ -702,7 +800,7 @@ class InCallActivity : Activity() {
             text = if (contactName?.isNotEmpty() == true) contactName.first().uppercase() else if (number.isNotEmpty()) number.first().toString() else "?"
             setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 46f)
-            typeface = Typeface.create("sans-serif-light", Typeface.NORMAL)
+            DialerTypefaces.apply(this, DialerTypefaces.Role.primary)
             gravity = Gravity.CENTER
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         }
@@ -714,14 +812,14 @@ class InCallActivity : Activity() {
             text = contactName ?: number
             setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
-            typeface = Typeface.create("sans-serif", Typeface.NORMAL)
+            DialerTypefaces.apply(this, DialerTypefaces.Role.pageTitle)
             gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(16) }
         })
 
         // Mobile 077 049 9787
         content.addView(TextView(this).apply {
-            text = if (contactName != null) "Mobile $number" else ""
+            text = if (contactName != null) getString(R.string.in_call_mobile_number, number) else ""
             setTextColor(theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER
@@ -754,18 +852,16 @@ class InCallActivity : Activity() {
         })
         
         msgButton.addView(TextView(this).apply {
-            text = "Message"
+            text = getString(R.string.in_call_message)
             setTextColor(theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
         })
         
         content.addView(msgButton)
 
-        if (useSlide) {
-            content.addView(buildSlideToAnswer(theme))
-        } else {
-            content.addView(buildAnswerDeclineButtons(theme))
-        }
+        val answerControls = buildIncomingAnswerControls(theme)
+        incomingAnswerControls = answerControls
+        content.addView(answerControls)
 
         incomingOverlay.addView(content, FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT
@@ -822,6 +918,24 @@ class InCallActivity : Activity() {
         dialog.show()
     }
 
+    private fun incomingAnswerMethod(): String =
+        FlutterPrefs.getString(this, "answer_method") ?: "slide"
+
+    private fun buildIncomingAnswerControls(theme: ThemeColors): View =
+        when (incomingAnswerMethod()) {
+            "huawei" -> buildHuaweiDragToAnswer(theme)
+            "button" -> buildAnswerDeclineButtons(theme)
+            else -> buildSlideToAnswer(theme)
+        }
+
+    fun rebuildIncomingAnswerControls() {
+        if (!::incomingContent.isInitialized) return
+        incomingAnswerControls?.let { incomingContent.removeView(it) }
+        val controls = buildIncomingAnswerControls(themeColors)
+        incomingAnswerControls = controls
+        incomingContent.addView(controls)
+    }
+
     private fun buildSlideToAnswer(theme: ThemeColors): FrameLayout {
         val container = FrameLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
@@ -840,7 +954,7 @@ class InCallActivity : Activity() {
         
         // Decline text (Left)
         trackBg.addView(TextView(this).apply {
-            text = "Decline"
+            text = getString(R.string.in_call_decline)
             setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER_VERTICAL or Gravity.START
@@ -851,7 +965,7 @@ class InCallActivity : Activity() {
         
         // Answer text (Right)
         trackBg.addView(TextView(this).apply {
-            text = "Answer"
+            text = getString(R.string.in_call_answer)
             setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER_VERTICAL or Gravity.END
@@ -921,6 +1035,257 @@ class InCallActivity : Activity() {
         return container
     }
 
+    private fun buildHuaweiDragToAnswer(theme: ThemeColors): FrameLayout {
+        val endpointSize = dp(60)
+        val handleSize = dp(76)
+        // Smaller inset = endpoints sit nearer screen edges = wider gap from center handle.
+        val endpointInset = dp(24)
+        val trackHeight = dp(96)
+        val snapThreshold = dp(24).toFloat()
+        val handleStrokeColor = if (theme.isLight) theme.onSurface else Color.WHITE
+
+        val track = FrameLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                trackHeight
+            ).apply { leftMargin = dp(24); rightMargin = dp(24); bottomMargin = dp(100) }
+        }
+
+        val endpointOuter = endpointInset + endpointSize / 2f + dp(10)
+
+        val guideLines = HuaweiOutwardGuideLinesView(this).apply {
+            setDotColor(handleStrokeColor)
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            setGapFromCenter(handleSize / 2f + dp(32))
+            setGapFromEdge(endpointOuter)
+        }
+
+        val declineTarget = FrameLayout(this).apply {
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(Color.parseColor("#EA4335"))
+            }
+            layoutParams = FrameLayout.LayoutParams(
+                endpointSize,
+                endpointSize,
+                Gravity.START or Gravity.CENTER_VERTICAL
+            ).apply { leftMargin = endpointInset }
+        }
+        declineTarget.addView(ImageView(this).apply {
+            setImageResource(R.drawable.ic_call_end)
+            setColorFilter(Color.WHITE)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            layoutParams = FrameLayout.LayoutParams(dp(30), dp(30), Gravity.CENTER)
+        })
+
+        val answerTarget = FrameLayout(this).apply {
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(Color.parseColor("#34A853"))
+            }
+            layoutParams = FrameLayout.LayoutParams(
+                endpointSize,
+                endpointSize,
+                Gravity.END or Gravity.CENTER_VERTICAL
+            ).apply { rightMargin = endpointInset }
+        }
+        answerTarget.addView(ImageView(this).apply {
+            setImageResource(R.drawable.ic_call_end)
+            setColorFilter(Color.WHITE)
+            rotation = 135f
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            layoutParams = FrameLayout.LayoutParams(dp(30), dp(30), Gravity.CENTER)
+        })
+
+        val dragHandle = FrameLayout(this).apply {
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(Color.TRANSPARENT)
+                setStroke(dp(2), handleStrokeColor)
+            }
+            layoutParams = FrameLayout.LayoutParams(handleSize, handleSize, Gravity.CENTER)
+            elevation = dp(4).toFloat()
+        }
+
+        track.addView(guideLines)
+        track.addView(declineTarget)
+        track.addView(answerTarget)
+        track.addView(dragHandle)
+
+        track.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View) {
+                guideLines.start()
+            }
+            override fun onViewDetachedFromWindow(v: View) {
+                guideLines.stop()
+            }
+        })
+
+        var answered = false
+        var touchStartRawX = 0f
+        var translationAtDown = 0f
+
+        dragHandle.setOnTouchListener { view, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    touchStartRawX = event.rawX
+                    translationAtDown = view.translationX
+                    answered = false
+                    guideLines.pause()
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (answered) return@setOnTouchListener true
+                    val trackW = track.width.toFloat()
+                    if (trackW <= 0f) return@setOnTouchListener true
+                    val endpointCenterInset = endpointInset + endpointSize / 2f
+                    val txMin = endpointCenterInset - trackW / 2f
+                    val txMax = trackW / 2f - endpointCenterInset
+                    val delta = event.rawX - touchStartRawX
+                    view.translationX = (translationAtDown + delta).coerceIn(txMin, txMax)
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    if (answered) return@setOnTouchListener true
+                    val trackW = track.width.toFloat()
+                    if (trackW <= 0f) return@setOnTouchListener true
+                    val handleCenterX = trackW / 2f + view.translationX
+                    val endpointCenterInset = endpointInset + endpointSize / 2f
+                    val leftCenter = endpointCenterInset
+                    val rightCenter = trackW - endpointCenterInset
+                    when {
+                        kotlin.math.abs(handleCenterX - rightCenter) <= snapThreshold -> {
+                            answered = true
+                            guideLines.stop()
+                            answerCall()
+                        }
+                        kotlin.math.abs(handleCenterX - leftCenter) <= snapThreshold -> {
+                            answered = true
+                            guideLines.stop()
+                            declineCall()
+                        }
+                        else -> {
+                            view.animate().translationX(0f).setDuration(200).start()
+                            guideLines.resume()
+                        }
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+
+        return track
+    }
+
+    /**
+     * Horizontal dotted guides that pulse outward from the center handle toward
+     * the fixed answer/decline icons (Huawei-style affordance).
+     */
+    private class HuaweiOutwardGuideLinesView(context: Context) : View(context) {
+        private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.FILL
+        }
+        private var phase = 0f
+        private var gapFromCenter = 0f
+        private var gapFromEdge = 0f
+        private var dotRadius = 0f
+        private var dotSpacing = 0f
+        private var animator: ValueAnimator? = null
+
+        init {
+            val dm = resources.displayMetrics
+            dotRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2.5f, dm)
+            dotSpacing = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, dm)
+        }
+
+        fun setDotColor(color: Int) {
+            paint.color = color
+        }
+
+        fun setGapFromCenter(px: Float) {
+            gapFromCenter = px
+        }
+
+        fun setGapFromEdge(px: Float) {
+            gapFromEdge = px
+        }
+
+        fun start() {
+            if (animator?.isRunning == true) return
+            animator = ValueAnimator.ofFloat(0f, 1f).apply {
+                duration = 2800L
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+                addUpdateListener {
+                    phase = it.animatedValue as Float
+                    invalidate()
+                }
+                start()
+            }
+        }
+
+        fun pause() {
+            animator?.pause()
+            visibility = INVISIBLE
+        }
+
+        fun resume() {
+            visibility = VISIBLE
+            val a = animator
+            if (a == null) start() else a.resume()
+        }
+
+        fun stop() {
+            animator?.cancel()
+            animator = null
+            visibility = INVISIBLE
+        }
+
+        override fun onDetachedFromWindow() {
+            stop()
+            super.onDetachedFromWindow()
+        }
+
+        override fun onDraw(canvas: Canvas) {
+            val w = width.toFloat()
+            val h = height.toFloat()
+            if (w <= 0f || h <= 0f) return
+
+            val cy = h / 2f
+            val centerX = w / 2f
+            val minGap = dotSpacing * 0.5f
+
+            fun drawSide(toLeft: Boolean) {
+                val inner = if (toLeft) centerX - gapFromCenter else centerX + gapFromCenter
+                val outer = if (toLeft) gapFromEdge else w - gapFromEdge
+                val span = if (toLeft) inner - outer else outer - inner
+                if (span <= minGap) return
+
+                val dotCount = (span / dotSpacing).toInt().coerceAtLeast(2)
+                val travelOffset = phase * span * 0.85f
+                val twoPi = (2f * kotlin.math.PI).toFloat()
+                for (i in 0 until dotCount) {
+                    val along = (i * dotSpacing + travelOffset) % span
+                    val x = if (toLeft) inner - along else inner + along
+                    val norm = along / span
+                    val shimmer = 0.5f + 0.5f * kotlin.math.cos(
+                        twoPi * (phase * 0.9f + norm * 0.55f)
+                    )
+                    val alpha = 0.26f + 0.54f * shimmer
+                    paint.alpha = (alpha * 255).toInt().coerceIn(0, 255)
+                    canvas.drawCircle(x, cy, dotRadius, paint)
+                }
+            }
+
+            drawSide(toLeft = true)
+            drawSide(toLeft = false)
+        }
+    }
+
     private fun buildAnswerDeclineButtons(theme: ThemeColors): LinearLayout {
         val row = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -948,7 +1313,7 @@ class InCallActivity : Activity() {
         btnDeclineLayout = decBtn
         declineCol.addView(decBtn)
         declineCol.addView(TextView(this).apply {
-            text = "Decline"; setTextColor(Color.parseColor("#EA4335"))
+            text = getString(R.string.in_call_decline); setTextColor(Color.parseColor("#EA4335"))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f); gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(10) }
         })
@@ -973,7 +1338,7 @@ class InCallActivity : Activity() {
         btnAnswerLayout = ansBtn
         answerCol.addView(ansBtn)
         answerCol.addView(TextView(this).apply {
-            text = "Answer"; setTextColor(Color.parseColor("#34A853"))
+            text = getString(R.string.in_call_answer); setTextColor(Color.parseColor("#34A853"))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f); gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(10) }
         })
@@ -1078,7 +1443,7 @@ class InCallActivity : Activity() {
                     addView(TextView(this@InCallActivity).apply {
                         text = key; setTextColor(theme.onSurface)
                         setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
-                        typeface = Typeface.create("sans-serif", Typeface.NORMAL)
+                        DialerTypefaces.apply(this, DialerTypefaces.Role.dialKey)
                         gravity = Gravity.CENTER
                     })
                     if (sub.isNotEmpty()) {
@@ -1108,7 +1473,6 @@ class InCallActivity : Activity() {
         mainContent = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(0, dp(56), 0, dp(80))
         }
 
         // ── Top Section (avatar + info) ──
@@ -1133,7 +1497,7 @@ class InCallActivity : Activity() {
         }
         avatarText = TextView(this).apply {
             setTextColor(theme.onSurface); setTextSize(TypedValue.COMPLEX_UNIT_SP, 46f)
-            typeface = Typeface.create("sans-serif-light", Typeface.NORMAL); gravity = Gravity.CENTER
+            DialerTypefaces.apply(this, DialerTypefaces.Role.primary); gravity = Gravity.CENTER
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         }
         avatarContainer.addView(avatarText)
@@ -1141,7 +1505,7 @@ class InCallActivity : Activity() {
 
         nameText = TextView(this).apply {
             setTextColor(theme.onSurface); setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
-            typeface = Typeface.create("sans-serif", Typeface.NORMAL); gravity = Gravity.CENTER
+            DialerTypefaces.apply(this, DialerTypefaces.Role.pageTitle); gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(16); leftMargin = dp(16); rightMargin = dp(16) }
         }
         topSection.addView(nameText)
@@ -1154,7 +1518,7 @@ class InCallActivity : Activity() {
         topSection.addView(numberText)
 
         statusText = TextView(this).apply {
-            text = "Calling…"; setTextColor(theme.onSurfaceVariant); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+            text = getString(R.string.in_call_calling); setTextColor(theme.onSurfaceVariant); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(8) }
         }
@@ -1162,7 +1526,7 @@ class InCallActivity : Activity() {
 
         durationText = TextView(this).apply {
             setTextColor(theme.onSurfaceVariant); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-            typeface = Typeface.create("sans-serif", Typeface.NORMAL); gravity = Gravity.CENTER
+            DialerTypefaces.apply(this, DialerTypefaces.Role.secondary); gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(4) }
         }
         topSection.addView(durationText)
@@ -1200,19 +1564,19 @@ class InCallActivity : Activity() {
             ).apply { leftMargin = dp(16); rightMargin = dp(16) }
         }
 
-        val m = makeBtn(R.drawable.ic_mic_off, "Mute", theme) { toggleMute() }
+        val m = makeBtn(R.drawable.ic_mic_off, getString(R.string.in_call_mute), theme) { toggleMute() }
         muteBtn = m.first; muteIcon = m.second; muteLabel = m.third
         row.addView(wrap(muteBtn, muteLabel))
 
-        val k = makeBtn(R.drawable.ic_dialpad, "Keypad", theme) { toggleKeypad() }
+        val k = makeBtn(R.drawable.ic_dialpad, getString(R.string.in_call_keypad), theme) { toggleKeypad() }
         keypadBtn = k.first; keypadIcon = k.second; keypadLabel = k.third
         row.addView(wrap(keypadBtn, keypadLabel))
 
-        val s = makeBtn(R.drawable.ic_phone_in_talk, "Phone", theme) { showAudioPicker() }
+        val s = makeBtn(R.drawable.ic_phone_in_talk, getString(R.string.in_call_phone), theme) { showAudioPicker() }
         speakerBtn = s.first; speakerIcon = s.second; speakerLabel = s.third
         row.addView(wrap(speakerBtn, speakerLabel))
 
-        val mo = makeBtn(R.drawable.ic_more_vert, "More", theme) { showMoreMenu(theme) }
+        val mo = makeBtn(R.drawable.ic_more_vert, getString(R.string.in_call_more), theme) { showMoreMenu(theme) }
         moreBtn = mo.first; moreIcon = mo.second; moreLabel = mo.third
         row.addView(wrap(moreBtn, moreLabel))
 
@@ -1291,7 +1655,7 @@ class InCallActivity : Activity() {
         fun opt(txt: String, onClick: () -> Unit) {
             sheet.addView(TextView(this@InCallActivity).apply {
                 text = txt; setTextColor(theme.onSurface); setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+                DialerTypefaces.apply(this, DialerTypefaces.Role.button)
                 setPadding(dp(20), dp(16), dp(20), dp(16))
                 background = GradientDrawable().apply { setColor(theme.surfaceContainerHigh); cornerRadius = dp(12).toFloat() }
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { bottomMargin = dp(8) }
@@ -1301,10 +1665,10 @@ class InCallActivity : Activity() {
 
         // Add call — always visible, but disabled when not active
         val addCallTv = TextView(this@InCallActivity).apply {
-            text = "Add call"
+            text = getString(R.string.in_call_add_call)
             setTextColor(if (isCallActive) theme.onSurface else theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-            typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+            DialerTypefaces.apply(this, DialerTypefaces.Role.button)
             setPadding(dp(20), dp(16), dp(20), dp(16))
             background = GradientDrawable().apply { setColor(theme.surfaceContainerHigh); cornerRadius = dp(12).toFloat() }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { bottomMargin = dp(8) }
@@ -1317,7 +1681,7 @@ class InCallActivity : Activity() {
             }
         }
         sheet.addView(addCallTv)
-        opt("Change SIM") { changeSim() }
+        opt(getString(R.string.in_call_change_sim)) { changeSim() }
 
         dialog.setContentView(sheet)
         dialog.window?.apply {
@@ -1344,6 +1708,46 @@ class InCallActivity : Activity() {
         }
     }
 
+    private fun applyEdgeToEdge(theme: ThemeColors) {
+        // Fullscreen theme can hide the status bar; clear it so we draw edge-to-edge
+        // with visible system bars over a solid call background.
+        @Suppress("DEPRECATION")
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes = window.attributes.apply {
+                layoutInDisplayCutoutMode =
+                    WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+            window.isStatusBarContrastEnforced = false
+        }
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            isAppearanceLightStatusBars = theme.isLight
+            isAppearanceLightNavigationBars = theme.isLight
+            show(WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.navigationBars())
+        }
+    }
+
+    private fun applyCallScreenInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { _, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            val bottomExtra = dp(8)
+            mainContent.setPadding(0, bars.top, 0, bars.bottom + bottomExtra)
+            if (::incomingContent.isInitialized) {
+                incomingContent.setPadding(0, bars.top, 0, bars.bottom + bottomExtra)
+            }
+            insets
+        }
+        ViewCompat.requestApplyInsets(rootLayout)
+    }
+
     private fun dp(v: Int): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v.toFloat(), resources.displayMetrics).toInt()
 
     data class ThemeColors(
@@ -1356,21 +1760,15 @@ class InCallActivity : Activity() {
         val isLight: Boolean
     ) {
         companion object {
+            private const val DEFAULT_CALL_BG = 0xFF000000.toInt()
+
             fun get(context: Context): ThemeColors {
-                val prefs = context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
-                val themeMode = prefs.getString("flutter.theme_mode", "system") ?: "system"
-                
-                val isLight = when (themeMode) {
-                    "light" -> true
-                    "dark" -> false
-                    else -> {
-                        (context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_NO
-                    }
-                }
-                
+                val background = FlutterPrefs.getInt(context, "call_bg_color") ?: DEFAULT_CALL_BG
+                val isLight = ColorUtils.calculateLuminance(background) > 0.5
+
                 return if (isLight) {
                     ThemeColors(
-                        background = Color.parseColor("#F3F3F3"),
+                        background = background,
                         onSurface = Color.parseColor("#1C1B1F"),
                         onSurfaceVariant = Color.parseColor("#49454F"),
                         surfaceContainer = Color.parseColor("#E6E1E5"),
@@ -1380,7 +1778,7 @@ class InCallActivity : Activity() {
                     )
                 } else {
                     ThemeColors(
-                        background = Color.parseColor("#141218"),
+                        background = background,
                         onSurface = Color.parseColor("#E6E1E5"),
                         onSurfaceVariant = Color.parseColor("#B0B0B0"),
                         surfaceContainer = Color.parseColor("#2B2930"),

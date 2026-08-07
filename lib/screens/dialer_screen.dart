@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-
+import 'package:nothing_dialer/l10n/app_localizations.dart';
 /// A minimal but functional dial-pad screen.
 /// Required for Default Dialer apps – otherwise the system will not grant
 /// the Default Dialer role.
@@ -45,9 +44,10 @@ class _DialerScreenState extends State<DialerScreen> {
           .invokeMethod('placeCall', _digits);
     } on PlatformException catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Call error: ${e.message}'),
+            content: Text(l10n.callError(e.message ?? '')),
             backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
           ),
         );
@@ -57,13 +57,14 @@ class _DialerScreenState extends State<DialerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
             const SizedBox(height: 24),
-            _buildDisplay(),
+            _buildDisplay(l10n),
             const SizedBox(height: 32),
             _buildDialPad(),
             const SizedBox(height: 24),
@@ -75,7 +76,7 @@ class _DialerScreenState extends State<DialerScreen> {
     );
   }
 
-  Widget _buildDisplay() {
+  Widget _buildDisplay(AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Row(
@@ -83,7 +84,7 @@ class _DialerScreenState extends State<DialerScreen> {
         children: [
           Expanded(
             child: Text(
-              _digits.isEmpty ? 'Enter number' : _digits,
+              _digits.isEmpty ? l10n.enterPhoneNumber : _digits,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: _digits.isEmpty

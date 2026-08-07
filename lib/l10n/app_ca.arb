@@ -1,0 +1,759 @@
+{
+  "@@locale": "ca",
+  "appTitle": "Marcador de res",
+  "settings": "Configuració",
+  "settingsSearchHint": "Configuració de cerca",
+  "settingsSearchNoResults": "No s'ha trobat cap configuració",
+  "general": "General",
+  "theme": "Tema",
+  "themeSystemDefault": "Sistema per defecte",
+  "themeLight": "Llum",
+  "themeDark": "Fosc",
+  "themeFollowSystem": "Seguiu la configuració del sistema",
+  "themeAlwaysLight": "Feu servir sempre un tema lleuger",
+  "themeAlwaysDark": "Feu servir sempre un tema fosc",
+  "language": "Llengua",
+  "languageDeviceDefault": "Dispositiu predeterminat",
+  "languagePickerTitle": "Llengua",
+  "languageSearchHint": "Cerca idiomes",
+  "font": "Font",
+  "fontSystem": "Sistema predeterminat",
+  "fontNdot": "Res (NDot)",
+  "fontSerif": "Robot Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "La baixada de la font ha fallat. Comprova la teva connexió i torna-ho a provar.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Font",
+  "fontPreviewSample": "Marcador de res",
+  "fontAppWide": "Tipus de lletra de l'aplicació",
+  "fontApplyTo": "Aplicar a",
+  "fontApplyEntireApp": "Tota l'aplicació",
+  "fontApplyEntireAppSubtitle": "El mateix tipus de lletra a tot arreu, incloses les trucades",
+  "fontApplyTitlesOnly": "Títols i capçaleres",
+  "fontApplyTitlesOnlySubtitle": "Només els títols grans i les capçaleres de seccions",
+  "fontApplyCustomize": "Personalitza",
+  "fontApplyCustomizeSubtitle": "Trieu el tipus de lletra per pantalla i tipus de text",
+  "fontCustomizeSection": "Personalitza per pantalla",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Títol de la pàgina",
+  "fontRoleSectionHeader": "Capçalera de la secció",
+  "fontRolePrimary": "Text primari",
+  "fontRoleSecondary": "Text secundari",
+  "fontRoleButton": "Botons",
+  "fontRoleDialKey": "Tecles del teclat",
+  "fontSurfaceRecents": "Recents",
+  "fontSurfaceContacts": "Contactes",
+  "fontSurfaceSettings": "Configuració",
+  "fontSurfaceDialpad": "Teclat de marcatge",
+  "fontSurfaceShell": "Navegació",
+  "fontSurfaceDefaultDialer": "Indicador de marcatge predeterminat",
+  "fontSurfaceFavourites": "Preferits",
+  "fontSurfaceBlocked": "Números bloquejats",
+  "fontSurfaceContactDetail": "Detall de contacte",
+  "fontSurfaceCallHistory": "Historial de trucades",
+  "fontSurfaceSheets": "Llençols i recol·lectors",
+  "fontSurfaceInCall": "Pantalla de trucada",
+  "fontSubtitleEntireApp": "{font} — aplicació sencera",
+  "fontSubtitleTitlesOnly": "{font}: només títols",
+  "fontSubtitleCustomize": "Personalitzat per pantalla",
+  "background": "Fons",
+  "accent": "Accent",
+  "lightBackground": "Fons clar",
+  "lightAccent": "Accent lleuger",
+  "darkBackground": "Fons fosc",
+  "darkAccent": "Accent fosc",
+  "callBackground": "Fons de la trucada",
+  "appIcon": "Icona de l'aplicació",
+  "answerMethod": "Mètode de resposta",
+  "answerSlide": "Feu lliscar per respondre",
+  "answerSlideSubtitle": "Fes lliscar el dit cap a l'esquerra/dreta a la barra, com ara Google Phone",
+  "answerButton": "Toc de botó",
+  "answerButtonSubtitle": "Toqueu els botons de resposta o de rebutjar",
+  "answerHuawei": "Estil Huawei",
+  "answerHuaweiSubtitle": "Arrossegueu el cercle al telèfon verd per respondre",
+  "answerHuaweiTileSubtitle": "Huawei: arrossegueu a verd/vermell",
+  "calling": "Trucant",
+  "defaultSim": "SIM per defecte",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Preguntar cada cop",
+  "askEveryTimeSubtitle": "Mostra el selector de SIM abans de cada trucada",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "No s'han trobat targetes SIM",
+  "couldNotLoadSims": "No s'han pogut carregar les SIM: {error}",
+  "allFavourites": "Tots els favorits",
+  "allFavouritesSubtitle": "Reordenar, eliminar i afegir dels contactes",
+  "blockedNumbers": "Números bloquejats",
+  "blockedNumbersSubtitle": "Veure i desbloquejar números",
+  "soundsAndVibration": "Sons i vibracions",
+  "soundsAndVibrationSubtitle": "To de trucada, vibració, tons del teclat de marcatge",
+  "couldNotOpenSettings": "No s'ha pogut obrir la configuració: {error}",
+  "frequentlyContacted": "Contactat amb freqüència",
+  "numberOfRecords": "Nombre de registres",
+  "timePeriod": "Període de temps",
+  "periodLast24Hours": "Últimes 24 hores",
+  "periodLast24HoursSubtitle": "Trucades de l'últim dia",
+  "periodLast7Days": "Últims 7 dies",
+  "periodLast7DaysSubtitle": "Trucades de la setmana passada",
+  "periodLast30Days": "Últims 30 dies",
+  "periodLast30DaysSubtitle": "Trucades del mes passat",
+  "periodLast12Months": "Últims 12 mesos",
+  "periodLast12MonthsSubtitle": "Trucades de l'any passat",
+  "periodAllTime": "Tot el temps",
+  "periodAllTimeSubtitle": "Historial de trucades sencer",
+  "frequentMaxOff": "Apagat",
+  "frequentMaxCount": "{count} contactes",
+  "torchBlink": "Parpelleig de la torxa",
+  "torchIncomingCall": "Torxa de trucades entrants",
+  "torchOutgoingCall": "Torxa de trucada sortint",
+  "torchOngoingCall": "Torxa de trucada en curs",
+  "torchIncomingInterval": "Interval de parpelleig entrant",
+  "torchOutgoingInterval": "Interval de parpelleig de sortida",
+  "torchOngoingInterval": "Interval de parpelleig en curs",
+  "torchOff": "Apagat",
+  "torchOffIncomingSubtitle": "Sense torxa mentre sona",
+  "torchOffOutgoingSubtitle": "Sense llanterna mentre marca",
+  "torchOffOngoingSubtitle": "No hi ha llanterna durant la trucada activa",
+  "torchFixedInterval": "Interval fix",
+  "torchFixedIntervalSubtitle": "Parpellejar a una velocitat fixada",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} parpellejar",
+  "flashlightUnavailable": "La llanterna no està disponible en aquest dispositiu",
+  "glyphLights": "Llums de glifo",
+  "glyphCallingAnimation": "Animació de trucades de glif",
+  "glyphOngoingAnimation": "Animació de trucades en curs de glif",
+  "glyphNone": "Cap",
+  "glyphNoneOutgoingSubtitle": "Desactiveu els llums de glifo per a les trucades sortints",
+  "glyphNoneInCallSubtitle": "Desactiveu les llums glifs mentre esteu activament en trucada",
+  "glyphBreathProgress": "Respiració i progrés",
+  "glyphBreathProgressSubtitle": "Les llums respiren mentre la línia s'omple durant 65 segons",
+  "glyphAccumulate": "Acumular",
+  "glyphAccumulateSubtitle": "Animació acumulada en llums C1-C4",
+  "glyphSingle": "Solter",
+  "glyphSingleSubtitle": "Llum única que es mou per C1-C4",
+  "glyphBreath": "Respira",
+  "glyphBreathSubtitle": "Trieu llums i velocitat",
+  "glyphSteady": "Estable",
+  "glyphSteadySubtitle": "Els llums seleccionats es mantenen encesos",
+  "breathSettings": "Configuració de la respiració",
+  "activeLights": "Llums actives",
+  "lightsCount": "{count} llums",
+  "speedSettings": "Configuració de velocitat",
+  "speedSettingsDelay": "{ms}ms de retard",
+  "durationAndSpeed": "Durada i velocitat",
+  "durationSpeedSummary": "{duration}s de durada, {interval}ms d'interval",
+  "cancel": "Cancel·la",
+  "done": "Fet",
+  "save": "Desa",
+  "block": "Bloc",
+  "delete": "Suprimeix",
+  "recents": "Recents",
+  "contacts": "Contactes",
+  "hideFavouritesOnRecents": "Amaga els preferits a Recents",
+  "showFavouritesOnRecents": "Mostra els preferits a Recents",
+  "ongoingCall": "Trucada en curs",
+  "setAsDefaultTitle": "SET COM\nPER Defecte",
+  "setAsDefaultBody": "Per utilitzar Nothing Dialer, s'ha de configurar com a aplicació de telèfon predeterminada. Això us permet gestionar les trucades, veure l'historial i utilitzar animacions de Glyph.",
+  "setAsDefaultButton": "ESTABLEIX COM A PREDETERMINAT",
+  "nothingDialerBrand": "MARCADOR DE RES 1",
+  "favourites": "Preferits",
+  "addFavourite": "Afegeix preferit",
+  "favouritesDrawerHint": "Utilitzeu el menú per afegir contactes. Toqueu fora del calaix o feu-lo lliscar per tancar-lo. Destaca un contacte a partir de les seves dades o mantén premut una trucada a Recents.",
+  "menu": "Menú",
+  "noFavouritesYet": "Encara no hi ha cap favorit.\nObriu el menú per afegir-ne un o destaca un contacte.",
+  "contactsPermissionNeeded": "Cal permís de contactes",
+  "chooseContact": "Trieu contacte",
+  "noPhone": "Sense telèfon",
+  "pickNumber": "Tria el número",
+  "contactHasNoPhone": "Aquest contacte no té número de telèfon",
+  "blockNumber": "Número de bloc",
+  "enterPhoneNumber": "Introduïu el número de telèfon",
+  "unblockedDisplay": "Desbloquejat {display}",
+  "couldNotUnblockNumber": "No s'ha pogut desbloquejar el número",
+  "blockedSummary": "{blocked} bloquejat • {matched} coincideixen",
+  "contactsPermissionMissing": "Falta el permís de contactes. Toca per arreglar.",
+  "noBlockedNumbers": "No hi ha números bloquejats",
+  "unknownContact": "Contacte desconegut",
+  "unblock": "Desbloqueja",
+  "permissionNeeded": "Cal permís",
+  "grantPhonePermission": "Doneu permís al telèfon per veure el vostre historial de trucades.",
+  "grantContactsPermission": "Doneu permís als contactes per veure la vostra llibreta d'adreces.",
+  "openSettings": "Obriu Configuració",
+  "tryAgain": "Torna-ho a provar",
+  "couldNotLoadContacts": "No s'han pogut carregar els contactes",
+  "contactsLoadError": "S'ha produït un error llegint la teva llibreta d'adreces.",
+  "noContactsFound": "No s'han trobat contactes",
+  "contactsEmptySubtitle": "Els contactes del vostre dispositiu apareixeran aquí.",
+  "searchContacts": "Cerca contactes...",
+  "searchRecentCalls": "Cerca trucades recents",
+  "fromContacts": "De contactes",
+  "recentsSearchSection": "Recerca recent",
+  "recentsSearchShowContacts": "Mostra els contactes a la cerca",
+  "recentsSearchShowContactsSubtitle": "Mentre cerques Recents, també mostra les persones que coincideixen de la teva llibreta d'adreces a sota dels resultats de l'historial de trucades.",
+  "voiceSearch": "Cerca per veu",
+  "createNewContact": "Crea un contacte nou",
+  "callError": "Error de trucada: {error}",
+  "noRecentCalls": "No hi ha trucades recents",
+  "callHistoryEmpty": "El vostre historial de trucades apareixerà aquí.",
+  "loadMore": "Carregueu més",
+  "frequentlyContactedHeader": "Contacta amb freqüència",
+  "recentHistory": "Història recent",
+  "noFavouritesRecentsHint": "Encara no hi ha cap favorit. Destaca un contacte, mantén premut una trucada o utilitza la pestanya Preferits.",
+  "copyNumber": "Número de còpia",
+  "editNumberBeforeCall": "Edita el número abans de trucar",
+  "removeFromFavourites": "Elimina dels preferits",
+  "addToFavourites": "Afegeix als preferits",
+  "blockNumberQuestion": "Número de bloc?",
+  "blockNumberConfirm": "Ja no rebràs trucades ni missatges de text des de {number}.",
+  "blocked": "Bloquejat",
+  "couldNotBlock": "No s'ha pogut bloquejar",
+  "contactNotOnDevice": "El contacte no s'ha desat en aquest dispositiu",
+  "unblocked": "Desbloquejat",
+  "numberCopied": "Número copiat",
+  "showLess": "Mostra menys",
+  "showAllTimes": "Mostra totes les hores",
+  "mostRecent": "Més recent · {time}",
+  "videoCall": "Videotrucada",
+  "couldNotPlaceVideoCall": "No s'ha pogut fer una videotrucada",
+  "message": "Missatge",
+  "couldNotOpenMessaging": "No s'ha pogut obrir l'aplicació de missatgeria",
+  "history": "Història",
+  "viewContact": "Veure contacte",
+  "addToContact": "Afegeix al contacte",
+  "callTypeMissed": "Faltat",
+  "callTypeRejected": "Rebutjat",
+  "callTypeIncoming": "Entrant",
+  "callTypeOutgoing": "Sortint",
+  "today": "Avui",
+  "yesterday": "Ahir",
+  "justNow": "Just ara",
+  "minutesAgo": "fa {count} min",
+  "hoursAgo": "fa {count} h",
+  "filterAll": "Tots",
+  "filterMissed": "Faltat",
+  "filterContacts": "Contactes",
+  "filterNonContacts": "No-contactes",
+  "iconUpdated": "Icona actualitzada. La pantalla d'inici pot trigar un moment a actualitzar-se.",
+  "iconSavedRelease": "Elecció guardada. La icona de la pantalla d'inici s'actualitza a les versions.",
+  "couldNotChangeIcon": "No s'ha pogut canviar la icona: {error}",
+  "launcherClassicBlack": "Clàssic (negre)",
+  "launcherLight": "Llum",
+  "launcherNothingRed": "Res de vermell",
+  "launcherDarkGrey": "Gris fosc",
+  "launcherCream": "Crema",
+  "launcherRetroPhone": "Telèfon retro",
+  "launcherRetroPhoneLight": "Telèfon retro (llum)",
+  "voiceSearchUnavailable": "La cerca per veu no està disponible en aquest dispositiu.",
+  "voiceSearchFailed": "La cerca per veu ha fallat: {error}",
+  "customColor": "Personalitzat",
+  "selectColor": "Seleccioneu el color",
+  "reset": "Restableix",
+  "simPickerTitle": "Trieu SIM",
+  "simChooseForCall": "Trieu SIM per a aquesta trucada",
+  "defaultSimAsk": "Preguntar cada cop",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Dades de contacte",
+  "call": "Truca",
+  "share": "Comparteix",
+  "favourite": "Favorit",
+  "unfavourite": "Desfavorit",
+  "blockContact": "Bloqueja el contacte",
+  "unblockContact": "Desbloqueja el contacte",
+  "deleteContact": "Suprimeix el contacte",
+  "phone": "Telèfon",
+  "email": "Correu electrònic",
+  "ringtone": "To de trucada",
+  "defaultRingtone": "Per defecte",
+  "simForContact": "SIM per a aquest contacte",
+  "callHistoryTitle": "Historial de trucades",
+  "noCallsWithNumber": "No hi ha trucades amb aquest número",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Animació de glifos",
+  "inCallGlyphAnimationStyle": "Animació de glifos durant la trucada",
+  "recordsOff": "Apagat",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "SIM per defecte",
+  "nothingPhoneOnly": "Res Només per telèfon",
+  "nothingPhoneOnlySubtitle": "Les funcions de Glyph requereixen un telèfon Nothing",
+  "custom": "Personalitzat",
+  "presetColorHex": "Preestablert · {hex}",
+  "customColorHex": "Personalitzat · {hex}",
+  "oneContact": "1 contacte",
+  "upToContacts": "Fins a {count} contactes",
+  "answerButtonTapSubtitle": "Toca el botó per respondre",
+  "filterCalls": "Filtra les trucades",
+  "filterTooltip": "Filtre",
+  "settingsTooltip": "Configuració",
+  "filterAllSubtitle": "Registre de trucades sencer",
+  "filterMissedSubtitle": "Faltat i rebutjat",
+  "filterContactsSubtitle": "Les trucades coincideixen amb un contacte desat",
+  "filterNonContactsSubtitle": "Números que no es troben a la vostra llibreta d'adreces",
+  "ongoingCallWithDetail": "Trucada en curs: {detail}",
+  "defaultSimForCalls": "SIM predeterminada per a trucades",
+  "blinkInterval": "Interval de parpelleig",
+  "close": "Tancar",
+  "frequentlyContactedInfoBody": "Mostra els vostres números de telèfon més trucats a la part superior de la pestanya Recents, en funció de quantes trucades entrants, sortints, perdudes o rebutjades heu tingut amb cada número en el període de temps que trieu.\n\nNombre de registres: establiu-lo a 0 per desactivar-ho. Utilitzeu 1–20 per mostrar tants contactes principals.\n\nEl període de temps només s'aplica quan es mostra almenys un contacte.",
+  "breathSettingsSpeedSummary": "{count} llums, {ms}ms de velocitat",
+  "deleteContactQuestion": "Vols suprimir el contacte?",
+  "deleteContactBody": "Aquest contacte se suprimirà permanentment del teu dispositiu.",
+  "blockContactQuestion": "Bloquejar el contacte?",
+  "unblockContactQuestion": "Vols desbloquejar el contacte?",
+  "blockContactBody": "Ja no rebràs trucades ni missatges de text d'aquest contacte.",
+  "unblockContactBody": "Començaràs a rebre trucades i missatges de text d'aquest contacte.",
+  "contactBlocked": "Contacte bloquejat",
+  "contactUnblocked": "Contacte desbloquejat",
+  "noPhoneNumbersToBlock": "No hi ha números de telèfon per bloquejar",
+  "simSameAsSystem": "Igual que el sistema",
+  "simSameAsSystemSubtitle": "Segueix la SIM predeterminada a Configuració",
+  "simAskEveryTimeForContact": "Mostra sempre el selector de SIM per a aquest contacte",
+  "ringtoneSetForContact": "To de trucada establert globalment per a aquest contacte",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "No s'ha pogut escollir el to de trucada: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Error: {error}",
+  "noCallHistoryFound": "No s'ha trobat cap historial de trucades",
+  "speedDialVoicemail": "Marcatge ràpid: bústia de veu",
+  "shareContactSubject": "Contacte: {name}",
+  "contactInfo": "Informació de contacte",
+  "dontAskAgainSim": "No ho tornis a preguntar",
+  "simDontAskAgainSubtitle": "Utilitzeu aquesta SIM per defecte (canvi a Configuració)",
+  "addContact": "Afegeix un contacte",
+  "createContact": "Crear contacte",
+  "paste": "Enganxa",
+  "clear": "Clar",
+  "returnToCall": "Torna a trucar",
+  "numberOfRecordsTitle": "Nombre de registres",
+  "recordsPickerSubtitle": "Quantes entrades amb contactes freqüents per mostrar (0 = desactivada)",
+  "torchInfoTitle": "Parpelleig de la torxa",
+  "torchInfoBody": "Parpelleja el flaix de la càmera durant les trucades entrants, sortints o en curs. Independent de les llums Glyph.",
+  "glyphMapTitle": "Disseny de glifs",
+  "glyphMapBody": "Nothing Phone 1 Glyph zones LED. Les animacions de sortida i de trucada utilitzen aquests canals.",
+  "answerMethodTitle": "Mètode de resposta",
+  "glyphOutgoingCallStyleTitle": "Estil de trucada sortint",
+  "glyphInCallAnimationTitle": "Animació de glif durant la trucada",
+  "themePickerTitle": "Tema",
+  "torchIncomingTitle": "Torxa de trucades entrants",
+  "torchOutgoingTitle": "Torxa de trucada sortint",
+  "torchOngoingTitle": "Torxa de trucada en curs",
+  "timePeriodTitle": "Període de temps",
+  "ok": "D'acord",
+  "confirmDeleteCall": "Vols suprimir aquesta trucada de l'historial?",
+  "confirmDeleteAllCalls": "Vols suprimir totes les trucades amb aquest número?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Envia un missatge",
+  "addToExistingContactAction": "Afegeix a un contacte",
+  "mobileLabel": "Mòbil",
+  "callingSimForContactTitle": "S'està trucant a la SIM per a aquest contacte",
+  "contactSettings": "Configuració de contacte",
+  "setCallingSim": "Estableix la SIM de trucada",
+  "contactRingtone": "To de trucada de contacte",
+  "shareContact": "Comparteix el contacte",
+  "blockNumbers": "Bloc de números",
+  "unblockNumbers": "Desbloquejar números",
+  "connectedApps": "Aplicacions connectades",
+  "simNotSet": "No configurat",
+  "ringtoneDefault": "Per defecte",
+  "customRingtone": "Personalitzat",
+  "aboutSection": "Sobre",
+  "aboutFeedbackSection": "Sobre i comentaris",
+  "aboutDescription": "Nothing Dialer és de codi obert. Si sou desenvolupador, podeu explorar el codi i contribuir.",
+  "aboutViewSource": "Veure a GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "No s'ha pogut obrir l'enllaç",
+  "reviewSection": "Revisió",
+  "reviewDescription": "Gaudeix de Nothing Dialer? La teva puntuació a Google Play ajuda els altres a trobar l'aplicació.",
+  "reviewRateOnPlay": "Valora a Google Play",
+  "reviewRateOnPlaySubtitle": "Deixa una puntuació sense sortir de l'aplicació",
+  "reviewCouldNotOpen": "No s'ha pogut obrir Google Play",
+  "breathSpeed": "Velocitat de la respiració",
+  "breathSpeedBlinkHint": "Baix = parpelleig, més alt = respiració lenta",
+  "speedSliderHint": "Baix = més ràpid, més alt = més lent",
+  "swatchDefault": "Per defecte",
+  "customAccentColorPicker": "Color d'accent personalitzat",
+  "customLightBackgroundPicker": "Fons clar personalitzat",
+  "customDarkBackgroundPicker": "Fons fosc personalitzat",
+  "customCallBackgroundPicker": "Fons de trucada personalitzat",
+  "ongoingCallStyleTitle": "Estil de trucada en curs",
+  "glyphMapUnavailable": "El mapa de glifs no està disponible",
+  "animationDelayRange": "Retard de l'animació (1s - 10s)",
+  "animationDelayRangeSingle": "Retard de l'animació (0,1 s - 10 s)",
+  "inCallMute": "Silenciar",
+  "inCallKeypad": "Teclat",
+  "inCallSpeaker": "Altaveu",
+  "inCallMore": "Més",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Telèfon",
+  "inCallAddCall": "Afegeix una trucada",
+  "inCallChangeSim": "Canvia SIM",
+  "inCallDecline": "Declinar",
+  "inCallAnswer": "Respon",
+  "inCallMessage": "Missatge",
+  "inCallCalling": "S'està trucant…",
+  "inCallIncoming": "Trucada entrant",
+  "inCallSelectSim": "Seleccioneu SIM...",
+  "inCallSwitchingSim": "S'està canviant la SIM...",
+  "inCallCallEnded": "La trucada ha finalitzat",
+  "inCallCallingVia": "Trucant per {sim}",
+  "inCallCallingViaHtml": "Trucant per <b>{sim}</b>",
+  "inCallChooseSim": "Trieu SIM per a aquesta trucada",
+  "inCallDragAnswerDecline": "Arrossegueu cap a la dreta per respondre · Arrossegueu cap a l'esquerra per rebutjar",
+  "inCallMobileNumber": "Mòbil {number}",
+  "inCallAudioRouteCurrent": "{label} (Actual)",
+  "inCallCallViaFrom": "Truqueu a través del <b>{sim}</b> des de",
+  "inCallCallFrom": "Truca des de",
+  "inCallUnknown": "Desconegut",
+  "selectContactRingtone": "Seleccioneu el to de trucada de contacte",
+  "speakToSearchPrompt": "Parla per buscar",
+  "phonePermissionRequired": "Cal permís per telèfon",
+  "callFailed": "La trucada ha fallat: {error}",
+  "callPermissionDenied": "S'ha denegat el permís de trucada",
+  "alreadyDefaultDialer": "Ja està configurat com a marcador predeterminat",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

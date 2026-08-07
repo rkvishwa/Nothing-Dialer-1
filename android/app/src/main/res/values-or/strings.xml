@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">ମୂକ</string>
+    <string name="in_call_keypad">କୀପ୍ୟାଡ୍ |</string>
+    <string name="in_call_speaker">ବକ୍ତା</string>
+    <string name="in_call_more">ଅଧିକ</string>
+    <string name="in_call_bluetooth">ବ୍ଲୁଟୁଥ୍</string>
+    <string name="in_call_phone">ଫୋନ୍ |</string>
+    <string name="in_call_add_call">କଲ୍ ଯୋଡନ୍ତୁ |</string>
+    <string name="in_call_change_sim">ସିମ୍ ପରିବର୍ତ୍ତନ କରନ୍ତୁ |</string>
+    <string name="in_call_decline">ଅଗ୍ରାହ୍ୟ କରନ୍ତୁ |</string>
+    <string name="in_call_answer">ଉତ୍ତର</string>
+    <string name="in_call_message">ବାର୍ତ୍ତା |</string>
+    <string name="in_call_calling">କଲ୍ କରୁଛି…</string>
+    <string name="in_call_incoming">ଆସୁଥିବା କଲ୍</string>
+    <string name="in_call_select_sim">ସିମ୍ ଚୟନ କରନ୍ତୁ…</string>
+    <string name="in_call_switching_sim">ସିମ୍ ସୁଇଚ୍…</string>
+    <string name="in_call_call_ended">କଲ୍ ସମାପ୍ତ ହେଲା |</string>
+    <string name="in_call_calling_via">⟦0 via ମାଧ୍ୟମରେ କଲ୍ କରୁଛି |</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ମାଧ୍ୟମରେ କଲ୍ କରୁଛି |</string>
+    <string name="in_call_choose_sim">ଏହି କଲ୍ ପାଇଁ ସିମ୍ ବାଛନ୍ତୁ |</string>
+    <string name="in_call_drag_answer_decline">ଉତ୍ତର ଦେବାକୁ ଡାହାଣକୁ ଟାଣନ୍ତୁ · ପ୍ରତ୍ୟାଖ୍ୟାନ କରିବାକୁ ବାମକୁ ଟାଣନ୍ତୁ |</string>
+    <string name="in_call_mobile_number">ମୋବାଇଲ୍ %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (ସାମ୍ପ୍ରତିକ)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ମାଧ୍ୟମରେ କଲ୍ କରନ୍ତୁ |</string>
+    <string name="in_call_call_from">ଠାରୁ କଲ୍ କରନ୍ତୁ |</string>
+    <string name="in_call_unknown">ଅଜ୍ଞାତ</string>
+    <string name="in_call_sim_slot">ସିମ୍ %1$d</string>
+    <string name="native_select_contact_ringtone">କଣ୍ଟାକ୍ଟ ରିଙ୍ଗଟୋନ୍ ଚୟନ କରନ୍ତୁ |</string>
+    <string name="native_speak_to_search">ଖୋଜିବାକୁ କୁହନ୍ତୁ |</string>
+    <string name="native_phone_permission_required">ଫୋନ୍ ଅନୁମତି ଆବଶ୍ୟକ |</string>
+    <string name="native_call_failed">କଲ୍ ବିଫଳ ହେଲା: %1$s</string>
+    <string name="native_call_permission_denied">କଲ୍ ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ |</string>
+    <string name="native_already_default_dialer">ପୂର୍ବରୁ ଡିଫଲ୍ଟ ଡାଏଲର୍ ଭାବରେ ସେଟ୍ ହୋଇଛି |</string>
+</resources>

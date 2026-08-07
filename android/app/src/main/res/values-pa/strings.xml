@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">ਚੁੱਪ</string>
+    <string name="in_call_keypad">ਕੀਪੈਡ</string>
+    <string name="in_call_speaker">ਸਪੀਕਰ</string>
+    <string name="in_call_more">ਹੋਰ</string>
+    <string name="in_call_bluetooth">ਬਲੂਟੁੱਥ</string>
+    <string name="in_call_phone">ਫ਼ੋਨ</string>
+    <string name="in_call_add_call">ਕਾਲ ਸ਼ਾਮਲ ਕਰੋ</string>
+    <string name="in_call_change_sim">ਸਿਮ ਬਦਲੋ</string>
+    <string name="in_call_decline">ਅਸਵੀਕਾਰ ਕਰੋ</string>
+    <string name="in_call_answer">ਜਵਾਬ</string>
+    <string name="in_call_message">ਸੁਨੇਹਾ</string>
+    <string name="in_call_calling">ਕਾਲ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...</string>
+    <string name="in_call_incoming">ਇਨਕਮਿੰਗ ਕਾਲ</string>
+    <string name="in_call_select_sim">ਸਿਮ ਚੁਣੋ...</string>
+    <string name="in_call_switching_sim">ਸਿਮ ਬਦਲਿਆ ਜਾ ਰਿਹਾ ਹੈ...</string>
+    <string name="in_call_call_ended">ਕਾਲ ਸਮਾਪਤ ਹੋਈ</string>
+    <string name="in_call_calling_via">%1$s ਰਾਹੀਂ ਕਾਲ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ਰਾਹੀਂ ਕਾਲ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ</string>
+    <string name="in_call_choose_sim">ਇਸ ਕਾਲ ਲਈ ਸਿਮ ਚੁਣੋ</string>
+    <string name="in_call_drag_answer_decline">ਜਵਾਬ ਦੇਣ ਲਈ ਸੱਜੇ ਘਸੀਟੋ · ਅਸਵੀਕਾਰ ਕਰਨ ਲਈ ਖੱਬੇ ਪਾਸੇ ਖਿੱਚੋ</string>
+    <string name="in_call_mobile_number">ਮੋਬਾਈਲ %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (ਮੌਜੂਦਾ)</string>
+    <string name="in_call_call_via_from">ਤੋਂ &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ਰਾਹੀਂ ਕਾਲ ਕਰੋ</string>
+    <string name="in_call_call_from">ਤੋਂ ਕਾਲ ਕਰੋ</string>
+    <string name="in_call_unknown">ਅਗਿਆਤ</string>
+    <string name="in_call_sim_slot">ਸਿਮ %1$d</string>
+    <string name="native_select_contact_ringtone">ਸੰਪਰਕ ਰਿੰਗਟੋਨ ਚੁਣੋ</string>
+    <string name="native_speak_to_search">ਖੋਜ ਕਰਨ ਲਈ ਬੋਲੋ</string>
+    <string name="native_phone_permission_required">ਫ਼ੋਨ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੈ</string>
+    <string name="native_call_failed">ਕਾਲ ਅਸਫਲ ਹੋਈ: %1$s</string>
+    <string name="native_call_permission_denied">ਕਾਲ ਦੀ ਇਜਾਜ਼ਤ ਅਸਵੀਕਾਰ ਕੀਤੀ ਗਈ</string>
+    <string name="native_already_default_dialer">ਪਹਿਲਾਂ ਹੀ ਪੂਰਵ-ਨਿਰਧਾਰਤ ਡਾਇਲਰ ਵਜੋਂ ਸੈੱਟ ਹੈ</string>
+</resources>

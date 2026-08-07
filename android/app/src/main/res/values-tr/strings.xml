@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Sesini kapatmak</string>
+    <string name="in_call_keypad">Tuş takımı</string>
+    <string name="in_call_speaker">Hoparlör</string>
+    <string name="in_call_more">Daha</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Çağrı ekle</string>
+    <string name="in_call_change_sim">SIM\'i değiştir</string>
+    <string name="in_call_decline">Reddetmek</string>
+    <string name="in_call_answer">Cevap</string>
+    <string name="in_call_message">Mesaj</string>
+    <string name="in_call_calling">Arıyorum…</string>
+    <string name="in_call_incoming">Gelen arama</string>
+    <string name="in_call_select_sim">SIM\'i seçin…</string>
+    <string name="in_call_switching_sim">SIM değiştiriliyor…</string>
+    <string name="in_call_call_ended">Arama sona erdi</string>
+    <string name="in_call_calling_via">%1$s üzerinden aranıyor</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; aracılığıyla aranıyor</string>
+    <string name="in_call_choose_sim">Bu arama için SIM\'i seçin</string>
+    <string name="in_call_drag_answer_decline">Yanıtlamak için sağa sürükleyin · Reddetmek için sola sürükleyin</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Güncel)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; numaralı telefondan arayın</string>
+    <string name="in_call_call_from">Şuradan ara:</string>
+    <string name="in_call_unknown">Bilinmiyor</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Kişi zil sesini seçin</string>
+    <string name="native_speak_to_search">Aramak için konuşun</string>
+    <string name="native_phone_permission_required">Telefon izni gerekli</string>
+    <string name="native_call_failed">Arama başarısız oldu: %1$s</string>
+    <string name="native_call_permission_denied">Arama izni reddedildi</string>
+    <string name="native_already_default_dialer">Zaten varsayılan çevirici olarak ayarlandı</string>
+</resources>

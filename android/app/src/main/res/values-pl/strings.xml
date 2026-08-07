@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Niemy</string>
+    <string name="in_call_keypad">Klawiatura</string>
+    <string name="in_call_speaker">Głośnik</string>
+    <string name="in_call_more">Więcej</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Dodaj połączenie</string>
+    <string name="in_call_change_sim">Zmień kartę SIM</string>
+    <string name="in_call_decline">Spadek</string>
+    <string name="in_call_answer">Odpowiedź</string>
+    <string name="in_call_message">Wiadomość</string>
+    <string name="in_call_calling">Powołanie…</string>
+    <string name="in_call_incoming">Połączenie przychodzące</string>
+    <string name="in_call_select_sim">Wybierz kartę SIM…</string>
+    <string name="in_call_switching_sim">Przełączanie karty SIM…</string>
+    <string name="in_call_call_ended">Połączenie zostało zakończone</string>
+    <string name="in_call_calling_via">Dzwoniąc przez %1$s</string>
+    <string name="in_call_calling_via_html">Dzwonienie przez &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Wybierz kartę SIM dla tego połączenia</string>
+    <string name="in_call_drag_answer_decline">Przeciągnij w prawo, aby odebrać · Przeciągnij w lewo, aby odmówić</string>
+    <string name="in_call_mobile_number">Telefon komórkowy %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (bieżący)</string>
+    <string name="in_call_call_via_from">Zadzwoń pod numer &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; z</string>
+    <string name="in_call_call_from">Zadzwoń z</string>
+    <string name="in_call_unknown">Nieznany</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Wybierz dzwonek kontaktu</string>
+    <string name="native_speak_to_search">Mów, aby wyszukać</string>
+    <string name="native_phone_permission_required">Wymagane pozwolenie na telefon</string>
+    <string name="native_call_failed">Połączenie nie powiodło się: %1$s</string>
+    <string name="native_call_permission_denied">Odmowa pozwolenia na połączenie</string>
+    <string name="native_already_default_dialer">Już ustawiony jako domyślny dialer</string>
+</resources>

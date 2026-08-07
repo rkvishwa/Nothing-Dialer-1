@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Izslēgt skaņu</string>
+    <string name="in_call_keypad">Tastatūra</string>
+    <string name="in_call_speaker">Skaļrunis</string>
+    <string name="in_call_more">Vairāk</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Tālrunis</string>
+    <string name="in_call_add_call">Pievienot zvanu</string>
+    <string name="in_call_change_sim">Mainiet SIM karti</string>
+    <string name="in_call_decline">Noraidīt</string>
+    <string name="in_call_answer">Atbilde</string>
+    <string name="in_call_message">Ziņa</string>
+    <string name="in_call_calling">Zvana…</string>
+    <string name="in_call_incoming">Ienākošais zvans</string>
+    <string name="in_call_select_sim">Atlasiet SIM karti…</string>
+    <string name="in_call_switching_sim">Notiek SIM kartes maiņa…</string>
+    <string name="in_call_call_ended">Zvans beidzās</string>
+    <string name="in_call_calling_via">Zvanīt pa %1$s</string>
+    <string name="in_call_calling_via_html">Zvanīt pa &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Šim zvanam izvēlieties SIM karti</string>
+    <string name="in_call_drag_answer_decline">Velciet pa labi, lai atbildētu · Velciet pa kreisi, lai noraidītu</string>
+    <string name="in_call_mobile_number">Mobilais %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (pašreizējais)</string>
+    <string name="in_call_call_via_from">Zvaniet pa &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; no plkst</string>
+    <string name="in_call_call_from">Zvans no</string>
+    <string name="in_call_unknown">Nezināms</string>
+    <string name="in_call_sim_slot">SIM karte %1$d</string>
+    <string name="native_select_contact_ringtone">Izvēlieties kontaktpersonas zvana signālu</string>
+    <string name="native_speak_to_search">Runājiet, lai meklētu</string>
+    <string name="native_phone_permission_required">Nepieciešama tālruņa atļauja</string>
+    <string name="native_call_failed">Zvans neizdevās: %1$s</string>
+    <string name="native_call_permission_denied">Zvana atļauja liegta</string>
+    <string name="native_already_default_dialer">Jau iestatīts kā noklusējuma numura sastādītājs</string>
+</resources>

@@ -1,0 +1,759 @@
+{
+  "@@locale": "hu",
+  "appTitle": "Semmi Tárcsázó",
+  "settings": "Beállítások elemre",
+  "settingsSearchHint": "Keresési beállítások",
+  "settingsSearchNoResults": "Nem találhatók beállítások",
+  "general": "Általános",
+  "theme": "Téma",
+  "themeSystemDefault": "Rendszer alapértelmezett",
+  "themeLight": "Fény",
+  "themeDark": "Sötét",
+  "themeFollowSystem": "Kövesse a rendszerbeállításokat",
+  "themeAlwaysLight": "Mindig használjon világos témát",
+  "themeAlwaysDark": "Mindig használjon sötét témát",
+  "language": "Nyelv",
+  "languageDeviceDefault": "Eszköz alapértelmezett",
+  "languagePickerTitle": "Nyelv",
+  "languageSearchHint": "Nyelvek keresése",
+  "font": "Betűtípus",
+  "fontSystem": "Rendszer alapértelmezett",
+  "fontNdot": "Semmi (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "A betűtípus letöltése nem sikerült. Ellenőrizze a kapcsolatot, és próbálja újra.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Betűtípus",
+  "fontPreviewSample": "Semmi Tárcsázó",
+  "fontAppWide": "Alkalmazás betűtípusa",
+  "fontApplyTo": "Alkalmazni",
+  "fontApplyEntireApp": "A teljes alkalmazás",
+  "fontApplyEntireAppSubtitle": "Ugyanaz a betűtípus mindenhol, a hívás közben is",
+  "fontApplyTitlesOnly": "Címek és fejlécek",
+  "fontApplyTitlesOnlySubtitle": "Csak nagy címek és szakaszfejlécek",
+  "fontApplyCustomize": "Testreszabás",
+  "fontApplyCustomizeSubtitle": "Válasszon betűtípust képernyőnként és szövegtípusonként",
+  "fontCustomizeSection": "Testreszabás képernyő szerint",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Oldal címe",
+  "fontRoleSectionHeader": "Szakaszfejléc",
+  "fontRolePrimary": "Elsődleges szöveg",
+  "fontRoleSecondary": "Másodlagos szöveg",
+  "fontRoleButton": "Gombok",
+  "fontRoleDialKey": "Tárcsázó billentyűi",
+  "fontSurfaceRecents": "Legutóbbiak",
+  "fontSurfaceContacts": "Kapcsolatok",
+  "fontSurfaceSettings": "Beállítások elemre",
+  "fontSurfaceDialpad": "Tárcsázó",
+  "fontSurfaceShell": "Navigáció",
+  "fontSurfaceDefaultDialer": "Alapértelmezett tárcsázó prompt",
+  "fontSurfaceFavourites": "Kedvencek",
+  "fontSurfaceBlocked": "Blokkolt számok",
+  "fontSurfaceContactDetail": "Elérhetőségi adatok",
+  "fontSurfaceCallHistory": "Hívástörténet",
+  "fontSurfaceSheets": "Lapok és komissiók",
+  "fontSurfaceInCall": "Hívás közbeni képernyő",
+  "fontSubtitleEntireApp": "{font} – a teljes alkalmazás",
+  "fontSubtitleTitlesOnly": "{font} – csak címek",
+  "fontSubtitleCustomize": "Egyedi képernyőnként",
+  "background": "Háttér",
+  "accent": "Hangsúly",
+  "lightBackground": "világos háttér",
+  "lightAccent": "Könnyű akcentus",
+  "darkBackground": "Sötét háttér",
+  "darkAccent": "Sötét akcentus",
+  "callBackground": "Hívás háttér",
+  "appIcon": "App ikonra",
+  "answerMethod": "Válasz módszer",
+  "answerSlide": "Csúsztassa a választ",
+  "answerSlideSubtitle": "Csúsztassa az ujját balra/jobbra a sávon, mint a Google Phone",
+  "answerButton": "Gombérintése",
+  "answerButtonSubtitle": "Koppintson a válasz vagy elutasítás gombra",
+  "answerHuawei": "Huawei stílus",
+  "answerHuaweiSubtitle": "Húzza a kört a zöld telefonra a fogadáshoz",
+  "answerHuaweiTileSubtitle": "Huawei – húzza zöldre/pirosra",
+  "calling": "Hívás",
+  "defaultSim": "Alapértelmezett SIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Kérdezd meg minden alkalommal",
+  "askEveryTimeSubtitle": "A SIM-választó megjelenítése minden hívás előtt",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "Nem található SIM-kártya",
+  "couldNotLoadSims": "Nem sikerült betölteni a SIM-kártyákat: {error}",
+  "allFavourites": "Minden kedvenc",
+  "allFavouritesSubtitle": "A névjegyek átrendezése, eltávolítása és hozzáadása",
+  "blockedNumbers": "Blokkolt számok",
+  "blockedNumbersSubtitle": "Számok megtekintése és feloldása",
+  "soundsAndVibration": "Hangok és rezgés",
+  "soundsAndVibrationSubtitle": "Csengőhang, rezgés, tárcsahangok",
+  "couldNotOpenSettings": "Nem sikerült megnyitni a beállításokat: {error}",
+  "frequentlyContacted": "Gyakran felkeresett",
+  "numberOfRecords": "Rekordok száma",
+  "timePeriod": "Időszak",
+  "periodLast24Hours": "Az elmúlt 24 óra",
+  "periodLast24HoursSubtitle": "Hívások az elmúlt napból",
+  "periodLast7Days": "Az elmúlt 7 nap",
+  "periodLast7DaysSubtitle": "Hívások az elmúlt hétről",
+  "periodLast30Days": "Az elmúlt 30 nap",
+  "periodLast30DaysSubtitle": "Hívások az elmúlt hónapból",
+  "periodLast12Months": "Az elmúlt 12 hónap",
+  "periodLast12MonthsSubtitle": "Hívások az elmúlt évből",
+  "periodAllTime": "Minden alkalommal",
+  "periodAllTimeSubtitle": "Teljes hívástörténet",
+  "frequentMaxOff": "Le",
+  "frequentMaxCount": "{count} névjegyek",
+  "torchBlink": "Fáklya pislogás",
+  "torchIncomingCall": "Bejövő hívás fáklya",
+  "torchOutgoingCall": "Kimenő hívás fáklya",
+  "torchOngoingCall": "Folyamatos hívás fáklya",
+  "torchIncomingInterval": "Bejövő pislogási intervallum",
+  "torchOutgoingInterval": "Kimenő pislogási intervallum",
+  "torchOngoingInterval": "Folyamatos pislogási intervallum",
+  "torchOff": "Le",
+  "torchOffIncomingSubtitle": "Csengetés közben nincs fáklya",
+  "torchOffOutgoingSubtitle": "Tárcsázás közben nincs zseblámpa",
+  "torchOffOngoingSubtitle": "Nincs zseblámpa aktív hívás közben",
+  "torchFixedInterval": "Fix intervallum",
+  "torchFixedIntervalSubtitle": "Beállított sebességgel villog",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} villog",
+  "flashlightUnavailable": "A zseblámpa nem érhető el ezen az eszközön",
+  "glyphLights": "Glyph Lights",
+  "glyphCallingAnimation": "Glyph hívó animáció",
+  "glyphOngoingAnimation": "Glyph folyamatban lévő hívás animáció",
+  "glyphNone": "Egyik sem",
+  "glyphNoneOutgoingSubtitle": "Kapcsolja ki a Glyph fényeket a kimenő hívásoknál",
+  "glyphNoneInCallSubtitle": "Kapcsolja ki a Glyph fényeket aktív hívás közben",
+  "glyphBreathProgress": "Breath & Haladás",
+  "glyphBreathProgressSubtitle": "A fények lélegzik, miközben a vonal megtelik 65 másodperc felett",
+  "glyphAccumulate": "Felhalmozódni",
+  "glyphAccumulateSubtitle": "Animáció halmozódása a C1-C4 lámpákon",
+  "glyphSingle": "Egyetlen",
+  "glyphSingleSubtitle": "Egyetlen lámpa mozog a C1-C4 között",
+  "glyphBreath": "Lehelet",
+  "glyphBreathSubtitle": "Válasszon fényeket és sebességet",
+  "glyphSteady": "Állandó",
+  "glyphSteadySubtitle": "A kiválasztott lámpák égve maradnak",
+  "breathSettings": "Légzési beállítások",
+  "activeLights": "Aktív fények",
+  "lightsCount": "{count} fények",
+  "speedSettings": "Sebesség beállítások",
+  "speedSettingsDelay": "{ms}ms késleltetés",
+  "durationAndSpeed": "Időtartam és sebesség",
+  "durationSpeedSummary": "{duration}s időtartam, {interval}ms intervallum",
+  "cancel": "Mégsem",
+  "done": "Kész",
+  "save": "Megtakarítás",
+  "block": "Tömb",
+  "delete": "Töröl",
+  "recents": "Legutóbbiak",
+  "contacts": "Kapcsolatok",
+  "hideFavouritesOnRecents": "Kedvencek elrejtése a Legutóbbi oldalon",
+  "showFavouritesOnRecents": "Kedvencek megjelenítése a Legutóbbi oldalon",
+  "ongoingCall": "Folyamatos hívás",
+  "setAsDefaultTitle": "BEÁLLÍTÁS MINT\nALAPÉRTELMEZETT",
+  "setAsDefaultBody": "A Nothing Dialer használatához be kell állítani alapértelmezett telefonalkalmazásként. Ez lehetővé teszi a hívások kezelését, az előzmények megtekintését és a Glyph animációk használatát.",
+  "setAsDefaultButton": "BEÁLLÍTÁS ALAPÉRTÉKÉRE",
+  "nothingDialerBrand": "SEMMI tárcsázó 1",
+  "favourites": "Kedvencek",
+  "addFavourite": "Kedvenc hozzáadása",
+  "favouritesDrawerHint": "Névjegyek hozzáadásához használja a menüt. Koppintson a fiókon kívülre, vagy húzza be a fiókot. Csillagozzon meg egy névjegyet az adatai közül, vagy nyomja meg hosszan a hívást a Legutóbbiak menüben.",
+  "menu": "Menü",
+  "noFavouritesYet": "Még nincs kedvenc.\nNyissa meg a menüt egy névjegy hozzáadásához, vagy csillagozza meg a névjegyet.",
+  "contactsPermissionNeeded": "Kapcsolatfelvételi engedély szükséges",
+  "chooseContact": "Válasszon névjegyet",
+  "noPhone": "Nincs telefon",
+  "pickNumber": "Válassz számot",
+  "contactHasNoPhone": "Ennek a kapcsolatnak nincs telefonszáma",
+  "blockNumber": "Blokkszám",
+  "enterPhoneNumber": "Adja meg a telefonszámot",
+  "unblockedDisplay": "Feloldva {display}",
+  "couldNotUnblockNumber": "Nem sikerült feloldani a szám blokkolását",
+  "blockedSummary": "{blocked} blokkolva • {matched} egyezett",
+  "contactsPermissionMissing": "Hiányzik a kapcsolattartási engedély. Koppintson a javításhoz.",
+  "noBlockedNumbers": "Nincsenek letiltott számok",
+  "unknownContact": "Ismeretlen kapcsolattartó",
+  "unblock": "Blokkolás feloldása",
+  "permissionNeeded": "Engedély szükséges",
+  "grantPhonePermission": "Adjon engedélyt a telefonnak a híváselőzmények megtekintéséhez.",
+  "grantContactsPermission": "Adjon engedélyt a kapcsolatoknak a címjegyzék megtekintéséhez.",
+  "openSettings": "Nyissa meg a Beállítások lehetőséget",
+  "tryAgain": "Próbáld újra",
+  "couldNotLoadContacts": "Nem sikerült betölteni a névjegyeket",
+  "contactsLoadError": "Hiba történt a címjegyzéked olvasásakor.",
+  "noContactsFound": "Nem találhatók névjegyek",
+  "contactsEmptySubtitle": "Itt jelennek meg az eszközéről származó névjegyek.",
+  "searchContacts": "Névjegyek keresése…",
+  "searchRecentCalls": "A legutóbbi hívások keresése",
+  "fromContacts": "A névjegyekből",
+  "recentsSearchSection": "Legutóbbi keresés",
+  "recentsSearchShowContacts": "Névjegyek megjelenítése a keresésben",
+  "recentsSearchShowContactsSubtitle": "A Legutóbbiak keresése közben a híváslista eredményei alatt is jelenítse meg a megfelelő személyeket a címjegyzékéből.",
+  "voiceSearch": "Hangalapú keresés",
+  "createNewContact": "Új kapcsolat létrehozása",
+  "callError": "Hívási hiba: {error}",
+  "noRecentCalls": "Nincsenek legutóbbi hívások",
+  "callHistoryEmpty": "A híváslista itt fog megjelenni.",
+  "loadMore": "Töltsön be többet",
+  "frequentlyContactedHeader": "Gyakran felkeresett",
+  "recentHistory": "Legújabb történelem",
+  "noFavouritesRecentsHint": "Még nincs kedvenc. Csillagozza meg a névjegyet, tartsa lenyomva a hívást, vagy használja a Kedvencek lapot.",
+  "copyNumber": "Szám másolata",
+  "editNumberBeforeCall": "Hívás előtt módosítsa a számot",
+  "removeFromFavourites": "Eltávolítás a kedvencek közül",
+  "addToFavourites": "Hozzáadás a kedvencekhez",
+  "blockNumberQuestion": "Szám letiltása?",
+  "blockNumberConfirm": "A továbbiakban nem fog hívásokat vagy SMS-eket fogadni a következőtől: {number}.",
+  "blocked": "Zárolt",
+  "couldNotBlock": "Nem sikerült blokkolni",
+  "contactNotOnDevice": "A névjegy nincs mentve ezen az eszközön",
+  "unblocked": "Feloldva",
+  "numberCopied": "Szám másolva",
+  "showLess": "Mutass kevesebbet",
+  "showAllTimes": "Minden időpont megjelenítése",
+  "mostRecent": "Legutóbbi · {time}",
+  "videoCall": "Videohívás",
+  "couldNotPlaceVideoCall": "Nem sikerült videohívást kezdeményezni",
+  "message": "Üzenet",
+  "couldNotOpenMessaging": "Nem sikerült megnyitni az üzenetküldő alkalmazást",
+  "history": "Történelem",
+  "viewContact": "Névjegy megtekintése",
+  "addToContact": "Hozzáadás a névjegyhez",
+  "callTypeMissed": "Elmaradt",
+  "callTypeRejected": "Elutasítva",
+  "callTypeIncoming": "Bejövő",
+  "callTypeOutgoing": "Kimenő",
+  "today": "Ma",
+  "yesterday": "Tegnap",
+  "justNow": "Éppen most",
+  "minutesAgo": "{count} perce",
+  "hoursAgo": "{count} órája",
+  "filterAll": "Minden",
+  "filterMissed": "Elmaradt",
+  "filterContacts": "Kapcsolatok",
+  "filterNonContacts": "Nem érintkezés",
+  "iconUpdated": "Ikon frissítve. A kezdőképernyő frissítése eltarthat egy ideig.",
+  "iconSavedRelease": "Választás mentve. A kezdőképernyő ikonja a kiadás buildjei során frissül.",
+  "couldNotChangeIcon": "Nem sikerült megváltoztatni az ikont: {error}",
+  "launcherClassicBlack": "Klasszikus (fekete)",
+  "launcherLight": "Fény",
+  "launcherNothingRed": "Semmi piros",
+  "launcherDarkGrey": "Sötétszürke",
+  "launcherCream": "Krém",
+  "launcherRetroPhone": "Retro telefon",
+  "launcherRetroPhoneLight": "Retro telefon (világos)",
+  "voiceSearchUnavailable": "A hangalapú keresés nem érhető el ezen az eszközön.",
+  "voiceSearchFailed": "A hangalapú keresés sikertelen: {error}",
+  "customColor": "Szokás",
+  "selectColor": "Válasszon színt",
+  "reset": "Reset",
+  "simPickerTitle": "Válassza a SIM lehetőséget",
+  "simChooseForCall": "Válassza a SIM-kártyát ehhez a híváshoz",
+  "defaultSimAsk": "Kérdezd meg minden alkalommal",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Elérhetőségek",
+  "call": "Hívás",
+  "share": "Részesedés",
+  "favourite": "Kedvenc",
+  "unfavourite": "Nem kedvenc",
+  "blockContact": "Névjegy blokkolása",
+  "unblockContact": "Kapcsolat feloldása",
+  "deleteContact": "Névjegy törlése",
+  "phone": "Telefon",
+  "email": "Email",
+  "ringtone": "Csengőhang",
+  "defaultRingtone": "Alapértelmezett",
+  "simForContact": "SIM-kártya ehhez a névjegyhez",
+  "callHistoryTitle": "Hívástörténet",
+  "noCallsWithNumber": "Nincs hívás ezen a számon",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Glyph animáció",
+  "inCallGlyphAnimationStyle": "Hívás közbeni Glyph animáció",
+  "recordsOff": "Le",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Alapértelmezett SIM",
+  "nothingPhoneOnly": "Semmi Csak Telefon",
+  "nothingPhoneOnlySubtitle": "A Glyph funkciókhoz semmi telefon szükséges",
+  "custom": "Szokás",
+  "presetColorHex": "Előre beállított · {hex}",
+  "customColorHex": "Egyéni · {hex}",
+  "oneContact": "1 kapcsolat",
+  "upToContacts": "Akár {count} névjegy",
+  "answerButtonTapSubtitle": "A válaszhoz érintse meg a gombot",
+  "filterCalls": "Hívások szűrése",
+  "filterTooltip": "Szűrő",
+  "settingsTooltip": "Beállítások elemre",
+  "filterAllSubtitle": "Teljes hívásnapló",
+  "filterMissedSubtitle": "Kihagyott és elutasított",
+  "filterContactsSubtitle": "Mentett névjegyhez tartozó hívások",
+  "filterNonContactsSubtitle": "A számok nincsenek a címjegyzékében",
+  "ongoingCallWithDetail": "Folyamatban lévő hívás: {detail}",
+  "defaultSimForCalls": "Alapértelmezett SIM a hívásokhoz",
+  "blinkInterval": "Pislogás intervallum",
+  "close": "Közeli",
+  "frequentlyContactedInfoBody": "A Legutóbbiak lap tetején jeleníti meg a leggyakrabban hívott telefonszámokat annak alapján, hogy hány bejövő, kimenő, nem fogadott vagy elutasított hívás volt az egyes számokkal a választott időszakban.\n\nRekordok száma: állítsa 0-ra a kikapcsoláshoz. Használja az 1–20-at, hogy megmutassa, hány fő névjegy.\n\nAz időtartam csak akkor érvényes, ha legalább egy kapcsolat látható.",
+  "breathSettingsSpeedSummary": "{count} fények, {ms}ms sebesség",
+  "deleteContactQuestion": "Törli a névjegyet?",
+  "deleteContactBody": "Ez a névjegy véglegesen törlődik az eszközéről.",
+  "blockContactQuestion": "Letiltja a névjegyet?",
+  "unblockContactQuestion": "Feloldja a névjegy tiltását?",
+  "blockContactBody": "A továbbiakban nem fog hívásokat vagy SMS-eket fogadni ettől a névjegytől.",
+  "unblockContactBody": "Hívásokat és SMS-eket fog kapni ettől a kapcsolattól.",
+  "contactBlocked": "Névjegy blokkolva",
+  "contactUnblocked": "Kapcsolat feloldva",
+  "noPhoneNumbersToBlock": "Nincsenek letiltható telefonszámok",
+  "simSameAsSystem": "Ugyanaz, mint a rendszer",
+  "simSameAsSystemSubtitle": "Követi az alapértelmezett SIM-kártyát a Beállításokban",
+  "simAskEveryTimeForContact": "Mindig jelenítse meg a SIM-választót ehhez a névjegyhez",
+  "ringtoneSetForContact": "Csengőhang globálisan beállítva ehhez a névjegyhez",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Nem sikerült kiválasztani a csengőhangot: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Hiba: {error}",
+  "noCallHistoryFound": "Nem található híváslista",
+  "speedDialVoicemail": "Gyorstárcsázás: Hangposta",
+  "shareContactSubject": "Elérhetőség: {name}",
+  "contactInfo": "Elérhetőségi adatok",
+  "dontAskAgainSim": "Ne kérdezz többet",
+  "simDontAskAgainSubtitle": "Használja ezt a SIM-kártyát alapértelmezettként (módosítás a Beállításokban)",
+  "addContact": "Névjegy hozzáadása",
+  "createContact": "Kapcsolat létrehozása",
+  "paste": "Paszta",
+  "clear": "Világos",
+  "returnToCall": "Vissza a híváshoz",
+  "numberOfRecordsTitle": "Rekordok száma",
+  "recordsPickerSubtitle": "Hány gyakran keresett bejegyzést kell megjeleníteni (0 = kikapcsolva)",
+  "torchInfoTitle": "Fáklya pislog",
+  "torchInfoBody": "Bejövő, kimenő vagy folyamatban lévő hívások közben villog a fényképezőgép vakuja. Független a Glyph fényektől.",
+  "glyphMapTitle": "Karakter elrendezés",
+  "glyphMapBody": "Semmi Telefon 1 Glyph LED zónák. A kimenő és a hívás közbeni animációk ezeket a csatornákat használják.",
+  "answerMethodTitle": "Válasz módszer",
+  "glyphOutgoingCallStyleTitle": "Kimenő hívás stílusa",
+  "glyphInCallAnimationTitle": "Glyph hívás közbeni animáció",
+  "themePickerTitle": "Téma",
+  "torchIncomingTitle": "Bejövő hívás fáklya",
+  "torchOutgoingTitle": "Kimenő hívás fáklya",
+  "torchOngoingTitle": "Folyamatos hívás fáklya",
+  "timePeriodTitle": "Időszak",
+  "ok": "OK",
+  "confirmDeleteCall": "Törli ezt a hívást az előzményekből?",
+  "confirmDeleteAllCalls": "Törli az összes hívást ezzel a számmal?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Üzenet küldése",
+  "addToExistingContactAction": "Hozzáadás névjegyhez",
+  "mobileLabel": "Mozgó",
+  "callingSimForContactTitle": "SIM hívása ehhez a névjegyhez",
+  "contactSettings": "Kapcsolati beállítások",
+  "setCallingSim": "Hívó SIM beállítása",
+  "contactRingtone": "Kapcsolati csengőhang",
+  "shareContact": "Névjegy megosztása",
+  "blockNumbers": "Számok blokkolása",
+  "unblockNumbers": "Számok blokkolásának feloldása",
+  "connectedApps": "Csatlakoztatott alkalmazások",
+  "simNotSet": "Nincs beállítva",
+  "ringtoneDefault": "Alapértelmezett",
+  "customRingtone": "Szokás",
+  "aboutSection": "Körülbelül",
+  "aboutFeedbackSection": "Névjegy és visszajelzés",
+  "aboutDescription": "A Nothing Dialer nyílt forráskódú. Ha Ön fejlesztő, szívesen fedezi fel a kódot, és járul hozzá.",
+  "aboutViewSource": "Megtekintés a GitHubon",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Nem sikerült megnyitni a linket",
+  "reviewSection": "Tekintse át",
+  "reviewDescription": "Élvezed a Semmit Tárcsázót? A Google Playen adott értékelése segít másoknak megtalálni az alkalmazást.",
+  "reviewRateOnPlay": "Értékeljen a Google Playen",
+  "reviewRateOnPlaySubtitle": "Hagyjon értékelést az alkalmazás elhagyása nélkül",
+  "reviewCouldNotOpen": "Nem sikerült megnyitni a Google Playt",
+  "breathSpeed": "Légzési sebesség",
+  "breathSpeedBlinkHint": "Alsó = pislogás, magasabb = lassú légzés",
+  "speedSliderHint": "Alacsonyabb = gyorsabb, magasabb = lassabb",
+  "swatchDefault": "Alapértelmezett",
+  "customAccentColorPicker": "Egyedi kiemelő szín",
+  "customLightBackgroundPicker": "Egyedi világos háttér",
+  "customDarkBackgroundPicker": "Egyedi sötét háttér",
+  "customCallBackgroundPicker": "Egyedi hívás háttér",
+  "ongoingCallStyleTitle": "Folyamatos hívás stílusa",
+  "glyphMapUnavailable": "Glyph térkép nem érhető el",
+  "animationDelayRange": "Animáció késleltetése (1 mp - 10 mp)",
+  "animationDelayRangeSingle": "Animáció késleltetése (0,1 mp - 10 mp)",
+  "inCallMute": "Néma",
+  "inCallKeypad": "Billentyűzet",
+  "inCallSpeaker": "Hangszóró",
+  "inCallMore": "Több",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Telefon",
+  "inCallAddCall": "Hívás hozzáadása",
+  "inCallChangeSim": "SIM csere",
+  "inCallDecline": "Hanyatlás",
+  "inCallAnswer": "Válasz",
+  "inCallMessage": "Üzenet",
+  "inCallCalling": "Hívás…",
+  "inCallIncoming": "Bejövő hívás",
+  "inCallSelectSim": "SIM-kártya kiválasztása…",
+  "inCallSwitchingSim": "SIM váltás…",
+  "inCallCallEnded": "A hívás véget ért",
+  "inCallCallingVia": "Hívás a {sim} számon keresztül",
+  "inCallCallingViaHtml": "Hívás a következő számon: <b>{sim}</b>",
+  "inCallChooseSim": "Válassza a SIM-kártyát ehhez a híváshoz",
+  "inCallDragAnswerDecline": "Húzza jobbra a válaszhoz · Húzza balra az elutasításhoz",
+  "inCallMobileNumber": "Mobil {number}",
+  "inCallAudioRouteCurrent": "{label} (jelenlegi)",
+  "inCallCallViaFrom": "Hívjon a <b>{sim}</b> számon innen",
+  "inCallCallFrom": "Hívás innen:",
+  "inCallUnknown": "Ismeretlen",
+  "selectContactRingtone": "Válassza ki a névjegy csengőhangját",
+  "speakToSearchPrompt": "Beszéljen a kereséshez",
+  "phonePermissionRequired": "Telefonos engedély szükséges",
+  "callFailed": "Sikertelen hívás: {error}",
+  "callPermissionDenied": "Hívási engedély megtagadva",
+  "alreadyDefaultDialer": "Már be van állítva alapértelmezett tárcsázóként",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

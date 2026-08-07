@@ -4,10 +4,33 @@
 import 'package:call_log/call_log.dart';
 import 'package:intl/intl.dart';
 
+/// Labels for relative/date strings used in the recents isolate.
+class RecentsTimeLabels {
+  final String today;
+  final String yesterday;
+  final String justNow;
+  final String localeName;
+  final String minutesAgoTemplate;
+  final String hoursAgoTemplate;
+
+  const RecentsTimeLabels({
+    required this.today,
+    required this.yesterday,
+    required this.justNow,
+    required this.localeName,
+    required this.minutesAgoTemplate,
+    required this.hoursAgoTemplate,
+  });
+
+  String minutesAgo(int count) =>
+      minutesAgoTemplate.replaceAll('{count}', '$count');
+
+  String hoursAgo(int count) => hoursAgoTemplate.replaceAll('{count}', '$count');
+}
+
 /// Arguments for [recentsComputeMain] — must be sendable between isolates.
 class RecentsComputeArgs {
   final List<Map<String, dynamic>> allEntries;
-  final int mainListMaxEntries;
   final String recentsFilter;
   final String searchQuery;
   final int frequentMax;
@@ -15,10 +38,11 @@ class RecentsComputeArgs {
   final bool showFavouritesStrip;
   final bool showFrequentSection;
   final int nowMs;
+  final RecentsTimeLabels timeLabels;
+  final String frequentPeriodLabel;
 
   const RecentsComputeArgs({
     required this.allEntries,
-    required this.mainListMaxEntries,
     required this.recentsFilter,
     required this.searchQuery,
     required this.frequentMax,
@@ -26,6 +50,8 @@ class RecentsComputeArgs {
     required this.showFavouritesStrip,
     required this.showFrequentSection,
     required this.nowMs,
+    required this.timeLabels,
+    required this.frequentPeriodLabel,
   });
 }
 
@@ -74,11 +100,9 @@ RecentsProcessOutput _buildRecentsData(RecentsComputeArgs args) {
     }).toList();
   }
 
-  final forGrouping = base.length > args.mainListMaxEntries
-      ? base.sublist(0, args.mainListMaxEntries)
-      : base;
+  final forGrouping = base;
 
-  final groupedFiltered = _groupEntries(forGrouping, args.nowMs);
+  final groupedFiltered = _groupEntries(forGrouping, args.nowMs, args.timeLabels);
   final mapFiltered = <String, List<Map<String, dynamic>>>{};
   final todayStr = DateFormat('yyyy-MM-dd').format(now);
   final yesterdayStr = DateFormat(
@@ -91,12 +115,13 @@ RecentsProcessOutput _buildRecentsData(RecentsComputeArgs args) {
     ).format(DateTime.fromMillisecondsSinceEpoch(g['timestamp'] as int? ?? 0));
     String label;
     if (date == todayStr) {
-      label = 'Today';
+      label = args.timeLabels.today;
     } else if (date == yesterdayStr) {
-      label = 'Yesterday';
+      label = args.timeLabels.yesterday;
     } else {
       label = DateFormat(
         'MMMM d',
+        args.timeLabels.localeName,
       ).format(DateTime.fromMillisecondsSinceEpoch(g['timestamp'] as int? ?? 0));
     }
     mapFiltered.putIfAbsent(label, () => []).add(g);
@@ -116,11 +141,18 @@ RecentsProcessOutput _buildRecentsData(RecentsComputeArgs args) {
       args.searchQuery.isEmpty;
 
   if (showFrequent) {
-    final frequent = _computeFrequent(entries, args.frequentPeriod, args.frequentMax, now, args.nowMs);
+    final frequent = _computeFrequent(
+      entries,
+      args.frequentPeriod,
+      args.frequentMax,
+      now,
+      args.nowMs,
+      args.timeLabels,
+    );
     if (frequent.isNotEmpty) {
       flatItems.add({
         'kind': 'frequent_header',
-        'subtitle': _periodSubtitleFor(args.frequentPeriod),
+        'subtitle': args.frequentPeriodLabel,
       });
       flatItems.addAll(frequent);
       flatItems.add({'kind': 'recent_history_header'});
@@ -173,23 +205,6 @@ int? _cutoffMsForPeriod(String period, DateTime now) {
   }
 }
 
-String _periodSubtitleFor(String period) {
-  switch (period) {
-    case 'day':
-      return 'Last 24 hours';
-    case 'week':
-      return 'Last 7 days';
-    case 'month':
-      return 'Last 30 days';
-    case 'year':
-      return 'Last 12 months';
-    case 'all':
-      return 'All time';
-    default:
-      return 'Last 12 months';
-  }
-}
-
 bool _isCountableFrequentCallType(CallType? t) {
   if (t == null) return false;
   switch (t) {
@@ -214,6 +229,7 @@ List<Map<String, dynamic>> _computeFrequent(
   int maxN,
   DateTime now,
   int nowMs,
+  RecentsTimeLabels labels,
 ) {
   if (maxN <= 0) return [];
   final cutoffMs = _cutoffMsForPeriod(period, now);
@@ -262,9 +278,9 @@ List<Map<String, dynamic>> _computeFrequent(
         timestamp: anchor.timestamp,
         duration: anchor.duration,
         simDisplayName: anchor.simDisplayName,
-        relativeTime: _formatRelativeTime(anchor.timestamp, nowMs),
+        relativeTime: _formatRelativeTime(anchor.timestamp, nowMs, labels),
         entryRelativeTimes: list
-            .map((e) => _subtextRelativeTime(e.timestamp, nowMs))
+            .map((e) => _subtextRelativeTime(e.timestamp, nowMs, labels))
             .toList(),
         entries: List<CallLogEntry>.from(list),
         isFrequentContact: true,
@@ -324,6 +340,7 @@ Map<String, dynamic> _serializeEntry(CallLogEntry e) {
 List<Map<String, dynamic>> _groupEntries(
   List<CallLogEntry> entries,
   int nowMs,
+  RecentsTimeLabels labels,
 ) {
   if (entries.isEmpty) return [];
 
@@ -350,9 +367,9 @@ List<Map<String, dynamic>> _groupEntries(
           timestamp: anchor.timestamp,
           duration: anchor.duration,
           simDisplayName: anchor.simDisplayName,
-          relativeTime: _formatRelativeTime(anchor.timestamp, nowMs),
+          relativeTime: _formatRelativeTime(anchor.timestamp, nowMs, labels),
           entryRelativeTimes: currentEntries
-              .map((e) => _subtextRelativeTime(e.timestamp, nowMs))
+              .map((e) => _subtextRelativeTime(e.timestamp, nowMs, labels))
               .toList(),
           entries: List<CallLogEntry>.from(currentEntries),
         ),
@@ -373,9 +390,9 @@ List<Map<String, dynamic>> _groupEntries(
       timestamp: anchor.timestamp,
       duration: anchor.duration,
       simDisplayName: anchor.simDisplayName,
-      relativeTime: _formatRelativeTime(anchor.timestamp, nowMs),
+      relativeTime: _formatRelativeTime(anchor.timestamp, nowMs, labels),
       entryRelativeTimes: currentEntries
-          .map((e) => _subtextRelativeTime(e.timestamp, nowMs))
+          .map((e) => _subtextRelativeTime(e.timestamp, nowMs, labels))
           .toList(),
       entries: currentEntries,
     ),
@@ -384,24 +401,24 @@ List<Map<String, dynamic>> _groupEntries(
   return groups;
 }
 
-String _subtextRelativeTime(int? ms, int nowMs) {
+String _subtextRelativeTime(int? ms, int nowMs, RecentsTimeLabels labels) {
   if (ms == null) return '';
   final dt = DateTime.fromMillisecondsSinceEpoch(ms);
   final diff = Duration(milliseconds: nowMs - dt.millisecondsSinceEpoch);
-  if (diff.inMinutes < 1) return 'Just now';
-  if (diff.inMinutes < 60) return '${diff.inMinutes} min ago';
-  if (diff.inHours < 24) return '${diff.inHours} hr ago';
-  return DateFormat('MMM d').format(dt);
+  if (diff.inMinutes < 1) return labels.justNow;
+  if (diff.inMinutes < 60) return labels.minutesAgo(diff.inMinutes);
+  if (diff.inHours < 24) return labels.hoursAgo(diff.inHours);
+  return DateFormat('MMM d', labels.localeName).format(dt);
 }
 
-String _formatRelativeTime(int? ms, int nowMs) {
+String _formatRelativeTime(int? ms, int nowMs, RecentsTimeLabels labels) {
   if (ms == null) return '';
   final dt = DateTime.fromMillisecondsSinceEpoch(ms);
   final diff = Duration(milliseconds: nowMs - dt.millisecondsSinceEpoch);
 
-  if (diff.inMinutes < 1) return 'Just now';
-  if (diff.inMinutes < 60) return '${diff.inMinutes} min ago';
-  if (diff.inHours < 24) return DateFormat('HH:mm').format(dt);
-  if (diff.inDays == 1) return 'Yesterday';
-  return DateFormat('MMM d, yyyy').format(dt);
+  if (diff.inMinutes < 1) return labels.justNow;
+  if (diff.inMinutes < 60) return labels.minutesAgo(diff.inMinutes);
+  if (diff.inHours < 24) return DateFormat('HH:mm', labels.localeName).format(dt);
+  if (diff.inDays == 1) return labels.yesterday;
+  return DateFormat('MMM d, yyyy', labels.localeName).format(dt);
 }

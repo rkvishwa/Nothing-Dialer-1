@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Mykistä</string>
+    <string name="in_call_keypad">Näppäimistö</string>
+    <string name="in_call_speaker">Kaiutin</string>
+    <string name="in_call_more">Lisää</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Puhelin</string>
+    <string name="in_call_add_call">Lisää puhelu</string>
+    <string name="in_call_change_sim">Vaihda SIM</string>
+    <string name="in_call_decline">Hylkää</string>
+    <string name="in_call_answer">Vastaus</string>
+    <string name="in_call_message">Viesti</string>
+    <string name="in_call_calling">Soitetaan…</string>
+    <string name="in_call_incoming">Saapuva puhelu</string>
+    <string name="in_call_select_sim">Valitse SIM…</string>
+    <string name="in_call_switching_sim">Vaihdetaan SIM-korttia…</string>
+    <string name="in_call_call_ended">Puhelu päättyi</string>
+    <string name="in_call_calling_via">Soita numerolla %1$s</string>
+    <string name="in_call_calling_via_html">Soita numerolla &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Valitse SIM tälle puhelulle</string>
+    <string name="in_call_drag_answer_decline">Vastaa vetämällä oikealle · Hylkää vetämällä vasemmalle</string>
+    <string name="in_call_mobile_number">Mobiili %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (nykyinen)</string>
+    <string name="in_call_call_via_from">Soita numeroon &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; alkaen</string>
+    <string name="in_call_call_from">Soita osoitteesta</string>
+    <string name="in_call_unknown">Tuntematon</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Valitse yhteyshenkilön soittoääni</string>
+    <string name="native_speak_to_search">Puhu etsiäksesi</string>
+    <string name="native_phone_permission_required">Puhelinlupa vaaditaan</string>
+    <string name="native_call_failed">Puhelu epäonnistui: %1$s</string>
+    <string name="native_call_permission_denied">Puhelulupa evätty</string>
+    <string name="native_already_default_dialer">Asetettu jo oletusvalitsijaksi</string>
+</resources>

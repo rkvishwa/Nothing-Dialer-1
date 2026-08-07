@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Néma</string>
+    <string name="in_call_keypad">Billentyűzet</string>
+    <string name="in_call_speaker">Hangszóró</string>
+    <string name="in_call_more">Több</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Hívás hozzáadása</string>
+    <string name="in_call_change_sim">SIM csere</string>
+    <string name="in_call_decline">Hanyatlás</string>
+    <string name="in_call_answer">Válasz</string>
+    <string name="in_call_message">Üzenet</string>
+    <string name="in_call_calling">Hívás…</string>
+    <string name="in_call_incoming">Bejövő hívás</string>
+    <string name="in_call_select_sim">SIM-kártya kiválasztása…</string>
+    <string name="in_call_switching_sim">SIM váltás…</string>
+    <string name="in_call_call_ended">A hívás véget ért</string>
+    <string name="in_call_calling_via">Hívás a %1$s számon keresztül</string>
+    <string name="in_call_calling_via_html">Hívás a következő számon: &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Válassza a SIM-kártyát ehhez a híváshoz</string>
+    <string name="in_call_drag_answer_decline">Húzza jobbra a válaszhoz · Húzza balra az elutasításhoz</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (jelenlegi)</string>
+    <string name="in_call_call_via_from">Hívjon a &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; számon innen</string>
+    <string name="in_call_call_from">Hívás innen:</string>
+    <string name="in_call_unknown">Ismeretlen</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Válassza ki a névjegy csengőhangját</string>
+    <string name="native_speak_to_search">Beszéljen a kereséshez</string>
+    <string name="native_phone_permission_required">Telefonos engedély szükséges</string>
+    <string name="native_call_failed">Sikertelen hívás: %1$s</string>
+    <string name="native_call_permission_denied">Hívási engedély megtagadva</string>
+    <string name="native_already_default_dialer">Már be van állítva alapértelmezett tárcsázóként</string>
+</resources>

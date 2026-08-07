@@ -1,0 +1,759 @@
+{
+  "@@locale": "ro",
+  "appTitle": "Nimic Dialer",
+  "settings": "Setări",
+  "settingsSearchHint": "Setări de căutare",
+  "settingsSearchNoResults": "Nu s-au găsit setări",
+  "general": "General",
+  "theme": "Temă",
+  "themeSystemDefault": "Implicit sistem",
+  "themeLight": "Aprinde",
+  "themeDark": "Întuneric",
+  "themeFollowSystem": "Urmați setările sistemului",
+  "themeAlwaysLight": "Folosiți întotdeauna o temă ușoară",
+  "themeAlwaysDark": "Folosiți întotdeauna tema întunecată",
+  "language": "Limbă",
+  "languageDeviceDefault": "Dispozitiv implicit",
+  "languagePickerTitle": "Limbă",
+  "languageSearchHint": "Căutați limbi",
+  "font": "Font",
+  "fontSystem": "Implicit de sistem",
+  "fontNdot": "Nimic (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Descărcarea fontului a eșuat. Verificați conexiunea și încercați din nou.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Font",
+  "fontPreviewSample": "Nimic Dialer",
+  "fontAppWide": "Fontul aplicației",
+  "fontApplyTo": "Aplica la",
+  "fontApplyEntireApp": "Întreaga aplicație",
+  "fontApplyEntireAppSubtitle": "Același font peste tot, inclusiv în apel",
+  "fontApplyTitlesOnly": "Titluri și anteturi",
+  "fontApplyTitlesOnlySubtitle": "Doar titluri mari și anteturi de secțiuni",
+  "fontApplyCustomize": "Personalizați",
+  "fontApplyCustomizeSubtitle": "Alegeți fontul pentru fiecare ecran și tipul de text",
+  "fontCustomizeSection": "Personalizați după ecran",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Titlul paginii",
+  "fontRoleSectionHeader": "Antetul secțiunii",
+  "fontRolePrimary": "Textul principal",
+  "fontRoleSecondary": "Text secundar",
+  "fontRoleButton": "Butoane",
+  "fontRoleDialKey": "Tastele de pe tastatură",
+  "fontSurfaceRecents": "Recente",
+  "fontSurfaceContacts": "Contacte",
+  "fontSurfaceSettings": "Setări",
+  "fontSurfaceDialpad": "Tastatură",
+  "fontSurfaceShell": "Navigare",
+  "fontSurfaceDefaultDialer": "Prompt implicit de apelare",
+  "fontSurfaceFavourites": "Favorite",
+  "fontSurfaceBlocked": "Numere blocate",
+  "fontSurfaceContactDetail": "Detalii de contact",
+  "fontSurfaceCallHistory": "Istoricul apelurilor",
+  "fontSurfaceSheets": "Foi și culegători",
+  "fontSurfaceInCall": "Ecran pentru apeluri",
+  "fontSubtitleEntireApp": "{font} — întreaga aplicație",
+  "fontSubtitleTitlesOnly": "{font} — numai titluri",
+  "fontSubtitleCustomize": "Personalizat pe ecran",
+  "background": "Fundal",
+  "accent": "Accent",
+  "lightBackground": "Fundal deschis",
+  "lightAccent": "Accent ușor",
+  "darkBackground": "Fundal întunecat",
+  "darkAccent": "Accent întunecat",
+  "callBackground": "Fundalul apelului",
+  "appIcon": "Pictograma aplicației",
+  "answerMethod": "Metoda de răspuns",
+  "answerSlide": "Glisați pentru a răspunde",
+  "answerSlideSubtitle": "Glisați la stânga/dreapta pe bară, cum ar fi Google Phone",
+  "answerButton": "Atingeți butonul",
+  "answerButtonSubtitle": "Atingeți butoanele de răspuns sau de refuz",
+  "answerHuawei": "Stilul Huawei",
+  "answerHuaweiSubtitle": "Trageți cercul pe telefonul verde pentru a răspunde",
+  "answerHuaweiTileSubtitle": "Huawei - trageți la verde / roșu",
+  "calling": "Apel",
+  "defaultSim": "SIM implicit",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Întreabă de fiecare dată",
+  "askEveryTimeSubtitle": "Afișați selectorul SIM înainte de fiecare apel",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "Nu s-au găsit carduri SIM",
+  "couldNotLoadSims": "Nu s-au putut încărca SIM-urile: {error}",
+  "allFavourites": "Toate favoritele",
+  "allFavouritesSubtitle": "Reordonați, eliminați și adăugați din contacte",
+  "blockedNumbers": "Numere blocate",
+  "blockedNumbersSubtitle": "Vizualizați și deblocați numerele",
+  "soundsAndVibration": "Sunete și vibrații",
+  "soundsAndVibrationSubtitle": "Ton de apel, vibrații, tonuri de tastatură",
+  "couldNotOpenSettings": "Nu s-au putut deschide setările: {error}",
+  "frequentlyContacted": "Contactat frecvent",
+  "numberOfRecords": "Numărul de înregistrări",
+  "timePeriod": "Perioada de timp",
+  "periodLast24Hours": "Ultimele 24 de ore",
+  "periodLast24HoursSubtitle": "Apeluri din ziua trecută",
+  "periodLast7Days": "Ultimele 7 zile",
+  "periodLast7DaysSubtitle": "Apeluri din ultima săptămână",
+  "periodLast30Days": "Ultimele 30 de zile",
+  "periodLast30DaysSubtitle": "Apeluri din ultima lună",
+  "periodLast12Months": "Ultimele 12 luni",
+  "periodLast12MonthsSubtitle": "Apeluri din anul trecut",
+  "periodAllTime": "Tot timpul",
+  "periodAllTimeSubtitle": "Întregul istoric al apelurilor",
+  "frequentMaxOff": "Oprit",
+  "frequentMaxCount": "{count} contacte",
+  "torchBlink": "Torță Clipește",
+  "torchIncomingCall": "Lanterna pentru apeluri primite",
+  "torchOutgoingCall": "Lanterna pentru apeluri de ieșire",
+  "torchOngoingCall": "Lanterna de apel în curs",
+  "torchIncomingInterval": "Interval de clipire de intrare",
+  "torchOutgoingInterval": "Interval de ieșire intermitent",
+  "torchOngoingInterval": "Interval de clipire în curs",
+  "torchOff": "Oprit",
+  "torchOffIncomingSubtitle": "Fără lanternă în timp ce sună",
+  "torchOffOutgoingSubtitle": "Fără lanternă în timp ce formați",
+  "torchOffOngoingSubtitle": "Fără lanternă în timpul apelului activ",
+  "torchFixedInterval": "Interval fix",
+  "torchFixedIntervalSubtitle": "Clipiți la o viteză stabilită",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} clipește",
+  "flashlightUnavailable": "Lanterna nu este disponibilă pe acest dispozitiv",
+  "glyphLights": "Glyph Lights",
+  "glyphCallingAnimation": "Animație de apelare glifă",
+  "glyphOngoingAnimation": "Animație de apel în curs de desfășurare",
+  "glyphNone": "Nici unul",
+  "glyphNoneOutgoingSubtitle": "Dezactivați luminile Glyph pentru apelurile efectuate",
+  "glyphNoneInCallSubtitle": "Dezactivați luminile Glifului în timp ce sunteți activ la apel",
+  "glyphBreathProgress": "Respirație și progres",
+  "glyphBreathProgressSubtitle": "Luminile respiră în timp ce linia se umple peste 65 de secunde",
+  "glyphAccumulate": "Acumula",
+  "glyphAccumulateSubtitle": "Animație acumulată pe lumini C1-C4",
+  "glyphSingle": "Singur",
+  "glyphSingleSubtitle": "O singură lumină care se deplasează pe C1-C4",
+  "glyphBreath": "Suflare",
+  "glyphBreathSubtitle": "Alege lumini și viteză",
+  "glyphSteady": "Stabil",
+  "glyphSteadySubtitle": "Luminile selectate rămân aprinse",
+  "breathSettings": "Setări de respirație",
+  "activeLights": "Lumini active",
+  "lightsCount": "{count} lumini",
+  "speedSettings": "Setări de viteză",
+  "speedSettingsDelay": "{ms}ms întârziere",
+  "durationAndSpeed": "Durată și viteză",
+  "durationSpeedSummary": "{duration}s durată, {interval}ms interval",
+  "cancel": "Anula",
+  "done": "Făcut",
+  "save": "Salva",
+  "block": "Bloc",
+  "delete": "Şterge",
+  "recents": "Recente",
+  "contacts": "Contacte",
+  "hideFavouritesOnRecents": "Ascundeți favoritele în Recente",
+  "showFavouritesOnRecents": "Afișați favoritele în Recente",
+  "ongoingCall": "Apel în curs",
+  "setAsDefaultTitle": "SETĂ CA\nIMPLICIT",
+  "setAsDefaultBody": "Pentru a utiliza Nothing Dialer, trebuie setat ca aplicație implicită pentru telefon. Acest lucru vă permite să gestionați apelurile, să vizualizați istoricul și să utilizați animațiile Glyph.",
+  "setAsDefaultButton": "SETAT CA IMPLICIT",
+  "nothingDialerBrand": "NIMIC ANUMĂTOR 1",
+  "favourites": "Favorite",
+  "addFavourite": "Adăugați favorit",
+  "favouritesDrawerHint": "Utilizați meniul pentru a adăuga contacte. Atingeți în afara sertarului sau glisați-l închide. Marcați un contact din detaliile acestuia sau apăsați lung pe un apel în Recente.",
+  "menu": "Meniu",
+  "noFavouritesYet": "Încă nu sunt favorite.\nDeschideți meniul pentru a adăuga unul sau stea un contact.",
+  "contactsPermissionNeeded": "Este nevoie de permisiunea Contactelor",
+  "chooseContact": "Alegeți contact",
+  "noPhone": "Fără telefon",
+  "pickNumber": "Alegeți numărul",
+  "contactHasNoPhone": "Acest contact nu are număr de telefon",
+  "blockNumber": "Numărul blocului",
+  "enterPhoneNumber": "Introduceți numărul de telefon",
+  "unblockedDisplay": "Deblocat {display}",
+  "couldNotUnblockNumber": "Nu s-a putut debloca numărul",
+  "blockedSummary": "{blocked} blocat • {matched} potrivit",
+  "contactsPermissionMissing": "Permisiunea de contact lipsește. Atingeți pentru a remedia.",
+  "noBlockedNumbers": "Fără numere blocate",
+  "unknownContact": "Contact necunoscut",
+  "unblock": "Deblocați",
+  "permissionNeeded": "Este nevoie de permisiunea",
+  "grantPhonePermission": "Acordați permisiunea telefonului pentru a vedea istoricul apelurilor.",
+  "grantContactsPermission": "Acordați persoanelor de contact permisiunea de a vă vedea agenda.",
+  "openSettings": "Deschide Setări",
+  "tryAgain": "Încearcă din nou",
+  "couldNotLoadContacts": "Nu s-au putut încărca contactele",
+  "contactsLoadError": "Ceva a mers prost citind agenda dvs. de adrese.",
+  "noContactsFound": "Nu s-au găsit persoane de contact",
+  "contactsEmptySubtitle": "Contactele de pe dispozitivul dvs. vor apărea aici.",
+  "searchContacts": "Căutați persoane de contact...",
+  "searchRecentCalls": "Căutați apeluri recente",
+  "fromContacts": "Din contacte",
+  "recentsSearchSection": "Căutare recentă",
+  "recentsSearchShowContacts": "Afișați persoanele de contact în căutare",
+  "recentsSearchShowContactsSubtitle": "În timp ce căutați Recente, afișați și persoanele care se potrivesc din agenda dvs. sub rezultatele istoricului apelurilor.",
+  "voiceSearch": "Căutare vocală",
+  "createNewContact": "Creați un contact nou",
+  "callError": "Eroare de apel: {error}",
+  "noRecentCalls": "Fără apeluri recente",
+  "callHistoryEmpty": "Istoricul apelurilor dvs. va apărea aici.",
+  "loadMore": "Încărcați mai multe",
+  "frequentlyContactedHeader": "Contactat frecvent",
+  "recentHistory": "Istoria recentă",
+  "noFavouritesRecentsHint": "Încă nu sunt favorite. Marcați cu stea un contact, apăsați lung pe un apel sau utilizați fila Preferințe.",
+  "copyNumber": "Copiați numărul",
+  "editNumberBeforeCall": "Editați numărul înainte de a apela",
+  "removeFromFavourites": "Eliminați din favorite",
+  "addToFavourites": "Adăugați la favorite",
+  "blockNumberQuestion": "Numărul blocului?",
+  "blockNumberConfirm": "Nu veți mai primi apeluri sau mesaje text de la {number}.",
+  "blocked": "Blocat",
+  "couldNotBlock": "Nu s-a putut bloca",
+  "contactNotOnDevice": "Contactul nu a fost salvat pe acest dispozitiv",
+  "unblocked": "Deblocat",
+  "numberCopied": "Număr copiat",
+  "showLess": "Arată mai puțin",
+  "showAllTimes": "Arată tot timpul",
+  "mostRecent": "Cele mai recente · {time}",
+  "videoCall": "Apel video",
+  "couldNotPlaceVideoCall": "Apelul video nu a putut fi efectuat",
+  "message": "Mesaj",
+  "couldNotOpenMessaging": "Aplicația de mesagerie nu a putut fi deschisă",
+  "history": "Istorie",
+  "viewContact": "Vizualizați contactul",
+  "addToContact": "Adaugă la contact",
+  "callTypeMissed": "ratat",
+  "callTypeRejected": "Respins",
+  "callTypeIncoming": "Sosire",
+  "callTypeOutgoing": "Ieșire",
+  "today": "Astăzi",
+  "yesterday": "Ieri",
+  "justNow": "Chiar acum",
+  "minutesAgo": "{count} min în urmă",
+  "hoursAgo": "{count} oră în urmă",
+  "filterAll": "Toate",
+  "filterMissed": "ratat",
+  "filterContacts": "Contacte",
+  "filterNonContacts": "Non-contacte",
+  "iconUpdated": "Pictograma a fost actualizată. Ecranul dvs. de pornire poate dura un moment pentru a se reîmprospăta.",
+  "iconSavedRelease": "Alegerea salvată. Pictograma ecranului de pornire se actualizează în versiunile de versiuni.",
+  "couldNotChangeIcon": "Pictograma nu a putut fi schimbată: {error}",
+  "launcherClassicBlack": "Clasic (negru)",
+  "launcherLight": "Aprinde",
+  "launcherNothingRed": "Nimic roșu",
+  "launcherDarkGrey": "Gri închis",
+  "launcherCream": "Cremă",
+  "launcherRetroPhone": "Telefon retro",
+  "launcherRetroPhoneLight": "Telefon retro (luminos)",
+  "voiceSearchUnavailable": "Căutarea vocală nu este disponibilă pe acest dispozitiv.",
+  "voiceSearchFailed": "Căutarea vocală a eșuat: {error}",
+  "customColor": "Personalizat",
+  "selectColor": "Selectați culoarea",
+  "reset": "Resetați",
+  "simPickerTitle": "Alegeți SIM",
+  "simChooseForCall": "Alegeți SIM pentru acest apel",
+  "defaultSimAsk": "Întreabă de fiecare dată",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Date de contact",
+  "call": "Apel",
+  "share": "Distribuie",
+  "favourite": "Favorit",
+  "unfavourite": "Nefavorit",
+  "blockContact": "Blocați contactul",
+  "unblockContact": "Deblocați contactul",
+  "deleteContact": "Ștergeți contactul",
+  "phone": "Telefon",
+  "email": "E-mail",
+  "ringtone": "Ton de apel",
+  "defaultRingtone": "Implicit",
+  "simForContact": "SIM pentru acest contact",
+  "callHistoryTitle": "Istoricul apelurilor",
+  "noCallsWithNumber": "Nu există apeluri cu acest număr",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Animație glifă",
+  "inCallGlyphAnimationStyle": "Animație Glyph în timpul apelului",
+  "recordsOff": "Oprit",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "SIM implicit",
+  "nothingPhoneOnly": "Nimic Numai la telefon",
+  "nothingPhoneOnlySubtitle": "Caracteristicile Glyph necesită un telefon Nothing",
+  "custom": "Personalizat",
+  "presetColorHex": "Presetat · {hex}",
+  "customColorHex": "Personalizat · {hex}",
+  "oneContact": "1 contact",
+  "upToContacts": "Până la {count} contacte",
+  "answerButtonTapSubtitle": "Atingeți butonul pentru a răspunde",
+  "filterCalls": "Filtrați apelurile",
+  "filterTooltip": "Filtra",
+  "settingsTooltip": "Setări",
+  "filterAllSubtitle": "Întregul jurnal de apeluri",
+  "filterMissedSubtitle": "Ratată și respinsă",
+  "filterContactsSubtitle": "Apelurile au fost asociate unui contact salvat",
+  "filterNonContactsSubtitle": "Numerele nu sunt în agenda dvs",
+  "ongoingCallWithDetail": "Apel în curs: {detail}",
+  "defaultSimForCalls": "SIM implicit pentru apeluri",
+  "blinkInterval": "Interval de clipire",
+  "close": "Aproape",
+  "frequentlyContactedInfoBody": "Afișează cele mai apelate numere de telefon în partea de sus a filei Recente, în funcție de numărul de apeluri primite, efectuate, pierdute sau respinse pe care le-ați avut cu fiecare număr în perioada de timp pe care o alegeți.\n\nNumăr de înregistrări: setați la 0 pentru a dezactiva acest lucru. Folosiți 1–20 pentru a afișa atât de multe persoane de contact de top.\n\nPerioada de timp se aplică numai atunci când este afișat cel puțin un contact.",
+  "breathSettingsSpeedSummary": "{count} lumini, {ms}ms viteza",
+  "deleteContactQuestion": "Ștergeți persoana de contact?",
+  "deleteContactBody": "Această persoană de contact va fi ștearsă definitiv de pe dispozitiv.",
+  "blockContactQuestion": "Blocați contactul?",
+  "unblockContactQuestion": "Deblocați persoana de contact?",
+  "blockContactBody": "Nu veți mai primi apeluri sau mesaje text de la acest contact.",
+  "unblockContactBody": "Veți începe să primiți apeluri și mesaje text de la acest contact.",
+  "contactBlocked": "Contact blocat",
+  "contactUnblocked": "Contact deblocat",
+  "noPhoneNumbersToBlock": "Nu există numere de telefon de blocat",
+  "simSameAsSystem": "La fel ca sistemul",
+  "simSameAsSystemSubtitle": "Urmează SIM-ul implicit în Setări",
+  "simAskEveryTimeForContact": "Afișați întotdeauna selectorul SIM pentru acest contact",
+  "ringtoneSetForContact": "Ton de apel setat la nivel global pentru această persoană de contact",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Nu s-a putut alege tonul de apel: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Eroare: {error}",
+  "noCallHistoryFound": "Nu a fost găsit niciun istoric de apeluri",
+  "speedDialVoicemail": "Apelare rapidă: mesagerie vocală",
+  "shareContactSubject": "Contact: {name}",
+  "contactInfo": "Informații de contact",
+  "dontAskAgainSim": "Nu mai întreba",
+  "simDontAskAgainSubtitle": "Utilizați acest SIM ca implicit (modificare în Setări)",
+  "addContact": "Adăugați contact",
+  "createContact": "Creați contact",
+  "paste": "Pastă",
+  "clear": "Clar",
+  "returnToCall": "Reveniți la apel",
+  "numberOfRecordsTitle": "Numărul de înregistrări",
+  "recordsPickerSubtitle": "Câte intrări contactate frecvent de afișat (0 = dezactivat)",
+  "torchInfoTitle": "torță clipește",
+  "torchInfoBody": "Blițul camerei clipește în timpul apelurilor primite, efectuate sau în curs. Independent de luminile Glyph.",
+  "glyphMapTitle": "Aspect glif",
+  "glyphMapBody": "Nimic Telefon 1 Glyph zone LED. Animațiile de ieșire și în apel folosesc aceste canale.",
+  "answerMethodTitle": "Metoda de răspuns",
+  "glyphOutgoingCallStyleTitle": "Stilul apelului de ieșire",
+  "glyphInCallAnimationTitle": "Animație glifă în apel",
+  "themePickerTitle": "Temă",
+  "torchIncomingTitle": "Lanterna pentru apeluri primite",
+  "torchOutgoingTitle": "Lanterna pentru apeluri de ieșire",
+  "torchOngoingTitle": "Lanterna de apel în curs",
+  "timePeriodTitle": "Perioada de timp",
+  "ok": "BINE",
+  "confirmDeleteCall": "Ștergeți acest apel din istoric?",
+  "confirmDeleteAllCalls": "Ștergeți toate apelurile cu acest număr?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Trimite un mesaj",
+  "addToExistingContactAction": "Adăugați la un contact",
+  "mobileLabel": "Mobil",
+  "callingSimForContactTitle": "Apelare SIM pentru acest contact",
+  "contactSettings": "Setări de contact",
+  "setCallingSim": "Setați SIM pentru apelare",
+  "contactRingtone": "Ton de apel de contact",
+  "shareContact": "Partajați contactul",
+  "blockNumbers": "Numerele blocate",
+  "unblockNumbers": "Deblocați numerele",
+  "connectedApps": "Aplicații conectate",
+  "simNotSet": "Nu setat",
+  "ringtoneDefault": "Implicit",
+  "customRingtone": "Personalizat",
+  "aboutSection": "Despre",
+  "aboutFeedbackSection": "Despre și feedback",
+  "aboutDescription": "Nothing Dialer este open source. Dacă sunteți dezvoltator, sunteți binevenit să explorați codul și să contribuiți.",
+  "aboutViewSource": "Vizualizați pe GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Linkul nu a putut fi deschis",
+  "reviewSection": "Recenzie",
+  "reviewDescription": "Vă bucurați de Nothing Dialer? Evaluarea dvs. pe Google Play îi ajută pe alții să găsească aplicația.",
+  "reviewRateOnPlay": "Evaluați pe Google Play",
+  "reviewRateOnPlaySubtitle": "Lăsați o evaluare fără a părăsi aplicația",
+  "reviewCouldNotOpen": "Google Play nu a putut fi deschis",
+  "breathSpeed": "Viteza respirației",
+  "breathSpeedBlinkHint": "Jos = Clipește, Mai sus = Respirație lentă",
+  "speedSliderHint": "Jos = mai rapid, mai sus = mai lent",
+  "swatchDefault": "Implicit",
+  "customAccentColorPicker": "Culoare de accent personalizată",
+  "customLightBackgroundPicker": "Fundal luminos personalizat",
+  "customDarkBackgroundPicker": "Fundal întunecat personalizat",
+  "customCallBackgroundPicker": "Fundal personalizat pentru apeluri",
+  "ongoingCallStyleTitle": "Stilul de apel în curs",
+  "glyphMapUnavailable": "Harta glifă indisponibilă",
+  "animationDelayRange": "Întârziere animație (1s - 10s)",
+  "animationDelayRangeSingle": "Întârziere animație (0,1 s - 10 s)",
+  "inCallMute": "Mut",
+  "inCallKeypad": "Tastatura",
+  "inCallSpeaker": "Difuzor",
+  "inCallMore": "Mai mult",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Telefon",
+  "inCallAddCall": "Adăugați apel",
+  "inCallChangeSim": "Schimbați SIM",
+  "inCallDecline": "Declin",
+  "inCallAnswer": "Răspuns",
+  "inCallMessage": "Mesaj",
+  "inCallCalling": "Apelând…",
+  "inCallIncoming": "Apel primit",
+  "inCallSelectSim": "Selectați SIM...",
+  "inCallSwitchingSim": "Se comută SIM-ul...",
+  "inCallCallEnded": "Apel încheiat",
+  "inCallCallingVia": "Apelare prin {sim}",
+  "inCallCallingViaHtml": "Apelare prin <b>{sim}</b>",
+  "inCallChooseSim": "Alegeți SIM pentru acest apel",
+  "inCallDragAnswerDecline": "Trageți la dreapta pentru a răspunde · Trageți la stânga pentru a refuza",
+  "inCallMobileNumber": "Mobil {number}",
+  "inCallAudioRouteCurrent": "{label} (Actual)",
+  "inCallCallViaFrom": "Apelați prin <b>{sim}</b> de la",
+  "inCallCallFrom": "Sună de la",
+  "inCallUnknown": "Necunoscut",
+  "selectContactRingtone": "Selectați tonul de apel de contact",
+  "speakToSearchPrompt": "Vorbește pentru a căuta",
+  "phonePermissionRequired": "Este necesară permisiunea telefonică",
+  "callFailed": "Apel eșuat: {error}",
+  "callPermissionDenied": "Permisiunea de apel a fost refuzată",
+  "alreadyDefaultDialer": "Deja setat ca dialer implicit",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

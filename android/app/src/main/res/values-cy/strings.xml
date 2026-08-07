@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Tewi</string>
+    <string name="in_call_keypad">Bysellbad</string>
+    <string name="in_call_speaker">Llefarydd</string>
+    <string name="in_call_more">Mwy</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Ffonio</string>
+    <string name="in_call_add_call">Ychwanegu galwad</string>
+    <string name="in_call_change_sim">Newid SIM</string>
+    <string name="in_call_decline">Dirywiad</string>
+    <string name="in_call_answer">Ateb</string>
+    <string name="in_call_message">Neges</string>
+    <string name="in_call_calling">Yn galw…</string>
+    <string name="in_call_incoming">Galwad i mewn</string>
+    <string name="in_call_select_sim">Dewiswch SIM…</string>
+    <string name="in_call_switching_sim">Wrthi\'n newid SIM…</string>
+    <string name="in_call_call_ended">Galwad i ben</string>
+    <string name="in_call_calling_via">Yn galw trwy %1$s</string>
+    <string name="in_call_calling_via_html">Yn galw drwy &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Dewiswch SIM ar gyfer yr alwad hon</string>
+    <string name="in_call_drag_answer_decline">Llusgwch i\'r dde i ateb · Llusgwch i\'r chwith i wrthod</string>
+    <string name="in_call_mobile_number">Symudol %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Cyfredol)</string>
+    <string name="in_call_call_via_from">Ffoniwch drwy &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; o</string>
+    <string name="in_call_call_from">Galwch o</string>
+    <string name="in_call_unknown">Anhysbys</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Dewiswch tôn ffôn cyswllt</string>
+    <string name="native_speak_to_search">Siaradwch i chwilio</string>
+    <string name="native_phone_permission_required">Angen caniatâd ffôn</string>
+    <string name="native_call_failed">Galwad wedi methu: %1$s</string>
+    <string name="native_call_permission_denied">Caniatâd galwad wedi\'i wrthod</string>
+    <string name="native_already_default_dialer">Eisoes wedi\'i osod fel deialydd diofyn</string>
+</resources>

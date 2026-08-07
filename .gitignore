@@ -46,3 +46,5 @@ app.*.map.json
 
 # Local Gradle user home when using a project-local GRADLE_USER_HOME
 .gradle-user-home/
+
+.cursor/

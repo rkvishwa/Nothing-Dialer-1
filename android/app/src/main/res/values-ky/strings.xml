@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Үнсүз</string>
+    <string name="in_call_keypad">Баскычтоп</string>
+    <string name="in_call_speaker">Баяндамачы</string>
+    <string name="in_call_more">Дагы</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Телефон</string>
+    <string name="in_call_add_call">Чалуу кошуу</string>
+    <string name="in_call_change_sim">SIMди алмаштыруу</string>
+    <string name="in_call_decline">Баш тартуу</string>
+    <string name="in_call_answer">Жооп</string>
+    <string name="in_call_message">Кабар</string>
+    <string name="in_call_calling">Чалуу…</string>
+    <string name="in_call_incoming">Кирүүчү чалуу</string>
+    <string name="in_call_select_sim">SIM тандоо…</string>
+    <string name="in_call_switching_sim">SIM которулууда…</string>
+    <string name="in_call_call_ended">Чалуу аяктады</string>
+    <string name="in_call_calling_via">%1$s аркылуу чалуу</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; аркылуу чалуу</string>
+    <string name="in_call_choose_sim">Бул чалуу үчүн SIM тандаңыз</string>
+    <string name="in_call_drag_answer_decline">Жооп берүү үчүн оңго сүйрөңүз · Баш тартуу үчүн солго сүйрөңүз</string>
+    <string name="in_call_mobile_number">Мобилдик %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Учурда)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; аркылуу чалыңыз</string>
+    <string name="in_call_call_from">дан чалуу</string>
+    <string name="in_call_unknown">Белгисиз</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Байланыш рингтонун тандаңыз</string>
+    <string name="native_speak_to_search">Издөө үчүн сүйлө</string>
+    <string name="native_phone_permission_required">Телефон уруксаты талап кылынат</string>
+    <string name="native_call_failed">Чалуу ишке ашкан жок: %1$s</string>
+    <string name="native_call_permission_denied">Чалууга уруксат четке кагылды</string>
+    <string name="native_already_default_dialer">Демейки терүүчү катары мурунтан эле коюлган</string>
+</resources>

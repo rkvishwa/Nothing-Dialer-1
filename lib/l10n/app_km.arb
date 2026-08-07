@@ -1,0 +1,759 @@
+{
+  "@@locale": "km",
+  "appTitle": "គ្មានអ្វី Dialer",
+  "settings": "ការកំណត់",
+  "settingsSearchHint": "ការកំណត់ស្វែងរក",
+  "settingsSearchNoResults": "រកមិនឃើញការកំណត់ទេ។",
+  "general": "ទូទៅ",
+  "theme": "ប្រធានបទ",
+  "themeSystemDefault": "លំនាំដើមប្រព័ន្ធ",
+  "themeLight": "ពន្លឺ",
+  "themeDark": "ងងឹត",
+  "themeFollowSystem": "អនុវត្តតាមការកំណត់ប្រព័ន្ធ",
+  "themeAlwaysLight": "តែងតែប្រើប្រធានបទពន្លឺ",
+  "themeAlwaysDark": "ប្រើរចនាប័ទ្មងងឹតជានិច្ច",
+  "language": "ភាសា",
+  "languageDeviceDefault": "លំនាំដើមឧបករណ៍",
+  "languagePickerTitle": "ភាសា",
+  "languageSearchHint": "ស្វែងរកភាសា",
+  "font": "ពុម្ពអក្សរ",
+  "fontSystem": "លំនាំដើមប្រព័ន្ធ",
+  "fontNdot": "គ្មានអ្វី (NDot)",
+  "fontSerif": "មនុស្សយន្ត Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "ការទាញយកពុម្ពអក្សរបរាជ័យ។ ពិនិត្យការតភ្ជាប់របស់អ្នក ហើយព្យាយាមម្តងទៀត។",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "ពុម្ពអក្សរ",
+  "fontPreviewSample": "គ្មានអ្វី Dialer",
+  "fontAppWide": "ពុម្ពអក្សរកម្មវិធី",
+  "fontApplyTo": "អនុវត្តទៅ",
+  "fontApplyEntireApp": "កម្មវិធីទាំងមូល",
+  "fontApplyEntireAppSubtitle": "ពុម្ពអក្សរដូចគ្នានៅគ្រប់ទីកន្លែង រួមទាំងការហៅចូលផងដែរ។",
+  "fontApplyTitlesOnly": "ចំណងជើង និងចំណងជើង",
+  "fontApplyTitlesOnlySubtitle": "ចំណងជើងធំ និងក្បាលផ្នែកតែប៉ុណ្ណោះ",
+  "fontApplyCustomize": "ប្ដូរតាមបំណង",
+  "fontApplyCustomizeSubtitle": "ជ្រើសរើសពុម្ពអក្សរតាមអេក្រង់ និងប្រភេទអត្ថបទ",
+  "fontCustomizeSection": "ប្ដូរតាមបំណងតាមអេក្រង់",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "ចំណងជើងទំព័រ",
+  "fontRoleSectionHeader": "ក្បាលផ្នែក",
+  "fontRolePrimary": "អត្ថបទបឋម",
+  "fontRoleSecondary": "អត្ថបទបន្ទាប់បន្សំ",
+  "fontRoleButton": "ប៊ូតុង",
+  "fontRoleDialKey": "គ្រាប់ចុចលេខ",
+  "fontSurfaceRecents": "ថ្មីៗ",
+  "fontSurfaceContacts": "ទំនាក់ទំនង",
+  "fontSurfaceSettings": "ការកំណត់",
+  "fontSurfaceDialpad": "ក្ដារចុច",
+  "fontSurfaceShell": "ការរុករក",
+  "fontSurfaceDefaultDialer": "ប្រអប់បញ្ចូលកម្មវិធីហៅទូរសព្ទលំនាំដើម",
+  "fontSurfaceFavourites": "ចំណូលចិត្ត",
+  "fontSurfaceBlocked": "លេខដែលរារាំង",
+  "fontSurfaceContactDetail": "ព័ត៌មានលម្អិតទំនាក់ទំនង",
+  "fontSurfaceCallHistory": "ប្រវត្តិហៅទូរសព្ទ",
+  "fontSurfaceSheets": "សន្លឹក និងឧបករណ៍រើស",
+  "fontSurfaceInCall": "អេក្រង់​ក្នុង​ការ​ហៅ",
+  "fontSubtitleEntireApp": "{font} - កម្មវិធីទាំងមូល",
+  "fontSubtitleTitlesOnly": "{font} - ចំណងជើងតែប៉ុណ្ណោះ",
+  "fontSubtitleCustomize": "ផ្ទាល់ខ្លួនក្នុងមួយអេក្រង់",
+  "background": "ផ្ទៃខាងក្រោយ",
+  "accent": "ការសង្កត់សំឡេង",
+  "lightBackground": "ផ្ទៃខាងក្រោយស្រាល",
+  "lightAccent": "ការសង្កត់សំឡេងស្រាល",
+  "darkBackground": "ផ្ទៃខាងក្រោយងងឹត",
+  "darkAccent": "ការសង្កត់សំឡេងងងឹត",
+  "callBackground": "ហៅផ្ទៃខាងក្រោយ",
+  "appIcon": "រូបតំណាងកម្មវិធី",
+  "answerMethod": "វិធីសាស្រ្តឆ្លើយ",
+  "answerSlide": "រុញដើម្បីឆ្លើយ",
+  "answerSlideSubtitle": "អូសទៅឆ្វេង/ស្តាំលើរបារ ដូចជា Google Phone",
+  "answerButton": "ចុចប៊ូតុង",
+  "answerButtonSubtitle": "ប៉ះប៊ូតុងចម្លើយ ឬបដិសេធ",
+  "answerHuawei": "រចនាប័ទ្ម Huawei",
+  "answerHuaweiSubtitle": "អូសរង្វង់ទៅទូរស័ព្ទពណ៌បៃតងដើម្បីឆ្លើយ",
+  "answerHuaweiTileSubtitle": "Huawei — អូស​ទៅ​បៃតង/ក្រហម",
+  "calling": "ការហៅទូរសព្ទ",
+  "defaultSim": "ស៊ីមលំនាំដើម",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "សួររាល់ពេល",
+  "askEveryTimeSubtitle": "បង្ហាញឧបករណ៍រើសស៊ីមមុនពេលហៅនីមួយៗ",
+  "simSlot": "ស៊ីម {slot}",
+  "noSimCardsFound": "រកមិនឃើញស៊ីមកាតទេ។",
+  "couldNotLoadSims": "មិនអាចផ្ទុកស៊ីមបាន៖ {error}",
+  "allFavourites": "ចំណូលចិត្តទាំងអស់។",
+  "allFavouritesSubtitle": "តម្រៀបឡើងវិញ លុបចេញ និងបន្ថែមពីទំនាក់ទំនង",
+  "blockedNumbers": "លេខដែលរារាំង",
+  "blockedNumbersSubtitle": "មើលនិងដោះសោលេខ",
+  "soundsAndVibration": "សំឡេងនិងរំញ័រ",
+  "soundsAndVibrationSubtitle": "សំឡេងរោទ៍ រំញ័រ សម្លេងបន្ទះចុច",
+  "couldNotOpenSettings": "មិនអាចបើកការកំណត់៖ {error}",
+  "frequentlyContacted": "ទាក់ទងញឹកញាប់",
+  "numberOfRecords": "ចំនួនកំណត់ត្រា",
+  "timePeriod": "រយៈពេល",
+  "periodLast24Hours": "24 ម៉ោងចុងក្រោយ",
+  "periodLast24HoursSubtitle": "ការហៅទូរសព្ទពីថ្ងៃមុន។",
+  "periodLast7Days": "7 ថ្ងៃចុងក្រោយ",
+  "periodLast7DaysSubtitle": "ការហៅទូរសព្ទពីសប្តាហ៍មុន។",
+  "periodLast30Days": "30 ថ្ងៃចុងក្រោយ",
+  "periodLast30DaysSubtitle": "ការហៅទូរសព្ទពីខែមុន។",
+  "periodLast12Months": "12 ខែចុងក្រោយ",
+  "periodLast12MonthsSubtitle": "ការហៅទូរសព្ទពីឆ្នាំមុន",
+  "periodAllTime": "គ្រប់ពេលវេលា",
+  "periodAllTimeSubtitle": "ប្រវត្តិហៅទូរសព្ទទាំងមូល",
+  "frequentMaxOff": "បិទ",
+  "frequentMaxCount": "{count}ទំនាក់ទំនង",
+  "torchBlink": "ពិលភ្លឹបភ្លែតៗ",
+  "torchIncomingCall": "ពិលហៅចូល",
+  "torchOutgoingCall": "ពិលហៅចេញ",
+  "torchOngoingCall": "ការហៅទូរសព្ទដែលកំពុងដំណើរការ",
+  "torchIncomingInterval": "ចន្លោះពេលព្រិចភ្នែកចូល",
+  "torchOutgoingInterval": "ចន្លោះពេលព្រិចភ្នែកចេញ",
+  "torchOngoingInterval": "ចន្លោះពេលព្រិចភ្នែកដែលកំពុងដំណើរការ",
+  "torchOff": "បិទ",
+  "torchOffIncomingSubtitle": "គ្មានពិលពេលកំពុងរោទិ៍",
+  "torchOffOutgoingSubtitle": "គ្មាន​ភ្លើង​ពេល​ចុច",
+  "torchOffOngoingSubtitle": "គ្មានពិលកំឡុងពេលហៅទូរសព្ទសកម្ម",
+  "torchFixedInterval": "ចន្លោះពេលថេរ",
+  "torchFixedIntervalSubtitle": "ព្រិចភ្នែកក្នុងល្បឿនកំណត់",
+  "torchIntervalSeconds": "{seconds} ស",
+  "torchIntervalBlink": "{seconds} ព្រិចភ្នែក",
+  "flashlightUnavailable": "ពិលមិនមាននៅលើឧបករណ៍នេះទេ។",
+  "glyphLights": "ពន្លឺ Glyph",
+  "glyphCallingAnimation": "ចលនាហៅ Glyph",
+  "glyphOngoingAnimation": "ចលនាការហៅដែលកំពុងបន្ត Glyph",
+  "glyphNone": "គ្មាន",
+  "glyphNoneOutgoingSubtitle": "បិទភ្លើង Glyph សម្រាប់ការហៅចេញ",
+  "glyphNoneInCallSubtitle": "បិទភ្លើង Glyph ពេលកំពុងហៅទូរសព្ទ",
+  "glyphBreathProgress": "ដង្ហើម & វឌ្ឍនភាព",
+  "glyphBreathProgressSubtitle": "ពន្លឺដកដង្ហើមខណៈពេលដែលបន្ទាត់បំពេញលើសពី 65 វិនាទី",
+  "glyphAccumulate": "កកកុញ",
+  "glyphAccumulateSubtitle": "ការប្រមូលផ្តុំចលនានៅលើភ្លើង C1-C4",
+  "glyphSingle": "នៅលីវ",
+  "glyphSingleSubtitle": "ពន្លឺតែមួយផ្លាស់ទីឆ្លងកាត់ C1-C4",
+  "glyphBreath": "ដង្ហើម",
+  "glyphBreathSubtitle": "ជ្រើសរើសពន្លឺនិងល្បឿន",
+  "glyphSteady": "ស្ថិរភាព",
+  "glyphSteadySubtitle": "ភ្លើងដែលបានជ្រើសរើសនៅតែបើក",
+  "breathSettings": "ការកំណត់ដង្ហើម",
+  "activeLights": "ភ្លើងសកម្ម",
+  "lightsCount": "{count} ភ្លើង",
+  "speedSettings": "ការកំណត់ល្បឿន",
+  "speedSettingsDelay": "{ms}ms ពន្យាពេល",
+  "durationAndSpeed": "រយៈពេល និងល្បឿន",
+  "durationSpeedSummary": "រយៈពេល{duration}s ចន្លោះពេល{interval}ms",
+  "cancel": "បោះបង់",
+  "done": "រួចរាល់",
+  "save": "រក្សាទុក",
+  "block": "ទប់ស្កាត់",
+  "delete": "លុប",
+  "recents": "ថ្មីៗ",
+  "contacts": "ទំនាក់ទំនង",
+  "hideFavouritesOnRecents": "លាក់ការចូលចិត្តនៅលើថ្មីៗ",
+  "showFavouritesOnRecents": "បង្ហាញចំណូលចិត្តនៅលើថ្មីៗ",
+  "ongoingCall": "ការហៅទូរសព្ទដែលកំពុងបន្ត",
+  "setAsDefaultTitle": "កំណត់ AS\nលំនាំដើម",
+  "setAsDefaultBody": "ដើម្បីប្រើ Nothing Dialer វាត្រូវតែកំណត់ជាកម្មវិធីទូរស័ព្ទលំនាំដើមរបស់អ្នក។ វាអនុញ្ញាតឱ្យអ្នកគ្រប់គ្រងការហៅទូរសព្ទ មើលប្រវត្តិ និងប្រើចលនា Glyph ។",
+  "setAsDefaultButton": "កំណត់ជាលំនាំដើម",
+  "nothingDialerBrand": "គ្មានលេខទូរសព្ទ 1",
+  "favourites": "ចំណូលចិត្ត",
+  "addFavourite": "បន្ថែមចំណូលចិត្ត",
+  "favouritesDrawerHint": "ប្រើម៉ឺនុយដើម្បីបន្ថែមទំនាក់ទំនង។ ប៉ះនៅខាងក្រៅថត ឬអូសវាបិទ។ ដាក់ផ្កាយទំនាក់ទំនងពីព័ត៌មានលម្អិតរបស់ពួកគេ ឬចុចឱ្យយូរលើការហៅទូរសព្ទនៅក្នុង ថ្មីៗ។",
+  "menu": "ម៉ឺនុយ",
+  "noFavouritesYet": "មិនទាន់មានចំណូលចិត្តនៅឡើយទេ។\nបើកម៉ឺនុយដើម្បីបន្ថែមមួយ ឬដាក់ផ្កាយទំនាក់ទំនង។",
+  "contactsPermissionNeeded": "ត្រូវការការអនុញ្ញាតទំនាក់ទំនង",
+  "chooseContact": "ជ្រើសរើសទំនាក់ទំនង",
+  "noPhone": "គ្មានទូរស័ព្ទ",
+  "pickNumber": "ជ្រើសរើសលេខ",
+  "contactHasNoPhone": "ទំនាក់ទំនងនេះមិនមានលេខទូរស័ព្ទទេ។",
+  "blockNumber": "រារាំងលេខ",
+  "enterPhoneNumber": "បញ្ចូលលេខទូរស័ព្ទ",
+  "unblockedDisplay": "បាន​ដោះ​សោ {display}",
+  "couldNotUnblockNumber": "មិន​អាច​បិទ​លេខ​បាន​ទេ។",
+  "blockedSummary": "{blocked}បានទប់ស្កាត់ • {matched} ត្រូវគ្នា។",
+  "contactsPermissionMissing": "បាត់ការអនុញ្ញាតទំនាក់ទំនង។ ប៉ះដើម្បីជួសជុល។",
+  "noBlockedNumbers": "គ្មានលេខដែលរារាំងទេ។",
+  "unknownContact": "ទំនាក់ទំនងមិនស្គាល់",
+  "unblock": "ឈប់ទប់ស្កាត់",
+  "permissionNeeded": "ត្រូវការការអនុញ្ញាត",
+  "grantPhonePermission": "ផ្តល់ការអនុញ្ញាតឱ្យទូរស័ព្ទមើលប្រវត្តិហៅរបស់អ្នក។",
+  "grantContactsPermission": "ផ្តល់ការអនុញ្ញាតឱ្យទំនាក់ទំនងដើម្បីមើលសៀវភៅអាសយដ្ឋានរបស់អ្នក។",
+  "openSettings": "បើកការកំណត់",
+  "tryAgain": "ព្យាយាមម្តងទៀត",
+  "couldNotLoadContacts": "មិនអាចផ្ទុកទំនាក់ទំនងបានទេ។",
+  "contactsLoadError": "មានអ្វីមួយខុសក្នុងការអានសៀវភៅអាសយដ្ឋានរបស់អ្នក។",
+  "noContactsFound": "រកមិនឃើញទំនាក់ទំនងទេ។",
+  "contactsEmptySubtitle": "ទំនាក់ទំនងពីឧបករណ៍របស់អ្នកនឹងបង្ហាញនៅទីនេះ។",
+  "searchContacts": "ស្វែងរកទំនាក់ទំនង...",
+  "searchRecentCalls": "ស្វែងរកការហៅទូរសព្ទថ្មីៗ",
+  "fromContacts": "ពីទំនាក់ទំនង",
+  "recentsSearchSection": "ការស្វែងរកថ្មីៗ",
+  "recentsSearchShowContacts": "បង្ហាញទំនាក់ទំនងក្នុងការស្វែងរក",
+  "recentsSearchShowContactsSubtitle": "ពេលកំពុងស្វែងរកថ្មីៗ បង្ហាញអ្នកដែលត្រូវគ្នាពីសៀវភៅអាសយដ្ឋានរបស់អ្នកខាងក្រោមលទ្ធផលប្រវត្តិការហៅទូរសព្ទ។",
+  "voiceSearch": "ការស្វែងរកសំឡេង",
+  "createNewContact": "បង្កើតទំនាក់ទំនងថ្មី។",
+  "callError": "កំហុសក្នុងការហៅទូរសព្ទ៖ {error}",
+  "noRecentCalls": "គ្មានការហៅទូរសព្ទថ្មីៗទេ។",
+  "callHistoryEmpty": "ប្រវត្តិហៅទូរសព្ទរបស់អ្នកនឹងបង្ហាញនៅទីនេះ។",
+  "loadMore": "ផ្ទុកច្រើនទៀត",
+  "frequentlyContactedHeader": "ទាក់ទងញឹកញាប់",
+  "recentHistory": "ប្រវត្តិថ្មីៗ",
+  "noFavouritesRecentsHint": "មិនទាន់មានចំណូលចិត្តនៅឡើយទេ។ ដាក់ផ្កាយទំនាក់ទំនង សង្កត់ការហៅទូរសព្ទឱ្យយូរ ឬប្រើផ្ទាំងចំណូលចិត្ត។",
+  "copyNumber": "ចម្លងលេខ",
+  "editNumberBeforeCall": "កែលេខមុនពេលហៅ",
+  "removeFromFavourites": "យកចេញពីចំណូលចិត្ត",
+  "addToFavourites": "បន្ថែមទៅចំណូលចិត្ត",
+  "blockNumberQuestion": "រារាំងលេខ?",
+  "blockNumberConfirm": "អ្នកនឹងលែងទទួលបានការហៅទូរសព្ទ ឬផ្ញើសារពី {number} ទៀតហើយ។",
+  "blocked": "រារាំង",
+  "couldNotBlock": "មិនអាចទប់ស្កាត់បានទេ។",
+  "contactNotOnDevice": "ទំនាក់ទំនងមិនត្រូវបានរក្សាទុកនៅលើឧបករណ៍នេះទេ។",
+  "unblocked": "មិនបានទប់ស្កាត់",
+  "numberCopied": "លេខត្រូវបានចម្លង",
+  "showLess": "បង្ហាញតិច",
+  "showAllTimes": "បង្ហាញគ្រប់ពេល",
+  "mostRecent": "ថ្មីៗបំផុត · {time}",
+  "videoCall": "ការហៅជាវីដេអូ",
+  "couldNotPlaceVideoCall": "មិនអាចធ្វើការហៅជាវីដេអូបានទេ។",
+  "message": "សារ",
+  "couldNotOpenMessaging": "មិនអាចបើកកម្មវិធីផ្ញើសារបានទេ។",
+  "history": "ប្រវត្តិសាស្ត្រ",
+  "viewContact": "មើលទំនាក់ទំនង",
+  "addToContact": "បន្ថែមទៅទំនាក់ទំនង",
+  "callTypeMissed": "ខកខាន",
+  "callTypeRejected": "ច្រានចោល",
+  "callTypeIncoming": "ចូល",
+  "callTypeOutgoing": "ចេញ",
+  "today": "ថ្ងៃនេះ",
+  "yesterday": "ម្សិលមិញ",
+  "justNow": "ឥឡូវនេះ",
+  "minutesAgo": "{count} នាទីមុន។",
+  "hoursAgo": "{count} ម៉ោងមុន។",
+  "filterAll": "ទាំងអស់។",
+  "filterMissed": "ខកខាន",
+  "filterContacts": "ទំនាក់ទំនង",
+  "filterNonContacts": "ការមិនទំនាក់ទំនង",
+  "iconUpdated": "រូបតំណាងបានធ្វើបច្ចុប្បន្នភាព។ អេក្រង់ដើមរបស់អ្នកអាចចំណាយពេលបន្តិចដើម្បីផ្ទុកឡើងវិញ។",
+  "iconSavedRelease": "បានរក្សាទុកជម្រើស។ រូបតំណាងអេក្រង់ដើមអាប់ដេតនៅក្នុងការបង្កើតការចេញផ្សាយ។",
+  "couldNotChangeIcon": "មិនអាចផ្លាស់ប្តូររូបតំណាង៖ {error}",
+  "launcherClassicBlack": "បុរាណ (ខ្មៅ)",
+  "launcherLight": "ពន្លឺ",
+  "launcherNothingRed": "គ្មានអ្វីក្រហមទេ។",
+  "launcherDarkGrey": "ពណ៌ប្រផេះងងឹត",
+  "launcherCream": "ក្រែម",
+  "launcherRetroPhone": "ទូរស័ព្ទ Retro",
+  "launcherRetroPhoneLight": "ទូរស័ព្ទ Retro (ពន្លឺ)",
+  "voiceSearchUnavailable": "ការស្វែងរកសំឡេងមិនមាននៅលើឧបករណ៍នេះទេ។",
+  "voiceSearchFailed": "ការស្វែងរកសំឡេងបានបរាជ័យ៖ {error}",
+  "customColor": "ផ្ទាល់ខ្លួន",
+  "selectColor": "ជ្រើសរើសពណ៌",
+  "reset": "កំណត់ឡើងវិញ",
+  "simPickerTitle": "ជ្រើសរើសស៊ីម",
+  "simChooseForCall": "ជ្រើសរើសស៊ីមសម្រាប់ការហៅទូរសព្ទនេះ។",
+  "defaultSimAsk": "សួររាល់ពេល",
+  "defaultSimFixed": "ស៊ីម {slot}",
+  "contactDetails": "ព័ត៌មានលម្អិតទំនាក់ទំនង",
+  "call": "ហៅ",
+  "share": "ចែករំលែក",
+  "favourite": "សំណព្វ",
+  "unfavourite": "មិនចូលចិត្ត",
+  "blockContact": "រារាំងទំនាក់ទំនង",
+  "unblockContact": "បិទទំនាក់ទំនង",
+  "deleteContact": "លុបទំនាក់ទំនង",
+  "phone": "ទូរស័ព្ទ",
+  "email": "អ៊ីមែល",
+  "ringtone": "សំឡេងរោទ៍",
+  "defaultRingtone": "លំនាំដើម",
+  "simForContact": "ស៊ីមសម្រាប់ទំនាក់ទំនងនេះ។",
+  "callHistoryTitle": "ប្រវត្តិហៅទូរសព្ទ",
+  "noCallsWithNumber": "គ្មានការហៅទូរសព្ទជាមួយលេខនេះទេ។",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "គំនូរជីវចល Glyph",
+  "inCallGlyphAnimationStyle": "In-call Glyph animation",
+  "recordsOff": "បិទ",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "ស៊ីមលំនាំដើម",
+  "nothingPhoneOnly": "ទូរស័ព្ទគ្មានអីទេ។",
+  "nothingPhoneOnlySubtitle": "មុខងារ Glyph ត្រូវការទូរស័ព្ទ Nothing Phone",
+  "custom": "ផ្ទាល់ខ្លួន",
+  "presetColorHex": "កំណត់ជាមុន · {hex}",
+  "customColorHex": "ផ្ទាល់ខ្លួន · {hex}",
+  "oneContact": "1 ទំនាក់ទំនង",
+  "upToContacts": "ទំនាក់ទំនងរហូតដល់{count}",
+  "answerButtonTapSubtitle": "ចុចប៊ូតុងដើម្បីឆ្លើយ",
+  "filterCalls": "ត្រងការហៅទូរសព្ទ",
+  "filterTooltip": "តម្រង",
+  "settingsTooltip": "ការកំណត់",
+  "filterAllSubtitle": "កំណត់ហេតុហៅទូរស័ព្ទទាំងមូល",
+  "filterMissedSubtitle": "ខកខាន និងបដិសេធ",
+  "filterContactsSubtitle": "ការហៅទូរសព្ទត្រូវគ្នានឹងទំនាក់ទំនងដែលបានរក្សាទុក",
+  "filterNonContactsSubtitle": "លេខមិននៅក្នុងសៀវភៅអាសយដ្ឋានរបស់អ្នក។",
+  "ongoingCallWithDetail": "ការហៅទូរសព្ទដែលកំពុងបន្ត៖ {detail}",
+  "defaultSimForCalls": "ស៊ីមលំនាំដើមសម្រាប់ការហៅទូរសព្ទ",
+  "blinkInterval": "ចន្លោះពេលព្រិចភ្នែក",
+  "close": "បិទ",
+  "frequentlyContactedInfoBody": "បង្ហាញលេខទូរស័ព្ទដែលអ្នកហៅច្រើនបំផុតនៅផ្នែកខាងលើនៃផ្ទាំងថ្មីៗ ដោយផ្អែកលើចំនួនការហៅចូល ចេញ ខកខាន ឬបដិសេធដែលអ្នកមានជាមួយលេខនីមួយៗក្នុងរយៈពេលដែលអ្នកជ្រើសរើស។\n\nចំនួនកំណត់ត្រា៖ កំណត់ទៅ 0 ដើម្បីបិទវា។ ប្រើ 1-20 ដើម្បីបង្ហាញថាទំនាក់ទំនងកំពូលជាច្រើន។\n\nរយៈពេលអនុវត្តតែនៅពេលដែលទំនាក់ទំនងយ៉ាងហោចណាស់មួយត្រូវបានបង្ហាញ។",
+  "breathSettingsSpeedSummary": "{count} ភ្លើង, {ms}ms ល្បឿន",
+  "deleteContactQuestion": "លុបទំនាក់ទំនង?",
+  "deleteContactBody": "ទំនាក់ទំនងនេះនឹងត្រូវបានលុបជាអចិន្ត្រៃយ៍ពីឧបករណ៍របស់អ្នក។",
+  "blockContactQuestion": "រារាំងទំនាក់ទំនង?",
+  "unblockContactQuestion": "ឈប់ទប់ស្កាត់ទំនាក់ទំនង?",
+  "blockContactBody": "អ្នក​នឹង​លែង​ទទួល​បាន​ការ​ហៅ​ទូរសព្ទ ឬ​សារ​ពី​ទំនាក់ទំនង​នេះ​ទៀត​ហើយ។",
+  "unblockContactBody": "អ្នកនឹងចាប់ផ្តើមទទួលការហៅទូរសព្ទ និងផ្ញើសារពីទំនាក់ទំនងនេះ។",
+  "contactBlocked": "ទំនាក់ទំនងត្រូវបានរារាំង",
+  "contactUnblocked": "ទំនាក់ទំនងត្រូវបានបិទ",
+  "noPhoneNumbersToBlock": "គ្មានលេខទូរស័ព្ទដែលត្រូវទប់ស្កាត់",
+  "simSameAsSystem": "ដូចគ្នានឹងប្រព័ន្ធ",
+  "simSameAsSystemSubtitle": "ធ្វើតាមស៊ីមលំនាំដើមនៅក្នុងការកំណត់",
+  "simAskEveryTimeForContact": "តែងតែបង្ហាញឧបករណ៍ជ្រើសរើសស៊ីមសម្រាប់ទំនាក់ទំនងនេះ។",
+  "ringtoneSetForContact": "សំឡេងរោទ៍ត្រូវបានកំណត់ជាសកលសម្រាប់ទំនាក់ទំនងនេះ។",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "បរាជ័យក្នុងការជ្រើសរើសសំឡេងរោទ៍៖ {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "កំហុស៖ {error}",
+  "noCallHistoryFound": "រកមិនឃើញប្រវត្តិហៅទូរសព្ទទេ។",
+  "speedDialVoicemail": "ការហៅតាមល្បឿន៖ សារជាសំឡេង",
+  "shareContactSubject": "ទំនាក់ទំនង៖ {name}",
+  "contactInfo": "ព័ត៌មានទំនាក់ទំនង",
+  "dontAskAgainSim": "កុំសួរម្តងទៀត",
+  "simDontAskAgainSubtitle": "ប្រើស៊ីមនេះជាលំនាំដើម (ផ្លាស់ប្តូរនៅក្នុងការកំណត់)",
+  "addContact": "បន្ថែមទំនាក់ទំនង",
+  "createContact": "បង្កើតទំនាក់ទំនង",
+  "paste": "បិទភ្ជាប់",
+  "clear": "ច្បាស់",
+  "returnToCall": "ត្រឡប់ទៅការហៅទូរសព្ទវិញ។",
+  "numberOfRecordsTitle": "ចំនួនកំណត់ត្រា",
+  "recordsPickerSubtitle": "តើមានធាតុទាក់ទងញឹកញាប់ប៉ុន្មានដើម្បីបង្ហាញ (0 = បិទ)",
+  "torchInfoTitle": "ភ្លឹបភ្លែតៗ",
+  "torchInfoBody": "ភ្លឹបភ្លែតៗ ពន្លឺកាមេរ៉ា កំឡុងពេលហៅចូល ចេញ ឬកំពុងបន្ត។ ឯករាជ្យនៃពន្លឺ Glyph ។",
+  "glyphMapTitle": "ប្លង់ Glyph",
+  "glyphMapBody": "Nothing Phone 1 Glyph LED zones ។ ចលនា​ចេញ និង​ក្នុង​ការហៅ​ទូរសព្ទ​ប្រើ​ប៉ុស្តិ៍​ទាំងនេះ។",
+  "answerMethodTitle": "វិធីសាស្រ្តឆ្លើយ",
+  "glyphOutgoingCallStyleTitle": "រចនាប័ទ្មហៅចេញ",
+  "glyphInCallAnimationTitle": "ចលនាក្នុងការហៅ Glyph",
+  "themePickerTitle": "ប្រធានបទ",
+  "torchIncomingTitle": "ពិលហៅចូល",
+  "torchOutgoingTitle": "ពិលហៅចេញ",
+  "torchOngoingTitle": "ការហៅទូរសព្ទដែលកំពុងដំណើរការ",
+  "timePeriodTitle": "រយៈពេល",
+  "ok": "យល់ព្រម",
+  "confirmDeleteCall": "លុបការហៅទូរសព្ទនេះចេញពីប្រវត្តិ?",
+  "confirmDeleteAllCalls": "លុបការហៅទូរសព្ទទាំងអស់ដោយប្រើលេខនេះ?",
+  "whatsapp": "កម្មវិធី WhatsApp",
+  "sendMessage": "ផ្ញើសារ",
+  "addToExistingContactAction": "បន្ថែមទៅទំនាក់ទំនង",
+  "mobileLabel": "ទូរស័ព្ទចល័ត",
+  "callingSimForContactTitle": "កំពុងហៅទៅស៊ីមសម្រាប់ទំនាក់ទំនងនេះ។",
+  "contactSettings": "ការកំណត់ទំនាក់ទំនង",
+  "setCallingSim": "កំណត់ការហៅទូរសព្ទទៅស៊ីម",
+  "contactRingtone": "សំឡេងរោទ៍ទំនាក់ទំនង",
+  "shareContact": "ចែករំលែកទំនាក់ទំនង",
+  "blockNumbers": "រារាំងលេខ",
+  "unblockNumbers": "ដោះ​សោ​លេខ",
+  "connectedApps": "កម្មវិធីដែលបានភ្ជាប់",
+  "simNotSet": "មិនបានកំណត់",
+  "ringtoneDefault": "លំនាំដើម",
+  "customRingtone": "ផ្ទាល់ខ្លួន",
+  "aboutSection": "អំពី",
+  "aboutFeedbackSection": "អំពី & មតិកែលម្អ",
+  "aboutDescription": "គ្មានអ្វី Dialer គឺជាប្រភពបើកចំហទេ។ ប្រសិនបើអ្នកជាអ្នកអភិវឌ្ឍន៍ អ្នកត្រូវបានស្វាគមន៍ក្នុងការរុករកកូដ និងរួមចំណែក។",
+  "aboutViewSource": "មើលនៅលើ GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "មិនអាចបើកតំណបានទេ។",
+  "reviewSection": "ពិនិត្យឡើងវិញ",
+  "reviewDescription": "រីករាយជាមួយ Nothing Dialer? ការវាយតម្លៃរបស់អ្នកនៅលើ Google Play ជួយអ្នកផ្សេងទៀតស្វែងរកកម្មវិធី។",
+  "reviewRateOnPlay": "វាយតម្លៃនៅលើ Google Play",
+  "reviewRateOnPlaySubtitle": "ទុកការវាយតម្លៃដោយមិនចាំបាច់ចាកចេញពីកម្មវិធី",
+  "reviewCouldNotOpen": "មិនអាចបើក Google Play បានទេ។",
+  "breathSpeed": "ល្បឿនដង្ហើម",
+  "breathSpeedBlinkHint": "ទាប = ព្រិចភ្នែក ខ្ពស់ជាង = ដកដង្ហើមយឺត",
+  "speedSliderHint": "ទាបជាង = លឿនជាង ខ្ពស់ជាង = យឺតជាង",
+  "swatchDefault": "លំនាំដើម",
+  "customAccentColorPicker": "ពណ៌សង្កត់សំឡេងផ្ទាល់ខ្លួន",
+  "customLightBackgroundPicker": "ផ្ទៃខាងក្រោយពន្លឺផ្ទាល់ខ្លួន",
+  "customDarkBackgroundPicker": "ផ្ទៃខាងក្រោយងងឹតផ្ទាល់ខ្លួន",
+  "customCallBackgroundPicker": "ផ្ទៃខាងក្រោយការហៅផ្ទាល់ខ្លួន",
+  "ongoingCallStyleTitle": "រចនាប័ទ្ម​ហៅ​ទូរសព្ទ​បន្ត",
+  "glyphMapUnavailable": "ផែនទី Glyph មិនអាចប្រើបានទេ។",
+  "animationDelayRange": "ការពន្យាពេលចលនា (1 វិនាទី - 10 វិនាទី)",
+  "animationDelayRangeSingle": "ការពន្យាពេលចលនា (0.1 វិនាទី - 10 វិនាទី)",
+  "inCallMute": "បិទសំឡេង",
+  "inCallKeypad": "ក្ដារចុច",
+  "inCallSpeaker": "វាគ្មិន",
+  "inCallMore": "ច្រើនទៀត",
+  "inCallBluetooth": "ប៊្លូធូស",
+  "inCallPhone": "ទូរស័ព្ទ",
+  "inCallAddCall": "បន្ថែមការហៅទូរសព្ទ",
+  "inCallChangeSim": "ប្តូរស៊ីម",
+  "inCallDecline": "បដិសេធ",
+  "inCallAnswer": "ចម្លើយ",
+  "inCallMessage": "សារ",
+  "inCallCalling": "កំពុងហៅ…",
+  "inCallIncoming": "ការហៅចូល",
+  "inCallSelectSim": "ជ្រើសរើស SIM…",
+  "inCallSwitchingSim": "កំពុងប្តូរស៊ីម…",
+  "inCallCallEnded": "ការហៅទូរសព្ទត្រូវបានបញ្ចប់",
+  "inCallCallingVia": "ហៅទូរសព្ទតាមរយៈ {sim}",
+  "inCallCallingViaHtml": "ទំនាក់ទំនងតាមរយៈ <b>{sim}</b>",
+  "inCallChooseSim": "ជ្រើសរើសស៊ីមសម្រាប់ការហៅទូរសព្ទនេះ។",
+  "inCallDragAnswerDecline": "អូសទៅស្តាំដើម្បីឆ្លើយ · អូសទៅឆ្វេងដើម្បីបដិសេធ",
+  "inCallMobileNumber": "ទូរស័ព្ទចល័ត {number}",
+  "inCallAudioRouteCurrent": "{label} (បច្ចុប្បន្ន)",
+  "inCallCallViaFrom": "ហៅតាម <b>{sim}</b> ពី",
+  "inCallCallFrom": "ហៅពី",
+  "inCallUnknown": "មិនស្គាល់",
+  "selectContactRingtone": "ជ្រើសរើសសំឡេងរោទ៍ទំនាក់ទំនង",
+  "speakToSearchPrompt": "និយាយដើម្បីស្វែងរក",
+  "phonePermissionRequired": "តម្រូវឱ្យមានការអនុញ្ញាតតាមទូរស័ព្ទ",
+  "callFailed": "ការហៅទូរសព្ទបរាជ័យ៖ {error}",
+  "callPermissionDenied": "ការអនុញ្ញាតការហៅទូរសព្ទត្រូវបានបដិសេធ",
+  "alreadyDefaultDialer": "កំណត់ជាកម្មវិធីហៅទូរសព្ទលំនាំដើមរួចហើយ",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

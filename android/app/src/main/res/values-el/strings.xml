@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Βουβός</string>
+    <string name="in_call_keypad">Πληκτρολόγιο</string>
+    <string name="in_call_speaker">Ομιλητής</string>
+    <string name="in_call_more">Περισσότερο</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Τηλέφωνο</string>
+    <string name="in_call_add_call">Προσθήκη κλήσης</string>
+    <string name="in_call_change_sim">Αλλαγή SIM</string>
+    <string name="in_call_decline">Πτώση</string>
+    <string name="in_call_answer">Απάντηση</string>
+    <string name="in_call_message">Μήνυμα</string>
+    <string name="in_call_calling">Κλήση…</string>
+    <string name="in_call_incoming">Εισερχόμενη κλήση</string>
+    <string name="in_call_select_sim">Επιλέξτε SIM…</string>
+    <string name="in_call_switching_sim">Εναλλαγή SIM…</string>
+    <string name="in_call_call_ended">Η κλήση έληξε</string>
+    <string name="in_call_calling_via">Κλήση μέσω %1$s</string>
+    <string name="in_call_calling_via_html">Κλήση μέσω &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Επιλέξτε SIM για αυτήν την κλήση</string>
+    <string name="in_call_drag_answer_decline">Σύρετε δεξιά για απάντηση · Σύρετε αριστερά για απόρριψη</string>
+    <string name="in_call_mobile_number">Κινητό %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Τρέχον)</string>
+    <string name="in_call_call_via_from">Καλέστε μέσω &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; από</string>
+    <string name="in_call_call_from">Καλέστε από</string>
+    <string name="in_call_unknown">Αγνωστος</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Επιλέξτε ήχο κλήσης επαφής</string>
+    <string name="native_speak_to_search">Μιλήστε για αναζήτηση</string>
+    <string name="native_phone_permission_required">Απαιτείται άδεια τηλεφώνου</string>
+    <string name="native_call_failed">Η κλήση απέτυχε: %1$s</string>
+    <string name="native_call_permission_denied">Η άδεια κλήσης απορρίφθηκε</string>
+    <string name="native_already_default_dialer">Έχει ήδη οριστεί ως προεπιλεγμένο πρόγραμμα κλήσης</string>
+</resources>

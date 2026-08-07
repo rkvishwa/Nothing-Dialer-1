@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">নিঃশব্দ</string>
+    <string name="in_call_keypad">কিপেড</string>
+    <string name="in_call_speaker">বক্তা</string>
+    <string name="in_call_more">অধিক</string>
+    <string name="in_call_bluetooth">ব্লুটুথ</string>
+    <string name="in_call_phone">ফোন</string>
+    <string name="in_call_add_call">কল যোগ কৰক</string>
+    <string name="in_call_change_sim">চিম সলনি কৰক</string>
+    <string name="in_call_decline">অস্বীকাৰ কৰা</string>
+    <string name="in_call_answer">উত্তৰ</string>
+    <string name="in_call_message">বাৰ্তা</string>
+    <string name="in_call_calling">কলিং...</string>
+    <string name="in_call_incoming">ইনকামিং কল</string>
+    <string name="in_call_select_sim">SIM নির্বাচন করুন...</string>
+    <string name="in_call_switching_sim">SIM চুইচিং...</string>
+    <string name="in_call_call_ended">কল শেষ হ’ল</string>
+    <string name="in_call_calling_via">%1$s ৰ জৰিয়তে ফোন কৰা</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ৰ জৰিয়তে ফোন কৰা</string>
+    <string name="in_call_choose_sim">এই কলৰ বাবে চিম বাছক</string>
+    <string name="in_call_drag_answer_decline">উত্তৰ দিবলৈ সোঁফালে টানিব · অস্বীকাৰ কৰিবলৈ বাওঁফালে টানিব</string>
+    <string name="in_call_mobile_number">মোবাইল %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (বৰ্তমান)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ৰ জৰিয়তে ফোন কৰক</string>
+    <string name="in_call_call_from">পৰা ফোন কৰক</string>
+    <string name="in_call_unknown">অজ্ঞাত</string>
+    <string name="in_call_sim_slot">চিম %1$d</string>
+    <string name="native_select_contact_ringtone">যোগাযোগ ৰিংটোন নিৰ্বাচন কৰক</string>
+    <string name="native_speak_to_search">সন্ধান কৰিবলৈ কথা কওক</string>
+    <string name="native_phone_permission_required">ফোন অনুমতিৰ প্ৰয়োজন</string>
+    <string name="native_call_failed">কল বিফল: %1$s</string>
+    <string name="native_call_permission_denied">কলৰ অনুমতি নাকচ কৰা হৈছে</string>
+    <string name="native_already_default_dialer">ইতিমধ্যে অবিকল্পিত ডায়েলাৰ হিচাপে সংহতি কৰা হৈছে</string>
+</resources>

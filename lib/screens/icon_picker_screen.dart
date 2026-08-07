@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:nothing_dialer/l10n/app_localizations.dart';
+
 import '../services/launcher_icon_manager.dart';
 import '../services/theme_colors.dart';
 
@@ -57,7 +59,11 @@ class _LauncherIconBottomSheetState extends State<_LauncherIconBottomSheet> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not change icon: $e')),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context).couldNotChangeIcon(e.toString()),
+          ),
+        ),
       );
       await _load();
     }

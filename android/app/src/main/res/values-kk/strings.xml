@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Дыбысты өшіру</string>
+    <string name="in_call_keypad">Пернетақта</string>
+    <string name="in_call_speaker">Спикер</string>
+    <string name="in_call_more">Көбірек</string>
+    <string name="in_call_bluetooth">Блютез</string>
+    <string name="in_call_phone">Телефон</string>
+    <string name="in_call_add_call">Қоңырау қосу</string>
+    <string name="in_call_change_sim">SIM картасын өзгерту</string>
+    <string name="in_call_decline">Бас тарту</string>
+    <string name="in_call_answer">Жауап</string>
+    <string name="in_call_message">Хабарлама</string>
+    <string name="in_call_calling">Қоңырау шалуда...</string>
+    <string name="in_call_incoming">Кіріс қоңырау</string>
+    <string name="in_call_select_sim">SIM картасын таңдау…</string>
+    <string name="in_call_switching_sim">SIM картасы ауыстырылуда…</string>
+    <string name="in_call_call_ended">Қоңырау аяқталды</string>
+    <string name="in_call_calling_via">%1$s арқылы қоңырау шалу</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; арқылы қоңырау шалу</string>
+    <string name="in_call_choose_sim">Бұл қоңырау үшін SIM картасын таңдаңыз</string>
+    <string name="in_call_drag_answer_decline">Жауап беру үшін оңға сүйреңіз · Бас тарту үшін солға сүйреңіз</string>
+    <string name="in_call_mobile_number">Ұялы телефон %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (ағымдағы)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; арқылы қоңырау шалыңыз</string>
+    <string name="in_call_call_from">қоңырау шалу</string>
+    <string name="in_call_unknown">Белгісіз</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Контакт қоңырау үнін таңдаңыз</string>
+    <string name="native_speak_to_search">Іздеу үшін сөйлеңіз</string>
+    <string name="native_phone_permission_required">Телефон рұқсаты қажет</string>
+    <string name="native_call_failed">Қоңырау орындалмады: %1$s</string>
+    <string name="native_call_permission_denied">Қоңырауға рұқсат берілмеді</string>
+    <string name="native_already_default_dialer">Әдепкі тергіш ретінде әлдеқашан орнатылған</string>
+</resources>

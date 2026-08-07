@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Stum</string>
+    <string name="in_call_keypad">Knappsats</string>
+    <string name="in_call_speaker">Högtalare</string>
+    <string name="in_call_more">Mer</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Lägg till samtal</string>
+    <string name="in_call_change_sim">Byt SIM</string>
+    <string name="in_call_decline">Nedgång</string>
+    <string name="in_call_answer">Svar</string>
+    <string name="in_call_message">Meddelande</string>
+    <string name="in_call_calling">Kallelse…</string>
+    <string name="in_call_incoming">Inkommande samtal</string>
+    <string name="in_call_select_sim">Välj SIM...</string>
+    <string name="in_call_switching_sim">Byter SIM...</string>
+    <string name="in_call_call_ended">Samtalet avslutades</string>
+    <string name="in_call_calling_via">Ringer via %1$s</string>
+    <string name="in_call_calling_via_html">Ringer via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Välj SIM för det här samtalet</string>
+    <string name="in_call_drag_answer_decline">Dra åt höger för att svara · Dra åt vänster för att avböja</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (nuvarande)</string>
+    <string name="in_call_call_via_from">Ring via &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; från</string>
+    <string name="in_call_call_from">Ring från</string>
+    <string name="in_call_unknown">Okänd</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Välj kontakt ringsignal</string>
+    <string name="native_speak_to_search">Tala för att söka</string>
+    <string name="native_phone_permission_required">Telefontillstånd krävs</string>
+    <string name="native_call_failed">Samtalet misslyckades: %1$s</string>
+    <string name="native_call_permission_denied">Samtalstillstånd nekad</string>
+    <string name="native_already_default_dialer">Redan inställd som standarduppringare</string>
+</resources>

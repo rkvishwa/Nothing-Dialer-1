@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">បិទសំឡេង</string>
+    <string name="in_call_keypad">ក្ដារចុច</string>
+    <string name="in_call_speaker">វាគ្មិន</string>
+    <string name="in_call_more">ច្រើនទៀត</string>
+    <string name="in_call_bluetooth">ប៊្លូធូស</string>
+    <string name="in_call_phone">ទូរស័ព្ទ</string>
+    <string name="in_call_add_call">បន្ថែមការហៅទូរសព្ទ</string>
+    <string name="in_call_change_sim">ប្តូរស៊ីម</string>
+    <string name="in_call_decline">បដិសេធ</string>
+    <string name="in_call_answer">ចម្លើយ</string>
+    <string name="in_call_message">សារ</string>
+    <string name="in_call_calling">កំពុងហៅ…</string>
+    <string name="in_call_incoming">ការហៅចូល</string>
+    <string name="in_call_select_sim">ជ្រើសរើស SIM…</string>
+    <string name="in_call_switching_sim">កំពុងប្តូរស៊ីម…</string>
+    <string name="in_call_call_ended">ការហៅទូរសព្ទត្រូវបានបញ្ចប់</string>
+    <string name="in_call_calling_via">ហៅទូរសព្ទតាមរយៈ %1$s</string>
+    <string name="in_call_calling_via_html">ទំនាក់ទំនងតាមរយៈ &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">ជ្រើសរើសស៊ីមសម្រាប់ការហៅទូរសព្ទនេះ។</string>
+    <string name="in_call_drag_answer_decline">អូសទៅស្តាំដើម្បីឆ្លើយ · អូសទៅឆ្វេងដើម្បីបដិសេធ</string>
+    <string name="in_call_mobile_number">ទូរស័ព្ទចល័ត %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (បច្ចុប្បន្ន)</string>
+    <string name="in_call_call_via_from">ហៅតាម &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ពី</string>
+    <string name="in_call_call_from">ហៅពី</string>
+    <string name="in_call_unknown">មិនស្គាល់</string>
+    <string name="in_call_sim_slot">ស៊ីម %1$d</string>
+    <string name="native_select_contact_ringtone">ជ្រើសរើសសំឡេងរោទ៍ទំនាក់ទំនង</string>
+    <string name="native_speak_to_search">និយាយដើម្បីស្វែងរក</string>
+    <string name="native_phone_permission_required">តម្រូវឱ្យមានការអនុញ្ញាតតាមទូរស័ព្ទ</string>
+    <string name="native_call_failed">ការហៅទូរសព្ទបរាជ័យ៖ %1$s</string>
+    <string name="native_call_permission_denied">ការអនុញ្ញាតការហៅទូរសព្ទត្រូវបានបដិសេធ</string>
+    <string name="native_already_default_dialer">កំណត់ជាកម្មវិធីហៅទូរសព្ទលំនាំដើមរួចហើយ</string>
+</resources>

@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:nothing_dialer/l10n/app_localizations.dart';
+
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
 import '../services/blocking_manager.dart';
+import '../widgets/dialer_font_scope.dart';
 
 class BlockedNumbersScreen extends StatefulWidget {
   const BlockedNumbersScreen({super.key});
@@ -145,7 +150,7 @@ class _BlockedNumbersScreenState extends State<BlockedNumbersScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Unblocked $display'),
+          content: Text(AppLocalizations.of(context).unblockedDisplay(display)),
           backgroundColor: Theme.of(context).colorScheme.primary,
           behavior: SnackBarBehavior.floating,
         ),
@@ -154,7 +159,7 @@ class _BlockedNumbersScreenState extends State<BlockedNumbersScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Could not unblock number'),
+          content: Text(AppLocalizations.of(context).couldNotUnblockNumber),
           backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating,
         ),
@@ -170,27 +175,28 @@ class _BlockedNumbersScreenState extends State<BlockedNumbersScreen> {
 
   Future<void> _addNumber() async {
     final controller = TextEditingController();
+    final l10n = AppLocalizations.of(context);
     final result = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        title: const Text('Block number'),
+        title: Text(l10n.blockNumber),
         content: TextField(
           controller: controller,
           keyboardType: TextInputType.phone,
           autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Enter phone number',
+          decoration: InputDecoration(
+            hintText: l10n.enterPhoneNumber,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, controller.text),
-            child: const Text('Block'),
+            child: Text(l10n.block),
           ),
         ],
       ),
@@ -204,18 +210,31 @@ class _BlockedNumbersScreenState extends State<BlockedNumbersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final blockedNumbers = BlockingManager.blockedNumbersNotifier.value;
     final contactMatchCount = _contactNameByBlocked.values
         .where((name) => name?.trim().isNotEmpty ?? false)
         .length;
 
-    return Scaffold(
+    return DialerFontScope(
+      surface: DialerFontSurface.blocked,
+      child: Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: theme.scaffoldBackgroundColor,
         foregroundColor: theme.colorScheme.onSurface,
-        title: const Text('Blocked numbers'),
+        title: Text(
+          l10n.blockedNumbers,
+          style: context.dialerTextStyle(
+            DialerFontRole.pageTitle,
+            TextStyle(
+              color: theme.colorScheme.onSurface,
+              fontWeight: FontWeight.w400,
+              fontSize: 22,
+            ),
+          ),
+        ),
         elevation: 0,
       ),
       body: RefreshIndicator(
@@ -226,10 +245,13 @@ class _BlockedNumbersScreenState extends State<BlockedNumbersScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               child: Text(
-                '${blockedNumbers.length} blocked • $contactMatchCount matched',
-                style: TextStyle(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontSize: 14,
+                l10n.blockedSummary(blockedNumbers.length, contactMatchCount),
+                style: context.dialerTextStyle(
+                  DialerFontRole.secondary,
+                  TextStyle(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ),
@@ -267,6 +289,7 @@ class _BlockedNumbersScreenState extends State<BlockedNumbersScreen> {
         elevation: 0,
         child: const Icon(Icons.add),
       ),
+      ),
     );
   }
 }
@@ -289,7 +312,7 @@ class _BlockedItem extends StatelessWidget {
     final theme = Theme.of(context);
     final hasName = name != null && name!.trim().isNotEmpty;
     final displayName = hasName ? name!.trim() : number;
-    final displaySubtitle = hasName ? number : 'Unknown contact';
+    final displaySubtitle = hasName ? number : AppLocalizations.of(context).unknownContact;
 
     return Material(
       color: Colors.transparent,
@@ -311,18 +334,24 @@ class _BlockedItem extends StatelessWidget {
                   children: [
                     Text(
                       displayName,
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.primary,
+                        TextStyle(
+                          color: theme.colorScheme.onSurface,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       displaySubtitle,
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        fontSize: 14,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.secondary,
+                        TextStyle(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ],
@@ -342,7 +371,7 @@ class _BlockedItem extends StatelessWidget {
                     size: 22,
                   ),
                   onPressed: onUnblock,
-                  tooltip: 'Unblock',
+                  tooltip: AppLocalizations.of(context).unblock,
                 ),
             ],
           ),
@@ -377,7 +406,7 @@ class _PermissionHint extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Contacts permission missing. Tap to fix.',
+                  AppLocalizations.of(context).contactsPermissionMissing,
                   style: TextStyle(
                     color: theme.colorScheme.error,
                     fontSize: 14,
@@ -412,11 +441,14 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'No blocked numbers',
-            style: TextStyle(
-              color: theme.colorScheme.onSurfaceVariant,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+            AppLocalizations.of(context).noBlockedNumbers,
+            style: context.dialerTextStyle(
+              DialerFontRole.primary,
+              TextStyle(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

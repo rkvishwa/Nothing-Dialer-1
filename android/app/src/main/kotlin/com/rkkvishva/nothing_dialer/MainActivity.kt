@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.content.Context
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.provider.Settings
@@ -22,6 +23,10 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(DialerLocale.wrap(newBase))
+    }
 
     companion object {
         const val TAG = "NothingDialer"
@@ -44,6 +49,8 @@ class MainActivity : FlutterActivity() {
     private var pendingDialpadNumber: String? = null
     private var isDartReadyForDialpad = false
     private var ringtoneResult: MethodChannel.Result? = null
+    /** Snapshot of phone-wide default before OEM ringtone picker (restore after). */
+    private var defaultRingtoneBeforePick: android.net.Uri? = null
     private var voiceSearchResult: MethodChannel.Result? = null
     private var torchMethodChannel: MethodChannel? = null
 
@@ -185,11 +192,19 @@ class MainActivity : FlutterActivity() {
                     }
                     result.success(null)
                 }
+                "notifyFontConfigChanged" -> {
+                    InCallActivity.notifyFontConfigChanged()
+                    result.success(null)
+                }
+                "notifyAnswerMethodChanged" -> {
+                    InCallActivity.notifyAnswerMethodChanged()
+                    result.success(null)
+                }
                 "getCallState" -> {
                     val currentCall = GlyphInCallService.currentCall
                     if (currentCall != null) {
                         val handle = currentCall.details?.handle
-                        val number = handle?.schemeSpecificPart ?: "Unknown"
+                        val number = handle?.schemeSpecificPart ?: getString(R.string.in_call_unknown)
                         val contactName = getContactName(number)
                         result.success(mapOf(
                             "state" to currentCall.state,
@@ -282,13 +297,47 @@ class MainActivity : FlutterActivity() {
                         result.error("INVALID_NUMBER", "Number is empty", null)
                     }
                 }
+                "listRingtones" -> {
+                    result.success(RingtoneHelper.listRingtones(this))
+                }
+                "getContactRingtone" -> {
+                    val args = call.arguments as? Map<*, *>
+                    val contactId = args?.get("contactId") as? String
+                        ?: call.arguments as? String
+                    if (contactId.isNullOrBlank()) {
+                        result.error("INVALID_ARGS", "Contact ID is null", null)
+                    } else {
+                        result.success(RingtoneHelper.getContactRingtone(this, contactId))
+                    }
+                }
+                "previewRingtone" -> {
+                    val uri = (call.arguments as? Map<*, *>)?.get("uri") as? String
+                        ?: call.arguments as? String
+                    RingtoneHelper.preview(this, uri)
+                    result.success(true)
+                }
+                "stopRingtonePreview" -> {
+                    RingtoneHelper.stopPreview()
+                    result.success(true)
+                }
                 "pickRingtone" -> {
+                    // Legacy system picker path. Prefer listRingtones + setContactRingtone
+                    // so OEM pickers cannot mutate the phone-wide default. Still snapshots
+                    // and restores the default as a safety net.
                     ringtoneResult = result
+                    defaultRingtoneBeforePick = RingtoneHelper.getActualDefaultUri(this)
+                    val args = call.arguments as? Map<*, *>
+                    val existingUri = (args?.get("existingUri") as? String)?.let {
+                        android.net.Uri.parse(it)
+                    } ?: RingtoneHelper.getActualDefaultUri(this)
                     val intent = Intent(android.media.RingtoneManager.ACTION_RINGTONE_PICKER).apply {
-                        putExtra(android.media.RingtoneManager.EXTRA_RINGTONE_TITLE, "Select contact ringtone")
+                        putExtra(android.media.RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.native_select_contact_ringtone))
                         putExtra(android.media.RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
                         putExtra(android.media.RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
                         putExtra(android.media.RingtoneManager.EXTRA_RINGTONE_TYPE, android.media.RingtoneManager.TYPE_RINGTONE)
+                        putExtra(android.media.RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, existingUri)
+                        // Do not request the picker to write the default ringtone.
+                        putExtra(android.media.RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, existingUri)
                     }
                     startActivityForResult(intent, REQUEST_PICK_RINGTONE)
                 }
@@ -399,28 +448,35 @@ class MainActivity : FlutterActivity() {
                     }
                 }
                 "getRingtoneTitle" -> {
-                    val uriString = call.arguments as? String
-                    if (uriString != null) {
-                        val uri = android.net.Uri.parse(uriString)
-                        val ringtone = android.media.RingtoneManager.getRingtone(this, uri)
-                        result.success(ringtone?.getTitle(this))
-                    } else {
-                        result.success(null)
-                    }
+                    val uriString = (call.arguments as? Map<*, *>)?.get("uri") as? String
+                        ?: call.arguments as? String
+                    result.success(RingtoneHelper.getRingtoneTitle(this, uriString))
                 }
                 "setContactRingtone" -> {
                     val args = call.arguments as? Map<*, *>
                     val contactId = args?.get("contactId") as? String
-                    val ringtoneUri = args?.get("ringtoneUri") as? String
+                    // Explicit null clears to Default; missing key also clears.
+                    val ringtoneUri = if (args?.containsKey("ringtoneUri") == true) {
+                        args["ringtoneUri"] as? String
+                    } else {
+                        null
+                    }
                     if (contactId != null) {
-                        try {
-                            val values = android.content.ContentValues()
-                            values.put(android.provider.ContactsContract.Contacts.CUSTOM_RINGTONE, ringtoneUri)
-                            val lookupUri = android.net.Uri.withAppendedPath(android.provider.ContactsContract.Contacts.CONTENT_URI, contactId)
-                            contentResolver.update(lookupUri, values, null, null)
-                            result.success(true)
-                        } catch (e: Exception) {
-                            result.error("SET_RINGTONE_FAILED", e.message, null)
+                        // Ensure we never accidentally write the phone-wide default.
+                        val beforeDefault = RingtoneHelper.getActualDefaultUri(this)
+                        val ok = RingtoneHelper.setContactRingtone(this, contactId, ringtoneUri)
+                        val afterDefault = RingtoneHelper.getActualDefaultUri(this)
+                        if (beforeDefault != null && afterDefault != beforeDefault) {
+                            RingtoneHelper.restoreDefaultUri(this, beforeDefault)
+                        }
+                        if (ok) {
+                            result.success(RingtoneHelper.getContactRingtone(this, contactId))
+                        } else {
+                            result.error(
+                                "SET_RINGTONE_FAILED",
+                                "Could not update contact ringtone",
+                                null,
+                            )
                         }
                     } else {
                         result.error("INVALID_ARGS", "Contact ID is null", null)
@@ -437,7 +493,7 @@ class MainActivity : FlutterActivity() {
                             RecognizerIntent.EXTRA_LANGUAGE,
                             Locale.getDefault().toString()
                         )
-                        putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to search")
+                        putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.native_speak_to_search))
                         putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
                         // Do not set EXTRA_PREFER_OFFLINE: Google's default recognizer on some OEMs
                         // (e.g. Nothing) shows "Voice search isn't available" when offline packs
@@ -529,10 +585,10 @@ class MainActivity : FlutterActivity() {
             tm.placeCall(uri, extras)
         } catch (e: SecurityException) {
             Log.e(TAG, "placeCallWithSim SecurityException: ${e.message}")
-            Toast.makeText(this, "Phone permission required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.native_phone_permission_required), Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Log.e(TAG, "placeCallWithSim error: ${e.message}")
-            Toast.makeText(this, "Call failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.native_call_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -561,10 +617,10 @@ class MainActivity : FlutterActivity() {
             tm.placeCall(uri, Bundle())
         } catch (e: SecurityException) {
             Log.e(TAG, "placeCall SecurityException: ${e.message}")
-            Toast.makeText(this, "Phone permission required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.native_phone_permission_required), Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Log.e(TAG, "placeCall error: ${e.message}")
-            Toast.makeText(this, "Call failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.native_call_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -596,10 +652,10 @@ class MainActivity : FlutterActivity() {
             tm.placeCall(uri, extras)
         } catch (e: SecurityException) {
             Log.e(TAG, "placeVideoCall SecurityException: ${e.message}")
-            Toast.makeText(this, "Phone permission required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.native_phone_permission_required), Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Log.e(TAG, "placeVideoCall error: ${e.message}")
-            Toast.makeText(this, "Call failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.native_call_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -631,7 +687,7 @@ class MainActivity : FlutterActivity() {
                 pendingCallNumber = null
                 pendingSimIndex = null
             } else {
-                Toast.makeText(this, "Call permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.native_call_permission_denied), Toast.LENGTH_SHORT).show()
                 pendingCallNumber = null
                 pendingSimIndex = null
             }
@@ -649,7 +705,7 @@ class MainActivity : FlutterActivity() {
                 val intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_DIALER)
                 startActivityForResult(intent, REQUEST_DEFAULT_DIALER)
             } else if (roleManager.isRoleHeld(RoleManager.ROLE_DIALER)) {
-                Toast.makeText(this, "Already set as default dialer", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.native_already_default_dialer), Toast.LENGTH_SHORT).show()
             }
         } else {
             val intent = Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER).apply {
@@ -665,11 +721,35 @@ class MainActivity : FlutterActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_PICK_RINGTONE) {
+            // OEM pickers (e.g. Nothing OS) sometimes mutate the phone-wide default.
+            RingtoneHelper.restoreDefaultUri(this, defaultRingtoneBeforePick)
+            defaultRingtoneBeforePick = null
+
             if (resultCode == RESULT_OK && data != null) {
-                val uri = data.getParcelableExtra<android.net.Uri>(android.media.RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-                ringtoneResult?.success(uri?.toString())
+                @Suppress("DEPRECATION")
+                val uri = data.getParcelableExtra<android.net.Uri>(
+                    android.media.RingtoneManager.EXTRA_RINGTONE_PICKED_URI,
+                )
+                val selection = when {
+                    uri == null -> "silent"
+                    uri == android.provider.Settings.System.DEFAULT_RINGTONE_URI -> "default"
+                    else -> "ringtone"
+                }
+                ringtoneResult?.success(
+                    mapOf(
+                        "cancelled" to false,
+                        "selection" to selection,
+                        "uri" to uri?.toString(),
+                    ),
+                )
             } else {
-                ringtoneResult?.success(null)
+                ringtoneResult?.success(
+                    mapOf(
+                        "cancelled" to true,
+                        "selection" to null,
+                        "uri" to null,
+                    ),
+                )
             }
             ringtoneResult = null
         } else if (requestCode == REQUEST_VOICE_SEARCH) {
@@ -690,11 +770,16 @@ class MainActivity : FlutterActivity() {
         val isDefault = tm.defaultDialerPackage == packageName
         methodChannel?.invokeMethod("onDefaultDialerStatus", isDefault)
         isAppInForeground = true
+        // In-app green call bar covers this — hide the system popup card.
+        GlyphInCallService.instance?.refreshForegroundNotification()
     }
     
     override fun onPause() {
+        RingtoneHelper.stopPreview()
         super.onPause()
         isAppInForeground = false
+        // Left the dialer — if still ringing elsewhere, restore the popup card.
+        GlyphInCallService.instance?.refreshForegroundNotification()
     }
 
     /**

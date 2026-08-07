@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">အသံတိတ်</string>
+    <string name="in_call_keypad">ကီးဘုတ်</string>
+    <string name="in_call_speaker">စပီကာ</string>
+    <string name="in_call_more">နောက်ထပ်</string>
+    <string name="in_call_bluetooth">ဘလူးတုသ်</string>
+    <string name="in_call_phone">ဖုန်း</string>
+    <string name="in_call_add_call">ခေါ်ဆိုမှုထည့်ပါ။</string>
+    <string name="in_call_change_sim">SIM ကိုပြောင်းပါ။</string>
+    <string name="in_call_decline">ငြင်းသည်။</string>
+    <string name="in_call_answer">ဖြေ</string>
+    <string name="in_call_message">မက်ဆေ့ချ်</string>
+    <string name="in_call_calling">ခေါ်နေသည်...</string>
+    <string name="in_call_incoming">အဝင်ခေါ်ဆိုမှု</string>
+    <string name="in_call_select_sim">SIM ကို ရွေးပါ...</string>
+    <string name="in_call_switching_sim">SIM ပြောင်းနေသည်…</string>
+    <string name="in_call_call_ended">ခေါ်ဆိုမှုပြီးသွားပါပြီ။</string>
+    <string name="in_call_calling_via">%1$s မှတဆင့် ဖုန်းခေါ်ဆိုခြင်း</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; မှတဆင့် ဖုန်းခေါ်ဆိုခြင်း</string>
+    <string name="in_call_choose_sim">ဤခေါ်ဆိုမှုအတွက် SIM ကို ရွေးပါ။</string>
+    <string name="in_call_drag_answer_decline">ဖြေရန် ညာဘက်ကို ဖိဆွဲပါ · ငြင်းပယ်ရန် ဘယ်ဘက်သို့ ဖိဆွဲပါ။</string>
+    <string name="in_call_mobile_number">မိုဘိုင်း %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (လက်ရှိ)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; မှ တစ်ဆင့် ဖုန်းခေါ်ဆိုပါ။</string>
+    <string name="in_call_call_from">ထံမှဖုန်းဆက်ပါ။</string>
+    <string name="in_call_unknown">မသိ</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">အဆက်အသွယ်ဖုန်းမြည်သံကို ရွေးပါ။</string>
+    <string name="native_speak_to_search">ရှာဖွေရန် စကားပြောပါ။</string>
+    <string name="native_phone_permission_required">ဖုန်းခွင့်ပြုချက် လိုအပ်ပါသည်။</string>
+    <string name="native_call_failed">ခေါ်ဆိုမှု မအောင်မြင်ပါ- %1$s</string>
+    <string name="native_call_permission_denied">ခေါ်ဆိုခွင့်ကို ငြင်းဆိုထားသည်။</string>
+    <string name="native_already_default_dialer">မူရင်းဖုန်းခေါ်ဆိုသူအဖြစ် သတ်မှတ်ပြီးဖြစ်သည်။</string>
+</resources>

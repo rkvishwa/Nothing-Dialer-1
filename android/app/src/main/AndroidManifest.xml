@@ -3,6 +3,8 @@
     package="com.rkkvishva.nothing_dialer">
 
     <!-- ─── Permissions ─── -->
+    <!-- Noto multilingual font download (google_fonts) -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- Required to use InCallService as Default Dialer -->
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
     <!-- Read call state/log for monitoring outgoing calls -->
@@ -56,8 +58,12 @@
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
 
-            <!-- MAIN/LAUNCHER: added in src/debug and src/profile only. Release uses activity-alias
-                 only so icon switching does not leave a second launcher entry on MainActivity. -->
+            <!-- MAIN/LAUNCHER on MainActivity: required for `flutter run` (tool reads src/main only).
+                 Release removes this filter; launcher is activity-alias only (see src/release). -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />

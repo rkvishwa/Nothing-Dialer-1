@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -12,8 +13,25 @@ import '../main.dart' as main_app;
 import '../services/launcher_icon_manager.dart';
 import 'icon_picker_screen.dart';
 import '../services/theme_colors.dart';
+import '../services/sim_icon_colors.dart';
+import 'package:nothing_dialer/l10n/app_localizations.dart';
+import 'font_settings_sheet.dart';
+import 'sim_icon_colors_sheet.dart';
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
+import '../widgets/dialer_font_scope.dart';
+import '../services/l10n_format.dart';
+import '../services/app_locale.dart';
+import 'language_picker_sheet.dart';
+import '../widgets/settings_picker_sheet.dart';
+import '../widgets/ongoing_call_banner.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../services/play_store_review.dart';
+import '../services/appearance_reset.dart';
 
 enum _ColorSlot { background, accent }
+
+const _kRepositoryUrl = 'https://github.com/rkvishwa/Nothing-Dialer-1';
 int _readFrequentContactsMaxFromPrefs(SharedPreferences prefs) {
   final stored = prefs.getInt('frequent_contacts_max');
   if (stored != null) return stored.clamp(0, 20);
@@ -30,12 +48,13 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen>
     with WidgetsBindingObserver {
-  String _answerMethod = 'slide'; // 'slide' or 'button'
+  String _answerMethod = 'slide'; // 'slide' | 'button' | 'huawei'
   String _themeMode = 'system'; // 'system', 'light', 'dark'
   Color _lightBgColor = kDefaultLightBg;
   Color _darkBgColor = kDefaultDarkBg;
   Color _lightAccentColor = kDefaultLightAccent;
   Color _darkAccentColor = kDefaultDarkAccent;
+  Color _callBgColor = kDefaultCallBg;
 
   String _glyphAnimationStyle = 'Breath & Progress';
   int _customInterval = 1500;
@@ -53,9 +72,12 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   String _frequentContactsPeriod = 'year';
   int _frequentContactsMax = 5;
+  bool _recentsSearchShowContacts = true;
 
   String _defaultSimMode = kDefaultSimModeAsk;
   int? _defaultSimIndex;
+  List<SimCardInfo> _simCards = const [];
+  Map<int, SimIconThemeColors> _simIconColors = const {};
 
   bool _torchHasFlash = true;
   String _launcherIconLabel = LauncherIconVariant.classic.label;
@@ -66,17 +88,70 @@ class _SettingsScreenState extends State<SettingsScreen>
   String _torchOngoingMode = 'off';
   int _torchOngoingInterval = 500;
 
+  bool _searchOpen = false;
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _searchController.addListener(_onSearchChanged);
     _loadSettings();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(OngoingCallBanner.syncCallStateFromNative());
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(OngoingCallBanner.syncCallStateFromNative());
+    }
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
+  }
+
+  void _onSearchChanged() {
+    final next = _searchController.text;
+    if (next == _searchQuery) return;
+    setState(() => _searchQuery = next);
+  }
+
+  void _openSearch() {
+    setState(() => _searchOpen = true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _searchFocusNode.requestFocus();
+    });
+  }
+
+  void _closeSearch() {
+    _searchController.clear();
+    setState(() {
+      _searchOpen = false;
+      _searchQuery = '';
+    });
+  }
+
+  bool _settingsMatch(String query, Iterable<String> fields) {
+    final q = query.trim().toLowerCase();
+    if (q.isEmpty) return true;
+    return fields.any((f) => f.toLowerCase().contains(q));
+  }
+
+  bool _showSettingsItem(String section, Iterable<String> fields) {
+    final q = _searchQuery.trim();
+    if (q.isEmpty) return true;
+    if (_settingsMatch(q, [section])) return true;
+    return _settingsMatch(q, fields);
   }
 
   @override
@@ -108,6 +183,16 @@ class _SettingsScreenState extends State<SettingsScreen>
     } catch (_) {
       torchFlash = false;
     }
+    List<SimCardInfo> simCards = const [];
+    try {
+      final raw = await const MethodChannel(
+        'nothing_dialer/control',
+      ).invokeMethod<List<dynamic>>('getSimCards');
+      simCards = parseSimCards(raw);
+    } catch (_) {
+      simCards = const [];
+    }
+    final simIconColors = await loadSimIconColorsFromPrefs(prefs);
     setState(() {
       _themeMode = prefs.getString('theme_mode') ?? 'system';
       _lightBgColor = Color(
@@ -121,6 +206,9 @@ class _SettingsScreenState extends State<SettingsScreen>
       );
       _darkAccentColor = Color(
         prefs.getInt('dark_accent_color') ?? colorToArgb32(kDefaultDarkAccent),
+      );
+      _callBgColor = Color(
+        prefs.getInt('call_bg_color') ?? colorToArgb32(kDefaultCallBg),
       );
       _answerMethod = prefs.getString('answer_method') ?? 'slide';
 
@@ -151,9 +239,13 @@ class _SettingsScreenState extends State<SettingsScreen>
       _frequentContactsPeriod =
           prefs.getString('frequent_contacts_period') ?? 'year';
       _frequentContactsMax = _readFrequentContactsMaxFromPrefs(prefs);
+      _recentsSearchShowContacts =
+          prefs.getBool('recents_search_show_contacts') ?? true;
 
       _defaultSimMode = prefs.getString(kDefaultSimModeKey) ?? kDefaultSimModeAsk;
       _defaultSimIndex = prefs.getInt(kDefaultSimIndexKey);
+      _simCards = simCards;
+      _simIconColors = simIconColors;
 
       _torchHasFlash = torchFlash;
       _torchIncomingMode = torchIncomingMode;
@@ -182,15 +274,135 @@ class _SettingsScreenState extends State<SettingsScreen>
     main_app.torchOutgoingIntervalNotifier.value = _torchOutgoingInterval;
     main_app.torchOngoingModeNotifier.value = _torchOngoingMode;
     main_app.torchOngoingIntervalNotifier.value = _torchOngoingInterval;
+    main_app.recentsSearchShowContactsNotifier.value =
+        _recentsSearchShowContacts;
+    _publishSimIconColors();
   }
 
-  String _defaultSimSubtitle() {
+  void _publishSimIconColors() {
+    main_app.simIconColorsNotifier.value = SimIconColorsState(
+      byIndex: Map<int, SimIconThemeColors>.from(_simIconColors),
+      sims: List<SimCardInfo>.from(_simCards),
+    );
+  }
+
+  Color? _simIconColorFor(int index, {required bool isDark}) {
+    final pair = _simIconColors[index];
+    return isDark ? pair?.dark : pair?.light;
+  }
+
+  String _simIconColorsSubtitle(AppLocalizations l10n) {
+    if (_simCards.length < 2) return l10n.simIconColorSubtitle;
+    final customized = _simCards.where((s) {
+      return _simIconColors[s.index]?.isCustom == true;
+    }).length;
+    if (customized == 0) return l10n.simIconColorDefault;
+    return l10n.simIconColorSubtitle;
+  }
+
+  Future<void> _saveSimIconCustomization({
+    required int index,
+    required bool isDark,
+    required SimIconBadgeStyle? style,
+    required Color? color,
+    required bool reset,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final map = Map<int, SimIconThemeColors>.from(_simIconColors);
+
+    if (reset) {
+      await clearSimIconCustomization(prefs: prefs, index: index);
+      map.remove(index);
+    } else {
+      final prev = map[index] ?? const SimIconThemeColors();
+      final nextStyle = style ?? prev.style ?? SimIconBadgeStyle.outline;
+      Color? nextLight = prev.light;
+      Color? nextDark = prev.dark;
+      Color? seededDark;
+
+      if (isDark) {
+        nextDark = color;
+      } else {
+        nextLight = color;
+        if (color != null && prev.dark == null) {
+          final presetIdx = kSimIconColorLightPresets.indexWhere(
+            (p) => colorsEqual(p, color),
+          );
+          seededDark = presetIdx >= 0
+              ? kSimIconColorDarkPresets[presetIdx]
+              : darkenSimIconColor(color);
+          nextDark = seededDark;
+        }
+      }
+
+      await saveSimIconStyle(prefs: prefs, index: index, style: nextStyle);
+      await saveSimIconColor(
+        prefs: prefs,
+        index: index,
+        isDark: isDark,
+        color: color,
+      );
+      if (seededDark != null) {
+        await saveSimIconColor(
+          prefs: prefs,
+          index: index,
+          isDark: true,
+          color: seededDark,
+        );
+      }
+
+      map[index] = SimIconThemeColors(
+        style: nextStyle,
+        light: nextLight,
+        dark: nextDark,
+      );
+    }
+
+    if (!mounted) return;
+    setState(() => _simIconColors = map);
+    _publishSimIconColors();
+  }
+
+  Future<void> _showSimIconColorsPanel() async {
+    if (_simCards.length < 2) return;
+    final isDark = !_activeAppearanceIsLight(context);
+    await showSimIconColorsSheet(
+      context: context,
+      sims: _simCards,
+      colors: _simIconColors,
+      isDark: isDark,
+      onChanged: ({
+        required int index,
+        required SimIconBadgeStyle? style,
+        required Color? color,
+        required bool reset,
+      }) {
+        return _saveSimIconCustomization(
+          index: index,
+          isDark: isDark,
+          style: style,
+          color: color,
+          reset: reset,
+        );
+      },
+    );
+  }
+
+  Future<void> _saveRecentsSearchShowContacts(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('recents_search_show_contacts', value);
+    if (!mounted) return;
+    setState(() => _recentsSearchShowContacts = value);
+    main_app.recentsSearchShowContactsNotifier.value = value;
+  }
+
+  String _defaultSimSubtitle(AppLocalizations l10n) {
     if (_defaultSimMode == kDefaultSimModeAsk) {
-      return 'Ask every time';
+      return l10n.askEveryTime;
     }
     final idx = _defaultSimIndex;
-    if (idx == null) return 'Ask every time';
-    return 'SIM ${idx + 1}';
+    if (idx == null) return l10n.askEveryTime;
+    return l10n.simSlot(idx + 1);
   }
 
   Future<void> _saveDefaultSim({required String mode, int? index}) async {
@@ -261,33 +473,40 @@ class _SettingsScreenState extends State<SettingsScreen>
     return '$t s';
   }
 
-  String _torchIncomingSubtitle() {
-    if (!_torchHasFlash) return 'Flashlight not available on this device';
+  String _torchIncomingSubtitle(AppLocalizations l10n) {
+    if (!_torchHasFlash) return l10n.flashlightUnavailable;
     switch (_torchIncomingMode) {
       case 'interval':
-        return '${_torchIntervalSecondsLabel(_torchIncomingInterval)} blink';
+        return l10n.torchIntervalBlink(
+          _torchIntervalSecondsLabel(_torchIncomingInterval),
+        );
       default:
-        return 'Off';
+        return l10n.torchOff;
     }
   }
 
-  String _torchOutgoingSubtitle() {
-    if (!_torchHasFlash) return 'Flashlight not available on this device';
+  String _torchOutgoingSubtitle(AppLocalizations l10n) {
+    if (!_torchHasFlash) return l10n.flashlightUnavailable;
     if (_torchOutgoingMode == 'interval') {
-      return '${_torchIntervalSecondsLabel(_torchOutgoingInterval)} blink';
+      return l10n.torchIntervalBlink(
+        _torchIntervalSecondsLabel(_torchOutgoingInterval),
+      );
     }
-    return 'Off';
+    return l10n.torchOff;
   }
 
-  String _torchOngoingSubtitle() {
-    if (!_torchHasFlash) return 'Flashlight not available on this device';
+  String _torchOngoingSubtitle(AppLocalizations l10n) {
+    if (!_torchHasFlash) return l10n.flashlightUnavailable;
     if (_torchOngoingMode == 'interval') {
-      return '${_torchIntervalSecondsLabel(_torchOngoingInterval)} blink';
+      return l10n.torchIntervalBlink(
+        _torchIntervalSecondsLabel(_torchOngoingInterval),
+      );
     }
-    return 'Off';
+    return l10n.torchOff;
   }
 
   Future<void> _showDefaultSimPicker() async {
+    final l10n = AppLocalizations.of(context);
     try {
       final raw = await const MethodChannel(
         'nothing_dialer/control',
@@ -295,7 +514,7 @@ class _SettingsScreenState extends State<SettingsScreen>
       if (!mounted) return;
       if (raw == null || raw.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No SIM cards found')),
+          SnackBar(content: Text(l10n.noSimCardsFound)),
         );
         return;
       }
@@ -303,71 +522,116 @@ class _SettingsScreenState extends State<SettingsScreen>
       await showModalBottomSheet<void>(
         context: context,
         backgroundColor: Colors.transparent,
-        builder: (sheetContext) => Container(
-          decoration: BoxDecoration(
-            color: Theme.of(sheetContext).colorScheme.surface,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          ),
-          child: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 8),
-                    child: Container(
-                      width: 32,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          sheetContext,
-                        ).colorScheme.outlineVariant,
-                        borderRadius: BorderRadius.circular(2),
+        builder: (sheetContext) => SettingsPickerFontScope(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(sheetContext).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16, bottom: 8),
+                      child: Container(
+                        width: 32,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            sheetContext,
+                          ).colorScheme.outlineVariant,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-                  child: Text(
-                    'Default SIM for calls',
-                    style: TextStyle(
-                      color: Theme.of(sheetContext).colorScheme.onSurface,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                    child: Text(
+                      l10n.defaultSimForCalls,
+                      style: sheetContext.dialerTextStyle(
+                        DialerFontRole.pageTitle,
+                        TextStyle(
+                          color: Theme.of(sheetContext).colorScheme.onSurface,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                  title: const Text('Ask every time'),
-                  subtitle: const Text('Show SIM picker before each call'),
-                  onTap: () async {
-                    await _saveDefaultSim(mode: kDefaultSimModeAsk);
-                    if (sheetContext.mounted) Navigator.pop(sheetContext);
-                  },
-                ),
-                ...sims.asMap().entries.map((e) {
-                  final idx = e.key;
-                  final sim = e.value;
-                  final label = sim['label'] as String? ?? 'SIM ${idx + 1}';
-                  final slot = (sim['slot'] as int?) ?? (idx + 1);
-                  return ListTile(
+                  ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                    title: Text(label),
-                    subtitle: Text('SIM $slot'),
+                    title: Text(
+                      l10n.askEveryTime,
+                      style: sheetContext.dialerTextStyle(
+                        DialerFontRole.primary,
+                        TextStyle(
+                          color: Theme.of(sheetContext).colorScheme.onSurface,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    subtitle: Text(
+                      l10n.askEveryTimeSubtitle,
+                      style: sheetContext.dialerTextStyle(
+                        DialerFontRole.secondary,
+                        TextStyle(
+                          color:
+                              Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
                     onTap: () async {
-                      await _saveDefaultSim(
-                        mode: kDefaultSimModeFixed,
-                        index: idx,
-                      );
+                      await _saveDefaultSim(mode: kDefaultSimModeAsk);
                       if (sheetContext.mounted) Navigator.pop(sheetContext);
                     },
-                  );
-                }),
-                const SizedBox(height: 16),
-              ],
+                  ),
+                  ...sims.asMap().entries.map((e) {
+                    final idx = e.key;
+                    final sim = e.value;
+                    final label =
+                        sim['label'] as String? ?? l10n.simSlot(idx + 1);
+                    final slot = (sim['slot'] as int?) ?? (idx + 1);
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                      title: Text(
+                        label,
+                        style: sheetContext.dialerTextStyle(
+                          DialerFontRole.primary,
+                          TextStyle(
+                            color: Theme.of(sheetContext).colorScheme.onSurface,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      subtitle: Text(
+                        l10n.simSlot(slot),
+                        style: sheetContext.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color: Theme.of(sheetContext)
+                                .colorScheme
+                                .onSurfaceVariant,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                      onTap: () async {
+                        await _saveDefaultSim(
+                          mode: kDefaultSimModeFixed,
+                          index: idx,
+                        );
+                        if (sheetContext.mounted) Navigator.pop(sheetContext);
+                      },
+                    );
+                  }),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
         ),
@@ -375,7 +639,7 @@ class _SettingsScreenState extends State<SettingsScreen>
     } on PlatformException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not load SIMs: ${e.message}')),
+          SnackBar(content: Text(l10n.couldNotLoadSims(e.message ?? ''))),
         );
       }
     }
@@ -396,119 +660,295 @@ class _SettingsScreenState extends State<SettingsScreen>
     main_app.frequentContactsMaxNotifier.value = clamped;
   }
 
-  String _frequentMaxSubtitle() {
-    if (_frequentContactsMax == 0) return 'Off';
-    if (_frequentContactsMax == 1) return '1 contact';
-    return 'Up to ${_frequentContactsMax} contacts';
+  String _frequentMaxSubtitle(AppLocalizations l10n) {
+    if (_frequentContactsMax == 0) return l10n.frequentMaxOff;
+    if (_frequentContactsMax == 1) return l10n.oneContact;
+    return l10n.upToContacts(_frequentContactsMax);
   }
 
-  String _frequentPeriodSubtitle() {
-    switch (_frequentContactsPeriod) {
-      case 'day':
-        return 'Last 24 hours';
-      case 'week':
-        return 'Last 7 days';
-      case 'month':
-        return 'Last 30 days';
-      case 'year':
-        return 'Last 12 months';
-      case 'all':
-        return 'All time';
+  String _frequentPeriodSubtitle(AppLocalizations l10n) =>
+      frequentPeriodLabel(l10n, _frequentContactsPeriod);
+
+  static const _glyphStyleKeys = <String>[
+    'None',
+    'Breath & Progress',
+    'Accumulate',
+    'Single',
+    'Breath',
+    'Steady',
+  ];
+
+  IconData _iconForGlyphStyle(String style) {
+    switch (style) {
+      case 'None':
+        return Icons.block_rounded;
+      case 'Breath & Progress':
+        return Icons.flare_rounded;
+      case 'Accumulate':
+      case 'Single':
+        return Icons.animation_rounded;
+      case 'Breath':
+        return Icons.tune_rounded;
+      case 'Steady':
+        return Icons.highlight_rounded;
       default:
-        return 'Last 12 months';
+        return Icons.flare_rounded;
     }
   }
 
-  void _showFrequentPeriodPicker() {
-    showModalBottomSheet(
+  void _showGlyphStylePickerSheet({
+    required String title,
+    required String selected,
+    required bool inCall,
+    required Future<void> Function(String) save,
+    required void Function(String) syncNotifiers,
+  }) {
+    final l10n = AppLocalizations.of(context);
+    showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(sheetContext).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: Container(
+                      width: 32,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Time period',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                  child: Text(
+                    title,
+                    style: sheetContext.dialerTextStyle(
+                      DialerFontRole.pageTitle,
+                      TextStyle(
+                        color: Theme.of(sheetContext).colorScheme.onSurface,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              _MethodOption(
-                icon: Icons.today_rounded,
-                label: 'Last 24 hours',
-                subtitle: 'Calls from the past day',
-                selected: _frequentContactsPeriod == 'day',
-                onTap: () {
-                  _saveFrequentContactsPeriod('day');
-                  Navigator.pop(context);
+                ..._glyphStyleKeys.map((style) {
+                  return SettingsPickerOption(
+                    icon: _iconForGlyphStyle(style),
+                    label: glyphStyleLabel(l10n, style),
+                    subtitle: inCall
+                        ? glyphStyleInCallSubtitle(l10n, style)
+                        : glyphStyleOutgoingSubtitle(l10n, style),
+                    selected: selected == style,
+                    onTap: () async {
+                      await save(style);
+                      syncNotifiers(style);
+                      if (sheetContext.mounted) Navigator.pop(sheetContext);
+                    },
+                  );
+                }),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showTorchModePickerSheet({
+    required String title,
+    required String currentMode,
+    required bool incoming,
+    required bool ongoing,
+    required Future<void> Function(String) save,
+  }) {
+    final l10n = AppLocalizations.of(context);
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(sheetContext).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: Container(
+                      width: 32,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                  child: Text(
+                    title,
+                    style: sheetContext.dialerTextStyle(
+                      DialerFontRole.pageTitle,
+                      TextStyle(
+                        color: Theme.of(sheetContext).colorScheme.onSurface,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+                SettingsPickerOption(
+                  icon: Icons.block_rounded,
+                  label: l10n.torchOff,
+                subtitle: torchModePickerSubtitle(
+                  l10n,
+                  'off',
+                  incoming: incoming,
+                  ongoing: ongoing,
+                ),
+                selected: currentMode == 'off',
+                onTap: () async {
+                  await save('off');
+                  if (sheetContext.mounted) Navigator.pop(sheetContext);
                 },
               ),
-              _MethodOption(
-                icon: Icons.date_range_rounded,
-                label: 'Last 7 days',
-                subtitle: 'Calls from the past week',
-                selected: _frequentContactsPeriod == 'week',
-                onTap: () {
-                  _saveFrequentContactsPeriod('week');
-                  Navigator.pop(context);
+              SettingsPickerOption(
+                icon: Icons.timer_rounded,
+                label: l10n.torchFixedInterval,
+                subtitle: l10n.torchFixedIntervalSubtitle,
+                selected: currentMode == 'interval',
+                onTap: () async {
+                  await save('interval');
+                  if (sheetContext.mounted) Navigator.pop(sheetContext);
                 },
               ),
-              _MethodOption(
-                icon: Icons.calendar_month_rounded,
-                label: 'Last 30 days',
-                subtitle: 'Calls from the past month',
-                selected: _frequentContactsPeriod == 'month',
-                onTap: () {
-                  _saveFrequentContactsPeriod('month');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.calendar_today_rounded,
-                label: 'Last 12 months',
-                subtitle: 'Calls from the past year',
-                selected: _frequentContactsPeriod == 'year',
-                onTap: () {
-                  _saveFrequentContactsPeriod('year');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.all_inclusive_rounded,
-                label: 'All time',
-                subtitle: 'Entire call history',
-                selected: _frequentContactsPeriod == 'all',
-                onTap: () {
-                  _saveFrequentContactsPeriod('all');
-                  Navigator.pop(context);
-                },
-              ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
             ],
+          ),
+        ),
+      ),
+      ),
+    );
+  }
+
+  void _showFrequentPeriodPicker() {
+    final l10n = AppLocalizations.of(context);
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(sheetContext).colorScheme.surface,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: Container(
+                      width: 32,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                  child: Text(
+                    l10n.timePeriodTitle,
+                    style: sheetContext.dialerTextStyle(
+                      DialerFontRole.pageTitle,
+                      TextStyle(
+                        color: Theme.of(sheetContext).colorScheme.onSurface,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+                SettingsPickerOption(
+                  icon: Icons.today_rounded,
+                  label: l10n.periodLast24Hours,
+                  subtitle: l10n.periodLast24HoursSubtitle,
+                  selected: _frequentContactsPeriod == 'day',
+                  onTap: () {
+                    _saveFrequentContactsPeriod('day');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SettingsPickerOption(
+                  icon: Icons.date_range_rounded,
+                  label: l10n.periodLast7Days,
+                  subtitle: l10n.periodLast7DaysSubtitle,
+                  selected: _frequentContactsPeriod == 'week',
+                  onTap: () {
+                    _saveFrequentContactsPeriod('week');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SettingsPickerOption(
+                  icon: Icons.calendar_month_rounded,
+                  label: l10n.periodLast30Days,
+                  subtitle: l10n.periodLast30DaysSubtitle,
+                  selected: _frequentContactsPeriod == 'month',
+                  onTap: () {
+                    _saveFrequentContactsPeriod('month');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SettingsPickerOption(
+                  icon: Icons.calendar_today_rounded,
+                  label: l10n.periodLast12Months,
+                  subtitle: l10n.periodLast12MonthsSubtitle,
+                  selected: _frequentContactsPeriod == 'year',
+                  onTap: () {
+                    _saveFrequentContactsPeriod('year');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SettingsPickerOption(
+                  icon: Icons.all_inclusive_rounded,
+                  label: l10n.periodAllTime,
+                  subtitle: l10n.periodAllTimeSubtitle,
+                  selected: _frequentContactsPeriod == 'all',
+                  onTap: () {
+                    _saveFrequentContactsPeriod('all');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
@@ -516,111 +956,126 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   void _showFrequentMaxPicker() {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 32,
-                        height: 4,
-                        margin: const EdgeInsets.only(bottom: 24),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'Number of records',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Set to 0 to hide the section. Otherwise choose how many numbers appear at the top of Recents.',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Slider(
-                            value: _frequentContactsMax
-                                .toDouble()
-                                .clamp(0, 20),
-                            min: 0,
-                            max: 20,
-                            divisions: 20,
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            onChanged: (val) {
-                              setModalState(
-                                () => _frequentContactsMax = val.toInt(),
-                              );
-                              setState(
-                                () => _frequentContactsMax = val.toInt(),
-                              );
-                            },
-                            onChangeEnd: (val) {
-                              _saveFrequentContactsMax(val.toInt());
-                            },
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 32,
+                          height: 4,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
-                        SizedBox(
-                          width: 44,
-                          child: Text(
-                            _frequentContactsMax == 0
-                                ? 'Off'
-                                : '${_frequentContactsMax}',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.outline,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                      ),
+                      Text(
+                        l10n.numberOfRecordsTitle,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.pageTitle,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.recordsPickerSubtitle,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Slider(
+                              value: _frequentContactsMax
+                                  .toDouble()
+                                  .clamp(0, 20),
+                              min: 0,
+                              max: 20,
+                              divisions: 20,
+                              activeColor:
+                                  Theme.of(context).colorScheme.primary,
+                              onChanged: (val) {
+                                setModalState(
+                                  () => _frequentContactsMax = val.toInt(),
+                                );
+                                setState(
+                                  () => _frequentContactsMax = val.toInt(),
+                                );
+                              },
+                              onChangeEnd: (val) {
+                                _saveFrequentContactsMax(val.toInt());
+                              },
                             ),
-                            textAlign: TextAlign.right,
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          'Done',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
+                          SizedBox(
+                            width: 44,
+                            child: Text(
+                              _frequentContactsMax == 0
+                                  ? l10n.frequentMaxOff
+                                  : '${_frequentContactsMax}',
+                              style: context.dialerTextStyle(
+                                DialerFontRole.primary,
+                                TextStyle(
+                                  color: Theme.of(context).colorScheme.outline,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(sheetContext),
+                          child: Text(
+                            l10n.done,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -629,6 +1084,12 @@ class _SettingsScreenState extends State<SettingsScreen>
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('answer_method', value);
     setState(() => _answerMethod = value);
+    try {
+      await const MethodChannel('nothing_dialer/control')
+          .invokeMethod<void>('notifyAnswerMethodChanged');
+    } on PlatformException {
+      // Native call UI may not be active.
+    }
   }
 
   Future<void> _saveThemeMode(String value) async {
@@ -668,23 +1129,29 @@ class _SettingsScreenState extends State<SettingsScreen>
     main_app.darkAccentColorNotifier.value = color;
   }
 
+  Future<void> _saveCallBgColor(Color color) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('call_bg_color', colorToArgb32(color));
+    setState(() => _callBgColor = color);
+  }
+
   String _hexRgb(Color c) {
     final v = c.toARGB32() & 0xFFFFFF;
     return '#${v.toRadixString(16).padLeft(6, '0').toUpperCase()}';
   }
 
-  String _bgSubtitle(Color c, List<Color> presets) {
+  String _bgSubtitle(AppLocalizations l10n, Color c, List<Color> presets) {
     final idx = presets.indexWhere((p) => colorsEqual(p, c));
     final hex = _hexRgb(c);
-    if (idx >= 0) return 'Preset · $hex';
-    return 'Custom · $hex';
+    if (idx >= 0) return l10n.presetColorHex(hex);
+    return l10n.customColorHex(hex);
   }
 
-  String _accentSubtitle(Color c) {
+  String _accentSubtitle(AppLocalizations l10n, Color c) {
     final idx = kAccentPresets.indexWhere((p) => colorsEqual(p, c));
     final hex = _hexRgb(c);
-    if (idx >= 0) return 'Preset · $hex';
-    return 'Custom · $hex';
+    if (idx >= 0) return l10n.presetColorHex(hex);
+    return l10n.customColorHex(hex);
   }
 
   Future<void> _showPresetBottomSheet({
@@ -700,40 +1167,44 @@ class _SettingsScreenState extends State<SettingsScreen>
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (sheetContext) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Theme.of(sheetContext).colorScheme.surface,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 32,
-                        height: 4,
-                        margin: const EdgeInsets.only(bottom: 16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(
-                            sheetContext,
-                          ).colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2),
+        return SettingsPickerFontScope(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(sheetContext).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            ),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 32,
+                          height: 4,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            color: Theme.of(
+                              sheetContext,
+                            ).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      title,
-                      style: TextStyle(
-                        color: Theme.of(sheetContext).colorScheme.onSurface,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
+                      Text(
+                        title,
+                        style: sheetContext.dialerTextStyle(
+                          DialerFontRole.pageTitle,
+                          TextStyle(
+                            color: Theme.of(sheetContext).colorScheme.onSurface,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
-                    ),
                     const SizedBox(height: 20),
                     Wrap(
                       spacing: 12,
@@ -767,27 +1238,30 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
             ),
           ),
+          ),
         );
       },
     );
   }
 
   Future<void> _showLightBgPicker() async {
+    final l10n = AppLocalizations.of(context);
     await _showPresetBottomSheet(
-      title: 'Light background',
+      title: l10n.lightBackground,
       presets: kLightPresets,
       selectedColor: _lightBgColor,
       onPresetChosen: _saveLightBgColor,
       openCustomDialog: () => _showCustomLightColorDialog(
         target: _ColorSlot.background,
       ),
-      firstSwatchLabel: 'Default',
+      firstSwatchLabel: l10n.swatchDefault,
     );
   }
 
   Future<void> _showLightAccentPicker() async {
+    final l10n = AppLocalizations.of(context);
     await _showPresetBottomSheet(
-      title: 'Light accent',
+      title: l10n.lightAccent,
       presets: kAccentPresets,
       selectedColor: _lightAccentColor,
       onPresetChosen: _saveLightAccentColor,
@@ -798,21 +1272,23 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Future<void> _showDarkBgPicker() async {
+    final l10n = AppLocalizations.of(context);
     await _showPresetBottomSheet(
-      title: 'Dark background',
+      title: l10n.darkBackground,
       presets: kDarkPresets,
       selectedColor: _darkBgColor,
       onPresetChosen: _saveDarkBgColor,
       openCustomDialog: () => _showCustomDarkColorDialog(
         target: _ColorSlot.background,
       ),
-      firstSwatchLabel: 'Default',
+      firstSwatchLabel: l10n.swatchDefault,
     );
   }
 
   Future<void> _showDarkAccentPicker() async {
+    final l10n = AppLocalizations.of(context);
     await _showPresetBottomSheet(
-      title: 'Dark accent',
+      title: l10n.darkAccent,
       presets: kAccentPresets,
       selectedColor: _darkAccentColor,
       onPresetChosen: _saveDarkAccentColor,
@@ -822,20 +1298,28 @@ class _SettingsScreenState extends State<SettingsScreen>
     );
   }
 
-  Future<void> _showCustomLightColorDialog({
-    required _ColorSlot target,
-  }) async {
-    Color pickerColor =
-        target == _ColorSlot.accent ? _lightAccentColor : _lightBgColor;
+  Future<void> _showCallBgPicker() async {
+    final l10n = AppLocalizations.of(context);
+    await _showPresetBottomSheet(
+      title: l10n.callBackground,
+      presets: kCallBgPresets,
+      selectedColor: _callBgColor,
+      onPresetChosen: _saveCallBgColor,
+      openCustomDialog: _showCustomCallBgColorDialog,
+      firstSwatchLabel: l10n.swatchDefault,
+    );
+  }
+
+  Future<void> _showCustomCallBgColorDialog() async {
+    final l10n = AppLocalizations.of(context);
+    Color pickerColor = _callBgColor;
     final result = await showDialog<Color>(
       context: context,
       builder: (ctx) {
         return AlertDialog(
           backgroundColor: Theme.of(ctx).colorScheme.surface,
           title: Text(
-            target == _ColorSlot.accent
-                ? 'Custom accent color'
-                : 'Custom light background',
+            l10n.customCallBackgroundPicker,
             style: TextStyle(color: Theme.of(ctx).colorScheme.onSurface),
           ),
           content: StatefulBuilder(
@@ -856,14 +1340,69 @@ class _SettingsScreenState extends State<SettingsScreen>
             TextButton(
               onPressed: () => Navigator.pop(ctx),
               child: Text(
-                'Cancel',
+                l10n.cancel,
                 style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
               ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(ctx, pickerColor),
               child: Text(
-                'Done',
+                l10n.done,
+                style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    if (result != null) {
+      await _saveCallBgColor(result);
+    }
+  }
+
+  Future<void> _showCustomLightColorDialog({
+    required _ColorSlot target,
+  }) async {
+    final l10n = AppLocalizations.of(context);
+    Color pickerColor =
+        target == _ColorSlot.accent ? _lightAccentColor : _lightBgColor;
+    final result = await showDialog<Color>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: Theme.of(ctx).colorScheme.surface,
+          title: Text(
+            target == _ColorSlot.accent
+                ? l10n.customAccentColorPicker
+                : l10n.customLightBackgroundPicker,
+            style: TextStyle(color: Theme.of(ctx).colorScheme.onSurface),
+          ),
+          content: StatefulBuilder(
+            builder: (ctx, setDialogState) {
+              return SingleChildScrollView(
+                child: ColorPicker(
+                  pickerColor: pickerColor,
+                  onColorChanged: (c) => setDialogState(() => pickerColor = c),
+                  enableAlpha: false,
+                  displayThumbColor: true,
+                  paletteType: PaletteType.hsvWithHue,
+                  pickerAreaHeightPercent: 0.72,
+                ),
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(
+                l10n.cancel,
+                style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, pickerColor),
+              child: Text(
+                l10n.done,
                 style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
               ),
             ),
@@ -883,6 +1422,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   Future<void> _showCustomDarkColorDialog({
     required _ColorSlot target,
   }) async {
+    final l10n = AppLocalizations.of(context);
     Color pickerColor =
         target == _ColorSlot.accent ? _darkAccentColor : _darkBgColor;
     final result = await showDialog<Color>(
@@ -892,8 +1432,8 @@ class _SettingsScreenState extends State<SettingsScreen>
           backgroundColor: Theme.of(ctx).colorScheme.surface,
           title: Text(
             target == _ColorSlot.accent
-                ? 'Custom accent color'
-                : 'Custom dark background',
+                ? l10n.customAccentColorPicker
+                : l10n.customDarkBackgroundPicker,
             style: TextStyle(color: Theme.of(ctx).colorScheme.onSurface),
           ),
           content: StatefulBuilder(
@@ -914,14 +1454,14 @@ class _SettingsScreenState extends State<SettingsScreen>
             TextButton(
               onPressed: () => Navigator.pop(ctx),
               child: Text(
-                'Cancel',
+                l10n.cancel,
                 style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
               ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(ctx, pickerColor),
               child: Text(
-                'Done',
+                l10n.done,
                 style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
               ),
             ),
@@ -994,303 +1534,866 @@ class _SettingsScreenState extends State<SettingsScreen>
     main_app.inCallBreathProgressIntervalNotifier.value = value;
   }
 
+  String _answerMethodSubtitle(AppLocalizations l10n) {
+    switch (_answerMethod) {
+      case 'button':
+        return l10n.answerButtonTapSubtitle;
+      case 'huawei':
+        return l10n.answerHuaweiTileSubtitle;
+      case 'slide':
+      default:
+        return l10n.answerSlide;
+    }
+  }
+
+  String _fontSubtitle(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return fontSettingsSubtitle(l10n, main_app.fontConfigNotifier.value);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        foregroundColor: Theme.of(context).colorScheme.onSurface,
-        title: Text('Settings'),
-        elevation: 0,
-      ),
-      body: ListView(
-        children: [
-          _SectionHeader(title: 'General'),
-          _SettingsTile(
-            icon: Icons.palette_rounded,
-            title: 'Theme',
-            subtitle: _themeMode == 'system'
-                ? 'System Default'
-                : _themeMode == 'light'
-                ? 'Light'
-                : 'Dark',
-            onTap: () => _showThemeModePicker(),
+    final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final searching = _searchQuery.trim().isNotEmpty;
+
+    final localePref = main_app.localeNotifier.value;
+    final languageSubtitle = localePref == kAppLocaleSystem
+        ? l10n.languageDeviceDefault
+        : nativeLanguageName(localePref);
+    final fontSubtitle = _fontSubtitle(context);
+    final themeSubtitle = _themeMode == 'system'
+        ? l10n.themeSystemDefault
+        : _themeMode == 'light'
+        ? l10n.themeLight
+        : l10n.themeDark;
+    final lightBgSubtitle = _bgSubtitle(l10n, _lightBgColor, kLightPresets);
+    final lightAccentSubtitle = _accentSubtitle(l10n, _lightAccentColor);
+    final darkBgSubtitle = _bgSubtitle(l10n, _darkBgColor, kDarkPresets);
+    final darkAccentSubtitle = _accentSubtitle(l10n, _darkAccentColor);
+    final answerSubtitle = _answerMethodSubtitle(l10n);
+    final callBgSubtitle = _bgSubtitle(l10n, _callBgColor, kCallBgPresets);
+    final defaultSimSubtitle = _defaultSimSubtitle(l10n);
+    final frequentMaxSubtitle = _frequentMaxSubtitle(l10n);
+    final frequentPeriodSubtitle = _frequentPeriodSubtitle(l10n);
+    final torchIncomingSubtitle = _torchIncomingSubtitle(l10n);
+    final torchOutgoingSubtitle = _torchOutgoingSubtitle(l10n);
+    final torchOngoingSubtitle = _torchOngoingSubtitle(l10n);
+    final glyphCallingSubtitle = glyphStyleLabel(l10n, _glyphAnimationStyle);
+    final glyphOngoingSubtitle = glyphStyleLabel(l10n, _inCallAnimationStyle);
+
+    final showLanguage = _showSettingsItem(l10n.general, [
+      l10n.language,
+      languageSubtitle,
+    ]);
+    final showFont = _showSettingsItem(l10n.general, [l10n.font, fontSubtitle]);
+    final showTheme = _showSettingsItem(l10n.general, [
+      l10n.theme,
+      themeSubtitle,
+    ]);
+    final showLightBg = _activeAppearanceIsLight(context) &&
+        _showSettingsItem(l10n.general, [l10n.background, lightBgSubtitle]);
+    final showLightAccent = _activeAppearanceIsLight(context) &&
+        _showSettingsItem(l10n.general, [l10n.accent, lightAccentSubtitle]);
+    final showDarkBg = !_activeAppearanceIsLight(context) &&
+        _showSettingsItem(l10n.general, [l10n.background, darkBgSubtitle]);
+    final showDarkAccent = !_activeAppearanceIsLight(context) &&
+        _showSettingsItem(l10n.general, [l10n.accent, darkAccentSubtitle]);
+    final showAppIcon = !kIsWeb &&
+        Platform.isAndroid &&
+        _showSettingsItem(l10n.general, [l10n.appIcon, _launcherIconLabel]);
+    final showAnswerMethod = _showSettingsItem(l10n.general, [
+      l10n.answerMethod,
+      answerSubtitle,
+    ]);
+    final showCallBackground = !kIsWeb &&
+        Platform.isAndroid &&
+        _showSettingsItem(l10n.general, [l10n.callBackground, callBgSubtitle]);
+    final showGeneral = showLanguage ||
+        showFont ||
+        showTheme ||
+        showLightBg ||
+        showLightAccent ||
+        showDarkBg ||
+        showDarkAccent ||
+        showAppIcon ||
+        showAnswerMethod ||
+        showCallBackground;
+
+    final showDefaultSim = _showSettingsItem(l10n.calling, [
+      l10n.defaultSim,
+      defaultSimSubtitle,
+    ]);
+    final simIconColorsSubtitle = _simIconColorsSubtitle(l10n);
+    final showSimIconColors = _simCards.length >= 2 &&
+        _showSettingsItem(l10n.calling, [
+          l10n.simIconColor,
+          simIconColorsSubtitle,
+          l10n.simIconColorSubtitle,
+          l10n.simIconStyleOutline,
+          l10n.simIconStyleFill,
+        ]);
+    final showFavourites = _showSettingsItem(l10n.calling, [
+      l10n.allFavourites,
+      l10n.allFavouritesSubtitle,
+    ]);
+    final showBlocked = _showSettingsItem(l10n.calling, [
+      l10n.blockedNumbers,
+      l10n.blockedNumbersSubtitle,
+    ]);
+    final showSounds = _showSettingsItem(l10n.calling, [
+      l10n.soundsAndVibration,
+      l10n.soundsAndVibrationSubtitle,
+    ]);
+    final showCalling = showDefaultSim ||
+        showSimIconColors ||
+        showFavourites ||
+        showBlocked ||
+        showSounds;
+
+    final showRecentsContacts = _showSettingsItem(l10n.recentsSearchSection, [
+      l10n.recentsSearchShowContacts,
+      l10n.recentsSearchShowContactsSubtitle,
+    ]);
+
+    final showFrequentMax = _showSettingsItem(l10n.frequentlyContacted, [
+      l10n.numberOfRecords,
+      frequentMaxSubtitle,
+    ]);
+    final showFrequentPeriod = _frequentContactsMax > 0 &&
+        _showSettingsItem(l10n.frequentlyContacted, [
+          l10n.timePeriod,
+          frequentPeriodSubtitle,
+        ]);
+    final showFrequent = showFrequentMax || showFrequentPeriod;
+
+    final showTorchIncoming = _showSettingsItem(l10n.torchBlink, [
+      l10n.torchIncomingCall,
+      torchIncomingSubtitle,
+    ]);
+    final showTorchIncomingInterval = _torchHasFlash &&
+        _torchIncomingMode == 'interval' &&
+        _showSettingsItem(l10n.torchBlink, [
+          l10n.torchIncomingInterval,
+          _torchIntervalSecondsLabel(_torchIncomingInterval),
+        ]);
+    final showTorchOutgoing = _showSettingsItem(l10n.torchBlink, [
+      l10n.torchOutgoingCall,
+      torchOutgoingSubtitle,
+    ]);
+    final showTorchOutgoingInterval = _torchHasFlash &&
+        _torchOutgoingMode == 'interval' &&
+        _showSettingsItem(l10n.torchBlink, [
+          l10n.torchOutgoingInterval,
+          _torchIntervalSecondsLabel(_torchOutgoingInterval),
+        ]);
+    final showTorchOngoing = _showSettingsItem(l10n.torchBlink, [
+      l10n.torchOngoingCall,
+      torchOngoingSubtitle,
+    ]);
+    final showTorchOngoingInterval = _torchHasFlash &&
+        _torchOngoingMode == 'interval' &&
+        _showSettingsItem(l10n.torchBlink, [
+          l10n.torchOngoingInterval,
+          _torchIntervalSecondsLabel(_torchOngoingInterval),
+        ]);
+    final showTorch = showTorchIncoming ||
+        showTorchIncomingInterval ||
+        showTorchOutgoing ||
+        showTorchOutgoingInterval ||
+        showTorchOngoing ||
+        showTorchOngoingInterval;
+
+    final showGlyphCalling = _showSettingsItem(l10n.glyphLights, [
+      l10n.glyphCallingAnimation,
+      glyphCallingSubtitle,
+    ]);
+    final showGlyphBreath = _glyphAnimationStyle == 'Breath' &&
+        _showSettingsItem(l10n.glyphLights, [
+          l10n.breathSettings,
+          l10n.breathSettingsSpeedSummary(
+            _customChannels.length,
+            _customInterval,
           ),
-          if (_activeAppearanceIsLight(context)) ...[
-            _SettingsTile(
-              icon: Icons.light_mode_outlined,
-              title: 'Background',
-              subtitle: _bgSubtitle(_lightBgColor, kLightPresets),
-              previewColor: _lightBgColor,
-              onTap: _showLightBgPicker,
-            ),
-            _SettingsTile(
-              icon: Icons.color_lens_outlined,
-              title: 'Accent',
-              subtitle: _accentSubtitle(_lightAccentColor),
-              previewColor: _lightAccentColor,
-              onTap: _showLightAccentPicker,
-            ),
-          ] else ...[
-            _SettingsTile(
-              icon: Icons.dark_mode_outlined,
-              title: 'Background',
-              subtitle: _bgSubtitle(_darkBgColor, kDarkPresets),
-              previewColor: _darkBgColor,
-              onTap: _showDarkBgPicker,
-            ),
-            _SettingsTile(
-              icon: Icons.color_lens_outlined,
-              title: 'Accent',
-              subtitle: _accentSubtitle(_darkAccentColor),
-              previewColor: _darkAccentColor,
-              onTap: _showDarkAccentPicker,
-            ),
-          ],
-          if (!kIsWeb && Platform.isAndroid)
-            _SettingsTile(
-              icon: Icons.apps_rounded,
-              title: 'App icon',
-              subtitle: _launcherIconLabel,
-              onTap: () async {
-                await showLauncherIconPicker(context);
-                if (context.mounted) await _loadSettings();
-              },
-            ),
-          _SettingsTile(
-            icon: Icons.phone_callback_rounded,
-            title: 'Answer method',
-            subtitle: _answerMethod == 'slide'
-                ? 'Slide to answer'
-                : 'Button tap to answer',
-            onTap: () => _showAnswerMethodPicker(),
+        ]);
+    final showGlyphSteady = _glyphAnimationStyle == 'Steady' &&
+        _showSettingsItem(l10n.glyphLights, [
+          l10n.activeLights,
+          l10n.lightsCount(_customChannels.length),
+        ]);
+    final showGlyphSpeed =
+        (_glyphAnimationStyle == 'Accumulate' ||
+            _glyphAnimationStyle == 'Single') &&
+        _showSettingsItem(l10n.glyphLights, [
+          l10n.speedSettings,
+          l10n.speedSettingsDelay(_glyphC1C4Interval),
+        ]);
+    final showGlyphDuration = _glyphAnimationStyle == 'Breath & Progress' &&
+        _showSettingsItem(l10n.glyphLights, [
+          l10n.durationAndSpeed,
+          l10n.durationSpeedSummary(
+            _glyphBreathProgressDuration ~/ 1000,
+            _glyphBreathProgressInterval,
           ),
-          _SectionHeader(title: 'Calling'),
-          _SettingsTile(
-            icon: Icons.sim_card_rounded,
-            title: 'Default SIM',
-            subtitle: _defaultSimSubtitle(),
-            onTap: _showDefaultSimPicker,
+        ]);
+    final showGlyphOngoing = _showSettingsItem(l10n.glyphLights, [
+      l10n.glyphOngoingAnimation,
+      glyphOngoingSubtitle,
+    ]);
+    final showInCallBreath = _inCallAnimationStyle == 'Breath' &&
+        _showSettingsItem(l10n.glyphLights, [
+          l10n.breathSettings,
+          l10n.breathSettingsSpeedSummary(
+            _inCallCustomChannels.length,
+            _inCallCustomInterval,
           ),
-          _SettingsTile(
-            icon: Icons.star_rate_rounded,
-            title: 'All favourites',
-            subtitle: 'Reorder, remove, and add from contacts',
-            onTap: () {
-              Navigator.push<void>(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (_) => const FavouritesScreen(),
+        ]);
+    final showInCallSteady = _inCallAnimationStyle == 'Steady' &&
+        _showSettingsItem(l10n.glyphLights, [
+          l10n.activeLights,
+          l10n.lightsCount(_inCallCustomChannels.length),
+        ]);
+    final showInCallSpeed =
+        (_inCallAnimationStyle == 'Accumulate' ||
+            _inCallAnimationStyle == 'Single') &&
+        _showSettingsItem(l10n.glyphLights, [
+          l10n.speedSettings,
+          l10n.speedSettingsDelay(_inCallC1C4Interval),
+        ]);
+    final showInCallDuration = _inCallAnimationStyle == 'Breath & Progress' &&
+        _showSettingsItem(l10n.glyphLights, [
+          l10n.durationAndSpeed,
+          l10n.durationSpeedSummary(
+            _inCallBreathProgressDuration ~/ 1000,
+            _inCallBreathProgressInterval,
+          ),
+        ]);
+    final showGlyph = showGlyphCalling ||
+        showGlyphBreath ||
+        showGlyphSteady ||
+        showGlyphSpeed ||
+        showGlyphDuration ||
+        showGlyphOngoing ||
+        showInCallBreath ||
+        showInCallSteady ||
+        showInCallSpeed ||
+        showInCallDuration;
+
+    final showReviewTile = !kIsWeb &&
+        Platform.isAndroid &&
+        _showSettingsItem(l10n.aboutFeedbackSection, [
+          l10n.reviewRateOnPlay,
+          l10n.reviewRateOnPlaySubtitle,
+        ]);
+    final showGithubTile = _showSettingsItem(l10n.aboutFeedbackSection, [
+      l10n.aboutViewSource,
+      l10n.aboutRepositoryHost,
+      l10n.aboutDescription,
+    ]);
+    final showAboutFeedback = showReviewTile || showGithubTile;
+
+    final showResetCustomization = _showSettingsItem(l10n.resetCustomization, [
+      l10n.resetCustomization,
+      l10n.resetCustomizationSubtitle,
+      l10n.resetCustomizationInfoTitle,
+      l10n.language,
+      l10n.theme,
+      l10n.font,
+      l10n.appIcon,
+      l10n.simIconColor,
+      l10n.answerMethod,
+      l10n.torchBlink,
+      l10n.glyphLights,
+      l10n.frequentlyContacted,
+    ]);
+
+    final hasResults = showGeneral ||
+        showCalling ||
+        showRecentsContacts ||
+        showFrequent ||
+        showTorch ||
+        showGlyph ||
+        showResetCustomization ||
+        showAboutFeedback;
+
+    return PopScope(
+      canPop: !_searchOpen,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && _searchOpen) _closeSearch();
+      },
+      child: DialerFontScope(
+        surface: DialerFontSurface.settings,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            foregroundColor: scheme.onSurface,
+            elevation: 0,
+            leading: _searchOpen
+                ? IconButton(
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                    onPressed: _closeSearch,
+                  )
+                : null,
+            title: _searchOpen
+                ? TextField(
+                    controller: _searchController,
+                    focusNode: _searchFocusNode,
+                    autofocus: true,
+                    textInputAction: TextInputAction.search,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.primary,
+                      TextStyle(
+                        color: scheme.onSurface,
+                        fontSize: 18,
+                      ),
+                    ),
+                    cursorColor: scheme.primary,
+                    decoration: InputDecoration(
+                      hintText: l10n.settingsSearchHint,
+                      hintStyle: context.dialerTextStyle(
+                        DialerFontRole.secondary,
+                        TextStyle(
+                          color: scheme.onSurfaceVariant,
+                          fontSize: 18,
+                        ),
+                      ),
+                      border: InputBorder.none,
+                      isDense: true,
+                    ),
+                  )
+                : Text(
+                    l10n.settings,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.pageTitle,
+                      Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: scheme.onSurface,
+                          ),
+                    ),
+                  ),
+            actions: [
+              if (_searchOpen && _searchQuery.isNotEmpty)
+                IconButton(
+                  icon: const Icon(Icons.close_rounded),
+                  tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
+                  onPressed: () {
+                    _searchController.clear();
+                    _searchFocusNode.requestFocus();
+                  },
+                )
+              else if (!_searchOpen)
+                IconButton(
+                  icon: const Icon(Icons.search_rounded),
+                  tooltip: l10n.settingsSearchHint,
+                  onPressed: _openSearch,
                 ),
-              );
-            },
+            ],
           ),
-          _SettingsTile(
-            icon: Icons.block_rounded,
-            title: 'Blocked numbers',
-            subtitle: 'View and unblock numbers',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const BlockedNumbersScreen()),
-              );
-            },
-          ),
-          _SettingsTile(
-            icon: Icons.volume_up_rounded,
-            title: 'Sounds and vibration',
-            subtitle: 'Ringtone, vibration, dial pad tones',
-            onTap: () async {
-              try {
-                await const MethodChannel(
-                  'nothing_dialer/control',
-                ).invokeMethod<void>('openSoundSettings');
-              } on PlatformException catch (e) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Could not open settings: ${e.message}')),
-                  );
-                }
-              }
-            },
-          ),
-          SizedBox(height: 16),
-          _SectionHeader(
-            title: 'Frequently Contacted',
-            trailing: GestureDetector(
-              onTap: _showFrequentlyContactedInfoDialog,
-              child: Icon(
-                Icons.info_outline_rounded,
-                color: Theme.of(context).colorScheme.outline,
-                size: 20,
-              ),
-            ),
-          ),
-          _SettingsTile(
-            icon: Icons.format_list_numbered_rounded,
-            title: 'Number of records',
-            subtitle: _frequentMaxSubtitle(),
-            onTap: _showFrequentMaxPicker,
-          ),
-          if (_frequentContactsMax > 0) ...[
-            _SettingsTile(
-              icon: Icons.date_range_rounded,
-              title: 'Time period',
-              subtitle: _frequentPeriodSubtitle(),
-              onTap: _showFrequentPeriodPicker,
-            ),
-          ],
-          SizedBox(height: 16),
-          _SectionHeader(
-            title: 'Torch Blink',
-            trailing: GestureDetector(
-              onTap: _showTorchInfoDialog,
-              child: Icon(
-                Icons.info_outline_rounded,
-                color: Theme.of(context).colorScheme.outline,
-                size: 20,
-              ),
-            ),
-          ),
-          _SettingsTile(
-            icon: Icons.flashlight_on_rounded,
-            title: 'Incoming call torch',
-            subtitle: _torchIncomingSubtitle(),
-            onTap: _torchHasFlash ? _showTorchIncomingPicker : _noopTorch,
-          ),
-          if (_torchHasFlash && _torchIncomingMode == 'interval') ...[
-            _SettingsTile(
-              icon: Icons.timer_rounded,
-              title: 'Incoming blink interval',
-              subtitle: _torchIntervalSecondsLabel(_torchIncomingInterval),
-              onTap: () => _showTorchIntervalPicker('incoming'),
-            ),
-          ],
-          const SizedBox(height: 24),
-          _SettingsTile(
-            icon: Icons.call_made_rounded,
-            title: 'Outgoing call torch',
-            subtitle: _torchOutgoingSubtitle(),
-            onTap: _torchHasFlash ? _showTorchOutgoingPicker : _noopTorch,
-          ),
-          if (_torchHasFlash && _torchOutgoingMode == 'interval') ...[
-            _SettingsTile(
-              icon: Icons.timer_rounded,
-              title: 'Outgoing blink interval',
-              subtitle: _torchIntervalSecondsLabel(_torchOutgoingInterval),
-              onTap: () => _showTorchIntervalPicker('outgoing'),
-            ),
-          ],
-          const SizedBox(height: 24),
-          _SettingsTile(
-            icon: Icons.phone_in_talk_rounded,
-            title: 'Ongoing call torch',
-            subtitle: _torchOngoingSubtitle(),
-            onTap: _torchHasFlash ? _showTorchOngoingPicker : _noopTorch,
-          ),
-          if (_torchHasFlash && _torchOngoingMode == 'interval') ...[
-            _SettingsTile(
-              icon: Icons.timer_rounded,
-              title: 'Ongoing blink interval',
-              subtitle: _torchIntervalSecondsLabel(_torchOngoingInterval),
-              onTap: () => _showTorchIntervalPicker('ongoing'),
-            ),
-          ],
-          const SizedBox(height: 24),
-          _SectionHeader(
-            title: 'Glyph Lights',
-            trailing: GestureDetector(
-              onTap: () => _showGlyphMapDialog(),
-              child: Icon(
-                Icons.info_outline_rounded,
-                color: Theme.of(context).colorScheme.outline,
-                size: 20,
-              ),
-            ),
-          ),
-          _SettingsTile(
-            icon: Icons.flare_rounded,
-            title: 'Glyph calling animation',
-            subtitle: _glyphAnimationStyle,
-            onTap: () => _showGlyphAnimationStylePicker(),
-          ),
-          if (_glyphAnimationStyle != 'None') ...[
-            if (_glyphAnimationStyle == 'Breath')
-              _SettingsTile(
-                icon: Icons.tune_rounded,
-                title: 'Breath Settings',
-                subtitle:
-                    '${_customChannels.length} lights, ${_customInterval}ms speed',
-                onTap: () => _showBreathSettingsPicker(),
-              ),
-            if (_glyphAnimationStyle == 'Accumulate' ||
-                _glyphAnimationStyle == 'Single')
-              _SettingsTile(
-                icon: Icons.timer_rounded,
-                title: 'Speed Settings',
-                subtitle: '${_glyphC1C4Interval}ms delay',
-                onTap: () => _showC1C4SpeedPicker(
-                  isInCall: false,
-                  style: _glyphAnimationStyle,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const OngoingCallBanner(),
+              Expanded(
+                child: !hasResults && searching
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      l10n.settingsSearchNoResults,
+                      textAlign: TextAlign.center,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.secondary,
+                        TextStyle(
+                          color: scheme.onSurfaceVariant,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : ListView(
+                  children: [
+                    if (showGeneral) ...[
+                      _SectionHeader(title: l10n.general),
+                      if (showLanguage)
+                        ListenableBuilder(
+                          listenable: main_app.localeNotifier,
+                          builder: (context, _) {
+                            final pref = main_app.localeNotifier.value;
+                            final subtitle = pref == kAppLocaleSystem
+                                ? l10n.languageDeviceDefault
+                                : nativeLanguageName(pref);
+                            return _SettingsTile(
+                              icon: Icons.language_rounded,
+                              title: l10n.language,
+                              subtitle: subtitle,
+                              onTap: () => showLanguagePickerSheet(context),
+                            );
+                          },
+                        ),
+                      if (showFont)
+                        ListenableBuilder(
+                          listenable: main_app.fontConfigNotifier,
+                          builder: (context, _) {
+                            return _SettingsTile(
+                              icon: Icons.text_fields_rounded,
+                              title: l10n.font,
+                              subtitle: _fontSubtitle(context),
+                              onTap: () => showFontSettingsSheet(context),
+                            );
+                          },
+                        ),
+                      if (showTheme)
+                        _SettingsTile(
+                          icon: Icons.palette_rounded,
+                          title: l10n.theme,
+                          subtitle: themeSubtitle,
+                          onTap: () => _showThemeModePicker(),
+                        ),
+                      if (showLightBg)
+                        _SettingsTile(
+                          icon: Icons.light_mode_outlined,
+                          title: l10n.background,
+                          subtitle: lightBgSubtitle,
+                          previewColor: _lightBgColor,
+                          onTap: _showLightBgPicker,
+                        ),
+                      if (showLightAccent)
+                        _SettingsTile(
+                          icon: Icons.color_lens_outlined,
+                          title: l10n.accent,
+                          subtitle: lightAccentSubtitle,
+                          previewColor: _lightAccentColor,
+                          onTap: _showLightAccentPicker,
+                        ),
+                      if (showDarkBg)
+                        _SettingsTile(
+                          icon: Icons.dark_mode_outlined,
+                          title: l10n.background,
+                          subtitle: darkBgSubtitle,
+                          previewColor: _darkBgColor,
+                          onTap: _showDarkBgPicker,
+                        ),
+                      if (showDarkAccent)
+                        _SettingsTile(
+                          icon: Icons.color_lens_outlined,
+                          title: l10n.accent,
+                          subtitle: darkAccentSubtitle,
+                          previewColor: _darkAccentColor,
+                          onTap: _showDarkAccentPicker,
+                        ),
+                      if (showAppIcon)
+                        _SettingsTile(
+                          icon: Icons.apps_rounded,
+                          title: l10n.appIcon,
+                          subtitle: _launcherIconLabel,
+                          onTap: () async {
+                            await showLauncherIconPicker(context);
+                            if (context.mounted) await _loadSettings();
+                          },
+                        ),
+                      if (showAnswerMethod)
+                        _SettingsTile(
+                          icon: Icons.phone_callback_rounded,
+                          title: l10n.answerMethod,
+                          subtitle: answerSubtitle,
+                          onTap: () => _showAnswerMethodPicker(),
+                        ),
+                      if (showCallBackground)
+                        _SettingsTile(
+                          icon: Icons.phone_in_talk_rounded,
+                          title: l10n.callBackground,
+                          subtitle: callBgSubtitle,
+                          previewColor: _callBgColor,
+                          onTap: _showCallBgPicker,
+                        ),
+                    ],
+                    if (showCalling) ...[
+                      _SectionHeader(title: l10n.calling),
+                      if (showDefaultSim)
+                        _SettingsTile(
+                          icon: Icons.sim_card_rounded,
+                          title: l10n.defaultSim,
+                          subtitle: defaultSimSubtitle,
+                          onTap: _showDefaultSimPicker,
+                        ),
+                      if (showSimIconColors)
+                        _SettingsTile(
+                          icon: Icons.sim_card_outlined,
+                          title: l10n.simIconColor,
+                          subtitle: simIconColorsSubtitle,
+                          previewColor: _simIconColorFor(
+                            _simCards.first.index,
+                            isDark: !_activeAppearanceIsLight(context),
+                          ),
+                          onTap: _showSimIconColorsPanel,
+                        ),
+                      if (showFavourites)
+                        _SettingsTile(
+                          icon: Icons.star_rate_rounded,
+                          title: l10n.allFavourites,
+                          subtitle: l10n.allFavouritesSubtitle,
+                          onTap: () {
+                            Navigator.push<void>(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (_) => const FavouritesScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      if (showBlocked)
+                        _SettingsTile(
+                          icon: Icons.block_rounded,
+                          title: l10n.blockedNumbers,
+                          subtitle: l10n.blockedNumbersSubtitle,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const BlockedNumbersScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      if (showSounds)
+                        _SettingsTile(
+                          icon: Icons.volume_up_rounded,
+                          title: l10n.soundsAndVibration,
+                          subtitle: l10n.soundsAndVibrationSubtitle,
+                          onTap: () async {
+                            try {
+                              await const MethodChannel(
+                                'nothing_dialer/control',
+                              ).invokeMethod<void>('openSoundSettings');
+                            } on PlatformException catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      l10n.couldNotOpenSettings(e.message ?? ''),
+                                    ),
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                        ),
+                    ],
+                    if (showRecentsContacts) ...[
+                      const SizedBox(height: 16),
+                      _SectionHeader(
+                        title: l10n.recentsSearchSection,
+                        trailing: GestureDetector(
+                          onTap: _showRecentsSearchContactsInfoDialog,
+                          child: Icon(
+                            Icons.info_outline_rounded,
+                            color: scheme.outline,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      _SettingsSwitchTile(
+                        icon: Icons.person_search_rounded,
+                        title: l10n.recentsSearchShowContacts,
+                        value: _recentsSearchShowContacts,
+                        onChanged: _saveRecentsSearchShowContacts,
+                      ),
+                    ],
+                    if (showFrequent) ...[
+                      const SizedBox(height: 16),
+                      _SectionHeader(
+                        title: l10n.frequentlyContacted,
+                        trailing: GestureDetector(
+                          onTap: _showFrequentlyContactedInfoDialog,
+                          child: Icon(
+                            Icons.info_outline_rounded,
+                            color: scheme.outline,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      if (showFrequentMax)
+                        _SettingsTile(
+                          icon: Icons.format_list_numbered_rounded,
+                          title: l10n.numberOfRecords,
+                          subtitle: frequentMaxSubtitle,
+                          onTap: _showFrequentMaxPicker,
+                        ),
+                      if (showFrequentPeriod)
+                        _SettingsTile(
+                          icon: Icons.date_range_rounded,
+                          title: l10n.timePeriod,
+                          subtitle: frequentPeriodSubtitle,
+                          onTap: _showFrequentPeriodPicker,
+                        ),
+                    ],
+                    if (showTorch) ...[
+                      const SizedBox(height: 16),
+                      _SectionHeader(
+                        title: l10n.torchBlink,
+                        trailing: GestureDetector(
+                          onTap: _showTorchInfoDialog,
+                          child: Icon(
+                            Icons.info_outline_rounded,
+                            color: scheme.outline,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      if (showTorchIncoming)
+                        _SettingsTile(
+                          icon: Icons.flashlight_on_rounded,
+                          title: l10n.torchIncomingCall,
+                          subtitle: torchIncomingSubtitle,
+                          onTap: _torchHasFlash
+                              ? _showTorchIncomingPicker
+                              : _noopTorch,
+                        ),
+                      if (showTorchIncomingInterval)
+                        _SettingsTile(
+                          icon: Icons.timer_rounded,
+                          title: l10n.torchIncomingInterval,
+                          subtitle: _torchIntervalSecondsLabel(
+                            _torchIncomingInterval,
+                          ),
+                          onTap: () => _showTorchIntervalPicker('incoming'),
+                        ),
+                      if (showTorchOutgoing)
+                        _SettingsTile(
+                          icon: Icons.call_made_rounded,
+                          title: l10n.torchOutgoingCall,
+                          subtitle: torchOutgoingSubtitle,
+                          onTap: _torchHasFlash
+                              ? _showTorchOutgoingPicker
+                              : _noopTorch,
+                        ),
+                      if (showTorchOutgoingInterval)
+                        _SettingsTile(
+                          icon: Icons.timer_rounded,
+                          title: l10n.torchOutgoingInterval,
+                          subtitle: _torchIntervalSecondsLabel(
+                            _torchOutgoingInterval,
+                          ),
+                          onTap: () => _showTorchIntervalPicker('outgoing'),
+                        ),
+                      if (showTorchOngoing)
+                        _SettingsTile(
+                          icon: Icons.phone_in_talk_rounded,
+                          title: l10n.torchOngoingCall,
+                          subtitle: torchOngoingSubtitle,
+                          onTap: _torchHasFlash
+                              ? _showTorchOngoingPicker
+                              : _noopTorch,
+                        ),
+                      if (showTorchOngoingInterval)
+                        _SettingsTile(
+                          icon: Icons.timer_rounded,
+                          title: l10n.torchOngoingInterval,
+                          subtitle: _torchIntervalSecondsLabel(
+                            _torchOngoingInterval,
+                          ),
+                          onTap: () => _showTorchIntervalPicker('ongoing'),
+                        ),
+                    ],
+                    if (showGlyph) ...[
+                      const SizedBox(height: 24),
+                      _SectionHeader(
+                        title: l10n.glyphLights,
+                        trailing: GestureDetector(
+                          onTap: () => _showGlyphMapDialog(),
+                          child: Icon(
+                            Icons.info_outline_rounded,
+                            color: scheme.outline,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      if (showGlyphCalling)
+                        _SettingsTile(
+                          icon: Icons.flare_rounded,
+                          title: l10n.glyphCallingAnimation,
+                          subtitle: glyphCallingSubtitle,
+                          onTap: () => _showGlyphAnimationStylePicker(),
+                        ),
+                      if (showGlyphBreath)
+                        _SettingsTile(
+                          icon: Icons.tune_rounded,
+                          title: l10n.breathSettings,
+                          subtitle: l10n.breathSettingsSpeedSummary(
+                            _customChannels.length,
+                            _customInterval,
+                          ),
+                          onTap: () => _showBreathSettingsPicker(),
+                        ),
+                      if (showGlyphSteady)
+                        _SettingsTile(
+                          icon: Icons.highlight_rounded,
+                          title: l10n.activeLights,
+                          subtitle: l10n.lightsCount(_customChannels.length),
+                          onTap: () =>
+                              _showActiveLightsPicker(isInCall: false),
+                        ),
+                      if (showGlyphSpeed)
+                        _SettingsTile(
+                          icon: Icons.timer_rounded,
+                          title: l10n.speedSettings,
+                          subtitle:
+                              l10n.speedSettingsDelay(_glyphC1C4Interval),
+                          onTap: () => _showC1C4SpeedPicker(
+                            isInCall: false,
+                            style: _glyphAnimationStyle,
+                          ),
+                        ),
+                      if (showGlyphDuration)
+                        _SettingsTile(
+                          icon: Icons.speed_rounded,
+                          title: l10n.durationAndSpeed,
+                          subtitle: l10n.durationSpeedSummary(
+                            _glyphBreathProgressDuration ~/ 1000,
+                            _glyphBreathProgressInterval,
+                          ),
+                          onTap: () =>
+                              _showBreathProgressSpeedPicker(isInCall: false),
+                        ),
+                      if (showGlyphOngoing) ...[
+                        const SizedBox(height: 24),
+                        _SettingsTile(
+                          icon: Icons.flare_rounded,
+                          title: l10n.glyphOngoingAnimation,
+                          subtitle: glyphOngoingSubtitle,
+                          onTap: () => _showInCallAnimationStylePicker(),
+                        ),
+                      ],
+                      if (showInCallBreath)
+                        _SettingsTile(
+                          icon: Icons.tune_rounded,
+                          title: l10n.breathSettings,
+                          subtitle: l10n.breathSettingsSpeedSummary(
+                            _inCallCustomChannels.length,
+                            _inCallCustomInterval,
+                          ),
+                          onTap: () => _showInCallBreathSettingsPicker(),
+                        ),
+                      if (showInCallSteady)
+                        _SettingsTile(
+                          icon: Icons.highlight_rounded,
+                          title: l10n.activeLights,
+                          subtitle:
+                              l10n.lightsCount(_inCallCustomChannels.length),
+                          onTap: () =>
+                              _showActiveLightsPicker(isInCall: true),
+                        ),
+                      if (showInCallSpeed)
+                        _SettingsTile(
+                          icon: Icons.timer_rounded,
+                          title: l10n.speedSettings,
+                          subtitle:
+                              l10n.speedSettingsDelay(_inCallC1C4Interval),
+                          onTap: () => _showC1C4SpeedPicker(
+                            isInCall: true,
+                            style: _inCallAnimationStyle,
+                          ),
+                        ),
+                      if (showInCallDuration)
+                        _SettingsTile(
+                          icon: Icons.speed_rounded,
+                          title: l10n.durationAndSpeed,
+                          subtitle: l10n.durationSpeedSummary(
+                            _inCallBreathProgressDuration ~/ 1000,
+                            _inCallBreathProgressInterval,
+                          ),
+                          onTap: () =>
+                              _showBreathProgressSpeedPicker(isInCall: true),
+                        ),
+                    ],
+                    if (showResetCustomization) ...[
+                      const SizedBox(height: 16),
+                      _SectionHeader(
+                        title: l10n.resetCustomization,
+                        trailing: GestureDetector(
+                          onTap: _showResetCustomizationInfoDialog,
+                          child: Icon(
+                            Icons.info_outline_rounded,
+                            color: scheme.outline,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      _SettingsTile(
+                        icon: Icons.restore_rounded,
+                        title: l10n.reset,
+                        subtitle: l10n.resetCustomizationSubtitle,
+                        onTap: _showResetCustomizationConfirmDialog,
+                      ),
+                    ],
+                    if (showAboutFeedback) ...[
+                      const SizedBox(height: 16),
+                      _SectionHeader(
+                        title: l10n.aboutFeedbackSection,
+                        trailing: showGithubTile
+                            ? GestureDetector(
+                                onTap: _showAboutContributionInfoDialog,
+                                child: Icon(
+                                  Icons.info_outline_rounded,
+                                  color: scheme.outline,
+                                  size: 20,
+                                ),
+                              )
+                            : null,
+                      ),
+                      if (showReviewTile)
+                        _SettingsTile(
+                          icon: Icons.star_rate_rounded,
+                          title: l10n.reviewRateOnPlay,
+                          subtitle: l10n.reviewRateOnPlaySubtitle,
+                          onTap: () => _requestPlayStoreReview(l10n),
+                        ),
+                      if (showGithubTile)
+                        _SettingsTile(
+                          icon: Icons.code_rounded,
+                          title: l10n.aboutViewSource,
+                          subtitle: l10n.aboutRepositoryHost,
+                          onTap: () => _openAboutRepository(l10n),
+                        ),
+                    ],
+                    const SizedBox(height: 32),
+                  ],
                 ),
               ),
-            if (_glyphAnimationStyle == 'Breath & Progress')
-              _SettingsTile(
-                icon: Icons.speed_rounded,
-                title: 'Duration & Speed',
-                subtitle:
-                    '${_glyphBreathProgressDuration ~/ 1000}s duration, ${_glyphBreathProgressInterval}ms speed',
-                onTap: () => _showBreathProgressSpeedPicker(isInCall: false),
-              ),
-          ],
-          const SizedBox(height: 24),
-          _SettingsTile(
-            icon: Icons.flare_rounded,
-            title: 'Glyph ongoing call animation',
-            subtitle: _inCallAnimationStyle,
-            onTap: () => _showInCallAnimationStylePicker(),
+            ],
           ),
-          if (_inCallAnimationStyle != 'None') ...[
-            if (_inCallAnimationStyle == 'Breath')
-              _SettingsTile(
-                icon: Icons.tune_rounded,
-                title: 'Breath Settings',
-                subtitle:
-                    '${_inCallCustomChannels.length} lights, ${_inCallCustomInterval}ms speed',
-                onTap: () => _showInCallBreathSettingsPicker(),
-              ),
-            if (_inCallAnimationStyle == 'Accumulate' ||
-                _inCallAnimationStyle == 'Single')
-              _SettingsTile(
-                icon: Icons.timer_rounded,
-                title: 'Speed Settings',
-                subtitle: '${_inCallC1C4Interval}ms delay',
-                onTap: () => _showC1C4SpeedPicker(
-                  isInCall: true,
-                  style: _inCallAnimationStyle,
-                ),
-              ),
-            if (_inCallAnimationStyle == 'Breath & Progress')
-              _SettingsTile(
-                icon: Icons.speed_rounded,
-                title: 'Duration & Speed',
-                subtitle:
-                    '${_inCallBreathProgressDuration ~/ 1000}s duration, ${_inCallBreathProgressInterval}ms speed',
-                onTap: () => _showBreathProgressSpeedPicker(isInCall: true),
-              ),
-          ],
-          const SizedBox(height: 24),
-        ],
+        ),
       ),
     );
   }
 
+  Future<void> _requestPlayStoreReview(AppLocalizations l10n) async {
+    final ok = await PlayStoreReview.requestReviewWithFallback();
+    if (!ok && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.reviewCouldNotOpen)),
+      );
+    }
+  }
+
+  Future<void> _openAboutRepository(AppLocalizations l10n) async {
+    final uri = Uri.parse(_kRepositoryUrl);
+    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.aboutCouldNotOpenLink)),
+      );
+    }
+  }
+
   void _noopTorch() {
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Flashlight not available on this device'),
+      SnackBar(
+        content: Text(l10n.flashlightUnavailable),
       ),
     );
   }
@@ -1300,167 +2403,322 @@ class _SettingsScreenState extends State<SettingsScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 32,
-                        height: 4,
-                        margin: EdgeInsets.only(bottom: 24),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2),
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: StatefulBuilder(
+          builder: (context, setModalState) {
+            final l10n = AppLocalizations.of(context);
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 32,
+                          height: 4,
+                          margin: EdgeInsets.only(bottom: 24),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      'Breath Settings',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                      Text(
+                        l10n.breathSettings,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.pageTitle,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      'Breath Speed',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
+                      SizedBox(height: 24),
+                      Text(
+                        l10n.breathSpeed,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Slider(
-                            value: _customInterval.toDouble(),
-                            min: 100,
-                            max: 3000,
-                            divisions: 29,
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            onChanged: (val) {
-                              setModalState(
-                                () => _customInterval = val.toInt(),
-                              );
-                              setState(() => _customInterval = val.toInt());
-                            },
-                            onChangeEnd: (val) async {
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Slider(
+                              value: _customInterval.toDouble(),
+                              min: 100,
+                              max: 3000,
+                              divisions: 29,
+                              activeColor:
+                                  Theme.of(context).colorScheme.primary,
+                              onChanged: (val) {
+                                setModalState(
+                                  () => _customInterval = val.toInt(),
+                                );
+                                setState(() => _customInterval = val.toInt());
+                              },
+                              onChangeEnd: (val) async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.setInt(
+                                  'glyph_custom_interval',
+                                  val.toInt(),
+                                );
+                                main_app.glyphCustomIntervalNotifier.value =
+                                    val.toInt();
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 50,
+                            child: Text(
+                              '${_customInterval}ms',
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: Theme.of(context).colorScheme.outline,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16, bottom: 24),
+                        child: Text(
+                          l10n.breathSpeedBlinkHint,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.secondary,
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.outline,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        l10n.activeLights,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: ['A1', 'B1', 'C-All', 'D-All', 'E1'].map((
+                          channel,
+                        ) {
+                          final isSelected = _customChannels.contains(channel);
+                          return FilterChip(
+                            label: Text(
+                              channel,
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: isSelected
+                                      ? Theme.of(context).colorScheme.onPrimary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            selected: isSelected,
+                            checkmarkColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            selectedColor:
+                                Theme.of(context).colorScheme.primary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surfaceContainer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            onSelected: (selected) async {
+                              setModalState(() {
+                                if (selected) {
+                                  _customChannels.add(channel);
+                                } else {
+                                  if (_customChannels.length > 1) {
+                                    _customChannels.remove(channel);
+                                  }
+                                }
+                              });
+                              setState(() {}); // Update main screen subtitle
                               final prefs =
                                   await SharedPreferences.getInstance();
-                              await prefs.setInt(
-                                'glyph_custom_interval',
-                                val.toInt(),
+                              await prefs.setStringList(
+                                'glyph_custom_channels',
+                                _customChannels,
                               );
-                              main_app.glyphCustomIntervalNotifier.value = val
-                                  .toInt();
+                              main_app.glyphCustomChannelsNotifier.value =
+                                  List.from(_customChannels);
                             },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 50,
-                          child: Text(
-                            '${_customInterval}ms',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.outline,
-                              fontSize: 12,
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16, bottom: 24),
-                      child: Text(
-                        'Lower = Blink, Higher = Slow Breath',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.outline,
-                          fontSize: 11,
-                        ),
+                          );
+                        }).toList(),
                       ),
-                    ),
-                    Text(
-                      'Active Lights',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: ['A1', 'B1', 'C-All', 'D-All', 'E1'].map((
-                        channel,
-                      ) {
-                        final isSelected = _customChannels.contains(channel);
-                        return FilterChip(
-                          label: Text(
-                            channel,
-                            style: TextStyle(
-                              color: isSelected
-                                  ? Theme.of(context).colorScheme.onPrimary
-                                  : Theme.of(
-                                      context,
-                                    ).colorScheme.onSurfaceVariant,
-                              fontSize: 12,
-                            ),
-                          ),
-                          selected: isSelected,
-                          checkmarkColor: Theme.of(
-                            context,
-                          ).colorScheme.onPrimary,
-                          selectedColor: Theme.of(context).colorScheme.primary,
-                          backgroundColor: Theme.of(
-                            context,
-                          ).colorScheme.surfaceContainer,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          onSelected: (selected) async {
-                            setModalState(() {
-                              if (selected) {
-                                _customChannels.add(channel);
-                              } else {
-                                if (_customChannels.length > 1) {
-                                  _customChannels.remove(channel);
-                                }
-                              }
-                            });
-                            setState(() {}); // Update main screen subtitle
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.setStringList(
-                              'glyph_custom_channels',
-                              _customChannels,
-                            );
-                            main_app.glyphCustomChannelsNotifier.value =
-                                List.from(_customChannels);
-                          },
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: 16),
-                  ],
+                      SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _showActiveLightsPicker({required bool isInCall}) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: StatefulBuilder(
+          builder: (context, setModalState) {
+            final l10n = AppLocalizations.of(context);
+            final channels =
+                isInCall ? _inCallCustomChannels : _customChannels;
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 32,
+                          height: 4,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        l10n.activeLights,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.pageTitle,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: ['A1', 'B1', 'C-All', 'D-All', 'E1'].map((
+                          channel,
+                        ) {
+                          final isSelected = channels.contains(channel);
+                          return FilterChip(
+                            label: Text(
+                              channel,
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: isSelected
+                                      ? Theme.of(context).colorScheme.onPrimary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            selected: isSelected,
+                            checkmarkColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            selectedColor:
+                                Theme.of(context).colorScheme.primary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surfaceContainer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            onSelected: (selected) async {
+                              setModalState(() {
+                                if (isInCall) {
+                                  if (selected) {
+                                    _inCallCustomChannels.add(channel);
+                                  } else if (_inCallCustomChannels.length > 1) {
+                                    _inCallCustomChannels.remove(channel);
+                                  }
+                                } else {
+                                  if (selected) {
+                                    _customChannels.add(channel);
+                                  } else if (_customChannels.length > 1) {
+                                    _customChannels.remove(channel);
+                                  }
+                                }
+                              });
+                              setState(() {});
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              if (isInCall) {
+                                await prefs.setStringList(
+                                  'in_call_custom_channels',
+                                  _inCallCustomChannels,
+                                );
+                                main_app.inCallCustomChannelsNotifier.value =
+                                    List.from(_inCallCustomChannels);
+                              } else {
+                                await prefs.setStringList(
+                                  'glyph_custom_channels',
+                                  _customChannels,
+                                );
+                                main_app.glyphCustomChannelsNotifier.value =
+                                    List.from(_customChannels);
+                              }
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -1470,236 +2728,276 @@ class _SettingsScreenState extends State<SettingsScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 32,
-                        height: 4,
-                        margin: EdgeInsets.only(bottom: 24),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2),
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: StatefulBuilder(
+          builder: (context, setModalState) {
+            final l10n = AppLocalizations.of(context);
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 32,
+                          height: 4,
+                          margin: EdgeInsets.only(bottom: 24),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      'Breath Settings',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                      Text(
+                        l10n.breathSettings,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.pageTitle,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      'Breath Speed',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
+                      SizedBox(height: 24),
+                      Text(
+                        l10n.breathSpeed,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Slider(
-                            value: _inCallCustomInterval.toDouble(),
-                            min: 100,
-                            max: 3000,
-                            divisions: 29,
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            onChanged: (val) {
-                              setModalState(
-                                () => _inCallCustomInterval = val.toInt(),
-                              );
-                              setState(
-                                () => _inCallCustomInterval = val.toInt(),
-                              );
-                            },
-                            onChangeEnd: (val) async {
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Slider(
+                              value: _inCallCustomInterval.toDouble(),
+                              min: 100,
+                              max: 3000,
+                              divisions: 29,
+                              activeColor:
+                                  Theme.of(context).colorScheme.primary,
+                              onChanged: (val) {
+                                setModalState(
+                                  () => _inCallCustomInterval = val.toInt(),
+                                );
+                                setState(
+                                  () => _inCallCustomInterval = val.toInt(),
+                                );
+                              },
+                              onChangeEnd: (val) async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.setInt(
+                                  'in_call_custom_interval',
+                                  val.toInt(),
+                                );
+                                main_app.inCallCustomIntervalNotifier.value =
+                                    val.toInt();
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 50,
+                            child: Text(
+                              '${_inCallCustomInterval}ms',
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: Theme.of(context).colorScheme.outline,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16, bottom: 24),
+                        child: Text(
+                          l10n.breathSpeedBlinkHint,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.secondary,
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.outline,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        l10n.activeLights,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: ['A1', 'B1', 'C-All', 'D-All', 'E1'].map((
+                          channel,
+                        ) {
+                          final isSelected = _inCallCustomChannels.contains(
+                            channel,
+                          );
+                          return FilterChip(
+                            label: Text(
+                              channel,
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: isSelected
+                                      ? Theme.of(context).colorScheme.onPrimary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            selected: isSelected,
+                            checkmarkColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            selectedColor:
+                                Theme.of(context).colorScheme.primary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surfaceContainer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            onSelected: (selected) async {
+                              setModalState(() {
+                                if (selected) {
+                                  _inCallCustomChannels.add(channel);
+                                } else {
+                                  if (_inCallCustomChannels.length > 1) {
+                                    _inCallCustomChannels.remove(channel);
+                                  }
+                                }
+                              });
+                              setState(() {}); // Update main screen subtitle
                               final prefs =
                                   await SharedPreferences.getInstance();
-                              await prefs.setInt(
-                                'in_call_custom_interval',
-                                val.toInt(),
+                              await prefs.setStringList(
+                                'in_call_custom_channels',
+                                _inCallCustomChannels,
                               );
-                              main_app.inCallCustomIntervalNotifier.value = val
-                                  .toInt();
+                              main_app.inCallCustomChannelsNotifier.value =
+                                  List.from(_inCallCustomChannels);
                             },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 50,
-                          child: Text(
-                            '${_inCallCustomInterval}ms',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.outline,
-                              fontSize: 12,
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16, bottom: 24),
-                      child: Text(
-                        'Lower = Blink, Higher = Slow Breath',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.outline,
-                          fontSize: 11,
-                        ),
+                          );
+                        }).toList(),
                       ),
-                    ),
-                    Text(
-                      'Active Lights',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: ['A1', 'B1', 'C-All', 'D-All', 'E1'].map((
-                        channel,
-                      ) {
-                        final isSelected = _inCallCustomChannels.contains(
-                          channel,
-                        );
-                        return FilterChip(
-                          label: Text(
-                            channel,
-                            style: TextStyle(
-                              color: isSelected
-                                  ? Theme.of(context).colorScheme.onPrimary
-                                  : Theme.of(
-                                      context,
-                                    ).colorScheme.onSurfaceVariant,
-                              fontSize: 12,
-                            ),
-                          ),
-                          selected: isSelected,
-                          checkmarkColor: Theme.of(
-                            context,
-                          ).colorScheme.onPrimary,
-                          selectedColor: Theme.of(context).colorScheme.primary,
-                          backgroundColor: Theme.of(
-                            context,
-                          ).colorScheme.surfaceContainer,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          onSelected: (selected) async {
-                            setModalState(() {
-                              if (selected) {
-                                _inCallCustomChannels.add(channel);
-                              } else {
-                                if (_inCallCustomChannels.length > 1) {
-                                  _inCallCustomChannels.remove(channel);
-                                }
-                              }
-                            });
-                            setState(() {}); // Update main screen subtitle
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.setStringList(
-                              'in_call_custom_channels',
-                              _inCallCustomChannels,
-                            );
-                            main_app.inCallCustomChannelsNotifier.value =
-                                List.from(_inCallCustomChannels);
-                          },
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: 16),
-                  ],
+                      SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
 
   void _showAnswerMethodPicker() {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (_) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Handle
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(sheetContext).colorScheme.surface,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Handle
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 8),
+                    child: Container(
+                      width: 32,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Answer method',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
+                  child: Text(
+                    l10n.answerMethodTitle,
+                    style: sheetContext.dialerTextStyle(
+                      DialerFontRole.pageTitle,
+                      TextStyle(
+                        color: Theme.of(sheetContext).colorScheme.onSurface,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              _MethodOption(
-                icon: Icons.swipe_right_rounded,
-                label: 'Slide to answer',
-                subtitle: 'Swipe up to answer, like Google Phone',
-                selected: _answerMethod == 'slide',
-                onTap: () {
-                  _saveAnswerMethod('slide');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.touch_app_rounded,
-                label: 'Button tap',
-                subtitle: 'Tap answer or decline buttons',
-                selected: _answerMethod == 'button',
-                onTap: () {
-                  _saveAnswerMethod('button');
-                  Navigator.pop(context);
-                },
-              ),
-              SizedBox(height: 16),
-            ],
+                SettingsPickerOption(
+                  icon: Icons.swipe_rounded,
+                  label: l10n.answerSlide,
+                  subtitle: l10n.answerSlideSubtitle,
+                  selected: _answerMethod == 'slide',
+                  onTap: () {
+                    _saveAnswerMethod('slide');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SettingsPickerOption(
+                  icon: Icons.touch_app_rounded,
+                  label: l10n.answerButton,
+                  subtitle: l10n.answerButtonSubtitle,
+                  selected: _answerMethod == 'button',
+                  onTap: () {
+                    _saveAnswerMethod('button');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SettingsPickerOption(
+                  icon: Icons.drag_handle_rounded,
+                  label: l10n.answerHuawei,
+                  subtitle: l10n.answerHuaweiSubtitle,
+                  selected: _answerMethod == 'huawei',
+                  onTap: () {
+                    _saveAnswerMethod('huawei');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
@@ -1707,207 +3005,22 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   void _showGlyphAnimationStylePicker() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Outgoing Call Style',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              _MethodOption(
-                icon: Icons.block_rounded,
-                label: 'None',
-                subtitle: 'Disable Glyph lights for outgoing calls',
-                selected: _glyphAnimationStyle == 'None',
-                onTap: () {
-                  _saveGlyphAnimationStyle('None');
-                  importMainAndUpdate('None');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.flare_rounded,
-                label: 'Breath & Progress',
-                subtitle: 'Lights breathe while line fills up over 65s',
-                selected: _glyphAnimationStyle == 'Breath & Progress',
-                onTap: () {
-                  _saveGlyphAnimationStyle('Breath & Progress');
-
-                  // Also update notifier in main.dart so next call uses it
-                  importMainAndUpdate('Breath & Progress');
-
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.animation_rounded,
-                label: 'Accumulate',
-                subtitle: 'Accumulating animation on lights C1-C4',
-                selected: _glyphAnimationStyle == 'Accumulate',
-                onTap: () {
-                  _saveGlyphAnimationStyle('Accumulate');
-                  importMainAndUpdate('Accumulate');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.animation_rounded,
-                label: 'Single',
-                subtitle: 'Single light moving across C1-C4',
-                selected: _glyphAnimationStyle == 'Single',
-                onTap: () {
-                  _saveGlyphAnimationStyle('Single');
-                  importMainAndUpdate('Single');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.tune_rounded,
-                label: 'Breath',
-                subtitle: 'Pick lights and speed',
-                selected: _glyphAnimationStyle == 'Breath',
-                onTap: () {
-                  _saveGlyphAnimationStyle('Breath');
-                  importMainAndUpdate('Breath');
-                  Navigator.pop(context);
-                },
-              ),
-              SizedBox(height: 16),
-            ],
-          ),
-        ),
-      ),
+    _showGlyphStylePickerSheet(
+      title: AppLocalizations.of(context).glyphOutgoingCallStyleTitle,
+      selected: _glyphAnimationStyle,
+      inCall: false,
+      save: _saveGlyphAnimationStyle,
+      syncNotifiers: importMainAndUpdate,
     );
   }
 
   void _showInCallAnimationStylePicker() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Ongoing Call Style',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              _MethodOption(
-                icon: Icons.block_rounded,
-                label: 'None',
-                subtitle: 'Disable Glyph lights while actively on call',
-                selected: _inCallAnimationStyle == 'None',
-                onTap: () {
-                  _saveInCallAnimationStyle('None');
-                  importMainAndInCallUpdate('None');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.flare_rounded,
-                label: 'Breath & Progress',
-                subtitle: 'Lights breathe while line fills up over 65s',
-                selected: _inCallAnimationStyle == 'Breath & Progress',
-                onTap: () {
-                  _saveInCallAnimationStyle('Breath & Progress');
-                  importMainAndInCallUpdate('Breath & Progress');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.flare_rounded,
-                label: 'Accumulate',
-                subtitle: 'Accumulating animation on lights C1-C4',
-                selected: _inCallAnimationStyle == 'Accumulate',
-                onTap: () {
-                  _saveInCallAnimationStyle('Accumulate');
-                  importMainAndInCallUpdate('Accumulate');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.animation_rounded,
-                label: 'Single',
-                subtitle: 'Single light moving across C1-C4',
-                selected: _inCallAnimationStyle == 'Single',
-                onTap: () {
-                  _saveInCallAnimationStyle('Single');
-                  importMainAndInCallUpdate('Single');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.tune_rounded,
-                label: 'Breath',
-                subtitle: 'Pick lights and speed',
-                selected: _inCallAnimationStyle == 'Breath',
-                onTap: () {
-                  _saveInCallAnimationStyle('Breath');
-                  importMainAndInCallUpdate('Breath');
-                  Navigator.pop(context);
-                },
-              ),
-              SizedBox(height: 16),
-            ],
-          ),
-        ),
-      ),
+    _showGlyphStylePickerSheet(
+      title: AppLocalizations.of(context).glyphInCallAnimationTitle,
+      selected: _inCallAnimationStyle,
+      inCall: true,
+      save: _saveInCallAnimationStyle,
+      syncNotifiers: importMainAndInCallUpdate,
     );
   }
 
@@ -1916,128 +3029,145 @@ class _SettingsScreenState extends State<SettingsScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) {
-          final currentInterval = isInCall
-              ? _inCallC1C4Interval
-              : _glyphC1C4Interval;
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 16,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 32,
-                        height: 4,
-                        margin: const EdgeInsets.only(bottom: 24),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2),
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: StatefulBuilder(
+          builder: (context, setModalState) {
+            final l10n = AppLocalizations.of(context);
+            final currentInterval = isInCall
+                ? _inCallC1C4Interval
+                : _glyphC1C4Interval;
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 32,
+                          height: 4,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      'Speed Settings',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                      Text(
+                        l10n.speedSettings,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.pageTitle,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Animation Delay (1s - 10s)',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
+                      const SizedBox(height: 24),
+                      Text(
+                        l10n.animationDelayRange,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Slider(
-                            value: currentInterval.toDouble().clamp(
-                              1000,
-                              10000,
-                            ),
-                            min: 1000,
-                            max: 10000,
-                            divisions: 90,
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            onChanged: (val) {
-                              setModalState(() {
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Slider(
+                              value: currentInterval.toDouble().clamp(
+                                1000,
+                                10000,
+                              ),
+                              min: 1000,
+                              max: 10000,
+                              divisions: 90,
+                              activeColor:
+                                  Theme.of(context).colorScheme.primary,
+                              onChanged: (val) {
+                                setModalState(() {
+                                  if (isInCall) {
+                                    _inCallC1C4Interval = val.toInt();
+                                  } else {
+                                    _glyphC1C4Interval = val.toInt();
+                                  }
+                                });
+                                setState(() {});
+                              },
+                              onChangeEnd: (val) {
                                 if (isInCall) {
-                                  _inCallC1C4Interval = val.toInt();
+                                  _saveInCallC1C4Interval(val.toInt());
                                 } else {
-                                  _glyphC1C4Interval = val.toInt();
+                                  _saveGlyphC1C4Interval(val.toInt());
                                 }
-                              });
-                              setState(() {});
-                            },
-                            onChangeEnd: (val) {
-                              if (isInCall) {
-                                _saveInCallC1C4Interval(val.toInt());
-                              } else {
-                                _saveGlyphC1C4Interval(val.toInt());
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 50,
-                          child: Text(
-                            '${(currentInterval / 1000).toStringAsFixed(1)}s',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.outline,
-                              fontSize: 12,
+                              },
                             ),
-                            textAlign: TextAlign.right,
                           ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, bottom: 24),
-                      child: Text(
-                        'Lower = Faster, Higher = Slower',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.outline,
-                          fontSize: 11,
-                        ),
+                          SizedBox(
+                            width: 50,
+                            child: Text(
+                              '${(currentInterval / 1000).toStringAsFixed(1)}s',
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: Theme.of(context).colorScheme.outline,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, bottom: 24),
                         child: Text(
-                          'Done',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
+                          l10n.speedSliderHint,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.secondary,
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.outline,
+                              fontSize: 11,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      Center(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(sheetContext),
+                          child: Text(
+                            l10n.done,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -2047,211 +3177,237 @@ class _SettingsScreenState extends State<SettingsScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) {
-          final currentInterval = isInCall
-              ? _inCallC1C4Interval
-              : _glyphC1C4Interval;
-          final isSingle = style == 'Single';
-          final minInterval = isSingle ? 100.0 : 1000.0;
-          final maxInterval = 10000.0;
-          final divisions = isSingle ? 99 : 90;
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 32,
-                        height: 4,
-                        margin: EdgeInsets.only(bottom: 24),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2),
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: StatefulBuilder(
+          builder: (context, setModalState) {
+            final l10n = AppLocalizations.of(context);
+            final currentInterval = isInCall
+                ? _inCallC1C4Interval
+                : _glyphC1C4Interval;
+            final isSingle = style == 'Single';
+            final minInterval = isSingle ? 100.0 : 1000.0;
+            final maxInterval = 10000.0;
+            final divisions = isSingle ? 99 : 90;
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 32,
+                          height: 4,
+                          margin: EdgeInsets.only(bottom: 24),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      'Speed Settings',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                      Text(
+                        l10n.speedSettings,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.pageTitle,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      'Animation Delay (${isSingle ? "0.1s" : "1s"} - 10s)',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
+                      SizedBox(height: 24),
+                      Text(
+                        isSingle
+                            ? l10n.animationDelayRangeSingle
+                            : l10n.animationDelayRange,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Slider(
-                            value: currentInterval.toDouble().clamp(
-                              minInterval,
-                              maxInterval,
-                            ),
-                            min: minInterval,
-                            max: maxInterval,
-                            divisions: divisions,
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            onChanged: (val) {
-                              setModalState(() {
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Slider(
+                              value: currentInterval.toDouble().clamp(
+                                minInterval,
+                                maxInterval,
+                              ),
+                              min: minInterval,
+                              max: maxInterval,
+                              divisions: divisions,
+                              activeColor:
+                                  Theme.of(context).colorScheme.primary,
+                              onChanged: (val) {
+                                setModalState(() {
+                                  if (isInCall) {
+                                    _inCallC1C4Interval = val.toInt();
+                                  } else {
+                                    _glyphC1C4Interval = val.toInt();
+                                  }
+                                });
+                                setState(() {});
+                              },
+                              onChangeEnd: (val) {
                                 if (isInCall) {
-                                  _inCallC1C4Interval = val.toInt();
+                                  _saveInCallC1C4Interval(val.toInt());
                                 } else {
-                                  _glyphC1C4Interval = val.toInt();
+                                  _saveGlyphC1C4Interval(val.toInt());
                                 }
-                              });
-                              setState(() {});
-                            },
-                            onChangeEnd: (val) {
-                              if (isInCall) {
-                                _saveInCallC1C4Interval(val.toInt());
-                              } else {
-                                _saveGlyphC1C4Interval(val.toInt());
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 50,
-                          child: Text(
-                            '${(currentInterval / 1000).toStringAsFixed(1)}s',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.outline,
-                              fontSize: 12,
+                              },
                             ),
-                            textAlign: TextAlign.right,
                           ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16, bottom: 24),
-                      child: Text(
-                        'Lower = Faster, Higher = Slower',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.outline,
-                          fontSize: 11,
-                        ),
+                          SizedBox(
+                            width: 50,
+                            child: Text(
+                              '${(currentInterval / 1000).toStringAsFixed(1)}s',
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: Theme.of(context).colorScheme.outline,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    Center(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16, bottom: 24),
                         child: Text(
-                          'Done',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
+                          l10n.speedSliderHint,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.secondary,
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.outline,
+                              fontSize: 11,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 16),
+                      Center(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(sheetContext),
+                          child: Text(
+                            l10n.done,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
 
   void _showThemeModePicker() {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (_) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Handle
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(sheetContext).colorScheme.surface,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Handle
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: Container(
+                      width: 32,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Theme',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
+                  child: Text(
+                    l10n.themePickerTitle,
+                    style: sheetContext.dialerTextStyle(
+                      DialerFontRole.pageTitle,
+                      TextStyle(
+                        color: Theme.of(sheetContext).colorScheme.onSurface,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              _MethodOption(
-                icon: Icons.brightness_auto_rounded,
-                label: 'System Default',
-                subtitle: 'Follow system settings',
-                selected: _themeMode == 'system',
-                onTap: () {
-                  _saveThemeMode('system');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.light_mode_rounded,
-                label: 'Light',
-                subtitle: 'Always use light theme',
-                selected: _themeMode == 'light',
-                onTap: () {
-                  _saveThemeMode('light');
-                  Navigator.pop(context);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.dark_mode_rounded,
-                label: 'Dark',
-                subtitle: 'Always use dark theme',
-                selected: _themeMode == 'dark',
-                onTap: () {
-                  _saveThemeMode('dark');
-                  Navigator.pop(context);
-                },
-              ),
-              SizedBox(height: 16),
-            ],
+                SettingsPickerOption(
+                  icon: Icons.brightness_auto_rounded,
+                  label: l10n.themeSystemDefault,
+                  subtitle: l10n.themeFollowSystem,
+                  selected: _themeMode == 'system',
+                  onTap: () {
+                    _saveThemeMode('system');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SettingsPickerOption(
+                  icon: Icons.light_mode_rounded,
+                  label: l10n.themeLight,
+                  subtitle: l10n.themeAlwaysLight,
+                  selected: _themeMode == 'light',
+                  onTap: () {
+                    _saveThemeMode('light');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SettingsPickerOption(
+                  icon: Icons.dark_mode_rounded,
+                  label: l10n.themeDark,
+                  subtitle: l10n.themeAlwaysDark,
+                  selected: _themeMode == 'dark',
+                  onTap: () {
+                    _saveThemeMode('dark');
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+                SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _showFrequentlyContactedInfoDialog() {
+  void _showResetCustomizationInfoDialog() {
+    final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -2264,7 +3420,7 @@ class _SettingsScreenState extends State<SettingsScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Frequently Contacted',
+                l10n.resetCustomizationInfoTitle,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 18,
@@ -2273,9 +3429,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(height: 12),
               Text(
-                'Shows your most-called phone numbers at the top of the Recents tab, based on how many incoming, outgoing, missed, or rejected calls you had with each number in the time period you choose.\n\n'
-                'Number of records: set to 0 to turn this off. Use 1–20 to show that many top contacts.\n\n'
-                'Time period applies only when at least one contact is shown.',
+                l10n.resetCustomizationInfoBody,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 15,
@@ -2287,7 +3441,229 @@ class _SettingsScreenState extends State<SettingsScreen>
                 child: TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(
-                    'Close',
+                    l10n.close,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showResetCustomizationConfirmDialog() async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => Dialog(
+        backgroundColor: Theme.of(ctx).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.resetCustomizationConfirmTitle,
+                style: TextStyle(
+                  color: Theme.of(ctx).colorScheme.onSurface,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.resetCustomizationConfirmBody,
+                style: TextStyle(
+                  color: Theme.of(ctx).colorScheme.onSurfaceVariant,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(ctx, false),
+                      child: Text(
+                        l10n.cancel,
+                        style: TextStyle(
+                          color: Theme.of(ctx).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(ctx, true),
+                      child: Text(
+                        l10n.reset,
+                        style: TextStyle(
+                          color: Theme.of(ctx).colorScheme.error,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final simIndices = _simCards.map((s) => s.index);
+    await resetAppearanceCustomizationToDefaults(simIndices: simIndices);
+    if (!mounted) return;
+    await _loadSettings();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.resetCustomizationDone)),
+    );
+  }
+
+  void _showRecentsSearchContactsInfoDialog() {
+    final l10n = AppLocalizations.of(context);
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.recentsSearchShowContacts,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.recentsSearchShowContactsSubtitle,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    l10n.close,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showAboutContributionInfoDialog() {
+    final l10n = AppLocalizations.of(context);
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.aboutViewSource,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.aboutDescription,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    l10n.close,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showFrequentlyContactedInfoDialog() {
+    final l10n = AppLocalizations.of(context);
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.frequentlyContacted,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.frequentlyContactedInfoBody,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    l10n.close,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -2302,6 +3678,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   void _showGlyphMapDialog() {
+    final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -2313,11 +3690,20 @@ class _SettingsScreenState extends State<SettingsScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Glyph Map Reference',
+                l10n.glyphMapTitle,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 12),
+              Text(
+                l10n.glyphMapBody,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 15,
+                  height: 1.4,
                 ),
               ),
               SizedBox(height: 16),
@@ -2329,7 +3715,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                     height: 300,
                     child: Center(
                       child: Text(
-                        'Glyph Map Unavailable',
+                        l10n.glyphMapUnavailable,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.outline,
                         ),
@@ -2342,7 +3728,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  'Close',
+                  l10n.close,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -2356,6 +3742,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   void _showTorchInfoDialog() {
+    final l10n = AppLocalizations.of(context);
     showDialog<void>(
       context: context,
       builder: (ctx) => Dialog(
@@ -2368,7 +3755,7 @@ class _SettingsScreenState extends State<SettingsScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Torch Blink',
+                l10n.torchInfoTitle,
                 style: TextStyle(
                   color: Theme.of(ctx).colorScheme.onSurface,
                   fontSize: 18,
@@ -2377,8 +3764,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(height: 12),
               Text(
-                'Blinks the phone flashlight during calls. This is separate from Glyph lights.\n\n'
-                'Fixed interval: torch toggles on/off at the delay you set.',
+                l10n.torchInfoBody,
                 style: TextStyle(
                   color: Theme.of(ctx).colorScheme.onSurfaceVariant,
                   fontSize: 15,
@@ -2390,7 +3776,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                 child: TextButton(
                   onPressed: () => Navigator.pop(ctx),
                   child: Text(
-                    'Close',
+                    l10n.close,
                     style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
                   ),
                 ),
@@ -2403,204 +3789,37 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   void _showTorchIncomingPicker() {
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (sheetContext) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(sheetContext).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(sheetContext).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Incoming call torch',
-                  style: TextStyle(
-                    color: Theme.of(sheetContext).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              _MethodOption(
-                icon: Icons.block_rounded,
-                label: 'Off',
-                subtitle: 'No torch while ringing',
-                selected: _torchIncomingMode == 'off',
-                onTap: () {
-                  _saveTorchIncomingMode('off');
-                  Navigator.pop(sheetContext);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.timer_rounded,
-                label: 'Fixed interval',
-                subtitle: 'Blink at a set speed',
-                selected: _torchIncomingMode == 'interval',
-                onTap: () {
-                  _saveTorchIncomingMode('interval');
-                  Navigator.pop(sheetContext);
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        ),
-      ),
+    _showTorchModePickerSheet(
+      title: AppLocalizations.of(context).torchIncomingCall,
+      currentMode: _torchIncomingMode,
+      incoming: true,
+      ongoing: false,
+      save: _saveTorchIncomingMode,
     );
   }
 
   void _showTorchOutgoingPicker() {
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (sheetContext) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(sheetContext).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(sheetContext).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Outgoing call torch',
-                  style: TextStyle(
-                    color: Theme.of(sheetContext).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              _MethodOption(
-                icon: Icons.block_rounded,
-                label: 'Off',
-                subtitle: 'No torch while dialing',
-                selected: _torchOutgoingMode == 'off',
-                onTap: () {
-                  _saveTorchOutgoingMode('off');
-                  Navigator.pop(sheetContext);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.timer_rounded,
-                label: 'Fixed interval',
-                subtitle: 'Blink at a set speed',
-                selected: _torchOutgoingMode == 'interval',
-                onTap: () {
-                  _saveTorchOutgoingMode('interval');
-                  Navigator.pop(sheetContext);
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        ),
-      ),
+    _showTorchModePickerSheet(
+      title: AppLocalizations.of(context).torchOutgoingCall,
+      currentMode: _torchOutgoingMode,
+      incoming: false,
+      ongoing: false,
+      save: _saveTorchOutgoingMode,
     );
   }
 
   void _showTorchOngoingPicker() {
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (sheetContext) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(sheetContext).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(sheetContext).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Ongoing call torch',
-                  style: TextStyle(
-                    color: Theme.of(sheetContext).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              _MethodOption(
-                icon: Icons.block_rounded,
-                label: 'Off',
-                subtitle: 'No torch during active call',
-                selected: _torchOngoingMode == 'off',
-                onTap: () {
-                  _saveTorchOngoingMode('off');
-                  Navigator.pop(sheetContext);
-                },
-              ),
-              _MethodOption(
-                icon: Icons.timer_rounded,
-                label: 'Fixed interval',
-                subtitle: 'Blink at a set speed',
-                selected: _torchOngoingMode == 'interval',
-                onTap: () {
-                  _saveTorchOngoingMode('interval');
-                  Navigator.pop(sheetContext);
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        ),
-      ),
+    _showTorchModePickerSheet(
+      title: AppLocalizations.of(context).torchOngoingCall,
+      currentMode: _torchOngoingMode,
+      incoming: false,
+      ongoing: true,
+      save: _saveTorchOngoingMode,
     );
   }
 
   void _showTorchIntervalPicker(String kind) {
+    final l10n = AppLocalizations.of(context);
     var currentMs = switch (kind) {
       'incoming' => _torchIncomingInterval,
       'outgoing' => _torchOutgoingInterval,
@@ -2610,107 +3829,120 @@ class _SettingsScreenState extends State<SettingsScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) {
-          final currentSec = (currentMs / 1000.0).clamp(0.1, 3.0);
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 32,
-                        height: 4,
-                        margin: const EdgeInsets.only(bottom: 24),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2),
+      builder: (sheetContext) => SettingsPickerFontScope(
+        child: StatefulBuilder(
+          builder: (context, setModalState) {
+            final currentSec = (currentMs / 1000.0).clamp(0.1, 3.0);
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(28)),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 32,
+                          height: 4,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      'Blink interval',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                      Text(
+                        l10n.blinkInterval,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.pageTitle,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Slider(
-                            value: currentSec,
-                            min: 0.1,
-                            max: 3.0,
-                            divisions: 29,
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            onChanged: (sec) {
-                              final ms = (sec * 1000).round().clamp(100, 3000);
-                              setModalState(() => currentMs = ms);
-                              setState(() {
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Slider(
+                              value: currentSec,
+                              min: 0.1,
+                              max: 3.0,
+                              divisions: 29,
+                              activeColor:
+                                  Theme.of(context).colorScheme.primary,
+                              onChanged: (sec) {
+                                final ms =
+                                    (sec * 1000).round().clamp(100, 3000);
+                                setModalState(() => currentMs = ms);
+                                setState(() {
+                                  if (kind == 'incoming') {
+                                    _torchIncomingInterval = ms;
+                                  } else if (kind == 'outgoing') {
+                                    _torchOutgoingInterval = ms;
+                                  } else {
+                                    _torchOngoingInterval = ms;
+                                  }
+                                });
+                              },
+                              onChangeEnd: (sec) {
+                                final ms =
+                                    (sec * 1000).round().clamp(100, 3000);
                                 if (kind == 'incoming') {
-                                  _torchIncomingInterval = ms;
+                                  _saveTorchIncomingInterval(ms);
                                 } else if (kind == 'outgoing') {
-                                  _torchOutgoingInterval = ms;
+                                  _saveTorchOutgoingInterval(ms);
                                 } else {
-                                  _torchOngoingInterval = ms;
+                                  _saveTorchOngoingInterval(ms);
                                 }
-                              });
-                            },
-                            onChangeEnd: (sec) {
-                              final ms = (sec * 1000).round().clamp(100, 3000);
-                              if (kind == 'incoming') {
-                                _saveTorchIncomingInterval(ms);
-                              } else if (kind == 'outgoing') {
-                                _saveTorchOutgoingInterval(ms);
-                              } else {
-                                _saveTorchOngoingInterval(ms);
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 64,
-                          child: Text(
-                            _torchIntervalSecondsLabel(currentMs),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.outline,
-                              fontSize: 12,
+                              },
                             ),
-                            textAlign: TextAlign.right,
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          'Done',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
+                          SizedBox(
+                            width: 64,
+                            child: Text(
+                              _torchIntervalSecondsLabel(currentMs),
+                              style: context.dialerTextStyle(
+                                DialerFontRole.secondary,
+                                TextStyle(
+                                  color: Theme.of(context).colorScheme.outline,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(sheetContext),
+                          child: Text(
+                            l10n.done,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -2748,11 +3980,14 @@ class _SectionHeader extends StatelessWidget {
         children: [
           Text(
             title.toUpperCase(),
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.2,
+            style: context.dialerTextStyle(
+              DialerFontRole.sectionHeader,
+              TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1.2,
+              ),
             ),
           ),
           if (trailing != null) trailing!,
@@ -2830,26 +4065,110 @@ class _SettingsTile extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.primary,
+                        TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                    SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 14,
+                    if (subtitle.isNotEmpty) ...[
+                      SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 14,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ),
               Icon(
                 Icons.chevron_right,
                 color: Theme.of(context).colorScheme.outlineVariant,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SettingsSwitchTile extends StatelessWidget {
+  const _SettingsSwitchTile({
+    required this.icon,
+    required this.title,
+    this.subtitle = '',
+    required this.value,
+    required this.onChanged,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => onChanged(!value),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 40,
+                height: 40,
+                child: Icon(icon, color: scheme.onSurface, size: 22),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: context.dialerTextStyle(
+                        DialerFontRole.primary,
+                        TextStyle(
+                          color: scheme.onSurface,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    if (subtitle.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color: scheme.onSurfaceVariant,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              Switch.adaptive(
+                value: value,
+                onChanged: onChanged,
               ),
             ],
           ),
@@ -2909,9 +4228,12 @@ class _ColorSwatchButton extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label!,
-            style: TextStyle(
-              fontSize: 11,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            style: context.dialerTextStyle(
+              DialerFontRole.secondary,
+              TextStyle(
+                fontSize: 11,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ],
@@ -2970,98 +4292,16 @@ class _CustomColorSwatchButton extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Custom',
-          style: TextStyle(
-            fontSize: 11,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          AppLocalizations.of(context).custom,
+          style: context.dialerTextStyle(
+            DialerFontRole.secondary,
+            TextStyle(
+              fontSize: 11,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class _MethodOption extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String subtitle;
-  final bool selected;
-  final VoidCallback onTap;
-
-  _MethodOption({
-    required this.icon,
-    required this.label,
-    required this.subtitle,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: Container(
-            decoration: BoxDecoration(
-              color: selected
-                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: Icon(
-                    icon,
-                    color: selected
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.onSurface,
-                    size: 22,
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        label,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 16,
-                          fontWeight: selected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (selected)
-                  Icon(
-                    Icons.check_circle,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 22,
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

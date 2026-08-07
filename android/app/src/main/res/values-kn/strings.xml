@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">ಮ್ಯೂಟ್ ಮಾಡಿ</string>
+    <string name="in_call_keypad">ಕೀಪ್ಯಾಡ್</string>
+    <string name="in_call_speaker">ಸ್ಪೀಕರ್</string>
+    <string name="in_call_more">ಇನ್ನಷ್ಟು</string>
+    <string name="in_call_bluetooth">ಬ್ಲೂಟೂತ್</string>
+    <string name="in_call_phone">ಫೋನ್</string>
+    <string name="in_call_add_call">ಕರೆ ಸೇರಿಸಿ</string>
+    <string name="in_call_change_sim">ಸಿಮ್ ಬದಲಾಯಿಸಿ</string>
+    <string name="in_call_decline">ನಿರಾಕರಿಸು</string>
+    <string name="in_call_answer">ಉತ್ತರ</string>
+    <string name="in_call_message">ಸಂದೇಶ</string>
+    <string name="in_call_calling">ಕರೆ ಮಾಡಲಾಗುತ್ತಿದೆ...</string>
+    <string name="in_call_incoming">ಒಳಬರುವ ಕರೆ</string>
+    <string name="in_call_select_sim">ಸಿಮ್ ಆಯ್ಕೆಮಾಡಿ...</string>
+    <string name="in_call_switching_sim">ಸಿಮ್ ಬದಲಾಯಿಸಲಾಗುತ್ತಿದೆ...</string>
+    <string name="in_call_call_ended">ಕರೆ ಕೊನೆಗೊಂಡಿದೆ</string>
+    <string name="in_call_calling_via">%1$s ಮೂಲಕ ಕರೆ ಮಾಡಲಾಗುತ್ತಿದೆ</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ಮೂಲಕ ಕರೆ ಮಾಡಲಾಗುತ್ತಿದೆ</string>
+    <string name="in_call_choose_sim">ಈ ಕರೆಗಾಗಿ ಸಿಮ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="in_call_drag_answer_decline">ಉತ್ತರಿಸಲು ಬಲಕ್ಕೆ ಎಳೆಯಿರಿ · ನಿರಾಕರಿಸಲು ಎಡಕ್ಕೆ ಎಳೆಯಿರಿ</string>
+    <string name="in_call_mobile_number">ಮೊಬೈಲ್ %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (ಪ್ರಸ್ತುತ)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ಮೂಲಕ ಕರೆ ಮಾಡಿ</string>
+    <string name="in_call_call_from">ನಿಂದ ಕರೆ ಮಾಡಿ</string>
+    <string name="in_call_unknown">ಅಜ್ಞಾತ</string>
+    <string name="in_call_sim_slot">ಸಿಮ್ %1$d</string>
+    <string name="native_select_contact_ringtone">ಸಂಪರ್ಕ ರಿಂಗ್‌ಟೋನ್ ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="native_speak_to_search">ಹುಡುಕಲು ಮಾತನಾಡಿ</string>
+    <string name="native_phone_permission_required">ಫೋನ್ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ</string>
+    <string name="native_call_failed">ಕರೆ ವಿಫಲವಾಗಿದೆ: %1$s</string>
+    <string name="native_call_permission_denied">ಕರೆ ಅನುಮತಿ ನಿರಾಕರಿಸಲಾಗಿದೆ</string>
+    <string name="native_already_default_dialer">ಈಗಾಗಲೇ ಡೀಫಾಲ್ಟ್ ಡಯಲರ್ ಆಗಿ ಹೊಂದಿಸಲಾಗಿದೆ</string>
+</resources>

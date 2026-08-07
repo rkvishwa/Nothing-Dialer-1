@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">ድምጸ-ከል አድርግ</string>
+    <string name="in_call_keypad">የቁልፍ ሰሌዳ</string>
+    <string name="in_call_speaker">ተናጋሪ</string>
+    <string name="in_call_more">ተጨማሪ</string>
+    <string name="in_call_bluetooth">ብሉቱዝ</string>
+    <string name="in_call_phone">ስልክ</string>
+    <string name="in_call_add_call">ጥሪ ጨምር</string>
+    <string name="in_call_change_sim">ሲም ቀይር</string>
+    <string name="in_call_decline">አትቀበል</string>
+    <string name="in_call_answer">መልስ</string>
+    <string name="in_call_message">መልእክት</string>
+    <string name="in_call_calling">በመደወል ላይ…</string>
+    <string name="in_call_incoming">ገቢ ጥሪ</string>
+    <string name="in_call_select_sim">ሲም ይምረጡ…</string>
+    <string name="in_call_switching_sim">ሲም በመቀየር ላይ…</string>
+    <string name="in_call_call_ended">ጥሪው አልቋል</string>
+    <string name="in_call_calling_via">በ %1$s በመደወል ላይ</string>
+    <string name="in_call_calling_via_html">በ &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; በመደወል ላይ</string>
+    <string name="in_call_choose_sim">ለዚህ ጥሪ ሲም ይምረጡ</string>
+    <string name="in_call_drag_answer_decline">ለመመለስ ወደ ቀኝ ጎትት · ላለመቀበል ወደ ግራ ጎትት።</string>
+    <string name="in_call_mobile_number">ሞባይል %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (የአሁኑ)</string>
+    <string name="in_call_call_via_from">በ &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; ከ ይደውሉ</string>
+    <string name="in_call_call_from">ከ ይደውሉ</string>
+    <string name="in_call_unknown">ያልታወቀ</string>
+    <string name="in_call_sim_slot">ሲም %1$d</string>
+    <string name="native_select_contact_ringtone">የእውቂያ የስልክ ጥሪ ድምፅ ይምረጡ</string>
+    <string name="native_speak_to_search">ለመፈለግ ይናገሩ</string>
+    <string name="native_phone_permission_required">የስልክ ፍቃድ ያስፈልጋል</string>
+    <string name="native_call_failed">ጥሪ አልተሳካም፦ %1$s</string>
+    <string name="native_call_permission_denied">የጥሪ ፍቃድ ተከልክሏል።</string>
+    <string name="native_already_default_dialer">ቀድሞውንም እንደ ነባሪ መደወያ ተቀናብሯል።</string>
+</resources>

@@ -1,0 +1,759 @@
+{
+  "@@locale": "lt",
+  "appTitle": "Nieko Dialer",
+  "settings": "Nustatymai",
+  "settingsSearchHint": "Paieškos nustatymai",
+  "settingsSearchNoResults": "Nustatymų nerasta",
+  "general": "Generolas",
+  "theme": "tema",
+  "themeSystemDefault": "Numatytoji sistema",
+  "themeLight": "Šviesa",
+  "themeDark": "Tamsus",
+  "themeFollowSystem": "Sekite sistemos nustatymus",
+  "themeAlwaysLight": "Visada naudokite šviesią temą",
+  "themeAlwaysDark": "Visada naudokite tamsią temą",
+  "language": "Kalba",
+  "languageDeviceDefault": "Numatytasis įrenginys",
+  "languagePickerTitle": "Kalba",
+  "languageSearchHint": "Ieškoti kalbų",
+  "font": "Šriftas",
+  "fontSystem": "Numatytasis sistemos",
+  "fontNdot": "Nieko (NDot)",
+  "fontSerif": "Roboto Serifas",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Nepavyko atsisiųsti šrifto. Patikrinkite ryšį ir bandykite dar kartą.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Šriftas",
+  "fontPreviewSample": "Nieko Dialer",
+  "fontAppWide": "Programėlės šriftas",
+  "fontApplyTo": "Taikyti į",
+  "fontApplyEntireApp": "Visa programėlė",
+  "fontApplyEntireAppSubtitle": "Visur tas pats šriftas, įskaitant skambutį",
+  "fontApplyTitlesOnly": "Pavadinimai ir antraštės",
+  "fontApplyTitlesOnlySubtitle": "Tik dideli pavadinimai ir skyrių antraštės",
+  "fontApplyCustomize": "Tinkinti",
+  "fontApplyCustomizeSubtitle": "Pasirinkite šriftą pagal ekraną ir teksto tipą",
+  "fontCustomizeSection": "Tinkinti pagal ekraną",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Puslapio pavadinimas",
+  "fontRoleSectionHeader": "Skyriaus antraštė",
+  "fontRolePrimary": "Pirminis tekstas",
+  "fontRoleSecondary": "Antrinis tekstas",
+  "fontRoleButton": "Mygtukai",
+  "fontRoleDialKey": "Skambinimo skydelio klavišai",
+  "fontSurfaceRecents": "Neseniai",
+  "fontSurfaceContacts": "Kontaktai",
+  "fontSurfaceSettings": "Nustatymai",
+  "fontSurfaceDialpad": "Skambinimo skydelis",
+  "fontSurfaceShell": "Navigacija",
+  "fontSurfaceDefaultDialer": "Numatytasis rinkiklio raginimas",
+  "fontSurfaceFavourites": "Mėgstamiausi",
+  "fontSurfaceBlocked": "Užblokuoti numeriai",
+  "fontSurfaceContactDetail": "Kontaktinė informacija",
+  "fontSurfaceCallHistory": "Skambučių istorija",
+  "fontSurfaceSheets": "Lakštai ir rinktuvai",
+  "fontSurfaceInCall": "Skambučio ekranas",
+  "fontSubtitleEntireApp": "{font} – visa programa",
+  "fontSubtitleTitlesOnly": "{font} – tik pavadinimai",
+  "fontSubtitleCustomize": "Pritaikyta kiekvienam ekranui",
+  "background": "Fonas",
+  "accent": "Akcentas",
+  "lightBackground": "Šviesus fonas",
+  "lightAccent": "Lengvas akcentas",
+  "darkBackground": "Tamsus fonas",
+  "darkAccent": "Tamsus akcentas",
+  "callBackground": "Skambučio fonas",
+  "appIcon": "Programėlės piktograma",
+  "answerMethod": "Atsakymo būdas",
+  "answerSlide": "Slyskite, kad atsakytumėte",
+  "answerSlideSubtitle": "Braukite juostoje kairėn / dešinėn, pvz., „Google Phone“.",
+  "answerButton": "Mygtuko bakstelėjimas",
+  "answerButtonSubtitle": "Palieskite atsakymo arba atmetimo mygtukus",
+  "answerHuawei": "Huawei stiliaus",
+  "answerHuaweiSubtitle": "Norėdami atsakyti, vilkite apskritimą į žalią telefoną",
+  "answerHuaweiTileSubtitle": "Huawei – vilkite į žalią / raudoną",
+  "calling": "Skambina",
+  "defaultSim": "Numatytoji SIM kortelė",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Klauskite kiekvieną kartą",
+  "askEveryTimeSubtitle": "Rodyti SIM rinkiklį prieš kiekvieną skambutį",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "Nerasta SIM kortelių",
+  "couldNotLoadSims": "Nepavyko įkelti SIM kortelių: {error}",
+  "allFavourites": "Visi mėgstamiausi",
+  "allFavouritesSubtitle": "Pertvarkykite, pašalinkite ir įtraukite į kontaktus",
+  "blockedNumbers": "Užblokuoti numeriai",
+  "blockedNumbersSubtitle": "Peržiūrėkite ir atblokuokite numerius",
+  "soundsAndVibration": "Garsai ir vibracija",
+  "soundsAndVibrationSubtitle": "Skambėjimo tonas, vibracija, rinkimo klaviatūros tonai",
+  "couldNotOpenSettings": "Nepavyko atidaryti nustatymų: {error}",
+  "frequentlyContacted": "Dažnai susisiekiama",
+  "numberOfRecords": "Įrašų skaičius",
+  "timePeriod": "Laikotarpis",
+  "periodLast24Hours": "Paskutines 24 valandas",
+  "periodLast24HoursSubtitle": "Skambučiai iš praėjusios dienos",
+  "periodLast7Days": "Paskutines 7 dienas",
+  "periodLast7DaysSubtitle": "Skambučiai iš praėjusios savaitės",
+  "periodLast30Days": "Paskutines 30 dienų",
+  "periodLast30DaysSubtitle": "Skambučiai iš praėjusio mėnesio",
+  "periodLast12Months": "Paskutiniai 12 mėnesių",
+  "periodLast12MonthsSubtitle": "Skambučiai iš praėjusių metų",
+  "periodAllTime": "Visą laiką",
+  "periodAllTimeSubtitle": "Visa skambučių istorija",
+  "frequentMaxOff": "Išjungta",
+  "frequentMaxCount": "{count} kontaktai",
+  "torchBlink": "Degiklio mirksėjimas",
+  "torchIncomingCall": "Įeinančio skambučio žibintuvėlis",
+  "torchOutgoingCall": "Išeinančio skambučio žibintuvėlis",
+  "torchOngoingCall": "Vykdomo skambučio žibintuvėlis",
+  "torchIncomingInterval": "Įeinančio mirksėjimo intervalas",
+  "torchOutgoingInterval": "Išeinančio mirksėjimo intervalas",
+  "torchOngoingInterval": "Nuolatinis mirksėjimo intervalas",
+  "torchOff": "Išjungta",
+  "torchOffIncomingSubtitle": "Skambant be fakelo",
+  "torchOffOutgoingSubtitle": "Rinkimo metu nėra žibintuvėlio",
+  "torchOffOngoingSubtitle": "Aktyvaus skambučio metu nėra žibintuvėlio",
+  "torchFixedInterval": "Fiksuotas intervalas",
+  "torchFixedIntervalSubtitle": "Mirksi nustatytu greičiu",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} mirksėjimas",
+  "flashlightUnavailable": "Žibintuvėlis nepasiekiamas šiame įrenginyje",
+  "glyphLights": "Glyph Lights",
+  "glyphCallingAnimation": "Glifų skambinimo animacija",
+  "glyphOngoingAnimation": "Glyph vykstančio skambučio animacija",
+  "glyphNone": "Nėra",
+  "glyphNoneOutgoingSubtitle": "Išjungti išeinančių skambučių Glyph lemputes",
+  "glyphNoneInCallSubtitle": "Išjunkite Glyph lemputes aktyviai skambinant",
+  "glyphBreathProgress": "Kvėpavimas ir pažanga",
+  "glyphBreathProgressSubtitle": "Šviesos kvėpuoja, o eilutė prisipildo daugiau nei 65 s",
+  "glyphAccumulate": "Kaupti",
+  "glyphAccumulateSubtitle": "Animacija kaupiama ant žibintų C1-C4",
+  "glyphSingle": "Vienišas",
+  "glyphSingleSubtitle": "Viena lemputė juda per C1-C4",
+  "glyphBreath": "Kvėpuoti",
+  "glyphBreathSubtitle": "Pasirinkite šviesas ir greitį",
+  "glyphSteady": "Pastovus",
+  "glyphSteadySubtitle": "Pasirinktos lemputės lieka įjungtos",
+  "breathSettings": "Kvėpavimo nustatymai",
+  "activeLights": "Aktyvios lemputės",
+  "lightsCount": "{count} lemputės",
+  "speedSettings": "Greičio nustatymai",
+  "speedSettingsDelay": "{ms}ms vėlavimas",
+  "durationAndSpeed": "Trukmė ir greitis",
+  "durationSpeedSummary": "{duration}s trukmė, {interval}ms intervalas",
+  "cancel": "Atšaukti",
+  "done": "Atlikta",
+  "save": "Išsaugoti",
+  "block": "Blokuoti",
+  "delete": "Ištrinti",
+  "recents": "Neseniai",
+  "contacts": "Kontaktai",
+  "hideFavouritesOnRecents": "Slėpti mėgstamiausius paskyroje Naujausi",
+  "showFavouritesOnRecents": "Rodyti mėgstamiausius skiltyje Naujausi",
+  "ongoingCall": "Vykdomas skambutis",
+  "setAsDefaultTitle": "NUSTATYTI KAIP\nNUMATYTOJI",
+  "setAsDefaultBody": "Norėdami naudoti Nothing Dialer, jis turi būti nustatytas kaip numatytoji telefono programa. Tai leidžia valdyti skambučius, peržiūrėti istoriją ir naudoti Glyph animaciją.",
+  "setAsDefaultButton": "NUSTATYTI KAIP NUMATYTOJI",
+  "nothingDialerBrand": "NIEKO RINKINTAS 1",
+  "favourites": "Mėgstamiausi",
+  "addFavourite": "Pridėti mėgstamiausią",
+  "favouritesDrawerHint": "Norėdami pridėti kontaktų, naudokite meniu. Bakstelėkite už stalčiaus ribų arba braukite jį uždarytą. Žvaigždute pažymėkite kontaktą iš jo išsamios informacijos arba ilgai paspauskite skambutį skiltyje „Naujausi“.",
+  "menu": "Meniu",
+  "noFavouritesYet": "Mėgstamiausių dar nėra.\nNorėdami pridėti kontaktą, atidarykite meniu arba pažymėkite adresatą žvaigždute.",
+  "contactsPermissionNeeded": "Reikalingas kontaktų leidimas",
+  "chooseContact": "Pasirinkite kontaktą",
+  "noPhone": "Nėra telefono",
+  "pickNumber": "Pasirinkite numerį",
+  "contactHasNoPhone": "Šis kontaktas neturi telefono numerio",
+  "blockNumber": "Blokuoti numerį",
+  "enterPhoneNumber": "Įveskite telefono numerį",
+  "unblockedDisplay": "Atblokuota {display}",
+  "couldNotUnblockNumber": "Nepavyko atblokuoti numerio",
+  "blockedSummary": "{blocked} užblokuota • {matched} atitiko",
+  "contactsPermissionMissing": "Trūksta kontaktų leidimo. Palieskite, kad pataisytumėte.",
+  "noBlockedNumbers": "Nėra užblokuotų numerių",
+  "unknownContact": "Nežinomas kontaktas",
+  "unblock": "Atblokuoti",
+  "permissionNeeded": "Reikalingas leidimas",
+  "grantPhonePermission": "Suteikite telefono leidimą peržiūrėti skambučių istoriją.",
+  "grantContactsPermission": "Suteikite kontaktams leidimą matyti jūsų adresų knygą.",
+  "openSettings": "Atidarykite Nustatymai",
+  "tryAgain": "Bandykite dar kartą",
+  "couldNotLoadContacts": "Nepavyko įkelti kontaktų",
+  "contactsLoadError": "Skaitant jūsų adresų knygą įvyko klaida.",
+  "noContactsFound": "Nerasta jokių kontaktų",
+  "contactsEmptySubtitle": "Čia bus rodomi jūsų įrenginio kontaktai.",
+  "searchContacts": "Ieškoti kontaktų…",
+  "searchRecentCalls": "Ieškoti paskutinių skambučių",
+  "fromContacts": "Iš kontaktų",
+  "recentsSearchSection": "Naujausia paieška",
+  "recentsSearchShowContacts": "Rodyti kontaktus paieškoje",
+  "recentsSearchShowContactsSubtitle": "Ieškodami Naujausi, po skambučių istorijos rezultatais taip pat rodykite atitinkančius žmones iš savo adresų knygos.",
+  "voiceSearch": "Balso paieška",
+  "createNewContact": "Sukurti naują kontaktą",
+  "callError": "Skambinimo klaida: {error}",
+  "noRecentCalls": "Nėra paskutinių skambučių",
+  "callHistoryEmpty": "Čia bus rodoma jūsų skambučių istorija.",
+  "loadMore": "Įkelti daugiau",
+  "frequentlyContactedHeader": "Dažnai susisiekiama",
+  "recentHistory": "Naujausia istorija",
+  "noFavouritesRecentsHint": "Mėgstamiausių dar nėra. Kontaktą pažymėkite žvaigždute, ilgai paspauskite skambutį arba naudokite skirtuką Parankiniai.",
+  "copyNumber": "Nukopijuokite numerį",
+  "editNumberBeforeCall": "Redaguoti numerį prieš skambinant",
+  "removeFromFavourites": "Pašalinti iš mėgstamiausių",
+  "addToFavourites": "Pridėti prie mėgstamiausių",
+  "blockNumberQuestion": "Blokuoti numerį?",
+  "blockNumberConfirm": "Nebegausite skambučių ar žinučių iš {number}.",
+  "blocked": "Užblokuota",
+  "couldNotBlock": "Nepavyko užblokuoti",
+  "contactNotOnDevice": "Kontaktas neišsaugotas šiame įrenginyje",
+  "unblocked": "Atblokuotas",
+  "numberCopied": "Nukopijuotas numeris",
+  "showLess": "Rodyti mažiau",
+  "showAllTimes": "Rodyti visą laiką",
+  "mostRecent": "Naujausias · {time}",
+  "videoCall": "Vaizdo skambutis",
+  "couldNotPlaceVideoCall": "Nepavyko užmegzti vaizdo skambučio",
+  "message": "Pranešimas",
+  "couldNotOpenMessaging": "Nepavyko atidaryti pranešimų programos",
+  "history": "Istorija",
+  "viewContact": "Peržiūrėti kontaktą",
+  "addToContact": "Pridėti prie kontakto",
+  "callTypeMissed": "Praleistas",
+  "callTypeRejected": "Atmesta",
+  "callTypeIncoming": "Įeinantys",
+  "callTypeOutgoing": "Išeinantis",
+  "today": "Šiandien",
+  "yesterday": "vakar",
+  "justNow": "Tik dabar",
+  "minutesAgo": "Prieš {count} min",
+  "hoursAgo": "Prieš {count} val",
+  "filterAll": "Visi",
+  "filterMissed": "Praleistas",
+  "filterContacts": "Kontaktai",
+  "filterNonContacts": "Nekontaktiniai",
+  "iconUpdated": "Piktograma atnaujinta. Gali šiek tiek užtrukti, kol jūsų pagrindinis ekranas bus atnaujintas.",
+  "iconSavedRelease": "Pasirinkimas išsaugotas. Pradinio ekrano piktograma atnaujinama leidimo versijose.",
+  "couldNotChangeIcon": "Nepavyko pakeisti piktogramos: {error}",
+  "launcherClassicBlack": "Klasikinis (juodas)",
+  "launcherLight": "Šviesa",
+  "launcherNothingRed": "Nieko raudono",
+  "launcherDarkGrey": "Tamsiai pilka",
+  "launcherCream": "Kremas",
+  "launcherRetroPhone": "Retro telefonas",
+  "launcherRetroPhoneLight": "Retro telefonas (šviesus)",
+  "voiceSearchUnavailable": "Balso paieška šiame įrenginyje nepasiekiama.",
+  "voiceSearchFailed": "Paieška balsu nepavyko: {error}",
+  "customColor": "Pasirinktinis",
+  "selectColor": "Pasirinkite spalvą",
+  "reset": "Nustatyti iš naujo",
+  "simPickerTitle": "Pasirinkite SIM",
+  "simChooseForCall": "Šiam skambučiui pasirinkite SIM kortelę",
+  "defaultSimAsk": "Klauskite kiekvieną kartą",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "Kontaktiniai duomenys",
+  "call": "Skambinti",
+  "share": "Dalintis",
+  "favourite": "Mėgstamiausias",
+  "unfavourite": "Nemėgstamas",
+  "blockContact": "Blokuoti kontaktą",
+  "unblockContact": "Atblokuoti kontaktą",
+  "deleteContact": "Ištrinti kontaktą",
+  "phone": "Telefonas",
+  "email": "El. paštas",
+  "ringtone": "Skambėjimo tonas",
+  "defaultRingtone": "Numatytoji",
+  "simForContact": "Šio kontakto SIM kortelė",
+  "callHistoryTitle": "Skambučių istorija",
+  "noCallsWithNumber": "Šiuo numeriu neskambinama",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "Glifų animacija",
+  "inCallGlyphAnimationStyle": "Glyph animacija skambučio metu",
+  "recordsOff": "Išjungta",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Numatytoji SIM kortelė",
+  "nothingPhoneOnly": "Nieko Telefonas",
+  "nothingPhoneOnlySubtitle": "Glyph funkcijos reikalauja nieko telefono",
+  "custom": "Pasirinktinis",
+  "presetColorHex": "Iš anksto nustatytas · {hex}",
+  "customColorHex": "Pasirinktinis · {hex}",
+  "oneContact": "1 kontaktas",
+  "upToContacts": "Iki {count} kontaktų",
+  "answerButtonTapSubtitle": "Norėdami atsakyti, bakstelėkite mygtuką",
+  "filterCalls": "Filtruoti skambučius",
+  "filterTooltip": "Filtruoti",
+  "settingsTooltip": "Nustatymai",
+  "filterAllSubtitle": "Visas skambučių žurnalas",
+  "filterMissedSubtitle": "Praleistas ir atmestas",
+  "filterContactsSubtitle": "Skambučiai suderinti su išsaugotu kontaktu",
+  "filterNonContactsSubtitle": "Skaičiai nėra jūsų adresų knygelėje",
+  "ongoingCallWithDetail": "Vykdomas skambutis: {detail}",
+  "defaultSimForCalls": "Numatytoji SIM kortelė skambučiams",
+  "blinkInterval": "Mirksėjimo intervalas",
+  "close": "Uždaryti",
+  "frequentlyContactedInfoBody": "Rodomi dažniausiai skambinami telefonų numeriai skirtuko „Naujausi“ viršuje, atsižvelgiant į tai, kiek įeinančių, išeinančių, praleistų ar atmestų skambučių buvo su kiekvienu numeriu per pasirinktą laikotarpį.\n\nĮrašų skaičius: nustatykite 0, kad išjungtumėte. Naudokite 1–20, kad parodytumėte tiek geriausių kontaktų.\n\nLaikotarpis taikomas tik tada, kai rodomas bent vienas kontaktas.",
+  "breathSettingsSpeedSummary": "{count} šviesos, {ms}ms greitis",
+  "deleteContactQuestion": "Ištrinti kontaktą?",
+  "deleteContactBody": "Šis kontaktas bus visam laikui ištrintas iš jūsų įrenginio.",
+  "blockContactQuestion": "Blokuoti kontaktą?",
+  "unblockContactQuestion": "Atblokuoti kontaktą?",
+  "blockContactBody": "Daugiau nebegausite skambučių ar žinučių iš šio kontakto.",
+  "unblockContactBody": "Iš šio kontakto pradėsite gauti skambučius ir žinutes.",
+  "contactBlocked": "Kontaktas užblokuotas",
+  "contactUnblocked": "Kontaktas atblokuotas",
+  "noPhoneNumbersToBlock": "Nėra telefono numerių, kuriuos būtų galima blokuoti",
+  "simSameAsSystem": "Tas pats kaip sistema",
+  "simSameAsSystemSubtitle": "Nustatymuose atitinka numatytąją SIM kortelę",
+  "simAskEveryTimeForContact": "Visada rodyti šio kontakto SIM parinkiklį",
+  "ringtoneSetForContact": "Šio kontakto skambėjimo tonas nustatytas visame pasaulyje",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Nepavyko pasirinkti skambėjimo tono: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Klaida: {error}",
+  "noCallHistoryFound": "Nerasta skambučių istorijos",
+  "speedDialVoicemail": "Greitasis rinkimas: balso paštas",
+  "shareContactSubject": "Susisiekite: {name}",
+  "contactInfo": "Kontaktinė informacija",
+  "dontAskAgainSim": "Daugiau neklausk",
+  "simDontAskAgainSubtitle": "Naudoti šią SIM kaip numatytąją (pakeiskite nustatymuose)",
+  "addContact": "Pridėti kontaktą",
+  "createContact": "Sukurti kontaktą",
+  "paste": "Įklijuoti",
+  "clear": "Aišku",
+  "returnToCall": "Grįžti į skambutį",
+  "numberOfRecordsTitle": "Įrašų skaičius",
+  "recordsPickerSubtitle": "Kiek įrašų, su kuriais dažnai susisiekiama, rodyti (0 = išjungta)",
+  "torchInfoTitle": "Žybčioja žibintuvėlis",
+  "torchInfoBody": "Mirksi fotoaparato blykstė įeinančių, išeinančių ar vykstančių skambučių metu. Nepriklausoma nuo Glyph lempučių.",
+  "glyphMapTitle": "Glifų išdėstymas",
+  "glyphMapBody": "Nieko Telefonas 1 Glyph LED zonos. Šiuos kanalus naudoja siunčiamų ir skambučių animacijos.",
+  "answerMethodTitle": "Atsakymo būdas",
+  "glyphOutgoingCallStyleTitle": "Išeinančio skambučio stilius",
+  "glyphInCallAnimationTitle": "Glyph animacija skambučio metu",
+  "themePickerTitle": "tema",
+  "torchIncomingTitle": "Įeinančio skambučio žibintuvėlis",
+  "torchOutgoingTitle": "Išeinančio skambučio žibintuvėlis",
+  "torchOngoingTitle": "Vykdomo skambučio žibintuvėlis",
+  "timePeriodTitle": "Laikotarpis",
+  "ok": "gerai",
+  "confirmDeleteCall": "Ištrinti šį skambutį iš istorijos?",
+  "confirmDeleteAllCalls": "Ištrinti visus skambučius šiuo numeriu?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "Siųsti žinutę",
+  "addToExistingContactAction": "Pridėti prie kontakto",
+  "mobileLabel": "Mobilusis",
+  "callingSimForContactTitle": "Skambina SIM kortelė šiam kontaktui",
+  "contactSettings": "Kontaktų nustatymai",
+  "setCallingSim": "Nustatyti skambinimo SIM kortelę",
+  "contactRingtone": "Kontaktinis skambėjimo tonas",
+  "shareContact": "Bendrinkite kontaktą",
+  "blockNumbers": "Blokuoti numerius",
+  "unblockNumbers": "Atblokuoti numerius",
+  "connectedApps": "Prijungtos programos",
+  "simNotSet": "Nenustatyta",
+  "ringtoneDefault": "Numatytoji",
+  "customRingtone": "Pasirinktinis",
+  "aboutSection": "Apie",
+  "aboutFeedbackSection": "Apie ir atsiliepimai",
+  "aboutDescription": "Nothing Dialer yra atvirojo kodo. Jei esate kūrėjas, kviečiame susipažinti su kodu ir prisidėti.",
+  "aboutViewSource": "Žiūrėti GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "Nepavyko atidaryti nuorodos",
+  "reviewSection": "Apžvalga",
+  "reviewDescription": "Mėgaukitės Nothing Dialer? Jūsų įvertinimas sistemoje „Google Play“ padeda kitiems rasti programą.",
+  "reviewRateOnPlay": "Įvertinkite „Google Play“.",
+  "reviewRateOnPlaySubtitle": "Palikite įvertinimą neišeidami iš programos",
+  "reviewCouldNotOpen": "Nepavyko atidaryti „Google Play“.",
+  "breathSpeed": "Kvėpavimo greitis",
+  "breathSpeedBlinkHint": "Žemiau = mirksėti, aukščiau = lėtas kvėpavimas",
+  "speedSliderHint": "Žemiau = greičiau, aukščiau = lėčiau",
+  "swatchDefault": "Numatytoji",
+  "customAccentColorPicker": "Individualizuota akcento spalva",
+  "customLightBackgroundPicker": "Individualus šviesus fonas",
+  "customDarkBackgroundPicker": "Individualus tamsus fonas",
+  "customCallBackgroundPicker": "Pasirinktinis skambučio fonas",
+  "ongoingCallStyleTitle": "Vykdomo skambučio stilius",
+  "glyphMapUnavailable": "Glifų žemėlapis nepasiekiamas",
+  "animationDelayRange": "Animacijos delsa (1 s–10 s)",
+  "animationDelayRangeSingle": "Animacijos delsa (0,1 s–10 s)",
+  "inCallMute": "Nutildyti",
+  "inCallKeypad": "Klaviatūra",
+  "inCallSpeaker": "Pranešėjas",
+  "inCallMore": "Daugiau",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "Telefonas",
+  "inCallAddCall": "Pridėti skambutį",
+  "inCallChangeSim": "Pakeiskite SIM kortelę",
+  "inCallDecline": "Atmesti",
+  "inCallAnswer": "Atsakymas",
+  "inCallMessage": "Pranešimas",
+  "inCallCalling": "Skambina…",
+  "inCallIncoming": "Įeinantis skambutis",
+  "inCallSelectSim": "Pasirinkite SIM…",
+  "inCallSwitchingSim": "Keičiama SIM…",
+  "inCallCallEnded": "Skambutis baigtas",
+  "inCallCallingVia": "Skambinti per {sim}",
+  "inCallCallingViaHtml": "Skambinti per <b>{sim}</b>",
+  "inCallChooseSim": "Šiam skambučiui pasirinkite SIM kortelę",
+  "inCallDragAnswerDecline": "Vilkite dešinėn, kad atsakytumėte · Vilkite į kairę, kad atsisakytumėte",
+  "inCallMobileNumber": "Mobilusis {number}",
+  "inCallAudioRouteCurrent": "{label} (dabartinis)",
+  "inCallCallViaFrom": "Skambinkite numeriu <b>{sim}</b> nuo",
+  "inCallCallFrom": "Skambinti iš",
+  "inCallUnknown": "Nežinoma",
+  "selectContactRingtone": "Pasirinkite kontakto skambėjimo toną",
+  "speakToSearchPrompt": "Kalbėkite norėdami ieškoti",
+  "phonePermissionRequired": "Reikalingas leidimas telefonu",
+  "callFailed": "Skambinti nepavyko: {error}",
+  "callPermissionDenied": "Skambinimo leidimas atmestas",
+  "alreadyDefaultDialer": "Jau nustatytas kaip numatytasis rinkiklis",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

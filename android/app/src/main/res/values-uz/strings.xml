@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Ovozsiz</string>
+    <string name="in_call_keypad">Klaviatura</string>
+    <string name="in_call_speaker">Spiker</string>
+    <string name="in_call_more">Ko\'proq</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Qo\'ng\'iroq qo\'shish</string>
+    <string name="in_call_change_sim">SIM kartani almashtiring</string>
+    <string name="in_call_decline">Rad etish</string>
+    <string name="in_call_answer">Javob</string>
+    <string name="in_call_message">Xabar</string>
+    <string name="in_call_calling">Qo‘ng‘iroq qilinmoqda…</string>
+    <string name="in_call_incoming">Kiruvchi qo\'ng\'iroq</string>
+    <string name="in_call_select_sim">SIM-kartani tanlang…</string>
+    <string name="in_call_switching_sim">SIM karta almashtirilmoqda…</string>
+    <string name="in_call_call_ended">Qo\'ng\'iroq tugadi</string>
+    <string name="in_call_calling_via">%1$s orqali qo\'ng\'iroq qilish</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; orqali qo\'ng\'iroq qilish</string>
+    <string name="in_call_choose_sim">Ushbu qo\'ng\'iroq uchun SIM-kartani tanlang</string>
+    <string name="in_call_drag_answer_decline">Javob berish uchun o‘ngga torting · Rad etish uchun chapga torting</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (joriy)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; orqali qo\'ng\'iroq qiling</string>
+    <string name="in_call_call_from">dan qo\'ng\'iroq qiling</string>
+    <string name="in_call_unknown">Noma\'lum</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Kontakt ringtonini tanlang</string>
+    <string name="native_speak_to_search">Qidirish uchun gapiring</string>
+    <string name="native_phone_permission_required">Telefon ruxsati talab qilinadi</string>
+    <string name="native_call_failed">Qo‘ng‘iroq amalga oshmadi: %1$s</string>
+    <string name="native_call_permission_denied">Qo‘ng‘iroq qilish ruxsati rad etildi</string>
+    <string name="native_already_default_dialer">Allaqachon standart terish sifatida o‘rnatilgan</string>
+</resources>

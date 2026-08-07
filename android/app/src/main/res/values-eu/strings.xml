@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Isildu</string>
+    <string name="in_call_keypad">Teklatua</string>
+    <string name="in_call_speaker">Hizlaria</string>
+    <string name="in_call_more">Gehiago</string>
+    <string name="in_call_bluetooth">Bluetootha</string>
+    <string name="in_call_phone">Telefonoa</string>
+    <string name="in_call_add_call">Gehitu deia</string>
+    <string name="in_call_change_sim">Aldatu SIM</string>
+    <string name="in_call_decline">Gainbehera</string>
+    <string name="in_call_answer">Erantzun</string>
+    <string name="in_call_message">Mezua</string>
+    <string name="in_call_calling">Deitzen…</string>
+    <string name="in_call_incoming">Sarrerako deia</string>
+    <string name="in_call_select_sim">Hautatu SIM…</string>
+    <string name="in_call_switching_sim">SIM aldatzen…</string>
+    <string name="in_call_call_ended">Deia amaitu da</string>
+    <string name="in_call_calling_via">%1$s bidez deitzen</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; bidez deitzen</string>
+    <string name="in_call_choose_sim">Aukeratu SIM dei honetarako</string>
+    <string name="in_call_drag_answer_decline">Arrastatu eskuinera erantzuteko · Arrastatu ezkerrera ukatzeko</string>
+    <string name="in_call_mobile_number">Mugikorra %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Oraingo)</string>
+    <string name="in_call_call_via_from">Deitu &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; bidez</string>
+    <string name="in_call_call_from">Deitu</string>
+    <string name="in_call_unknown">Ezezaguna</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Hautatu kontaktuen dei-tonua</string>
+    <string name="native_speak_to_search">Hitz egin bilatzeko</string>
+    <string name="native_phone_permission_required">Telefonoaren baimena behar da</string>
+    <string name="native_call_failed">Deiak huts egin du: %1$s</string>
+    <string name="native_call_permission_denied">Deiaren baimena ukatu da</string>
+    <string name="native_already_default_dialer">Dagoeneko markatzaile lehenetsi gisa ezarri duzu</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">沉默的</string>
+    <string name="in_call_keypad">鍵盤</string>
+    <string name="in_call_speaker">揚聲器</string>
+    <string name="in_call_more">更多的</string>
+    <string name="in_call_bluetooth">藍牙</string>
+    <string name="in_call_phone">電話</string>
+    <string name="in_call_add_call">新增通話</string>
+    <string name="in_call_change_sim">更換SIM卡</string>
+    <string name="in_call_decline">衰退</string>
+    <string name="in_call_answer">回答</string>
+    <string name="in_call_message">訊息</string>
+    <string name="in_call_calling">呼叫…</string>
+    <string name="in_call_incoming">來電</string>
+    <string name="in_call_select_sim">選擇SIM卡...</string>
+    <string name="in_call_switching_sim">切換 SIM 卡...</string>
+    <string name="in_call_call_ended">通話結束</string>
+    <string name="in_call_calling_via">透過 %1$s 撥打</string>
+    <string name="in_call_calling_via_html">透過 &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; 撥打</string>
+    <string name="in_call_choose_sim">選擇用於此通話的 SIM 卡</string>
+    <string name="in_call_drag_answer_decline">向右拖曳接聽·向左拖曳拒絕</string>
+    <string name="in_call_mobile_number">手機%1$s</string>
+    <string name="in_call_audio_route_current">%1$s（當前）</string>
+    <string name="in_call_call_via_from">透過 &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; 撥打</string>
+    <string name="in_call_call_from">來電來自</string>
+    <string name="in_call_unknown">未知</string>
+    <string name="in_call_sim_slot">卡%1$d</string>
+    <string name="native_select_contact_ringtone">選擇聯絡人鈴聲</string>
+    <string name="native_speak_to_search">說話進行搜索</string>
+    <string name="native_phone_permission_required">需要電話許可</string>
+    <string name="native_call_failed">通話失敗：%1$s</string>
+    <string name="native_call_permission_denied">呼叫權限被拒絕</string>
+    <string name="native_already_default_dialer">已設定為預設撥號器</string>
+</resources>

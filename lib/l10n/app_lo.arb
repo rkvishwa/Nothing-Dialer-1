@@ -1,0 +1,759 @@
+{
+  "@@locale": "lo",
+  "appTitle": "ບໍ່ມີຫຍັງ Dialer",
+  "settings": "ການຕັ້ງຄ່າ",
+  "settingsSearchHint": "ການຕັ້ງຄ່າການຊອກຫາ",
+  "settingsSearchNoResults": "ບໍ່ພົບການຕັ້ງຄ່າ",
+  "general": "ທົ່ວໄປ",
+  "theme": "ຫົວຂໍ້",
+  "themeSystemDefault": "ຄ່າເລີ່ມຕົ້ນຂອງລະບົບ",
+  "themeLight": "ແສງສະຫວ່າງ",
+  "themeDark": "ມືດ",
+  "themeFollowSystem": "ປະຕິບັດຕາມການຕັ້ງຄ່າລະບົບ",
+  "themeAlwaysLight": "ໃຊ້ຮູບແບບສີສັນແຈ້ງສະເໝີ",
+  "themeAlwaysDark": "ໃຊ້ຮູບແບບສີສັນມືດສະເໝີ",
+  "language": "ພາສາ",
+  "languageDeviceDefault": "ອຸປະກອນເລີ່ມຕົ້ນ",
+  "languagePickerTitle": "ພາສາ",
+  "languageSearchHint": "ຊອກຫາພາສາ",
+  "font": "ຟອນ",
+  "fontSystem": "ຄ່າເລີ່ມຕົ້ນຂອງລະບົບ",
+  "fontNdot": "ບໍ່ມີຫຍັງ (NDot)",
+  "fontSerif": "Roboto Serif",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "ດາວໂຫຼດຟອນບໍ່ສຳເລັດ. ກວດເບິ່ງການເຊື່ອມຕໍ່ຂອງທ່ານແລ້ວລອງໃໝ່ອີກຄັ້ງ.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "ຟອນ",
+  "fontPreviewSample": "ບໍ່ມີຫຍັງ Dialer",
+  "fontAppWide": "ຟອນແອັບ",
+  "fontApplyTo": "ນຳໃຊ້ກັບ",
+  "fontApplyEntireApp": "ແອັບທັງໝົດ",
+  "fontApplyEntireAppSubtitle": "ຕົວອັກສອນດຽວກັນຢູ່ທົ່ວທຸກແຫ່ງ, ລວມທັງຢູ່ໃນການໂທ",
+  "fontApplyTitlesOnly": "ຫົວຂໍ້ & ສ່ວນຫົວ",
+  "fontApplyTitlesOnlySubtitle": "ຫົວຂໍ້ໃຫຍ່ ແລະສ່ວນຫົວຂອງພາກສ່ວນເທົ່ານັ້ນ",
+  "fontApplyCustomize": "ປັບແຕ່ງ",
+  "fontApplyCustomizeSubtitle": "ເລືອກຕົວອັກສອນຕໍ່ໜ້າຈໍ ແລະປະເພດຂໍ້ຄວາມ",
+  "fontCustomizeSection": "ປັບແຕ່ງໂດຍໜ້າຈໍ",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "ຊື່ໜ້າ",
+  "fontRoleSectionHeader": "ສ່ວນຫົວ",
+  "fontRolePrimary": "ຂໍ້ຄວາມຫຼັກ",
+  "fontRoleSecondary": "ຂໍ້ຄວາມທີສອງ",
+  "fontRoleButton": "ປຸ່ມ",
+  "fontRoleDialKey": "ປຸ່ມກົດ",
+  "fontSurfaceRecents": "ຫຼ້າສຸດ",
+  "fontSurfaceContacts": "ຕິດຕໍ່ພົວພັນ",
+  "fontSurfaceSettings": "ການຕັ້ງຄ່າ",
+  "fontSurfaceDialpad": "ປຸ່ມກົດ",
+  "fontSurfaceShell": "ການນໍາທາງ",
+  "fontSurfaceDefaultDialer": "ການເຕືອນຕົວໂທເລີ່ມຕົ້ນ",
+  "fontSurfaceFavourites": "ລາຍການທີ່ມັກ",
+  "fontSurfaceBlocked": "ຕົວເລກທີ່ຖືກບລັອກ",
+  "fontSurfaceContactDetail": "ລາຍລະອຽດຕິດຕໍ່",
+  "fontSurfaceCallHistory": "ປະຫວັດການໂທ",
+  "fontSurfaceSheets": "Sheets & pickers",
+  "fontSurfaceInCall": "ໜ້າຈໍການໂທ",
+  "fontSubtitleEntireApp": "{font} - ແອັບທັງໝົດ",
+  "fontSubtitleTitlesOnly": "{font} - ຊື່ເທົ່ານັ້ນ",
+  "fontSubtitleCustomize": "ກຳນົດເອງຕໍ່ໜ້າຈໍ",
+  "background": "ຄວາມເປັນມາ",
+  "accent": "ສຳນຽງ",
+  "lightBackground": "ພື້ນຫຼັງອ່ອນ",
+  "lightAccent": "ສຳນຽງອ່ອນ",
+  "darkBackground": "ພື້ນຫຼັງມືດ",
+  "darkAccent": "ສໍານຽງຊ້ໍາ",
+  "callBackground": "ປະຫວັດການໂທ",
+  "appIcon": "ໄອຄອນແອັບ",
+  "answerMethod": "ວິທີການຕອບ",
+  "answerSlide": "ເລື່ອນເພື່ອຕອບ",
+  "answerSlideSubtitle": "ປັດຊ້າຍ/ຂວາເທິງແຖບ, ເຊັ່ນ Google Phone",
+  "answerButton": "ແຕະປຸ່ມ",
+  "answerButtonSubtitle": "ແຕະໃສ່ຄຳຕອບ ຫຼືປຸ່ມປະຕິເສດ",
+  "answerHuawei": "ແບບ Huawei",
+  "answerHuaweiSubtitle": "ລາກວົງມົນໄປຫາໂທລະສັບສີຂຽວເພື່ອຕອບ",
+  "answerHuaweiTileSubtitle": "Huawei — ລາກເປັນສີຂຽວ/ສີແດງ",
+  "calling": "ໂທ",
+  "defaultSim": "SIM ເລີ່ມຕົ້ນ",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "ຖາມທຸກຄັ້ງ",
+  "askEveryTimeSubtitle": "ສະແດງຕົວເລືອກ SIM ກ່ອນການໂທແຕ່ລະຄັ້ງ",
+  "simSlot": "ຊິມ {slot}",
+  "noSimCardsFound": "ບໍ່ພົບຊິມກາດ",
+  "couldNotLoadSims": "ບໍ່ສາມາດໂຫລດຊິມໄດ້: {error}",
+  "allFavourites": "ລາຍການທີ່ມັກທັງໝົດ",
+  "allFavouritesSubtitle": "ຈັດລໍາດັບໃຫມ່, ເອົາອອກ, ແລະເພີ່ມຈາກລາຍຊື່",
+  "blockedNumbers": "ຕົວເລກທີ່ຖືກບລັອກ",
+  "blockedNumbersSubtitle": "ເບິ່ງແລະປົດບລັອກຕົວເລກ",
+  "soundsAndVibration": "ສຽງແລະການສັ່ນສະເທືອນ",
+  "soundsAndVibrationSubtitle": "ສຽງຣິງໂທນ, ການສັ່ນສະເທືອນ, ປຸ່ມໂທນສຽງ",
+  "couldNotOpenSettings": "ບໍ່ສາມາດເປີດການຕັ້ງຄ່າໄດ້: {error}",
+  "frequentlyContacted": "ຕິດຕໍ່ເລື້ອຍໆ",
+  "numberOfRecords": "ຈໍານວນບັນທຶກ",
+  "timePeriod": "ໄລຍະເວລາ",
+  "periodLast24Hours": "24 ຊົ່ວໂມງທີ່ຜ່ານມາ",
+  "periodLast24HoursSubtitle": "ໂທຈາກມື້ທີ່ຜ່ານມາ",
+  "periodLast7Days": "7 ມື້ທີ່ຜ່ານມາ",
+  "periodLast7DaysSubtitle": "ໂທຈາກອາທິດທີ່ຜ່ານມາ",
+  "periodLast30Days": "30 ມື້ທີ່ຜ່ານມາ",
+  "periodLast30DaysSubtitle": "ໂທຈາກເດືອນທີ່ຜ່ານມາ",
+  "periodLast12Months": "12 ເດືອນຜ່ານມາ",
+  "periodLast12MonthsSubtitle": "ໂທຈາກປີທີ່ຜ່ານມາ",
+  "periodAllTime": "ຕະຫຼອດເວລາ",
+  "periodAllTimeSubtitle": "ປະຫວັດການໂທທັງໝົດ",
+  "frequentMaxOff": "ປິດ",
+  "frequentMaxCount": "{count} ຕິດຕໍ່ພົວພັນ",
+  "torchBlink": "ກະພິບໄຟ",
+  "torchIncomingCall": "ໄຟສາຍໂທເຂົ້າ",
+  "torchOutgoingCall": "ໄຟສາຍໂທອອກ",
+  "torchOngoingCall": "ໄຟສາຍໂທຢ່າງຕໍ່ເນື່ອງ",
+  "torchIncomingInterval": "ໄລຍະກະພິບເຂົ້າມາ",
+  "torchOutgoingInterval": "ໄລຍະກະພິບຂາອອກ",
+  "torchOngoingInterval": "ໄລຍະກະພິບທີ່ກຳລັງດຳເນີນຢູ່",
+  "torchOff": "ປິດ",
+  "torchOffIncomingSubtitle": "ບໍ່ມີໄຟສາຍໃນຂະນະທີ່ດັງ",
+  "torchOffOutgoingSubtitle": "ບໍ່ມີໄຟສາຍໃນຂະນະທີ່ໂທອອກ",
+  "torchOffOngoingSubtitle": "ບໍ່ມີໄຟສາຍໃນລະຫວ່າງການໂທ",
+  "torchFixedInterval": "ໄລຍະຫ່າງຄົງທີ່",
+  "torchFixedIntervalSubtitle": "ກະພິບດ້ວຍຄວາມໄວທີ່ກໍານົດໄວ້",
+  "torchIntervalSeconds": "{seconds} s",
+  "torchIntervalBlink": "{seconds} ກະພິບ",
+  "flashlightUnavailable": "ໄຟສາຍບໍ່ສາມາດໃຊ້ໄດ້ໃນອຸປະກອນນີ້",
+  "glyphLights": "Glyph Lights",
+  "glyphCallingAnimation": "ອະນິເມຊັນການໂທຫາ Glyph",
+  "glyphOngoingAnimation": "Glyph ເຄື່ອນໄຫວການໂທຢ່າງຕໍ່ເນື່ອງ",
+  "glyphNone": "ບໍ່ມີ",
+  "glyphNoneOutgoingSubtitle": "ປິດການນຳໃຊ້ໄຟ Glyph ສຳລັບການໂທອອກ",
+  "glyphNoneInCallSubtitle": "ປິດການນຳໃຊ້ໄຟ Glyph ໃນຂະນະທີ່ກຳລັງໂທຢູ່",
+  "glyphBreathProgress": "ລົມຫາຍໃຈ & ຄວາມກ້າວຫນ້າ",
+  "glyphBreathProgressSubtitle": "ແສງສະຫວ່າງຫາຍໃຈໃນຂະນະທີ່ສາຍເຕັມໄປກວ່າ 65s",
+  "glyphAccumulate": "ສະສົມ",
+  "glyphAccumulateSubtitle": "ການສະສົມພາບເຄື່ອນໄຫວຢູ່ໄຟ C1-C4",
+  "glyphSingle": "ໂສດ",
+  "glyphSingleSubtitle": "ແສງດ່ຽວເຄື່ອນທີ່ຜ່ານ C1-C4",
+  "glyphBreath": "ລົມຫາຍໃຈ",
+  "glyphBreathSubtitle": "ເລືອກໄຟແລະຄວາມໄວ",
+  "glyphSteady": "ໝັ້ນຄົງ",
+  "glyphSteadySubtitle": "ໄຟທີ່ເລືອກຈະເປີດຢູ່",
+  "breathSettings": "ການຕັ້ງຄ່າລົມຫາຍໃຈ",
+  "activeLights": "ແສງທີ່ໃຊ້ໄດ້",
+  "lightsCount": "{count}ໄຟ",
+  "speedSettings": "ການຕັ້ງຄ່າຄວາມໄວ",
+  "speedSettingsDelay": "{ms}ms ຊັກຊ້າ",
+  "durationAndSpeed": "ໄລຍະເວລາ ແລະຄວາມໄວ",
+  "durationSpeedSummary": "ໄລຍະເວລາ {duration}s, ໄລຍະຫ່າງ {interval}ms",
+  "cancel": "ຍົກເລີກ",
+  "done": "ສຳເລັດແລ້ວ",
+  "save": "ບັນທຶກ",
+  "block": "ຕັນ",
+  "delete": "ລຶບ",
+  "recents": "ຫຼ້າສຸດ",
+  "contacts": "ຕິດຕໍ່ພົວພັນ",
+  "hideFavouritesOnRecents": "ເຊື່ອງລາຍການທີ່ມັກໃນລາຍການຫຼ້າສຸດ",
+  "showFavouritesOnRecents": "ສະແດງລາຍການທີ່ມັກໃນຫຼ້າສຸດ",
+  "ongoingCall": "ການໂທຢ່າງຕໍ່ເນື່ອງ",
+  "setAsDefaultTitle": "ຕັ້ງ AS\nຄ່າເລີ່ມຕົ້ນ",
+  "setAsDefaultBody": "ເພື່ອໃຊ້ Nothing Dialer, ມັນຕ້ອງຖືກຕັ້ງເປັນແອັບຯໂທລະສັບເລີ່ມຕົ້ນຂອງທ່ານ. ນີ້ອະນຸຍາດໃຫ້ທ່ານສາມາດຈັດການການໂທ, ເບິ່ງປະຫວັດ, ແລະນໍາໃຊ້ພາບເຄື່ອນໄຫວ Glyph.",
+  "setAsDefaultButton": "ຕັ້ງເປັນຄ່າເລີ່ມຕົ້ນ",
+  "nothingDialerBrand": "NOTHING DIALER 1",
+  "favourites": "ລາຍການທີ່ມັກ",
+  "addFavourite": "ເພີ່ມ favorite",
+  "favouritesDrawerHint": "ໃຊ້ເມນູເພື່ອເພີ່ມລາຍຊື່. ແຕະຢູ່ນອກລິ້ນຊັກ ຫຼືປັດມັນປິດ. ຕິດດາວຜູ້ຕິດຕໍ່ຈາກລາຍລະອຽດຂອງເຂົາເຈົ້າ, ຫຼືກົດປຸ່ມຄ້າງໄວ້ໃນການໂທຫຼ້າສຸດ.",
+  "menu": "ເມນູ",
+  "noFavouritesYet": "ບໍ່ມີລາຍການທີ່ມັກເທື່ອ.\nເປີດເມນູເພື່ອເພີ່ມອັນໜຶ່ງ ຫຼືຕິດດາວໃຫ້ລາຍຊື່ຜູ້ຕິດຕໍ່.",
+  "contactsPermissionNeeded": "ຕ້ອງການສິດອະນຸຍາດຕິດຕໍ່",
+  "chooseContact": "ເລືອກການຕິດຕໍ່",
+  "noPhone": "ບໍ່ມີໂທລະສັບ",
+  "pickNumber": "ເລືອກເລກ",
+  "contactHasNoPhone": "ລາຍຊື່ຜູ້ຕິດຕໍ່ນີ້ບໍ່ມີເບີໂທລະສັບ",
+  "blockNumber": "ບລັອກຕົວເລກ",
+  "enterPhoneNumber": "ໃສ່ເບີໂທລະສັບ",
+  "unblockedDisplay": "ປົດບລັອກແລ້ວ {display}",
+  "couldNotUnblockNumber": "ບໍ່ສາມາດປົດບລັອກເບີໂທໄດ້",
+  "blockedSummary": "{blocked}ຖືກບລັອກ • {matched} ກົງກັນ",
+  "contactsPermissionMissing": "ຂາດການອະນຸຍາດລາຍຊື່. ແຕະເພື່ອແກ້ໄຂ.",
+  "noBlockedNumbers": "ບໍ່ມີຕົວເລກທີ່ຖືກບລັອກ",
+  "unknownContact": "ການຕິດຕໍ່ທີ່ບໍ່ຮູ້ຈັກ",
+  "unblock": "ປົດບລັອກ",
+  "permissionNeeded": "ຕ້ອງການການອະນຸຍາດ",
+  "grantPhonePermission": "ໃຫ້ການອະນຸຍາດໂທລະສັບເພື່ອເບິ່ງປະຫວັດການໂທຂອງທ່ານ.",
+  "grantContactsPermission": "ໃຫ້ສິດອະນຸຍາດຜູ້ຕິດຕໍ່ເພື່ອເບິ່ງປຶ້ມທີ່ຢູ່ຂອງເຈົ້າ.",
+  "openSettings": "ເປີດການຕັ້ງຄ່າ",
+  "tryAgain": "ລອງອີກຄັ້ງ",
+  "couldNotLoadContacts": "ບໍ່ສາມາດໂຫຼດລາຍຊື່ຜູ້ຕິດຕໍ່ໄດ້",
+  "contactsLoadError": "ມີບາງຢ່າງຜິດພາດໃນການອ່ານປຶ້ມທີ່ຢູ່ຂອງເຈົ້າ.",
+  "noContactsFound": "ບໍ່ພົບລາຍຊື່ຜູ້ຕິດຕໍ່",
+  "contactsEmptySubtitle": "ລາຍຊື່ຜູ້ຕິດຕໍ່ຈາກອຸປະກອນຂອງທ່ານຈະປາກົດຢູ່ບ່ອນນີ້.",
+  "searchContacts": "ຊອກຫາລາຍຊື່ຜູ້ຕິດຕໍ່...",
+  "searchRecentCalls": "ຊອກຫາການໂທທີ່ຜ່ານມາ",
+  "fromContacts": "ຈາກການຕິດຕໍ່",
+  "recentsSearchSection": "ການຄົ້ນຫາທີ່ຜ່ານມາ",
+  "recentsSearchShowContacts": "ສະແດງລາຍຊື່ຜູ່ຕິດຕໍ່ໃນການຊອກຫາ",
+  "recentsSearchShowContactsSubtitle": "ໃນຂະນະທີ່ຊອກຫາຫຼ້າສຸດ, ໃຫ້ສະແດງຄົນທີ່ກົງກັນຈາກປຶ້ມທີ່ຢູ່ຂອງທ່ານຢູ່ລຸ່ມຜົນການຊອກຫາປະຫວັດການໂທ.",
+  "voiceSearch": "ຄົ້ນຫາດ້ວຍສຽງ",
+  "createNewContact": "ສ້າງການຕິດຕໍ່ໃຫມ່",
+  "callError": "ການໂທຜິດພາດ: {error}",
+  "noRecentCalls": "ບໍ່ມີການໂທຫຼ້າສຸດ",
+  "callHistoryEmpty": "ປະຫວັດການໂທຂອງທ່ານຈະປາກົດຢູ່ບ່ອນນີ້.",
+  "loadMore": "ໂຫຼດເພີ່ມເຕີມ",
+  "frequentlyContactedHeader": "ຕິດຕໍ່ກັນເລື້ອຍໆ",
+  "recentHistory": "ປະຫວັດສາດທີ່ຜ່ານມາ",
+  "noFavouritesRecentsHint": "ບໍ່ມີລາຍການທີ່ມັກເທື່ອ. ຕິດດາວຜູ້ຕິດຕໍ່, ກົດຄ້າງໄວ້ໂທຫາ, ຫຼືໃຊ້ແຖບລາຍການທີ່ມັກ.",
+  "copyNumber": "ສຳເນົາຕົວເລກ",
+  "editNumberBeforeCall": "ແກ້ໄຂເບີໂທກ່ອນໂທ",
+  "removeFromFavourites": "ເອົາອອກຈາກລາຍການທີ່ມັກ",
+  "addToFavourites": "ເພີ່ມໃສ່ລາຍການທີ່ມັກ",
+  "blockNumberQuestion": "ບລັອກໝາຍເລກບໍ?",
+  "blockNumberConfirm": "ທ່ານຈະບໍ່ໄດ້ຮັບສາຍ ຫຼື ຂໍ້ຄວາມຈາກ {number} ອີກຕໍ່ໄປ.",
+  "blocked": "ບລັອກ",
+  "couldNotBlock": "ບໍ່ສາມາດບລັອກໄດ້",
+  "contactNotOnDevice": "ບໍ່ໄດ້ບັນທຶກລາຍຊື່ຜູ້ຕິດຕໍ່ໃນອຸປະກອນນີ້",
+  "unblocked": "ປົດບລັອກ",
+  "numberCopied": "ສຳເນົາຕົວເລກແລ້ວ",
+  "showLess": "ສະແດງໜ້ອຍລົງ",
+  "showAllTimes": "ສະແດງທຸກເວລາ",
+  "mostRecent": "ຫຼ້າສຸດ · {time}",
+  "videoCall": "ໂທວິດີໂອ",
+  "couldNotPlaceVideoCall": "ບໍ່ສາມາດໂທວິດີໂອໄດ້",
+  "message": "ຂໍ້ຄວາມ",
+  "couldNotOpenMessaging": "ບໍ່ສາມາດເປີດແອັບຯສົ່ງຂໍ້ຄວາມໄດ້",
+  "history": "ປະຫວັດສາດ",
+  "viewContact": "ເບິ່ງການຕິດຕໍ່",
+  "addToContact": "ເພີ່ມໃສ່ການຕິດຕໍ່",
+  "callTypeMissed": "ພາດ",
+  "callTypeRejected": "ປະຕິເສດ",
+  "callTypeIncoming": "ຂາເຂົ້າ",
+  "callTypeOutgoing": "ຂາອອກ",
+  "today": "ມື້ນີ້",
+  "yesterday": "ມື້ວານນີ້",
+  "justNow": "ດຽວນີ້",
+  "minutesAgo": "{count} ນາທີກ່ອນ",
+  "hoursAgo": "{count} ຊົ່ວໂມງກ່ອນ",
+  "filterAll": "ທັງໝົດ",
+  "filterMissed": "ພາດ",
+  "filterContacts": "ຕິດຕໍ່ພົວພັນ",
+  "filterNonContacts": "ບໍ່ຕິດຕໍ່",
+  "iconUpdated": "ອັບເດດໄອຄອນແລ້ວ. ໜ້າຈໍຫຼັກຂອງທ່ານອາດໃຊ້ເວລາຄາວໜຶ່ງເພື່ອໂຫຼດຂໍ້ມູນຄືນໃໝ່.",
+  "iconSavedRelease": "ບັນທຶກທາງເລືອກແລ້ວ. ໄອຄອນໜ້າຈໍຫຼັກອັບເດດໃນລຸ້ນສ້າງ.",
+  "couldNotChangeIcon": "ບໍ່ສາມາດປ່ຽນໄອຄອນໄດ້: {error}",
+  "launcherClassicBlack": "ຄລາສິກ (ສີດໍາ)",
+  "launcherLight": "ແສງສະຫວ່າງ",
+  "launcherNothingRed": "ບໍ່ມີຫຍັງສີແດງ",
+  "launcherDarkGrey": "ສີຂີ້ເຖົ່າເຂັ້ມ",
+  "launcherCream": "ຄີມ",
+  "launcherRetroPhone": "ໂທລະສັບ Retro",
+  "launcherRetroPhoneLight": "ໂທລະສັບ Retro (ແສງສະຫວ່າງ)",
+  "voiceSearchUnavailable": "ການຊອກຫາດ້ວຍສຽງບໍ່ສາມາດໃຊ້ໄດ້ໃນອຸປະກອນນີ້.",
+  "voiceSearchFailed": "ການຄົ້ນຫາດ້ວຍສຽງລົ້ມເຫລວ: {error}",
+  "customColor": "ກຳນົດເອງ",
+  "selectColor": "ເລືອກສີ",
+  "reset": "ຣີເຊັດ",
+  "simPickerTitle": "ເລືອກ SIM",
+  "simChooseForCall": "ເລືອກ SIM ສໍາລັບການໂທນີ້",
+  "defaultSimAsk": "ຖາມທຸກຄັ້ງ",
+  "defaultSimFixed": "ຊິມ {slot}",
+  "contactDetails": "ລາຍລະອຽດຕິດຕໍ່",
+  "call": "ໂທ",
+  "share": "ແບ່ງປັນ",
+  "favourite": "ມັກ",
+  "unfavourite": "ບໍ່ມັກ",
+  "blockContact": "ຂັດຂວາງການຕິດຕໍ່",
+  "unblockContact": "ປົດບລັອກການຕິດຕໍ່",
+  "deleteContact": "ລຶບລາຍຊື່ຜູ່ຕິດຕໍ່",
+  "phone": "ໂທລະສັບ",
+  "email": "ອີເມວ",
+  "ringtone": "ຣິງໂທນ",
+  "defaultRingtone": "ຄ່າເລີ່ມຕົ້ນ",
+  "simForContact": "SIM ສໍາລັບການຕິດຕໍ່ນີ້",
+  "callHistoryTitle": "ປະຫວັດການໂທ",
+  "noCallsWithNumber": "ບໍ່ມີການໂທດ້ວຍເບີນີ້",
+  "durationMinutesSeconds": "{minutes}ມ{seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "ພາບເຄື່ອນໄຫວ Glyph",
+  "inCallGlyphAnimationStyle": "ອະນິເມຊັນ Glyph ໃນການໂທ",
+  "recordsOff": "ປິດ",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "SIM ເລີ່ມຕົ້ນ",
+  "nothingPhoneOnly": "ບໍ່ມີຫຍັງໂທລະສັບເທົ່ານັ້ນ",
+  "nothingPhoneOnlySubtitle": "ຄຸນສົມບັດ Glyph ຕ້ອງການໂທລະສັບທີ່ບໍ່ມີຫຍັງ",
+  "custom": "ກຳນົດເອງ",
+  "presetColorHex": "ຕັ້ງຄ່າໄວ້ລ່ວງໜ້າ · {hex}",
+  "customColorHex": "ກຳນົດເອງ · {hex}",
+  "oneContact": "1 ຕິດຕໍ່",
+  "upToContacts": "ສູງສຸດ {count} ຕິດຕໍ່ພົວພັນ",
+  "answerButtonTapSubtitle": "ແຕະປຸ່ມເພື່ອຕອບ",
+  "filterCalls": "ກັ່ນຕອງການໂທ",
+  "filterTooltip": "ການກັ່ນຕອງ",
+  "settingsTooltip": "ການຕັ້ງຄ່າ",
+  "filterAllSubtitle": "ບັນທຶກການໂທທັງໝົດ",
+  "filterMissedSubtitle": "ພາດ ແລະຖືກປະຕິເສດ",
+  "filterContactsSubtitle": "ການໂທກົງກັບລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່ບັນທຶກໄວ້",
+  "filterNonContactsSubtitle": "ຕົວເລກບໍ່ໄດ້ຢູ່ໃນປື້ມທີ່ຢູ່ຂອງເຈົ້າ",
+  "ongoingCallWithDetail": "ສາຍໂທທີ່ກຳລັງໂທ: {detail}",
+  "defaultSimForCalls": "SIM ເລີ່ມຕົ້ນສໍາລັບການໂທ",
+  "blinkInterval": "ໄລຍະກະພິບ",
+  "close": "ປິດ",
+  "frequentlyContactedInfoBody": "ສະ​ແດງ​ໃຫ້​ເຫັນ​ເບີ​ໂທ​ລະ​ສັບ​ທີ່​ມີ​ຊື່​ສຽງ​ຫຼາຍ​ທີ່​ສຸດ​ຂອງ​ທ່ານ​ຢູ່​ດ້ານ​ເທິງ​ຂອງ​ແຖບ​ບໍ່​ດົນ​ມາ​ນີ້, ອີງ​ຕາມ​ຈໍາ​ນວນ​ການ​ໂທ​ເຂົ້າ, ໂທ​ອອກ, ສາຍ​ທີ່​ພາດ​ຫຼື​ຖືກ​ປະ​ຕິ​ເສດ​ທີ່​ທ່ານ​ມີ​ກັບ​ແຕ່​ລະ​ເບີ​ໃນ​ໄລ​ຍະ​ເວ​ລາ​ທີ່​ທ່ານ​ເລືອກ.\n\nຈຳນວນບັນທຶກ: ຕັ້ງເປັນ 0 ເພື່ອປິດອັນນີ້. ໃຊ້ 1-20 ເພື່ອສະແດງໃຫ້ເຫັນວ່າມີຜູ້ຕິດຕໍ່ສູງສຸດຫຼາຍ.\n\nໄລຍະເວລານຳໃຊ້ພຽງແຕ່ເມື່ອມີຜູ້ຕິດຕໍ່ຢ່າງໜ້ອຍໜຶ່ງຄົນຖືກສະແດງ.",
+  "breathSettingsSpeedSummary": "{count}ໄຟ, {ms}ms ຄວາມໄວ",
+  "deleteContactQuestion": "ລຶບລາຍຊື່ຜູ້ຕິດຕໍ່ບໍ?",
+  "deleteContactBody": "ລາຍຊື່ຜູ້ຕິດຕໍ່ນີ້ຈະຖືກລຶບອອກຈາກອຸປະກອນຂອງທ່ານຢ່າງຖາວອນ.",
+  "blockContactQuestion": "ບລັອກການຕິດຕໍ່ບໍ?",
+  "unblockContactQuestion": "ປົດບລັອກການຕິດຕໍ່ບໍ?",
+  "blockContactBody": "ທ່ານຈະບໍ່ໄດ້ຮັບສາຍ ຫຼືຂໍ້ຄວາມຈາກຜູ້ຕິດຕໍ່ນີ້ອີກຕໍ່ໄປ.",
+  "unblockContactBody": "ທ່ານຈະເລີ່ມຮັບສາຍ ແລະຂໍ້ຄວາມຈາກຜູ້ຕິດຕໍ່ນີ້.",
+  "contactBlocked": "ບລັອກລາຍຊື່ຜູ້ຕິດຕໍ່ແລ້ວ",
+  "contactUnblocked": "ປົດບລັອກລາຍຊື່ຜູ້ຕິດຕໍ່ແລ້ວ",
+  "noPhoneNumbersToBlock": "ບໍ່ມີເບີໂທລະສັບທີ່ຈະບລັອກ",
+  "simSameAsSystem": "ຄືກັນກັບລະບົບ",
+  "simSameAsSystemSubtitle": "ປະຕິບັດຕາມ SIM ເລີ່ມຕົ້ນໃນການຕັ້ງຄ່າ",
+  "simAskEveryTimeForContact": "ສະແດງຕົວເລືອກຊິມສຳລັບຜູ້ຕິດຕໍ່ນີ້ສະເໝີ",
+  "ringtoneSetForContact": "Ringtone ຕັ້ງທົ່ວໂລກສໍາລັບການຕິດຕໍ່ນີ້",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "ເລືອກສຽງຣິງໂທນບໍ່ສຳເລັດ: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "ຜິດພາດ: {error}",
+  "noCallHistoryFound": "ບໍ່ພົບປະຫວັດການໂທ",
+  "speedDialVoicemail": "ໂທດ່ວນ: ຂໍ້ຄວາມສຽງ",
+  "shareContactSubject": "ຕິດຕໍ່: {name}",
+  "contactInfo": "ຂໍ້ມູນຕິດຕໍ່",
+  "dontAskAgainSim": "ຢ່າຖາມອີກ",
+  "simDontAskAgainSubtitle": "ໃຊ້ຊິມນີ້ເປັນຄ່າເລີ່ມຕົ້ນ (ປ່ຽນໃນການຕັ້ງຄ່າ)",
+  "addContact": "ເພີ່ມການຕິດຕໍ່",
+  "createContact": "ສ້າງການຕິດຕໍ່",
+  "paste": "ວາງ",
+  "clear": "ຈະແຈ້ງ",
+  "returnToCall": "ກັບໄປທີ່ການໂທ",
+  "numberOfRecordsTitle": "ຈໍານວນບັນທຶກ",
+  "recordsPickerSubtitle": "ຈຳນວນລາຍການທີ່ຕິດຕໍ່ເລື້ອຍໆເພື່ອສະແດງ (0 = off)",
+  "torchInfoTitle": "ກະພິບໄຟ",
+  "torchInfoBody": "ກະພິບກ້ອງກະພິບໃນລະຫວ່າງການໂທເຂົ້າ, ໂທອອກ, ຫຼືໂທຢ່າງຕໍ່ເນື່ອງ. ເອກະລາດຂອງໄຟ Glyph.",
+  "glyphMapTitle": "ແຜນຜັງ Glyph",
+  "glyphMapBody": "Nothing Phone 1 Glyph LED ເຂດ. ອະນິເມຊັນໂທອອກ ແລະໂທເຂົ້າໃຊ້ຊ່ອງເຫຼົ່ານີ້.",
+  "answerMethodTitle": "ວິທີການຕອບ",
+  "glyphOutgoingCallStyleTitle": "ຮູບແບບການໂທອອກ",
+  "glyphInCallAnimationTitle": "Glyph ອະນິເມຊັນໃນການໂທ",
+  "themePickerTitle": "ຫົວຂໍ້",
+  "torchIncomingTitle": "ໄຟສາຍໂທເຂົ້າ",
+  "torchOutgoingTitle": "ໄຟສາຍໂທອອກ",
+  "torchOngoingTitle": "ໄຟສາຍໂທຢ່າງຕໍ່ເນື່ອງ",
+  "timePeriodTitle": "ໄລຍະເວລາ",
+  "ok": "ຕົກລົງ",
+  "confirmDeleteCall": "ລຶບການໂທນີ້ອອກຈາກປະຫວັດບໍ?",
+  "confirmDeleteAllCalls": "ລຶບການໂທທັງໝົດດ້ວຍເບີນີ້ບໍ?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "ສົ່ງຂໍ້ຄວາມ",
+  "addToExistingContactAction": "ເພີ່ມໃສ່ລາຍຊື່ຜູ້ຕິດຕໍ່",
+  "mobileLabel": "ມືຖື",
+  "callingSimForContactTitle": "ກຳລັງໂທຫາຊິມສຳລັບຜູ້ຕິດຕໍ່ນີ້",
+  "contactSettings": "ການຕັ້ງຄ່າການຕິດຕໍ່",
+  "setCallingSim": "ຕັ້ງຄ່າ SIM ໂທ",
+  "contactRingtone": "ringtone ຕິດຕໍ່",
+  "shareContact": "ແບ່ງປັນການຕິດຕໍ່",
+  "blockNumbers": "ບລັອກຕົວເລກ",
+  "unblockNumbers": "ປົດບລັອກຕົວເລກ",
+  "connectedApps": "ແອັບທີ່ເຊື່ອມຕໍ່",
+  "simNotSet": "ບໍ່ໄດ້ຕັ້ງ",
+  "ringtoneDefault": "ຄ່າເລີ່ມຕົ້ນ",
+  "customRingtone": "ກຳນົດເອງ",
+  "aboutSection": "ກ່ຽວກັບ",
+  "aboutFeedbackSection": "ກ່ຽວກັບ & ຄວາມຄິດເຫັນ",
+  "aboutDescription": "ບໍ່ມີຫຍັງ Dialer ເປັນແຫຼ່ງເປີດ. ຖ້າທ່ານເປັນນັກພັດທະນາ, ທ່ານຍິນດີທີ່ຈະຄົ້ນຫາລະຫັດແລະປະກອບສ່ວນ.",
+  "aboutViewSource": "ເບິ່ງໃນ GitHub",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "ບໍ່ສາມາດເປີດລິ້ງໄດ້",
+  "reviewSection": "ທົບທວນຄືນ",
+  "reviewDescription": "ມີຄວາມສຸກບໍ່ມີຫຍັງ Dialer? ການໃຫ້ຄະແນນຂອງທ່ານໃນ Google Play ຊ່ວຍໃຫ້ຄົນອື່ນຊອກຫາແອັບໄດ້.",
+  "reviewRateOnPlay": "ໃຫ້ຄະແນນໃນ Google Play",
+  "reviewRateOnPlaySubtitle": "ໃຫ້ຄະແນນໂດຍບໍ່ໄດ້ອອກຈາກແອັບຯ",
+  "reviewCouldNotOpen": "ບໍ່ສາມາດເປີດ Google Play ໄດ້",
+  "breathSpeed": "ຄວາມໄວລົມຫາຍໃຈ",
+  "breathSpeedBlinkHint": "ຕ່ໍາ = ກະພິບ, ສູງ = ຫາຍໃຈຊ້າ",
+  "speedSliderHint": "ຕ່ໍາ = ໄວ, ສູງ = ຊ້າກວ່າ",
+  "swatchDefault": "ຄ່າເລີ່ມຕົ້ນ",
+  "customAccentColorPicker": "ສີສຳນຽງແບບກຳນົດເອງ",
+  "customLightBackgroundPicker": "ພື້ນຫຼັງແສງສະຫວ່າງແບບກຳນົດເອງ",
+  "customDarkBackgroundPicker": "ພື້ນຫຼັງມືດແບບກຳນົດເອງ",
+  "customCallBackgroundPicker": "ພື້ນຫຼັງການໂທແບບກຳນົດເອງ",
+  "ongoingCallStyleTitle": "ຮູບແບບການໂທຢ່າງຕໍ່ເນື່ອງ",
+  "glyphMapUnavailable": "ບໍ່ມີແຜນທີ່ Glyph",
+  "animationDelayRange": "ຄວາມລ່າຊ້າຂອງອະນິເມຊັນ (1ວິ - 10ວິ)",
+  "animationDelayRangeSingle": "ຄວາມລ່າຊ້າຂອງອະນິເມຊັນ (0.1 ວິ - 10 ວິ)",
+  "inCallMute": "ປິດສຽງ",
+  "inCallKeypad": "ປຸ່ມກົດ",
+  "inCallSpeaker": "ລໍາໂພງ",
+  "inCallMore": "ເພີ່ມເຕີມ",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "ໂທລະສັບ",
+  "inCallAddCall": "ເພີ່ມການໂທ",
+  "inCallChangeSim": "ປ່ຽນຊິມ",
+  "inCallDecline": "ຫຼຸດລົງ",
+  "inCallAnswer": "ຄໍາຕອບ",
+  "inCallMessage": "ຂໍ້ຄວາມ",
+  "inCallCalling": "ກຳລັງໂທ…",
+  "inCallIncoming": "ສາຍໂທເຂົ້າ",
+  "inCallSelectSim": "ເລືອກ SIM…",
+  "inCallSwitchingSim": "ກຳລັງສະຫຼັບຊິມ…",
+  "inCallCallEnded": "ສິ້ນສຸດການໂທ",
+  "inCallCallingVia": "ໂທຜ່ານ {sim}",
+  "inCallCallingViaHtml": "ໂທຜ່ານ<b>{sim}</b>",
+  "inCallChooseSim": "ເລືອກ SIM ສໍາລັບການໂທນີ້",
+  "inCallDragAnswerDecline": "ລາກຂວາເພື່ອຕອບ · ລາກຊ້າຍເພື່ອປະຕິເສດ",
+  "inCallMobileNumber": "ມືຖື {number}",
+  "inCallAudioRouteCurrent": "{label} (ປະຈຸບັນ)",
+  "inCallCallViaFrom": "ໂທຜ່ານ <b>{sim}</b> ຈາກ",
+  "inCallCallFrom": "ໂທຈາກ",
+  "inCallUnknown": "ບໍ່ຮູ້ຈັກ",
+  "selectContactRingtone": "ເລືອກສຽງເອີ້ນເຂົ້າຕິດຕໍ່",
+  "speakToSearchPrompt": "ເວົ້າເພື່ອຄົ້ນຫາ",
+  "phonePermissionRequired": "ຕ້ອງມີການອະນຸຍາດໂທລະສັບ",
+  "callFailed": "ການໂທລົ້ມເຫລວ: {error}",
+  "callPermissionDenied": "ປະຕິເສດການອະນຸຍາດການໂທ",
+  "alreadyDefaultDialer": "ຕັ້ງເປັນຕົວໂທເລີ່ມຕົ້ນແລ້ວ",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

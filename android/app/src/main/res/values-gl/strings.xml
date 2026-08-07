@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Silenciar</string>
+    <string name="in_call_keypad">Teclado</string>
+    <string name="in_call_speaker">Orador</string>
+    <string name="in_call_more">Máis</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Teléfono</string>
+    <string name="in_call_add_call">Engadir chamada</string>
+    <string name="in_call_change_sim">Cambiar SIM</string>
+    <string name="in_call_decline">Declinar</string>
+    <string name="in_call_answer">Resposta</string>
+    <string name="in_call_message">Mensaxe</string>
+    <string name="in_call_calling">Chamando…</string>
+    <string name="in_call_incoming">Chamada entrante</string>
+    <string name="in_call_select_sim">Selecciona SIM...</string>
+    <string name="in_call_switching_sim">Cambiando SIM...</string>
+    <string name="in_call_call_ended">Rematou a chamada</string>
+    <string name="in_call_calling_via">Chamando por %1$s</string>
+    <string name="in_call_calling_via_html">Chamando a través do &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Escolle SIM para esta chamada</string>
+    <string name="in_call_drag_answer_decline">Arrastre á dereita para responder · Arrastre á esquerda para rexeitar</string>
+    <string name="in_call_mobile_number">Móbil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Actual)</string>
+    <string name="in_call_call_via_from">Chama a través do &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; desde</string>
+    <string name="in_call_call_from">Chamar dende</string>
+    <string name="in_call_unknown">Descoñecido</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Seleccione o ton de chamada de contacto</string>
+    <string name="native_speak_to_search">Fala para buscar</string>
+    <string name="native_phone_permission_required">Requírese permiso do teléfono</string>
+    <string name="native_call_failed">Fallou a chamada: %1$s</string>
+    <string name="native_call_permission_denied">Permiso de chamada denegado</string>
+    <string name="native_already_default_dialer">Xa está definido como marcador predeterminado</string>
+</resources>

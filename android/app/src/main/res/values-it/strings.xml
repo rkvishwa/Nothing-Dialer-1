@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Muto</string>
+    <string name="in_call_keypad">Tastiera</string>
+    <string name="in_call_speaker">Altoparlante</string>
+    <string name="in_call_more">Di più</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefono</string>
+    <string name="in_call_add_call">Aggiungi chiamata</string>
+    <string name="in_call_change_sim">Cambia SIM</string>
+    <string name="in_call_decline">Declino</string>
+    <string name="in_call_answer">Risposta</string>
+    <string name="in_call_message">Messaggio</string>
+    <string name="in_call_calling">Chiamando…</string>
+    <string name="in_call_incoming">Chiamata in arrivo</string>
+    <string name="in_call_select_sim">Seleziona SIM...</string>
+    <string name="in_call_switching_sim">Cambio SIM...</string>
+    <string name="in_call_call_ended">Chiamata terminata</string>
+    <string name="in_call_calling_via">Chiamando tramite %1$s</string>
+    <string name="in_call_calling_via_html">Chiamando tramite &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Scegli la SIM per questa chiamata</string>
+    <string name="in_call_drag_answer_decline">Trascina a destra per rispondere · Trascina a sinistra per rifiutare</string>
+    <string name="in_call_mobile_number">Cellulare %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Corrente)</string>
+    <string name="in_call_call_via_from">Chiama tramite &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; da</string>
+    <string name="in_call_call_from">Chiama da</string>
+    <string name="in_call_unknown">Sconosciuto</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Seleziona la suoneria del contatto</string>
+    <string name="native_speak_to_search">Parla per cercare</string>
+    <string name="native_phone_permission_required">È richiesta l\'autorizzazione telefonica</string>
+    <string name="native_call_failed">Chiamata fallita: %1$s</string>
+    <string name="native_call_permission_denied">Autorizzazione alla chiamata negata</string>
+    <string name="native_already_default_dialer">Già impostato come combinatore predefinito</string>
+</resources>

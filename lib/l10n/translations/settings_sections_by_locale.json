@@ -1,0 +1,110 @@
+{
+  "hi": {
+    "aboutSection": "के बारे में",
+    "aboutDescription": "Nothing Dialer ओपन सोर्स है। यदि आप डेवलपर हैं, तो कोड देखने और योगदान देने के लिए आपका स्वागत है।",
+    "aboutViewSource": "GitHub पर देखें",
+    "aboutCouldNotOpenLink": "लिंक नहीं खोल सके",
+    "reviewSection": "रेटिंग",
+    "reviewDescription": "Nothing Dialer पसंद आ रहा है? Google Play पर आपकी रेटिंग दूसरों को ऐप खोजने में मदद करती है।",
+    "reviewRateOnPlay": "Google Play पर रेट करें",
+    "reviewRateOnPlaySubtitle": "ऐप छोड़े बिना रेटिंग दें",
+    "reviewCouldNotOpen": "Google Play नहीं खोल सके",
+    "custom": "कस्टम"
+  },
+  "de": {
+    "aboutSection": "Über",
+    "aboutDescription": "Nothing Dialer ist Open Source. Als Entwickler kannst du den Code erkunden und mitwirken.",
+    "aboutViewSource": "Auf GitHub ansehen",
+    "aboutCouldNotOpenLink": "Link konnte nicht geöffnet werden",
+    "reviewSection": "Bewertung",
+    "reviewDescription": "Gefällt dir Nothing Dialer? Deine Bewertung bei Google Play hilft anderen, die App zu finden.",
+    "reviewRateOnPlay": "Bei Google Play bewerten",
+    "reviewRateOnPlaySubtitle": "Bewerten, ohne die App zu verlassen",
+    "reviewCouldNotOpen": "Google Play konnte nicht geöffnet werden",
+    "custom": "Benutzerdefiniert"
+  },
+  "es": {
+    "aboutSection": "Acerca de",
+    "aboutDescription": "Nothing Dialer es código abierto. Si eres desarrollador, puedes explorar el código y contribuir.",
+    "aboutViewSource": "Ver en GitHub",
+    "aboutCouldNotOpenLink": "No se pudo abrir el enlace",
+    "reviewSection": "Valoración",
+    "reviewDescription": "¿Te gusta Nothing Dialer? Tu valoración en Google Play ayuda a otros a encontrar la app.",
+    "reviewRateOnPlay": "Valorar en Google Play",
+    "reviewRateOnPlaySubtitle": "Deja una valoración sin salir de la app",
+    "reviewCouldNotOpen": "No se pudo abrir Google Play",
+    "custom": "Personalizado"
+  },
+  "fr": {
+    "aboutSection": "À propos",
+    "aboutDescription": "Nothing Dialer est open source. Si vous êtes développeur, vous pouvez explorer le code et contribuer.",
+    "aboutViewSource": "Voir sur GitHub",
+    "aboutCouldNotOpenLink": "Impossible d'ouvrir le lien",
+    "reviewSection": "Avis",
+    "reviewDescription": "Vous aimez Nothing Dialer ? Votre note sur Google Play aide les autres à découvrir l'application.",
+    "reviewRateOnPlay": "Noter sur Google Play",
+    "reviewRateOnPlaySubtitle": "Noter sans quitter l'application",
+    "reviewCouldNotOpen": "Impossible d'ouvrir Google Play",
+    "custom": "Personnalisé"
+  },
+  "ja": {
+    "aboutSection": "このアプリについて",
+    "aboutDescription": "Nothing Dialer はオープンソースです。開発者の方はコードを確認し、貢献していただけます。",
+    "aboutViewSource": "GitHub で見る",
+    "aboutCouldNotOpenLink": "リンクを開けませんでした",
+    "reviewSection": "レビュー",
+    "reviewDescription": "Nothing Dialer を気に入っていただけましたか？Google Play の評価は他のユーザーの参考になります。",
+    "reviewRateOnPlay": "Google Play で評価",
+    "reviewRateOnPlaySubtitle": "アプリを離れずに評価する",
+    "reviewCouldNotOpen": "Google Play を開けませんでした",
+    "custom": "カスタム"
+  },
+  "zh_CN": {
+    "aboutSection": "关于",
+    "aboutDescription": "Nothing Dialer 是开源项目。欢迎开发者查看代码并参与贡献。",
+    "aboutViewSource": "在 GitHub 上查看",
+    "aboutCouldNotOpenLink": "无法打开链接",
+    "reviewSection": "评价",
+    "reviewDescription": "喜欢 Nothing Dialer 吗？在 Google Play 上的评分可以帮助其他人发现这款应用。",
+    "reviewRateOnPlay": "在 Google Play 上评分",
+    "reviewRateOnPlaySubtitle": "无需离开应用即可评分",
+    "reviewCouldNotOpen": "无法打开 Google Play",
+    "custom": "自定义"
+  },
+  "ar": {
+    "aboutSection": "حول",
+    "aboutDescription": "Nothing Dialer مفتوح المصدر. إذا كنت مطوّرًا، يمكنك استكشاف الشيفرة والمساهمة.",
+    "aboutViewSource": "عرض على GitHub",
+    "aboutCouldNotOpenLink": "تعذّر فتح الرابط",
+    "reviewSection": "التقييم",
+    "reviewDescription": "هل تستمتع بـ Nothing Dialer؟ تقييمك على Google Play يساعد الآخرين على اكتشاف التطبيق.",
+    "reviewRateOnPlay": "قيّم على Google Play",
+    "reviewRateOnPlaySubtitle": "قيّم دون مغادرة التطبيق",
+    "reviewCouldNotOpen": "تعذّر فتح Google Play",
+    "custom": "مخصص"
+  },
+  "pt_BR": {
+    "aboutSection": "Sobre",
+    "aboutDescription": "Nothing Dialer é código aberto. Se você é desenvolvedor, explore o código e contribua.",
+    "aboutViewSource": "Ver no GitHub",
+    "aboutCouldNotOpenLink": "Não foi possível abrir o link",
+    "reviewSection": "Avaliação",
+    "reviewDescription": "Gostando do Nothing Dialer? Sua avaliação no Google Play ajuda outras pessoas a encontrar o app.",
+    "reviewRateOnPlay": "Avaliar no Google Play",
+    "reviewRateOnPlaySubtitle": "Avalie sem sair do app",
+    "reviewCouldNotOpen": "Não foi possível abrir o Google Play",
+    "custom": "Personalizado"
+  },
+  "ru": {
+    "aboutSection": "О приложении",
+    "aboutDescription": "Nothing Dialer — проект с открытым исходным кодом. Разработчикам можно изучать код и вносить вклад.",
+    "aboutViewSource": "Открыть на GitHub",
+    "aboutCouldNotOpenLink": "Не удалось открыть ссылку",
+    "reviewSection": "Отзыв",
+    "reviewDescription": "Нравится Nothing Dialer? Оценка в Google Play помогает другим найти приложение.",
+    "reviewRateOnPlay": "Оценить в Google Play",
+    "reviewRateOnPlaySubtitle": "Оценить, не выходя из приложения",
+    "reviewCouldNotOpen": "Не удалось открыть Google Play",
+    "custom": "Своё"
+  }
+}

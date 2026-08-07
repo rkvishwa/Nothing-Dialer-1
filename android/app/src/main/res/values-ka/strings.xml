@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">დადუმება</string>
+    <string name="in_call_keypad">კლავიატურა</string>
+    <string name="in_call_speaker">სპიკერი</string>
+    <string name="in_call_more">მეტი</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">ტელეფონი</string>
+    <string name="in_call_add_call">ზარის დამატება</string>
+    <string name="in_call_change_sim">SIM-ის შეცვლა</string>
+    <string name="in_call_decline">უარყოფა</string>
+    <string name="in_call_answer">უპასუხე</string>
+    <string name="in_call_message">შეტყობინება</string>
+    <string name="in_call_calling">ირეკება…</string>
+    <string name="in_call_incoming">შემომავალი ზარი</string>
+    <string name="in_call_select_sim">აირჩიეთ SIM…</string>
+    <string name="in_call_switching_sim">SIM ბარათის გადართვა…</string>
+    <string name="in_call_call_ended">ზარი დასრულდა</string>
+    <string name="in_call_calling_via">დარეკვა %1$s-ით</string>
+    <string name="in_call_calling_via_html">დარეკვა &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">აირჩიეთ SIM ამ ზარისთვის</string>
+    <string name="in_call_drag_answer_decline">გადაათრიეთ მარჯვნივ პასუხისთვის · გადაათრიეთ მარცხნიდან უარყოფისთვის</string>
+    <string name="in_call_mobile_number">მობილური %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (მიმდინარე)</string>
+    <string name="in_call_call_via_from">დარეკეთ &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;-დან</string>
+    <string name="in_call_call_from">ზარი ეხლა</string>
+    <string name="in_call_unknown">უცნობი</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">აირჩიეთ კონტაქტის ზარის მელოდია</string>
+    <string name="native_speak_to_search">ისაუბრეთ მოსაძებნად</string>
+    <string name="native_phone_permission_required">საჭიროა ტელეფონის ნებართვა</string>
+    <string name="native_call_failed">ზარი ჩაიშალა: %1$s</string>
+    <string name="native_call_permission_denied">ზარის ნებართვა უარყოფილია</string>
+    <string name="native_already_default_dialer">უკვე დაყენებულია ნაგულისხმევ აკრიფეთ</string>
+</resources>

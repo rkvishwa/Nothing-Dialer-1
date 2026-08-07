@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">ミュート</string>
+    <string name="in_call_keypad">キーパッド</string>
+    <string name="in_call_speaker">スピーカー</string>
+    <string name="in_call_more">その他</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">電話</string>
+    <string name="in_call_add_call">通話を追加</string>
+    <string name="in_call_change_sim">SIMを変更</string>
+    <string name="in_call_decline">拒否</string>
+    <string name="in_call_answer">応答</string>
+    <string name="in_call_message">メッセージ</string>
+    <string name="in_call_calling">発信中…</string>
+    <string name="in_call_incoming">着信</string>
+    <string name="in_call_select_sim">SIMを選択…</string>
+    <string name="in_call_switching_sim">SIMを切り替え中…</string>
+    <string name="in_call_call_ended">通話終了</string>
+    <string name="in_call_calling_via">%1$sで発信中</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;で発信中</string>
+    <string name="in_call_choose_sim">この通話のSIMを選択</string>
+    <string name="in_call_drag_answer_decline">右にスワイプで応答 · 左で拒否</string>
+    <string name="in_call_mobile_number">モバイル %1$s</string>
+    <string name="in_call_audio_route_current">%1$s（使用中）</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;からの通話</string>
+    <string name="in_call_call_from">発信者</string>
+    <string name="in_call_unknown">不明</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">連絡先の着信音を選択</string>
+    <string name="native_speak_to_search">話して検索</string>
+    <string name="native_phone_permission_required">電話の権限が必要です</string>
+    <string name="native_call_failed">通話に失敗しました: %1$s</string>
+    <string name="native_call_permission_denied">通話の権限が拒否されました</string>
+    <string name="native_already_default_dialer">すでにデフォルトの電話アプリです</string>
+</resources>

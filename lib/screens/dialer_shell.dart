@@ -10,6 +10,12 @@ import 'floating_dialpad.dart';
 import '../services/blocking_manager.dart';
 import '../services/favourites_manager.dart';
 import '../main.dart' as main_app;
+import 'package:nothing_dialer/l10n/app_localizations.dart';
+import '../extensions/dialer_text_style.dart';
+import '../services/app_font_config.dart';
+import '../widgets/dialer_font_scope.dart';
+import '../widgets/settings_picker_sheet.dart';
+import '../widgets/ongoing_call_banner.dart';
 /// Root shell with bottom navigation: Recents | Contacts.
 /// The dial-pad is exposed via a floating action button that opens the
 /// advanced floating bottom-sheet dialpad.
@@ -218,83 +224,61 @@ class _DialerShellState extends State<DialerShell>
   }
 
   Future<void> _showRecentsFilterSheet() async {
+    final l10n = AppLocalizations.of(context);
     await showModalBottomSheet<void>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
+      builder: (ctx) => SettingsPickerFontScope(
+        child: Container(
+          decoration: settingsPickerSheetDecoration(ctx),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SettingsPickerHandle(),
+                SettingsPickerTitle(title: l10n.filterCalls),
+                ValueListenableBuilder<String>(
+                  valueListenable: main_app.recentsFilterNotifier,
+                  builder: (context, current, _) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _FilterOption(
+                          icon: Icons.filter_alt_outlined,
+                          label: l10n.filterAll,
+                          subtitle: l10n.filterAllSubtitle,
+                          selected: current == 'all',
+                          onTap: () => _setRecentsFilter('all'),
+                        ),
+                        _FilterOption(
+                          icon: Icons.call_missed_outgoing,
+                          label: l10n.filterMissed,
+                          subtitle: l10n.filterMissedSubtitle,
+                          selected: current == 'missed',
+                          onTap: () => _setRecentsFilter('missed'),
+                        ),
+                        _FilterOption(
+                          icon: Icons.contacts_outlined,
+                          label: l10n.filterContacts,
+                          subtitle: l10n.filterContactsSubtitle,
+                          selected: current == 'contacts',
+                          onTap: () => _setRecentsFilter('contacts'),
+                        ),
+                        _FilterOption(
+                          icon: Icons.person_off_outlined,
+                          label: l10n.filterNonContacts,
+                          subtitle: l10n.filterNonContactsSubtitle,
+                          selected: current == 'non_contacts',
+                          onTap: () => _setRecentsFilter('non_contacts'),
+                        ),
+                      ],
+                    );
+                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'Filter calls',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              ValueListenableBuilder<String>(
-                valueListenable: main_app.recentsFilterNotifier,
-                builder: (context, current, _) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _FilterOption(
-                        icon: Icons.filter_alt_outlined,
-                        label: 'All',
-                        subtitle: 'Entire call log',
-                        selected: current == 'all',
-                        onTap: () => _setRecentsFilter('all'),
-                      ),
-                      _FilterOption(
-                        icon: Icons.call_missed_outgoing,
-                        label: 'Missed',
-                        subtitle: 'Missed and rejected',
-                        selected: current == 'missed',
-                        onTap: () => _setRecentsFilter('missed'),
-                      ),
-                      _FilterOption(
-                        icon: Icons.contacts_outlined,
-                        label: 'Contacts',
-                        subtitle: 'Calls matched to a saved contact',
-                        selected: current == 'contacts',
-                        onTap: () => _setRecentsFilter('contacts'),
-                      ),
-                      _FilterOption(
-                        icon: Icons.person_off_outlined,
-                        label: 'Non-contacts',
-                        subtitle: 'Numbers not in your address book',
-                        selected: current == 'non_contacts',
-                        onTap: () => _setRecentsFilter('non_contacts'),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
@@ -313,9 +297,10 @@ class _DialerShellState extends State<DialerShell>
           });
         } on PlatformException catch (e) {
           if (mounted) {
+            final l10n = AppLocalizations.of(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Call error: ${e.message}'),
+                content: Text(l10n.callError(e.message ?? '')),
                 backgroundColor: const Color(0xFF1E1E1E),
               ),
             );
@@ -327,7 +312,9 @@ class _DialerShellState extends State<DialerShell>
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
+    return DialerFontScope(
+      surface: DialerFontSurface.shell,
+      child: PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) return;
@@ -351,42 +338,7 @@ class _DialerShellState extends State<DialerShell>
         appBar: _buildAppBar(),
         body: Column(
           children: [
-            ValueListenableBuilder<Map<dynamic, dynamic>?>(
-              valueListenable: main_app.dialerCallStateNotifier,
-              builder: (context, activeCallState, _) {
-                if (activeCallState == null) return const SizedBox.shrink();
-                return GestureDetector(
-                  onTap: () {
-                    _controlChannel.invokeMethod('returnToCall');
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    color: const Color(0xFF1E8E3E), // Google style green banner
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.call,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Ongoing call: ${activeCallState['contactName'] ?? activeCallState['number']}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+            const OngoingCallBanner(),
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -407,21 +359,29 @@ class _DialerShellState extends State<DialerShell>
                 ? const SizedBox.shrink()
                 : _buildFAB(),
       ),
+    ),
     );
   }
 
   AppBar _buildAppBar() {
     final titles = ['Recents', 'Contacts'];
+    final titleSurface = _currentIndex == 0
+        ? DialerFontSurface.recents
+        : DialerFontSurface.contacts;
     return AppBar(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       elevation: 0,
       title: Text(
         titles[_currentIndex],
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
-          fontSize: 22,
-          fontWeight: FontWeight.w300,
-          letterSpacing: 0.5,
+        style: context.dialerTextStyle(
+          DialerFontRole.pageTitle,
+          TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontSize: 22,
+            fontWeight: FontWeight.w300,
+            letterSpacing: 0.5,
+          ),
+          surface: titleSurface,
         ),
       ),
       actions: [
@@ -445,7 +405,7 @@ class _DialerShellState extends State<DialerShell>
               clipBehavior: Clip.none,
               children: [
                 IconButton(
-                  tooltip: 'Filter',
+                  tooltip: AppLocalizations.of(context).filterTooltip,
                   icon: Icon(
                     Icons.filter_alt_outlined,
                     color: Theme.of(context).colorScheme.outline,
@@ -471,7 +431,7 @@ class _DialerShellState extends State<DialerShell>
         ),
         const SizedBox(width: 2),
         IconButton(
-          tooltip: 'Settings',
+          tooltip: AppLocalizations.of(context).settingsTooltip,
           icon: Icon(
             Icons.settings_outlined,
             color: Theme.of(context).colorScheme.outline,
@@ -520,6 +480,7 @@ class _DialerShellState extends State<DialerShell>
   }
 
   Widget _buildBottomNav() {
+    final l10n = AppLocalizations.of(context);
     return BottomAppBar(
       color: Theme.of(context).colorScheme.surface,
       shape: const CircularNotchedRectangle(),
@@ -531,7 +492,7 @@ class _DialerShellState extends State<DialerShell>
             Expanded(
               child: _NavItem(
                 icon: Icons.history,
-                label: 'Recents',
+                label: l10n.recents,
                 selected: _currentIndex == 0,
                 onTap: () => _onTabTapped(0),
               ),
@@ -540,7 +501,7 @@ class _DialerShellState extends State<DialerShell>
             Expanded(
               child: _NavItem(
                 icon: Icons.contacts_outlined,
-                label: 'Contacts',
+                label: l10n.contacts,
                 selected: _currentIndex == 1,
                 onTap: () => _onTabTapped(1),
               ),
@@ -599,19 +560,25 @@ class _FilterOption extends StatelessWidget {
                     children: [
                       Text(
                         label,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 16,
-                          fontWeight:
-                              selected ? FontWeight.w600 : FontWeight.w400,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.primary,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 16,
+                            fontWeight:
+                                selected ? FontWeight.w600 : FontWeight.w400,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         subtitle,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 13,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.secondary,
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ],
@@ -665,14 +632,17 @@ class _NavItem extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 11,
-              color: selected
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(
-                      context,
-                    ).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-              fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+            style: context.dialerTextStyle(
+              DialerFontRole.button,
+              TextStyle(
+                fontSize: 11,
+                color: selected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(
+                        context,
+                      ).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+              ),
             ),
           ),
         ],

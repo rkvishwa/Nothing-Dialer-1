@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Bisu</string>
+    <string name="in_call_keypad">Papan tombol</string>
+    <string name="in_call_speaker">Pembicara</string>
+    <string name="in_call_more">Lagi</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telepon</string>
+    <string name="in_call_add_call">Tambahkan panggilan</string>
+    <string name="in_call_change_sim">Ganti SIM</string>
+    <string name="in_call_decline">Menolak</string>
+    <string name="in_call_answer">Menjawab</string>
+    <string name="in_call_message">Pesan</string>
+    <string name="in_call_calling">Panggilan…</string>
+    <string name="in_call_incoming">Panggilan masuk</string>
+    <string name="in_call_select_sim">Pilih SIM…</string>
+    <string name="in_call_switching_sim">Beralih SIM…</string>
+    <string name="in_call_call_ended">Panggilan berakhir</string>
+    <string name="in_call_calling_via">Menelepon melalui %1$s</string>
+    <string name="in_call_calling_via_html">Menelepon melalui &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Pilih SIM untuk panggilan ini</string>
+    <string name="in_call_drag_answer_decline">Seret ke kanan untuk menjawab · Seret ke kiri untuk menolak</string>
+    <string name="in_call_mobile_number">Seluler %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Saat ini)</string>
+    <string name="in_call_call_via_from">Hubungi melalui &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; dari</string>
+    <string name="in_call_call_from">Telepon dari</string>
+    <string name="in_call_unknown">Tidak dikenal</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Pilih nada dering kontak</string>
+    <string name="native_speak_to_search">Bicaralah untuk mencari</string>
+    <string name="native_phone_permission_required">Izin telepon diperlukan</string>
+    <string name="native_call_failed">Panggilan gagal: %1$s</string>
+    <string name="native_call_permission_denied">Izin panggilan ditolak</string>
+    <string name="native_already_default_dialer">Sudah ditetapkan sebagai dialer default</string>
+</resources>

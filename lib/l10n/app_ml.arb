@@ -1,0 +1,759 @@
+{
+  "@@locale": "ml",
+  "appTitle": "ഡയലർ ഒന്നുമില്ല",
+  "settings": "ക്രമീകരണങ്ങൾ",
+  "settingsSearchHint": "തിരയൽ ക്രമീകരണങ്ങൾ",
+  "settingsSearchNoResults": "ക്രമീകരണങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
+  "general": "ജനറൽ",
+  "theme": "തീം",
+  "themeSystemDefault": "സിസ്റ്റം ഡിഫോൾട്ട്",
+  "themeLight": "വെളിച്ചം",
+  "themeDark": "ഇരുട്ട്",
+  "themeFollowSystem": "സിസ്റ്റം ക്രമീകരണങ്ങൾ പിന്തുടരുക",
+  "themeAlwaysLight": "എപ്പോഴും ലൈറ്റ് തീം ഉപയോഗിക്കുക",
+  "themeAlwaysDark": "എപ്പോഴും ഇരുണ്ട തീം ഉപയോഗിക്കുക",
+  "language": "ഭാഷ",
+  "languageDeviceDefault": "ഡിവൈസ് ഡിഫോൾട്ട്",
+  "languagePickerTitle": "ഭാഷ",
+  "languageSearchHint": "ഭാഷകൾ തിരയുക",
+  "font": "ഫോണ്ട്",
+  "fontSystem": "സിസ്റ്റം ഡിഫോൾട്ട്",
+  "fontNdot": "ഒന്നുമില്ല (NDot)",
+  "fontSerif": "റോബോട്ടോ സെരിഫ്",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "ഫോണ്ട് ഡൗൺലോഡ് പരാജയപ്പെട്ടു. നിങ്ങളുടെ കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "ഫോണ്ട്",
+  "fontPreviewSample": "ഡയലർ ഒന്നുമില്ല",
+  "fontAppWide": "ആപ്പ് ഫോണ്ട്",
+  "fontApplyTo": "എന്നതിലേക്ക് അപേക്ഷിക്കുക",
+  "fontApplyEntireApp": "മുഴുവൻ ആപ്പ്",
+  "fontApplyEntireAppSubtitle": "ഇൻ-കോൾ ഉൾപ്പെടെ എല്ലായിടത്തും ഒരേ ഫോണ്ട്",
+  "fontApplyTitlesOnly": "ശീർഷകങ്ങളും തലക്കെട്ടുകളും",
+  "fontApplyTitlesOnlySubtitle": "വലിയ തലക്കെട്ടുകളും വിഭാഗ തലക്കെട്ടുകളും മാത്രം",
+  "fontApplyCustomize": "ഇഷ്ടാനുസൃതമാക്കുക",
+  "fontApplyCustomizeSubtitle": "ഓരോ സ്‌ക്രീനും ടെക്‌സ്‌റ്റ് തരവും ഫോണ്ട് തിരഞ്ഞെടുക്കുക",
+  "fontCustomizeSection": "സ്‌ക്രീൻ അനുസരിച്ച് ഇഷ്ടാനുസൃതമാക്കുക",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "പേജ് തലക്കെട്ട്",
+  "fontRoleSectionHeader": "വിഭാഗം തലക്കെട്ട്",
+  "fontRolePrimary": "പ്രാഥമിക വാചകം",
+  "fontRoleSecondary": "ദ്വിതീയ വാചകം",
+  "fontRoleButton": "ബട്ടണുകൾ",
+  "fontRoleDialKey": "ഡയൽപാഡ് കീകൾ",
+  "fontSurfaceRecents": "സമീപകാലങ്ങൾ",
+  "fontSurfaceContacts": "ബന്ധങ്ങൾ",
+  "fontSurfaceSettings": "ക്രമീകരണങ്ങൾ",
+  "fontSurfaceDialpad": "ഡയൽപാഡ്",
+  "fontSurfaceShell": "നാവിഗേഷൻ",
+  "fontSurfaceDefaultDialer": "ഡിഫോൾട്ട് ഡയലർ പ്രോംപ്റ്റ്",
+  "fontSurfaceFavourites": "പ്രിയപ്പെട്ടവ",
+  "fontSurfaceBlocked": "തടഞ്ഞ നമ്പറുകൾ",
+  "fontSurfaceContactDetail": "ബന്ധപ്പെടാനുള്ള വിശദാംശങ്ങൾ",
+  "fontSurfaceCallHistory": "കോൾ ചരിത്രം",
+  "fontSurfaceSheets": "ഷീറ്റുകളും പിക്കറുകളും",
+  "fontSurfaceInCall": "ഇൻ-കോൾ സ്ക്രീൻ",
+  "fontSubtitleEntireApp": "{font} — മുഴുവൻ ആപ്പും",
+  "fontSubtitleTitlesOnly": "{font} — ശീർഷകങ്ങൾ മാത്രം",
+  "fontSubtitleCustomize": "ഓരോ സ്ക്രീനിനും ഇഷ്ടാനുസൃതം",
+  "background": "പശ്ചാത്തലം",
+  "accent": "ഉച്ചാരണം",
+  "lightBackground": "ഇളം പശ്ചാത്തലം",
+  "lightAccent": "നേരിയ ഉച്ചാരണം",
+  "darkBackground": "ഇരുണ്ട പശ്ചാത്തലം",
+  "darkAccent": "ഇരുണ്ട ആക്സൻ്റ്",
+  "callBackground": "കോൾ പശ്ചാത്തലം",
+  "appIcon": "ആപ്പ് ഐക്കൺ",
+  "answerMethod": "ഉത്തരം രീതി",
+  "answerSlide": "ഉത്തരം നൽകാൻ സ്ലൈഡ് ചെയ്യുക",
+  "answerSlideSubtitle": "ഗൂഗിൾ ഫോൺ പോലെ ബാറിൽ ഇടത്തേക്ക്/വലത്തേക്ക് സ്വൈപ്പ് ചെയ്യുക",
+  "answerButton": "ബട്ടൺ ടാപ്പ്",
+  "answerButtonSubtitle": "ഉത്തരം അല്ലെങ്കിൽ നിരസിക്കാനുള്ള ബട്ടണുകൾ ടാപ്പ് ചെയ്യുക",
+  "answerHuawei": "Huawei ശൈലി",
+  "answerHuaweiSubtitle": "ഉത്തരം നൽകാൻ പച്ച ഫോണിലേക്ക് സർക്കിൾ വലിച്ചിടുക",
+  "answerHuaweiTileSubtitle": "Huawei - പച്ച/ചുവപ്പിലേക്ക് വലിച്ചിടുക",
+  "calling": "വിളിക്കുന്നു",
+  "defaultSim": "ഡിഫോൾട്ട് സിം",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "ഓരോ തവണയും ചോദിക്കുക",
+  "askEveryTimeSubtitle": "ഓരോ കോളിനും മുമ്പായി സിം പിക്കർ കാണിക്കുക",
+  "simSlot": "സിം {slot}",
+  "noSimCardsFound": "സിം കാർഡുകളൊന്നും കണ്ടെത്തിയില്ല",
+  "couldNotLoadSims": "സിമ്മുകൾ ലോഡ് ചെയ്യാനായില്ല: {error}",
+  "allFavourites": "എല്ലാ പ്രിയങ്കരങ്ങളും",
+  "allFavouritesSubtitle": "കോൺടാക്റ്റുകളിൽ നിന്ന് പുനഃക്രമീകരിക്കുക, നീക്കം ചെയ്യുക, ചേർക്കുക",
+  "blockedNumbers": "തടഞ്ഞ നമ്പറുകൾ",
+  "blockedNumbersSubtitle": "നമ്പറുകൾ കാണുക, അൺബ്ലോക്ക് ചെയ്യുക",
+  "soundsAndVibration": "ശബ്ദങ്ങളും വൈബ്രേഷനും",
+  "soundsAndVibrationSubtitle": "റിംഗ്ടോൺ, വൈബ്രേഷൻ, ഡയൽ പാഡ് ടോണുകൾ",
+  "couldNotOpenSettings": "ക്രമീകരണങ്ങൾ തുറക്കാൻ കഴിഞ്ഞില്ല: {error}",
+  "frequentlyContacted": "പതിവായി ബന്ധപ്പെടുന്നു",
+  "numberOfRecords": "റെക്കോർഡുകളുടെ എണ്ണം",
+  "timePeriod": "സമയ കാലയളവ്",
+  "periodLast24Hours": "കഴിഞ്ഞ 24 മണിക്കൂർ",
+  "periodLast24HoursSubtitle": "കഴിഞ്ഞ ദിവസത്തെ കോളുകൾ",
+  "periodLast7Days": "കഴിഞ്ഞ 7 ദിവസം",
+  "periodLast7DaysSubtitle": "കഴിഞ്ഞ ഒരാഴ്ചത്തെ കോളുകൾ",
+  "periodLast30Days": "കഴിഞ്ഞ 30 ദിവസം",
+  "periodLast30DaysSubtitle": "കഴിഞ്ഞ മാസത്തെ കോളുകൾ",
+  "periodLast12Months": "കഴിഞ്ഞ 12 മാസം",
+  "periodLast12MonthsSubtitle": "കഴിഞ്ഞ വർഷത്തെ കോളുകൾ",
+  "periodAllTime": "എല്ലാ സമയത്തും",
+  "periodAllTimeSubtitle": "മുഴുവൻ കോൾ ചരിത്രവും",
+  "frequentMaxOff": "ഓഫ്",
+  "frequentMaxCount": "{count} കോൺടാക്റ്റുകൾ",
+  "torchBlink": "ടോർച്ച് ബ്ലിങ്ക്",
+  "torchIncomingCall": "ഇൻകമിംഗ് കോൾ ടോർച്ച്",
+  "torchOutgoingCall": "ഔട്ട്‌ഗോയിംഗ് കോൾ ടോർച്ച്",
+  "torchOngoingCall": "നടന്നുകൊണ്ടിരിക്കുന്ന കോൾ ടോർച്ച്",
+  "torchIncomingInterval": "ഇൻകമിംഗ് ബ്ലിങ്ക് ഇടവേള",
+  "torchOutgoingInterval": "ഔട്ട്ഗോയിംഗ് ബ്ലിങ്ക് ഇടവേള",
+  "torchOngoingInterval": "നടന്നുകൊണ്ടിരിക്കുന്ന ബ്ലിങ്ക് ഇടവേള",
+  "torchOff": "ഓഫ്",
+  "torchOffIncomingSubtitle": "റിംഗ് ചെയ്യുമ്പോൾ ടോർച്ച് ഇല്ല",
+  "torchOffOutgoingSubtitle": "ഡയൽ ചെയ്യുമ്പോൾ ടോർച്ച് ഇല്ല",
+  "torchOffOngoingSubtitle": "സജീവ കോൾ സമയത്ത് ടോർച്ച് ഇല്ല",
+  "torchFixedInterval": "നിശ്ചിത ഇടവേള",
+  "torchFixedIntervalSubtitle": "ഒരു നിശ്ചിത വേഗതയിൽ മിന്നിമറയുക",
+  "torchIntervalSeconds": "{seconds} സെ",
+  "torchIntervalBlink": "{seconds} മിന്നിമറയുക",
+  "flashlightUnavailable": "ഈ ഉപകരണത്തിൽ ഫ്ലാഷ്‌ലൈറ്റ് ലഭ്യമല്ല",
+  "glyphLights": "ഗ്ലിഫ് ലൈറ്റുകൾ",
+  "glyphCallingAnimation": "ഗ്ലിഫ് കോളിംഗ് ആനിമേഷൻ",
+  "glyphOngoingAnimation": "ഗ്ലിഫ് നടന്നുകൊണ്ടിരിക്കുന്ന കോൾ ആനിമേഷൻ",
+  "glyphNone": "ഒന്നുമില്ല",
+  "glyphNoneOutgoingSubtitle": "ഔട്ട്‌ഗോയിംഗ് കോളുകൾക്കായി ഗ്ലിഫ് ലൈറ്റുകൾ പ്രവർത്തനരഹിതമാക്കുക",
+  "glyphNoneInCallSubtitle": "കോളിൽ സജീവമായിരിക്കുമ്പോൾ ഗ്ലിഫ് ലൈറ്റുകൾ പ്രവർത്തനരഹിതമാക്കുക",
+  "glyphBreathProgress": "ശ്വസനവും പുരോഗതിയും",
+  "glyphBreathProgressSubtitle": "ലൈറ്റുകൾ 65 സെക്കൻഡിൽ കൂടുതൽ നിറയുമ്പോൾ ലൈറ്റുകൾ ശ്വസിക്കുന്നു",
+  "glyphAccumulate": "ശേഖരിക്കുക",
+  "glyphAccumulateSubtitle": "C1-C4 ലൈറ്റുകളിൽ ആനിമേഷൻ ശേഖരിക്കുന്നു",
+  "glyphSingle": "സിംഗിൾ",
+  "glyphSingleSubtitle": "C1-C4-ൽ ഉടനീളം ചലിക്കുന്ന ഒറ്റ പ്രകാശം",
+  "glyphBreath": "ശ്വാസം",
+  "glyphBreathSubtitle": "ലൈറ്റുകളും വേഗതയും തിരഞ്ഞെടുക്കുക",
+  "glyphSteady": "സ്ഥിരതയുള്ള",
+  "glyphSteadySubtitle": "തിരഞ്ഞെടുത്ത ലൈറ്റുകൾ ഓണായിരിക്കും",
+  "breathSettings": "ശ്വസന ക്രമീകരണങ്ങൾ",
+  "activeLights": "സജീവ ലൈറ്റുകൾ",
+  "lightsCount": "{count} ലൈറ്റുകൾ",
+  "speedSettings": "സ്പീഡ് ക്രമീകരണങ്ങൾ",
+  "speedSettingsDelay": "{ms}ms കാലതാമസം",
+  "durationAndSpeed": "ദൈർഘ്യവും വേഗതയും",
+  "durationSpeedSummary": "{duration}s ദൈർഘ്യം, {interval}ms ഇടവേള",
+  "cancel": "റദ്ദാക്കുക",
+  "done": "ചെയ്തു",
+  "save": "സംരക്ഷിക്കുക",
+  "block": "തടയുക",
+  "delete": "ഇല്ലാതാക്കുക",
+  "recents": "സമീപകാലങ്ങൾ",
+  "contacts": "ബന്ധങ്ങൾ",
+  "hideFavouritesOnRecents": "സമീപകാലങ്ങളിൽ പ്രിയപ്പെട്ടവ മറയ്ക്കുക",
+  "showFavouritesOnRecents": "സമീപകാലങ്ങളിൽ പ്രിയങ്കരങ്ങൾ കാണിക്കുക",
+  "ongoingCall": "നടന്നുകൊണ്ടിരിക്കുന്ന കോൾ",
+  "setAsDefaultTitle": "AS സജ്ജമാക്കുക\nഡിഫോൾട്ട്",
+  "setAsDefaultBody": "Nothing Dialer ഉപയോഗിക്കുന്നതിന്, അത് നിങ്ങളുടെ ഡിഫോൾട്ട് ഫോൺ ആപ്പായി സജ്ജീകരിച്ചിരിക്കണം. കോളുകൾ നിയന്ത്രിക്കാനും ചരിത്രം കാണാനും ഗ്ലിഫ് ആനിമേഷനുകൾ ഉപയോഗിക്കാനും ഇത് നിങ്ങളെ അനുവദിക്കുന്നു.",
+  "setAsDefaultButton": "ഡിഫോൾട്ടായി സജ്ജീകരിക്കുക",
+  "nothingDialerBrand": "ഒന്നുമില്ല ഡയലർ 1",
+  "favourites": "പ്രിയപ്പെട്ടവ",
+  "addFavourite": "പ്രിയപ്പെട്ടത് ചേർക്കുക",
+  "favouritesDrawerHint": "കോൺടാക്റ്റുകൾ ചേർക്കാൻ മെനു ഉപയോഗിക്കുക. ഡ്രോയറിന് പുറത്ത് ടാപ്പ് ചെയ്യുക അല്ലെങ്കിൽ അത് അടച്ച് സ്വൈപ്പ് ചെയ്യുക. അവരുടെ വിശദാംശങ്ങളിൽ നിന്ന് ഒരു കോൺടാക്റ്റിന് നക്ഷത്രചിഹ്നം നൽകുക അല്ലെങ്കിൽ സമീപകാലങ്ങളിൽ ഒരു കോൾ ദീർഘനേരം അമർത്തുക.",
+  "menu": "മെനു",
+  "noFavouritesYet": "ഇതുവരെ പ്രിയങ്കരങ്ങളൊന്നുമില്ല.\nഒരെണ്ണം ചേർക്കാൻ മെനു തുറക്കുക, അല്ലെങ്കിൽ ഒരു കോൺടാക്റ്റ് നക്ഷത്രമിടുക.",
+  "contactsPermissionNeeded": "ബന്ധപ്പെടാനുള്ള അനുമതി ആവശ്യമാണ്",
+  "chooseContact": "കോൺടാക്റ്റ് തിരഞ്ഞെടുക്കുക",
+  "noPhone": "ഫോൺ ഇല്ല",
+  "pickNumber": "നമ്പർ തിരഞ്ഞെടുക്കുക",
+  "contactHasNoPhone": "ഈ കോൺടാക്‌റ്റിന് ഫോൺ നമ്പറില്ല",
+  "blockNumber": "ബ്ലോക്ക് നമ്പർ",
+  "enterPhoneNumber": "ഫോൺ നമ്പർ നൽകുക",
+  "unblockedDisplay": "അൺബ്ലോക്ക് {display}",
+  "couldNotUnblockNumber": "നമ്പർ അൺബ്ലോക്ക് ചെയ്യാനായില്ല",
+  "blockedSummary": "{blocked} തടഞ്ഞു • {matched} പൊരുത്തപ്പെടുത്തി",
+  "contactsPermissionMissing": "കോൺടാക്‌റ്റുകളുടെ അനുമതി നഷ്‌ടമായി. പരിഹരിക്കാൻ ടാപ്പ് ചെയ്യുക.",
+  "noBlockedNumbers": "ബ്ലോക്ക് ചെയ്ത നമ്പറുകളൊന്നുമില്ല",
+  "unknownContact": "അജ്ഞാത കോൺടാക്റ്റ്",
+  "unblock": "തടഞ്ഞത് മാറ്റുക",
+  "permissionNeeded": "അനുമതി ആവശ്യമാണ്",
+  "grantPhonePermission": "നിങ്ങളുടെ കോൾ ചരിത്രം കാണുന്നതിന് ഫോൺ അനുമതി നൽകുക.",
+  "grantContactsPermission": "നിങ്ങളുടെ വിലാസ പുസ്തകം കാണുന്നതിന് കോൺടാക്റ്റുകൾക്ക് അനുമതി നൽകുക.",
+  "openSettings": "ക്രമീകരണങ്ങൾ തുറക്കുക",
+  "tryAgain": "വീണ്ടും ശ്രമിക്കുക",
+  "couldNotLoadContacts": "കോൺടാക്റ്റുകൾ ലോഡ് ചെയ്യാനായില്ല",
+  "contactsLoadError": "നിങ്ങളുടെ വിലാസ പുസ്തകം വായിക്കുമ്പോൾ എന്തോ കുഴപ്പം സംഭവിച്ചു.",
+  "noContactsFound": "കോൺടാക്‌റ്റുകളൊന്നും കണ്ടെത്തിയില്ല",
+  "contactsEmptySubtitle": "നിങ്ങളുടെ ഉപകരണത്തിൽ നിന്നുള്ള കോൺടാക്റ്റുകൾ ഇവിടെ ദൃശ്യമാകും.",
+  "searchContacts": "കോൺടാക്റ്റുകൾ തിരയുക...",
+  "searchRecentCalls": "സമീപകാല കോളുകൾ തിരയുക",
+  "fromContacts": "കോൺടാക്റ്റുകളിൽ നിന്ന്",
+  "recentsSearchSection": "സമീപകാല തിരയൽ",
+  "recentsSearchShowContacts": "തിരയലിൽ കോൺടാക്റ്റുകൾ കാണിക്കുക",
+  "recentsSearchShowContactsSubtitle": "സമീപകാലങ്ങൾ തിരയുമ്പോൾ, കോൾ ചരിത്ര ഫലങ്ങൾക്ക് താഴെ നിങ്ങളുടെ വിലാസ പുസ്തകത്തിൽ നിന്ന് പൊരുത്തപ്പെടുന്ന ആളുകളെ കാണിക്കുക.",
+  "voiceSearch": "ശബ്ദ തിരയൽ",
+  "createNewContact": "പുതിയ കോൺടാക്റ്റ് സൃഷ്ടിക്കുക",
+  "callError": "കോൾ പിശക്: {error}",
+  "noRecentCalls": "സമീപകാല കോളുകളൊന്നുമില്ല",
+  "callHistoryEmpty": "നിങ്ങളുടെ കോൾ ചരിത്രം ഇവിടെ ദൃശ്യമാകും.",
+  "loadMore": "കൂടുതൽ ലോഡ് ചെയ്യുക",
+  "frequentlyContactedHeader": "ഇടയ്ക്കിടെ ബന്ധപ്പെട്ടു",
+  "recentHistory": "സമീപകാല ചരിത്രം",
+  "noFavouritesRecentsHint": "ഇതുവരെ പ്രിയങ്കരങ്ങളൊന്നുമില്ല. ഒരു കോൺടാക്റ്റിന് നക്ഷത്രമിടുക, ഒരു കോൾ ദീർഘനേരം അമർത്തുക അല്ലെങ്കിൽ പ്രിയപ്പെട്ടവ ടാബ് ഉപയോഗിക്കുക.",
+  "copyNumber": "നമ്പർ പകർത്തുക",
+  "editNumberBeforeCall": "വിളിക്കുന്നതിന് മുമ്പ് നമ്പർ എഡിറ്റ് ചെയ്യുക",
+  "removeFromFavourites": "പ്രിയപ്പെട്ടവയിൽ നിന്ന് നീക്കം ചെയ്യുക",
+  "addToFavourites": "പ്രിയപ്പെട്ടവയിലേക്ക് ചേർക്കുക",
+  "blockNumberQuestion": "നമ്പർ ബ്ലോക്ക് ചെയ്യണോ?",
+  "blockNumberConfirm": "{number} എന്നതിൽ നിന്ന് നിങ്ങൾക്ക് ഇനി കോളുകളോ സന്ദേശങ്ങളോ ലഭിക്കില്ല.",
+  "blocked": "തടഞ്ഞു",
+  "couldNotBlock": "തടയാൻ കഴിഞ്ഞില്ല",
+  "contactNotOnDevice": "ഈ ഉപകരണത്തിൽ കോൺടാക്റ്റ് സംരക്ഷിച്ചിട്ടില്ല",
+  "unblocked": "അൺബ്ലോക്ക് ചെയ്തു",
+  "numberCopied": "നമ്പർ പകർത്തി",
+  "showLess": "കുറവ് കാണിക്കുക",
+  "showAllTimes": "എല്ലാ സമയത്തും കാണിക്കുക",
+  "mostRecent": "ഏറ്റവും പുതിയത് · {time}",
+  "videoCall": "വീഡിയോ കോൾ",
+  "couldNotPlaceVideoCall": "വീഡിയോ കോൾ ചെയ്യാൻ കഴിഞ്ഞില്ല",
+  "message": "സന്ദേശം",
+  "couldNotOpenMessaging": "സന്ദേശമയയ്‌ക്കൽ ആപ്പ് തുറക്കാനായില്ല",
+  "history": "ചരിത്രം",
+  "viewContact": "കോൺടാക്റ്റ് കാണുക",
+  "addToContact": "കോൺടാക്റ്റിലേക്ക് ചേർക്കുക",
+  "callTypeMissed": "നഷ്ടമായി",
+  "callTypeRejected": "നിരസിച്ചു",
+  "callTypeIncoming": "ഇൻകമിംഗ്",
+  "callTypeOutgoing": "ഔട്ട്ഗോയിംഗ്",
+  "today": "ഇന്ന്",
+  "yesterday": "ഇന്നലെ",
+  "justNow": "ഇപ്പോള്",
+  "minutesAgo": "{count} മിനിറ്റ് മുമ്പ്",
+  "hoursAgo": "{count} മണിക്കൂർ മുമ്പ്",
+  "filterAll": "എല്ലാം",
+  "filterMissed": "നഷ്ടമായി",
+  "filterContacts": "ബന്ധങ്ങൾ",
+  "filterNonContacts": "നോൺ-കോൺടാക്റ്റുകൾ",
+  "iconUpdated": "ഐക്കൺ അപ്ഡേറ്റ് ചെയ്തു. നിങ്ങളുടെ ഹോം സ്‌ക്രീൻ പുതുക്കാൻ കുറച്ച് സമയമെടുത്തേക്കാം.",
+  "iconSavedRelease": "ചോയ്സ് സംരക്ഷിച്ചു. റിലീസ് ബിൽഡുകളിലെ ഹോം സ്‌ക്രീൻ ഐക്കൺ അപ്‌ഡേറ്റുകൾ.",
+  "couldNotChangeIcon": "ഐക്കൺ മാറ്റാൻ കഴിഞ്ഞില്ല: {error}",
+  "launcherClassicBlack": "ക്ലാസിക് (കറുപ്പ്)",
+  "launcherLight": "വെളിച്ചം",
+  "launcherNothingRed": "ചുവപ്പ് ഒന്നുമില്ല",
+  "launcherDarkGrey": "ഇരുണ്ട ചാരനിറം",
+  "launcherCream": "ക്രീം",
+  "launcherRetroPhone": "റെട്രോ ഫോൺ",
+  "launcherRetroPhoneLight": "റെട്രോ ഫോൺ (ലൈറ്റ്)",
+  "voiceSearchUnavailable": "ഈ ഉപകരണത്തിൽ ശബ്ദ തിരയൽ ലഭ്യമല്ല.",
+  "voiceSearchFailed": "ശബ്ദ തിരയൽ പരാജയപ്പെട്ടു: {error}",
+  "customColor": "കസ്റ്റം",
+  "selectColor": "നിറം തിരഞ്ഞെടുക്കുക",
+  "reset": "പുനഃസജ്ജമാക്കുക",
+  "simPickerTitle": "സിം തിരഞ്ഞെടുക്കുക",
+  "simChooseForCall": "ഈ കോളിനായി സിം തിരഞ്ഞെടുക്കുക",
+  "defaultSimAsk": "ഓരോ തവണയും ചോദിക്കുക",
+  "defaultSimFixed": "സിം {slot}",
+  "contactDetails": "ബന്ധപ്പെടാനുള്ള വിശദാംശങ്ങൾ",
+  "call": "വിളിക്കൂ",
+  "share": "പങ്കിടുക",
+  "favourite": "പ്രിയപ്പെട്ടത്",
+  "unfavourite": "ഇഷ്ടപ്പെടാത്തത്",
+  "blockContact": "കോൺടാക്റ്റ് തടയുക",
+  "unblockContact": "കോൺടാക്റ്റ് അൺബ്ലോക്ക് ചെയ്യുക",
+  "deleteContact": "കോൺടാക്റ്റ് ഇല്ലാതാക്കുക",
+  "phone": "ഫോൺ",
+  "email": "ഇമെയിൽ",
+  "ringtone": "റിംഗ്ടോൺ",
+  "defaultRingtone": "സ്ഥിരസ്ഥിതി",
+  "simForContact": "ഈ കോൺടാക്റ്റിന് സിം",
+  "callHistoryTitle": "കോൾ ചരിത്രം",
+  "noCallsWithNumber": "ഈ നമ്പറിൽ കോളുകളൊന്നുമില്ല",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "ഗ്ലിഫ് ആനിമേഷൻ",
+  "inCallGlyphAnimationStyle": "ഇൻ-കോൾ ഗ്ലിഫ് ആനിമേഷൻ",
+  "recordsOff": "ഓഫ്",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "ഡിഫോൾട്ട് സിം",
+  "nothingPhoneOnly": "ഒന്നുമില്ല ഫോൺ മാത്രം",
+  "nothingPhoneOnlySubtitle": "ഗ്ലിഫ് ഫീച്ചറുകൾക്ക് നഥിംഗ് ഫോൺ ആവശ്യമാണ്",
+  "custom": "കസ്റ്റം",
+  "presetColorHex": "പ്രീസെറ്റ് · {hex}",
+  "customColorHex": "ഇഷ്ടാനുസൃതം · {hex}",
+  "oneContact": "1 കോൺടാക്റ്റ്",
+  "upToContacts": "{count} കോൺടാക്റ്റുകൾ വരെ",
+  "answerButtonTapSubtitle": "ഉത്തരം നൽകാൻ ബട്ടൺ ടാപ്പ് ചെയ്യുക",
+  "filterCalls": "കോളുകൾ ഫിൽട്ടർ ചെയ്യുക",
+  "filterTooltip": "ഫിൽട്ടർ ചെയ്യുക",
+  "settingsTooltip": "ക്രമീകരണങ്ങൾ",
+  "filterAllSubtitle": "മുഴുവൻ കോൾ ലോഗ്",
+  "filterMissedSubtitle": "കാണാതെ പോയി, നിരസിച്ചു",
+  "filterContactsSubtitle": "സംരക്ഷിച്ച കോൺടാക്റ്റുമായി കോളുകൾ പൊരുത്തപ്പെട്ടു",
+  "filterNonContactsSubtitle": "നിങ്ങളുടെ വിലാസ പുസ്തകത്തിൽ നമ്പറുകൾ ഇല്ല",
+  "ongoingCallWithDetail": "നടന്നുകൊണ്ടിരിക്കുന്ന കോൾ: {detail}",
+  "defaultSimForCalls": "കോളുകൾക്കുള്ള ഡിഫോൾട്ട് സിം",
+  "blinkInterval": "മിന്നുന്ന ഇടവേള",
+  "close": "അടയ്ക്കുക",
+  "frequentlyContactedInfoBody": "നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന കാലയളവിൽ ഓരോ നമ്പറിലും എത്ര ഇൻകമിംഗ്, ഔട്ട്‌ഗോയിംഗ്, മിസ്‌ഡ് അല്ലെങ്കിൽ റിജക്‌റ്റ് ചെയ്‌ത കോളുകളുടെ അടിസ്ഥാനത്തിൽ, ഏറ്റവും കൂടുതൽ വിളിക്കപ്പെടുന്ന ഫോൺ നമ്പറുകൾ സമീപകാല ടാബിൻ്റെ മുകളിൽ കാണിക്കുന്നു.\n\nറെക്കോർഡുകളുടെ എണ്ണം: ഇത് ഓഫാക്കുന്നതിന് 0 ആയി സജ്ജമാക്കുക. നിരവധി മുൻനിര കോൺടാക്റ്റുകൾ കാണിക്കാൻ 1-20 ഉപയോഗിക്കുക.\n\nഒരു കോൺടാക്റ്റെങ്കിലും കാണിക്കുമ്പോൾ മാത്രമേ സമയ കാലയളവ് ബാധകമാകൂ.",
+  "breathSettingsSpeedSummary": "{count} ലൈറ്റുകൾ, {ms}ms വേഗത",
+  "deleteContactQuestion": "കോൺടാക്റ്റ് ഇല്ലാതാക്കണോ?",
+  "deleteContactBody": "ഈ കോൺടാക്റ്റ് നിങ്ങളുടെ ഉപകരണത്തിൽ നിന്ന് ശാശ്വതമായി ഇല്ലാതാക്കപ്പെടും.",
+  "blockContactQuestion": "കോൺടാക്റ്റ് തടയണോ?",
+  "unblockContactQuestion": "കോൺടാക്റ്റ് അൺബ്ലോക്ക് ചെയ്യണോ?",
+  "blockContactBody": "ഈ കോൺടാക്റ്റിൽ നിന്ന് നിങ്ങൾക്ക് ഇനി കോളുകളോ സന്ദേശങ്ങളോ ലഭിക്കില്ല.",
+  "unblockContactBody": "ഈ കോൺടാക്റ്റിൽ നിന്ന് നിങ്ങൾക്ക് കോളുകളും സന്ദേശങ്ങളും ലഭിക്കാൻ തുടങ്ങും.",
+  "contactBlocked": "കോൺടാക്റ്റ് തടഞ്ഞു",
+  "contactUnblocked": "കോൺടാക്റ്റ് അൺബ്ലോക്ക് ചെയ്തു",
+  "noPhoneNumbersToBlock": "ബ്ലോക്ക് ചെയ്യാൻ ഫോൺ നമ്പറുകളൊന്നുമില്ല",
+  "simSameAsSystem": "സിസ്റ്റം പോലെ തന്നെ",
+  "simSameAsSystemSubtitle": "ക്രമീകരണങ്ങളിൽ ഡിഫോൾട്ട് സിം പിന്തുടരുന്നു",
+  "simAskEveryTimeForContact": "ഈ കോൺടാക്റ്റിനായി എപ്പോഴും സിം പിക്കർ കാണിക്കുക",
+  "ringtoneSetForContact": "ഈ കോൺടാക്‌റ്റിനായി ആഗോളതലത്തിൽ റിംഗ്‌ടോൺ സജ്ജമാക്കി",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "റിംഗ്‌ടോൺ തിരഞ്ഞെടുക്കുന്നതിൽ പരാജയപ്പെട്ടു: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "പിശക്: {error}",
+  "noCallHistoryFound": "കോൾ ചരിത്രമൊന്നും കണ്ടെത്തിയില്ല",
+  "speedDialVoicemail": "സ്പീഡ് ഡയൽ: വോയ്‌സ്‌മെയിൽ",
+  "shareContactSubject": "ബന്ധപ്പെടുക: {name}",
+  "contactInfo": "ബന്ധപ്പെടാനുള്ള വിവരം",
+  "dontAskAgainSim": "വീണ്ടും ചോദിക്കരുത്",
+  "simDontAskAgainSubtitle": "ഈ സിം ഡിഫോൾട്ടായി ഉപയോഗിക്കുക (ക്രമീകരണങ്ങളിൽ മാറ്റുക)",
+  "addContact": "കോൺടാക്റ്റ് ചേർക്കുക",
+  "createContact": "കോൺടാക്റ്റ് സൃഷ്ടിക്കുക",
+  "paste": "ഒട്ടിക്കുക",
+  "clear": "ക്ലിയർ",
+  "returnToCall": "കോളിലേക്ക് മടങ്ങുക",
+  "numberOfRecordsTitle": "റെക്കോർഡുകളുടെ എണ്ണം",
+  "recordsPickerSubtitle": "കാണിക്കാൻ പതിവായി ബന്ധപ്പെടുന്ന എത്ര എൻട്രികൾ (0 = ഓഫ്)",
+  "torchInfoTitle": "ടോർച്ച് ബ്ലിങ്ക്",
+  "torchInfoBody": "ഇൻകമിംഗ്, ഔട്ട്‌ഗോയിംഗ് അല്ലെങ്കിൽ നടന്നുകൊണ്ടിരിക്കുന്ന കോളുകളുടെ സമയത്ത് ക്യാമറ ഫ്ലാഷ് മിന്നുന്നു. ഗ്ലിഫ് ലൈറ്റുകളിൽ നിന്ന് സ്വതന്ത്രമായി.",
+  "glyphMapTitle": "ഗ്ലിഫ് ലേഔട്ട്",
+  "glyphMapBody": "ഒന്നുമില്ല ഫോൺ 1 ഗ്ലിഫ് LED സോണുകൾ. ഔട്ട്‌ഗോയിംഗ്, ഇൻ-കോൾ ആനിമേഷനുകൾ ഈ ചാനലുകൾ ഉപയോഗിക്കുന്നു.",
+  "answerMethodTitle": "ഉത്തരം രീതി",
+  "glyphOutgoingCallStyleTitle": "ഔട്ട്‌ഗോയിംഗ് കോൾ ശൈലി",
+  "glyphInCallAnimationTitle": "ഗ്ലിഫ് ഇൻ-കോൾ ആനിമേഷൻ",
+  "themePickerTitle": "തീം",
+  "torchIncomingTitle": "ഇൻകമിംഗ് കോൾ ടോർച്ച്",
+  "torchOutgoingTitle": "ഔട്ട്‌ഗോയിംഗ് കോൾ ടോർച്ച്",
+  "torchOngoingTitle": "നടന്നുകൊണ്ടിരിക്കുന്ന കോൾ ടോർച്ച്",
+  "timePeriodTitle": "സമയ കാലയളവ്",
+  "ok": "ശരി",
+  "confirmDeleteCall": "ചരിത്രത്തിൽ നിന്ന് ഈ കോൾ ഇല്ലാതാക്കണോ?",
+  "confirmDeleteAllCalls": "ഈ നമ്പറിലുള്ള എല്ലാ കോളുകളും ഇല്ലാതാക്കണോ?",
+  "whatsapp": "WhatsApp",
+  "sendMessage": "ഒരു സന്ദേശം അയയ്ക്കുക",
+  "addToExistingContactAction": "ഒരു കോൺടാക്റ്റിലേക്ക് ചേർക്കുക",
+  "mobileLabel": "മൊബൈൽ",
+  "callingSimForContactTitle": "ഈ കോൺടാക്റ്റിനായി സിം വിളിക്കുന്നു",
+  "contactSettings": "കോൺടാക്റ്റ് ക്രമീകരണങ്ങൾ",
+  "setCallingSim": "കോളിംഗ് സിം സജ്ജീകരിക്കുക",
+  "contactRingtone": "ബന്ധപ്പെടാനുള്ള റിംഗ്‌ടോൺ",
+  "shareContact": "കോൺടാക്റ്റ് പങ്കിടുക",
+  "blockNumbers": "ബ്ലോക്ക് നമ്പറുകൾ",
+  "unblockNumbers": "അൺബ്ലോക്ക് നമ്പറുകൾ",
+  "connectedApps": "ബന്ധിപ്പിച്ച ആപ്പുകൾ",
+  "simNotSet": "സജ്ജമാക്കിയിട്ടില്ല",
+  "ringtoneDefault": "സ്ഥിരസ്ഥിതി",
+  "customRingtone": "കസ്റ്റം",
+  "aboutSection": "കുറിച്ച്",
+  "aboutFeedbackSection": "കുറിച്ച് & ഫീഡ്ബാക്ക്",
+  "aboutDescription": "ഒന്നും ഡയലർ ഓപ്പൺ സോഴ്‌സ് അല്ല. നിങ്ങളൊരു ഡവലപ്പറാണെങ്കിൽ, കോഡ് പര്യവേക്ഷണം ചെയ്യാനും സംഭാവന നൽകാനും നിങ്ങൾക്ക് സ്വാഗതം.",
+  "aboutViewSource": "GitHub-ൽ കാണുക",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "ലിങ്ക് തുറക്കാൻ കഴിഞ്ഞില്ല",
+  "reviewSection": "അവലോകനം",
+  "reviewDescription": "ഒന്നുമില്ല ഡയലർ ആസ്വദിക്കുന്നുണ്ടോ? Google Play-യിലെ നിങ്ങളുടെ റേറ്റിംഗ് ആപ്പ് കണ്ടെത്താൻ മറ്റുള്ളവരെ സഹായിക്കുന്നു.",
+  "reviewRateOnPlay": "Google Play-യിൽ റേറ്റ് ചെയ്യുക",
+  "reviewRateOnPlaySubtitle": "ആപ്പ് വിടാതെ തന്നെ ഒരു റേറ്റിംഗ് നൽകൂ",
+  "reviewCouldNotOpen": "Google Play തുറക്കാൻ കഴിഞ്ഞില്ല",
+  "breathSpeed": "ശ്വസന വേഗത",
+  "breathSpeedBlinkHint": "താഴ്ന്നത് = മിന്നിമറയുക, ഉയർന്നത് = മന്ദഗതിയിലുള്ള ശ്വാസം",
+  "speedSliderHint": "താഴ്ന്നത് = വേഗത്തിൽ, ഉയർന്നത് = പതുക്കെ",
+  "swatchDefault": "സ്ഥിരസ്ഥിതി",
+  "customAccentColorPicker": "ഇഷ്‌ടാനുസൃത ആക്സൻ്റ് നിറം",
+  "customLightBackgroundPicker": "കസ്റ്റം ലൈറ്റ് പശ്ചാത്തലം",
+  "customDarkBackgroundPicker": "ഇഷ്‌ടാനുസൃത ഇരുണ്ട പശ്ചാത്തലം",
+  "customCallBackgroundPicker": "ഇഷ്‌ടാനുസൃത കോൾ പശ്ചാത്തലം",
+  "ongoingCallStyleTitle": "നടന്നുകൊണ്ടിരിക്കുന്ന കോൾ ശൈലി",
+  "glyphMapUnavailable": "ഗ്ലിഫ് മാപ്പ് ലഭ്യമല്ല",
+  "animationDelayRange": "ആനിമേഷൻ കാലതാമസം (1സെ - 10സെ)",
+  "animationDelayRangeSingle": "ആനിമേഷൻ കാലതാമസം (0.1സെ - 10സെ)",
+  "inCallMute": "നിശബ്ദമാക്കുക",
+  "inCallKeypad": "കീപാഡ്",
+  "inCallSpeaker": "സ്പീക്കർ",
+  "inCallMore": "കൂടുതൽ",
+  "inCallBluetooth": "ബ്ലൂടൂത്ത്",
+  "inCallPhone": "ഫോൺ",
+  "inCallAddCall": "കോൾ ചേർക്കുക",
+  "inCallChangeSim": "സിം മാറ്റുക",
+  "inCallDecline": "നിരസിക്കുക",
+  "inCallAnswer": "ഉത്തരം",
+  "inCallMessage": "സന്ദേശം",
+  "inCallCalling": "വിളിക്കുന്നു...",
+  "inCallIncoming": "ഇൻകമിംഗ് കോൾ",
+  "inCallSelectSim": "സിം തിരഞ്ഞെടുക്കുക...",
+  "inCallSwitchingSim": "സിം മാറുന്നു...",
+  "inCallCallEnded": "കോൾ അവസാനിച്ചു",
+  "inCallCallingVia": "{sim} വഴി വിളിക്കുന്നു",
+  "inCallCallingViaHtml": "<b>{sim}</b> വഴി വിളിക്കുന്നു",
+  "inCallChooseSim": "ഈ കോളിനായി സിം തിരഞ്ഞെടുക്കുക",
+  "inCallDragAnswerDecline": "ഉത്തരം നൽകാൻ വലത്തേക്ക് വലിച്ചിടുക · നിരസിക്കാൻ ഇടത്തേക്ക് വലിച്ചിടുക",
+  "inCallMobileNumber": "മൊബൈൽ {number}",
+  "inCallAudioRouteCurrent": "{label} (നിലവിലെ)",
+  "inCallCallViaFrom": "എന്നതിൽ നിന്ന് <b>{sim}</b> വഴി വിളിക്കുക",
+  "inCallCallFrom": "നിന്ന് വിളിക്കുക",
+  "inCallUnknown": "അജ്ഞാതം",
+  "selectContactRingtone": "കോൺടാക്റ്റ് റിംഗ്ടോൺ തിരഞ്ഞെടുക്കുക",
+  "speakToSearchPrompt": "തിരയാൻ സംസാരിക്കുക",
+  "phonePermissionRequired": "ഫോൺ അനുമതി ആവശ്യമാണ്",
+  "callFailed": "കോൾ പരാജയപ്പെട്ടു: {error}",
+  "callPermissionDenied": "കോൾ അനുമതി നിരസിച്ചു",
+  "alreadyDefaultDialer": "ഡിഫോൾട്ട് ഡയലറായി ഇതിനകം സജ്ജീകരിച്ചിരിക്കുന്നു",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

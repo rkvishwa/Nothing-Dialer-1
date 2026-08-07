@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Nyamazisha</string>
+    <string name="in_call_keypad">Kibodi</string>
+    <string name="in_call_speaker">Spika</string>
+    <string name="in_call_more">Zaidi</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Simu</string>
+    <string name="in_call_add_call">Ongeza simu</string>
+    <string name="in_call_change_sim">Badilisha SIM</string>
+    <string name="in_call_decline">Kataa</string>
+    <string name="in_call_answer">Jibu</string>
+    <string name="in_call_message">Ujumbe</string>
+    <string name="in_call_calling">Inapiga...</string>
+    <string name="in_call_incoming">Simu inayoingia</string>
+    <string name="in_call_select_sim">Chagua SIM...</string>
+    <string name="in_call_switching_sim">Inabadilisha SIM...</string>
+    <string name="in_call_call_ended">Simu imekatika</string>
+    <string name="in_call_calling_via">Inapiga simu kupitia %1$s</string>
+    <string name="in_call_calling_via_html">Inapiga simu kupitia &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Chagua SIM kwa simu hii</string>
+    <string name="in_call_drag_answer_decline">Buruta kulia ili kujibu · Buruta kushoto ili kukataa</string>
+    <string name="in_call_mobile_number">Simu ya rununu %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Sasa)</string>
+    <string name="in_call_call_via_from">Piga simu kupitia &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; kutoka</string>
+    <string name="in_call_call_from">Piga simu kutoka</string>
+    <string name="in_call_unknown">Haijulikani</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Chagua toni ya mwasiliani</string>
+    <string name="native_speak_to_search">Ongea ili kutafuta</string>
+    <string name="native_phone_permission_required">Ruhusa ya simu inahitajika</string>
+    <string name="native_call_failed">Simu haikufaulu: %1$s</string>
+    <string name="native_call_permission_denied">Ruhusa ya kupiga simu imekataliwa</string>
+    <string name="native_already_default_dialer">Tayari imewekwa kama kipiga simu chaguo-msingi</string>
+</resources>

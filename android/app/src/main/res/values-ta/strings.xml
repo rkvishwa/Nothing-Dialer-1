@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">ஒலி அணை</string>
+    <string name="in_call_keypad">கீபேட்</string>
+    <string name="in_call_speaker">ஸ்பீக்கர்</string>
+    <string name="in_call_more">மேலும்</string>
+    <string name="in_call_bluetooth">புளூடூத்</string>
+    <string name="in_call_phone">தொலைபேசி</string>
+    <string name="in_call_add_call">அழைப்பைச் சேர்</string>
+    <string name="in_call_change_sim">SIM மாற்று</string>
+    <string name="in_call_decline">நிராகரி</string>
+    <string name="in_call_answer">பதிலளி</string>
+    <string name="in_call_message">செய்தி</string>
+    <string name="in_call_calling">அழைக்கிறது…</string>
+    <string name="in_call_incoming">உள்வரும் அழைப்பு</string>
+    <string name="in_call_select_sim">SIM தேர்ந்தெடு…</string>
+    <string name="in_call_switching_sim">SIM மாற்றுகிறது…</string>
+    <string name="in_call_call_ended">அழைப்பு முடிந்தது</string>
+    <string name="in_call_calling_via">%1$s வழியாக அழைக்கிறது</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; வழியாக அழைக்கிறது</string>
+    <string name="in_call_choose_sim">இந்த அழைப்புக்கு SIM தேர்ந்தெடு</string>
+    <string name="in_call_drag_answer_decline">பதிலளிக்க வலது · நிராகரிக்க இடது இழுக்கவும்</string>
+    <string name="in_call_mobile_number">மொபைல் %1$s</string>
+    <string name="in_call_audio_route_current">%1$s  (தற்போது)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; வழியாக அழைப்பு</string>
+    <string name="in_call_call_from">அழைப்பு இதிலிருந்து</string>
+    <string name="in_call_unknown">தெரியாதது</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">தொடர்பு ரிங்டோனைத் தேர்ந்தெடு</string>
+    <string name="native_speak_to_search">தேட பேசுங்கள்</string>
+    <string name="native_phone_permission_required">தொலைபேசி அனுமதி தேவை</string>
+    <string name="native_call_failed">அழைப்பு தோல்வி: %1$s</string>
+    <string name="native_call_permission_denied">அழைப்பு அனுமதி மறுக்கப்பட்டது</string>
+    <string name="native_already_default_dialer">ஏற்கனவே இயல்புநிலை டயலராக உள்ளது</string>
+</resources>

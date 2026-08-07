@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Mut</string>
+    <string name="in_call_keypad">Tastatura</string>
+    <string name="in_call_speaker">Difuzor</string>
+    <string name="in_call_more">Mai mult</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Adăugați apel</string>
+    <string name="in_call_change_sim">Schimbați SIM</string>
+    <string name="in_call_decline">Declin</string>
+    <string name="in_call_answer">Răspuns</string>
+    <string name="in_call_message">Mesaj</string>
+    <string name="in_call_calling">Apelând…</string>
+    <string name="in_call_incoming">Apel primit</string>
+    <string name="in_call_select_sim">Selectați SIM...</string>
+    <string name="in_call_switching_sim">Se comută SIM-ul...</string>
+    <string name="in_call_call_ended">Apel încheiat</string>
+    <string name="in_call_calling_via">Apelare prin %1$s</string>
+    <string name="in_call_calling_via_html">Apelare prin &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt;</string>
+    <string name="in_call_choose_sim">Alegeți SIM pentru acest apel</string>
+    <string name="in_call_drag_answer_decline">Trageți la dreapta pentru a răspunde · Trageți la stânga pentru a refuza</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Actual)</string>
+    <string name="in_call_call_via_from">Apelați prin &amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; de la</string>
+    <string name="in_call_call_from">Sună de la</string>
+    <string name="in_call_unknown">Necunoscut</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Selectați tonul de apel de contact</string>
+    <string name="native_speak_to_search">Vorbește pentru a căuta</string>
+    <string name="native_phone_permission_required">Este necesară permisiunea telefonică</string>
+    <string name="native_call_failed">Apel eșuat: %1$s</string>
+    <string name="native_call_permission_denied">Permisiunea de apel a fost refuzată</string>
+    <string name="native_already_default_dialer">Deja setat ca dialer implicit</string>
+</resources>

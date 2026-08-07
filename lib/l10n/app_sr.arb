@@ -1,0 +1,759 @@
+{
+  "@@locale": "sr",
+  "appTitle": "Нотхинг Диалер",
+  "settings": "Подешавања",
+  "settingsSearchHint": "Подешавања претраге",
+  "settingsSearchNoResults": "Нису пронађена подешавања",
+  "general": "генерал",
+  "theme": "Тема",
+  "themeSystemDefault": "Систем Дефаулт",
+  "themeLight": "Светлост",
+  "themeDark": "Дарк",
+  "themeFollowSystem": "Пратите системска подешавања",
+  "themeAlwaysLight": "Увек користите светлу тему",
+  "themeAlwaysDark": "Увек користите тамну тему",
+  "language": "Језик",
+  "languageDeviceDefault": "Подразумевано за уређај",
+  "languagePickerTitle": "Језик",
+  "languageSearchHint": "Тражи језике",
+  "font": "Фонт",
+  "fontSystem": "Систем подразумевано",
+  "fontNdot": "Ништа (НДот)",
+  "fontSerif": "Робото Сериф",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "Преузимање фонта није успело. Проверите своју везу и покушајте поново.",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "Фонт",
+  "fontPreviewSample": "Нотхинг Диалер",
+  "fontAppWide": "Фонт апликације",
+  "fontApplyTo": "Пријавите се на",
+  "fontApplyEntireApp": "Цела апликација",
+  "fontApplyEntireAppSubtitle": "Исти фонт свуда, укључујући и позив",
+  "fontApplyTitlesOnly": "Наслови и заглавља",
+  "fontApplyTitlesOnlySubtitle": "Само велики наслови и заглавља одељака",
+  "fontApplyCustomize": "Прилагодите",
+  "fontApplyCustomizeSubtitle": "Изаберите фонт по екрану и типу текста",
+  "fontCustomizeSection": "Прилагодите према екрану",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "Наслов странице",
+  "fontRoleSectionHeader": "Заглавље одељка",
+  "fontRolePrimary": "Примарни текст",
+  "fontRoleSecondary": "Секундарни текст",
+  "fontRoleButton": "Дугмад",
+  "fontRoleDialKey": "Тастери за бирање бројева",
+  "fontSurfaceRecents": "Недавно",
+  "fontSurfaceContacts": "Контакти",
+  "fontSurfaceSettings": "Подешавања",
+  "fontSurfaceDialpad": "Тастатура за бирање бројева",
+  "fontSurfaceShell": "Навигација",
+  "fontSurfaceDefaultDialer": "Подразумевани позив за бирање бројева",
+  "fontSurfaceFavourites": "Фаворитес",
+  "fontSurfaceBlocked": "Блокирани бројеви",
+  "fontSurfaceContactDetail": "Контакт детаљ",
+  "fontSurfaceCallHistory": "Историја позива",
+  "fontSurfaceSheets": "Листови и берачи",
+  "fontSurfaceInCall": "Екран током позива",
+  "fontSubtitleEntireApp": "{font} — цела апликација",
+  "fontSubtitleTitlesOnly": "{font} — само наслови",
+  "fontSubtitleCustomize": "Прилагођено по екрану",
+  "background": "Позадина",
+  "accent": "Аццент",
+  "lightBackground": "Светла позадина",
+  "lightAccent": "Лагани акценат",
+  "darkBackground": "Тамна позадина",
+  "darkAccent": "Тамни акценат",
+  "callBackground": "Позадина позива",
+  "appIcon": "Икона апликације",
+  "answerMethod": "Метода одговора",
+  "answerSlide": "Превуците да бисте одговорили",
+  "answerSlideSubtitle": "Превуците лево/десно на траци, као што је Гоогле телефон",
+  "answerButton": "Тапкање на дугме",
+  "answerButtonSubtitle": "Додирните дугме за одговор или одбијање",
+  "answerHuawei": "Хуавеи стил",
+  "answerHuaweiSubtitle": "Превуците круг до зеленог телефона да бисте одговорили",
+  "answerHuaweiTileSubtitle": "Хуавеи — превуците на зелено / црвено",
+  "calling": "Цаллинг",
+  "defaultSim": "Дефаулт СИМ",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "Питајте сваки пут",
+  "askEveryTimeSubtitle": "Прикажи бирач СИМ картице пре сваког позива",
+  "simSlot": "СИМ {slot}",
+  "noSimCardsFound": "СИМ картице нису пронађене",
+  "couldNotLoadSims": "Није могуће учитати СИМ картице: {error}",
+  "allFavourites": "Сви фаворити",
+  "allFavouritesSubtitle": "Промените редослед, уклоните и додајте из контаката",
+  "blockedNumbers": "Блокирани бројеви",
+  "blockedNumbersSubtitle": "Прегледајте и деблокирајте бројеве",
+  "soundsAndVibration": "Звукови и вибрације",
+  "soundsAndVibrationSubtitle": "Мелодија звона, вибрација, тонови тастера за бирање бројева",
+  "couldNotOpenSettings": "Није могуће отворити подешавања: {error}",
+  "frequentlyContacted": "Често контактирани",
+  "numberOfRecords": "Број записа",
+  "timePeriod": "Временски период",
+  "periodLast24Hours": "Последња 24 сата",
+  "periodLast24HoursSubtitle": "Позиви од прошлог дана",
+  "periodLast7Days": "Последњих 7 дана",
+  "periodLast7DaysSubtitle": "Позиви од прошле недеље",
+  "periodLast30Days": "Последњих 30 дана",
+  "periodLast30DaysSubtitle": "Позиви од прошлог месеца",
+  "periodLast12Months": "Последњих 12 месеци",
+  "periodLast12MonthsSubtitle": "Позиви из прошле године",
+  "periodAllTime": "Све време",
+  "periodAllTimeSubtitle": "Целокупна историја позива",
+  "frequentMaxOff": "Офф",
+  "frequentMaxCount": "{count} контакти",
+  "torchBlink": "Торцх Блинк",
+  "torchIncomingCall": "Светиљка за долазни позив",
+  "torchOutgoingCall": "Светиљка за одлазни позив",
+  "torchOngoingCall": "Позив бакља у току",
+  "torchIncomingInterval": "Интервал долазног трептања",
+  "torchOutgoingInterval": "Интервал одлазног трептања",
+  "torchOngoingInterval": "Интервал трептања у току",
+  "torchOff": "Офф",
+  "torchOffIncomingSubtitle": "Нема бакље док звони",
+  "torchOffOutgoingSubtitle": "Нема лампе током бирања",
+  "torchOffOngoingSubtitle": "Нема лампе током активног позива",
+  "torchFixedInterval": "Фиксни интервал",
+  "torchFixedIntervalSubtitle": "Трепните подешеном брзином",
+  "torchIntervalSeconds": "{seconds} с",
+  "torchIntervalBlink": "{seconds} трепери",
+  "flashlightUnavailable": "Лампа није доступна на овом уређају",
+  "glyphLights": "Глипх Лигхтс",
+  "glyphCallingAnimation": "Анимација позивања глифова",
+  "glyphOngoingAnimation": "Анимација позива у току",
+  "glyphNone": "Ниједан",
+  "glyphNoneOutgoingSubtitle": "Онемогућите Глипх лампице за одлазне позиве",
+  "glyphNoneInCallSubtitle": "Онемогућите Глипх светла док сте активни на позиву",
+  "glyphBreathProgress": "Бреатх & Прогресс",
+  "glyphBreathProgressSubtitle": "Светла дишу док се линија пуни за 65 секунди",
+  "glyphAccumulate": "Акумулирати",
+  "glyphAccumulateSubtitle": "Акумулирајућа анимација на светлима Ц1-Ц4",
+  "glyphSingle": "Сингле",
+  "glyphSingleSubtitle": "Једно светло које се креће преко Ц1-Ц4",
+  "glyphBreath": "Бреатх",
+  "glyphBreathSubtitle": "Изаберите светла и брзину",
+  "glyphSteady": "Мирно",
+  "glyphSteadySubtitle": "Изабрана светла остају укључена",
+  "breathSettings": "Бреатх Сеттингс",
+  "activeLights": "Ацтиве Лигхтс",
+  "lightsCount": "{count} светла",
+  "speedSettings": "Подешавања брзине",
+  "speedSettingsDelay": "{ms}мс кашњење",
+  "durationAndSpeed": "Трајање & Брзина",
+  "durationSpeedSummary": "{duration}с трајање, {interval}мс интервал",
+  "cancel": "Откажи",
+  "done": "Готово",
+  "save": "Сачувај",
+  "block": "Блокирај",
+  "delete": "Избриши",
+  "recents": "Недавно",
+  "contacts": "Контакти",
+  "hideFavouritesOnRecents": "Сакриј фаворите на Недавним",
+  "showFavouritesOnRecents": "Прикажи омиљене на Недавним",
+  "ongoingCall": "Позив у току",
+  "setAsDefaultTitle": "ПОСТАВИ КАО\nДЕФАУЛТ",
+  "setAsDefaultBody": "Да бисте користили Нотхинг Диалер, он мора бити постављен као подразумевана апликација за телефон. Ово вам омогућава да управљате позивима, прегледате историју и користите Глипх анимације.",
+  "setAsDefaultButton": "ПОСТАВИ КАО ДЕФАУЛТ",
+  "nothingDialerBrand": "НИШТА БИРАЧ 1",
+  "favourites": "Фаворитес",
+  "addFavourite": "Додајте омиљено",
+  "favouritesDrawerHint": "Користите мени да додате контакте. Додирните изван фиоке или је превуците прстом да затворите. Означите контакт звездицом из његових детаља или дуго притисните позив у Недавним.",
+  "menu": "Мени",
+  "noFavouritesYet": "Још нема фаворита.\nОтворите мени да бисте га додали или контакт звездицом.",
+  "contactsPermissionNeeded": "Потребна је дозвола за контакте",
+  "chooseContact": "Изаберите контакт",
+  "noPhone": "Нема телефона",
+  "pickNumber": "Изаберите број",
+  "contactHasNoPhone": "Овај контакт нема број телефона",
+  "blockNumber": "Број блока",
+  "enterPhoneNumber": "Унесите број телефона",
+  "unblockedDisplay": "Деблокирано {display}",
+  "couldNotUnblockNumber": "Није могуће деблокирати број",
+  "blockedSummary": "{blocked} блокирано • {matched} се подудара",
+  "contactsPermissionMissing": "Недостаје дозвола за контакте. Додирните да поправите.",
+  "noBlockedNumbers": "Нема блокираних бројева",
+  "unknownContact": "Непознати контакт",
+  "unblock": "Деблокирај",
+  "permissionNeeded": "Потребна је дозвола",
+  "grantPhonePermission": "Дајте дозволу телефону да видите историју позива.",
+  "grantContactsPermission": "Дајте контактима дозволу да виде ваш адресар.",
+  "openSettings": "Отворите Подешавања",
+  "tryAgain": "Покушајте поново",
+  "couldNotLoadContacts": "Није могуће учитати контакте",
+  "contactsLoadError": "Нешто није у реду читајући ваш адресар.",
+  "noContactsFound": "Није пронађен ниједан контакт",
+  "contactsEmptySubtitle": "Овде ће се појавити контакти са вашег уређаја.",
+  "searchContacts": "Претражи контакте…",
+  "searchRecentCalls": "Претражите недавне позиве",
+  "fromContacts": "Из контаката",
+  "recentsSearchSection": "Недавна претрага",
+  "recentsSearchShowContacts": "Прикажи контакте у претрази",
+  "recentsSearchShowContactsSubtitle": "Док претражујете Недавне, такође прикажите одговарајуће људе из вашег адресара испод резултата историје позива.",
+  "voiceSearch": "Гласовна претрага",
+  "createNewContact": "Креирајте нови контакт",
+  "callError": "Грешка у позиву: {error}",
+  "noRecentCalls": "Нема недавних позива",
+  "callHistoryEmpty": "Ваша историја позива ће се појавити овде.",
+  "loadMore": "Учитај више",
+  "frequentlyContactedHeader": "Често контактирани",
+  "recentHistory": "Недавна историја",
+  "noFavouritesRecentsHint": "Још нема фаворита. Означите контакт звездицом, дуго притисните позив или користите картицу Фаворити.",
+  "copyNumber": "Копија број",
+  "editNumberBeforeCall": "Измените број пре позива",
+  "removeFromFavourites": "Уклони из омиљених",
+  "addToFavourites": "Додај у фаворите",
+  "blockNumberQuestion": "Блокирати број?",
+  "blockNumberConfirm": "Више нећете примати позиве или поруке од {number}.",
+  "blocked": "Блокирано",
+  "couldNotBlock": "Није могуће блокирати",
+  "contactNotOnDevice": "Контакт није сачуван на овом уређају",
+  "unblocked": "Деблокирано",
+  "numberCopied": "Број је копиран",
+  "showLess": "Прикажи мање",
+  "showAllTimes": "Прикажи сва времена",
+  "mostRecent": "Најновије · {time}",
+  "videoCall": "Видео позив",
+  "couldNotPlaceVideoCall": "Није могуће упутити видео позив",
+  "message": "Порука",
+  "couldNotOpenMessaging": "Није могуће отворити апликацију за размену порука",
+  "history": "Историја",
+  "viewContact": "Прикажи контакт",
+  "addToContact": "Додај у контакт",
+  "callTypeMissed": "Пропуштено",
+  "callTypeRejected": "Одбијено",
+  "callTypeIncoming": "Инцоминг",
+  "callTypeOutgoing": "Одлазни",
+  "today": "данас",
+  "yesterday": "Јучер",
+  "justNow": "Управо сада",
+  "minutesAgo": "{count} мин",
+  "hoursAgo": "пре {count} сати",
+  "filterAll": "Све",
+  "filterMissed": "Пропуштено",
+  "filterContacts": "Контакти",
+  "filterNonContacts": "Неконтакти",
+  "iconUpdated": "Икона је ажурирана. Вашем почетном екрану може бити потребно мало времена да се освежи.",
+  "iconSavedRelease": "Избор је сачуван. Икона почетног екрана се ажурира у верзијама издања.",
+  "couldNotChangeIcon": "Није могуће променити икону: {error}",
+  "launcherClassicBlack": "класична (црна)",
+  "launcherLight": "Светлост",
+  "launcherNothingRed": "Ништа црвено",
+  "launcherDarkGrey": "Тамно сива",
+  "launcherCream": "Крем",
+  "launcherRetroPhone": "Ретро телефон",
+  "launcherRetroPhoneLight": "Ретро телефон (светли)",
+  "voiceSearchUnavailable": "Гласовна претрага није доступна на овом уређају.",
+  "voiceSearchFailed": "Гласовна претрага није успела: {error}",
+  "customColor": "Цустом",
+  "selectColor": "Изаберите боју",
+  "reset": "Ресетуј",
+  "simPickerTitle": "Изаберите СИМ",
+  "simChooseForCall": "Изаберите СИМ за овај позив",
+  "defaultSimAsk": "Питајте сваки пут",
+  "defaultSimFixed": "СИМ {slot}",
+  "contactDetails": "Контакт детаљи",
+  "call": "Цалл",
+  "share": "Схаре",
+  "favourite": "Фаворите",
+  "unfavourite": "Неомиљено",
+  "blockContact": "Блокирајте контакт",
+  "unblockContact": "Деблокирајте контакт",
+  "deleteContact": "Избриши контакт",
+  "phone": "Телефон",
+  "email": "Емаил",
+  "ringtone": "Рингтоне",
+  "defaultRingtone": "Подразумевано",
+  "simForContact": "СИМ за овај контакт",
+  "callHistoryTitle": "Историја позива",
+  "noCallsWithNumber": "Нема позива са овог броја",
+  "durationMinutesSeconds": "{minutes}м {seconds}с",
+  "durationSeconds": "{seconds}с",
+  "glyphAnimationStyle": "Глипх анимација",
+  "inCallGlyphAnimationStyle": "Глиф анимација током позива",
+  "recordsOff": "Офф",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "Дефаулт СИМ",
+  "nothingPhoneOnly": "Ништа Само телефон",
+  "nothingPhoneOnlySubtitle": "Функције глифа захтевају телефон са ничим",
+  "custom": "Цустом",
+  "presetColorHex": "Унапред подешено · {hex}",
+  "customColorHex": "Прилагођено · {hex}",
+  "oneContact": "1 контакт",
+  "upToContacts": "До {count} контаката",
+  "answerButtonTapSubtitle": "Додирните дугме да бисте одговорили",
+  "filterCalls": "Филтрирајте позиве",
+  "filterTooltip": "Филтер",
+  "settingsTooltip": "Подешавања",
+  "filterAllSubtitle": "Целокупна евиденција позива",
+  "filterMissedSubtitle": "Пропуштено и одбијено",
+  "filterContactsSubtitle": "Позиви се подударају са сачуваним контактом",
+  "filterNonContactsSubtitle": "Бројеви који нису у вашем адресару",
+  "ongoingCallWithDetail": "Позив у току: {detail}",
+  "defaultSimForCalls": "Подразумевана СИМ картица за позиве",
+  "blinkInterval": "Интервал трептања",
+  "close": "Затвори",
+  "frequentlyContactedInfoBody": "Приказује ваше најчешће позиване бројеве телефона на врху картице Недавно, на основу тога колико сте долазних, одлазних, пропуштених или одбијених позива имали са сваким бројем у временском периоду који одаберете.\n\nБрој записа: поставите на 0 да бисте ово искључили. Користите 1–20 да бисте приказали толико најбољих контаката.\n\nВременски период се примењује само када је приказан најмање један контакт.",
+  "breathSettingsSpeedSummary": "{count} светла, {ms}мс брзина",
+  "deleteContactQuestion": "Избрисати контакт?",
+  "deleteContactBody": "Овај контакт ће бити трајно избрисан са вашег уређаја.",
+  "blockContactQuestion": "Блокирати контакт?",
+  "unblockContactQuestion": "Деблокирати контакт?",
+  "blockContactBody": "Више нећете примати позиве или поруке од овог контакта.",
+  "unblockContactBody": "Почећете да примате позиве и поруке од овог контакта.",
+  "contactBlocked": "Контакт блокиран",
+  "contactUnblocked": "Контакт је деблокиран",
+  "noPhoneNumbersToBlock": "Нема бројева телефона за блокирање",
+  "simSameAsSystem": "Исто као систем",
+  "simSameAsSystemSubtitle": "Прати подразумевану СИМ картицу у подешавањима",
+  "simAskEveryTimeForContact": "Увек прикажи бирач СИМ картице за овај контакт",
+  "ringtoneSetForContact": "Мелодија звона постављена глобално за овај контакт",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "Није успело бирање мелодије звона: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "Грешка: {error}",
+  "noCallHistoryFound": "Није пронађена историја позива",
+  "speedDialVoicemail": "Брзо бирање: говорна пошта",
+  "shareContactSubject": "Контакт: {name}",
+  "contactInfo": "Контакт информације",
+  "dontAskAgainSim": "Не питај поново",
+  "simDontAskAgainSubtitle": "Користи ову СИМ као подразумевану (промени у подешавањима)",
+  "addContact": "Додајте контакт",
+  "createContact": "Креирајте контакт",
+  "paste": "Залепите",
+  "clear": "Јасно",
+  "returnToCall": "Вратите се на позив",
+  "numberOfRecordsTitle": "Број записа",
+  "recordsPickerSubtitle": "Колико често контактираних уноса за приказ (0 = искључено)",
+  "torchInfoTitle": "Трептање бакље",
+  "torchInfoBody": "Трепери блиц камере током долазних, одлазних или текућих позива. Независно од Глипх светала.",
+  "glyphMapTitle": "Распоред глифа",
+  "glyphMapBody": "Ништа Телефон 1 Глипх ЛЕД зоне. Одлазне анимације и анимације током позива користе ове канале.",
+  "answerMethodTitle": "Метода одговора",
+  "glyphOutgoingCallStyleTitle": "Стил одлазног позива",
+  "glyphInCallAnimationTitle": "Глиф анимација током позива",
+  "themePickerTitle": "Тема",
+  "torchIncomingTitle": "Светиљка за долазни позив",
+  "torchOutgoingTitle": "Светиљка за одлазни позив",
+  "torchOngoingTitle": "Позив бакља у току",
+  "timePeriodTitle": "Временски период",
+  "ok": "ОК",
+  "confirmDeleteCall": "Желите ли да избришете овај позив из историје?",
+  "confirmDeleteAllCalls": "Желите ли да избришете све позиве са овим бројем?",
+  "whatsapp": "ВхатсАпп",
+  "sendMessage": "Пошаљите поруку",
+  "addToExistingContactAction": "Додајте контакту",
+  "mobileLabel": "Мобилни",
+  "callingSimForContactTitle": "Позивање СИМ картице за овај контакт",
+  "contactSettings": "Подешавања контаката",
+  "setCallingSim": "Подесите СИМ за позивање",
+  "contactRingtone": "Контакт звона",
+  "shareContact": "Делите контакт",
+  "blockNumbers": "Блокирајте бројеве",
+  "unblockNumbers": "Деблокирајте бројеве",
+  "connectedApps": "Повезане апликације",
+  "simNotSet": "Није постављено",
+  "ringtoneDefault": "Подразумевано",
+  "customRingtone": "Цустом",
+  "aboutSection": "Абоут",
+  "aboutFeedbackSection": "О и повратне информације",
+  "aboutDescription": "Нотхинг Диалер је отвореног кода. Ако сте програмер, добродошли сте да истражите код и допринесете.",
+  "aboutViewSource": "Погледајте на ГитХуб-у",
+  "aboutRepositoryHost": "гитхуб.цом/рквисхва/Нотхинг-Диалер-1",
+  "aboutCouldNotOpenLink": "Није могуће отворити везу",
+  "reviewSection": "Преглед",
+  "reviewDescription": "Уживате у Нотхинг Диалеру? Ваша оцена на Гоогле Плаи-у помаже другима да пронађу апликацију.",
+  "reviewRateOnPlay": "Оцените на Гоогле Плаи-у",
+  "reviewRateOnPlaySubtitle": "Оставите оцену без напуштања апликације",
+  "reviewCouldNotOpen": "Није могуће отворити Гоогле Плаи",
+  "breathSpeed": "Брзина дисања",
+  "breathSpeedBlinkHint": "Ниже = трептај, више = споро дах",
+  "speedSliderHint": "Ниже = брже, више = спорије",
+  "swatchDefault": "Подразумевано",
+  "customAccentColorPicker": "Прилагођена боја акцента",
+  "customLightBackgroundPicker": "Прилагођена светла позадина",
+  "customDarkBackgroundPicker": "Прилагођена тамна позадина",
+  "customCallBackgroundPicker": "Прилагођена позадина позива",
+  "ongoingCallStyleTitle": "Стил позива у току",
+  "glyphMapUnavailable": "Мапа глифа није доступна",
+  "animationDelayRange": "Кашњење анимације (1 с - 10 с)",
+  "animationDelayRangeSingle": "Кашњење анимације (0,1 с - 10 с)",
+  "inCallMute": "Муте",
+  "inCallKeypad": "Тастатура",
+  "inCallSpeaker": "Спеакер",
+  "inCallMore": "Више",
+  "inCallBluetooth": "Блуетоотх",
+  "inCallPhone": "Телефон",
+  "inCallAddCall": "Додај позив",
+  "inCallChangeSim": "Промени СИМ",
+  "inCallDecline": "Одбиј",
+  "inCallAnswer": "Одговори",
+  "inCallMessage": "Порука",
+  "inCallCalling": "Позивање…",
+  "inCallIncoming": "Долазни позив",
+  "inCallSelectSim": "Изаберите СИМ…",
+  "inCallSwitchingSim": "Промена СИМ картице…",
+  "inCallCallEnded": "Позив је завршен",
+  "inCallCallingVia": "Позивање преко {sim}",
+  "inCallCallingViaHtml": "Позивање преко <b>{sim}</b>",
+  "inCallChooseSim": "Изаберите СИМ за овај позив",
+  "inCallDragAnswerDecline": "Превуците удесно да одговорите · Превуците лево да одбијете",
+  "inCallMobileNumber": "Мобилни {number}",
+  "inCallAudioRouteCurrent": "{label} (тренутно)",
+  "inCallCallViaFrom": "Позовите преко <b>{sim}</b> од",
+  "inCallCallFrom": "Позив од",
+  "inCallUnknown": "Непознато",
+  "selectContactRingtone": "Изаберите мелодију звона за контакт",
+  "speakToSearchPrompt": "Говорите за претрагу",
+  "phonePermissionRequired": "Потребна је дозвола за телефон",
+  "callFailed": "Позив није успео: {error}",
+  "callPermissionDenied": "Дозвола за позив је одбијена",
+  "alreadyDefaultDialer": "Већ је подешено као подразумевано бирање бројева",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

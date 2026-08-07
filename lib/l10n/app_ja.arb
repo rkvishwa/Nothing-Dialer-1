@@ -1,0 +1,759 @@
+{
+  "@@locale": "ja",
+  "appTitle": "何もないダイヤラ",
+  "settings": "設定",
+  "settingsSearchHint": "検索設定",
+  "settingsSearchNoResults": "設定が見つかりません",
+  "general": "一般",
+  "theme": "テーマ",
+  "themeSystemDefault": "システムのデフォルト",
+  "themeLight": "ライト",
+  "themeDark": "暗い",
+  "themeFollowSystem": "システム設定に従ってください",
+  "themeAlwaysLight": "常に明るいテーマを使用する",
+  "themeAlwaysDark": "常にダークテーマを使用する",
+  "language": "言語",
+  "languageDeviceDefault": "端末のデフォルト",
+  "languagePickerTitle": "言語",
+  "languageSearchHint": "検索言語",
+  "font": "フォント",
+  "fontSystem": "システムのデフォルト",
+  "fontNdot": "何もありません (NDot)",
+  "fontSerif": "ロボットセリフ",
+  "fontNoto": "Noto",
+  "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "fontNotoDownload": "Multilingual fonts",
+  "fontNotoDownloading": "Downloading…",
+  "fontNotoReady": "Downloaded",
+  "fontNotoDownloadFailed": "フォントのダウンロードに失敗しました。接続を確認して、もう一度試してください。",
+  "fontNotoUseAfterDownload": "Download multilingual fonts for full language support",
+  "fontPickerTitle": "フォント",
+  "fontPreviewSample": "何もないダイヤラ",
+  "fontAppWide": "アプリのフォント",
+  "fontApplyTo": "申請先",
+  "fontApplyEntireApp": "アプリ全体",
+  "fontApplyEntireAppSubtitle": "通話中も含め、どこでも同じフォント",
+  "fontApplyTitlesOnly": "タイトルとヘッダー",
+  "fontApplyTitlesOnlySubtitle": "大きなタイトルとセクションヘッダーのみ",
+  "fontApplyCustomize": "カスタマイズ",
+  "fontApplyCustomizeSubtitle": "画面ごとにフォントとテキストの種類を選択します",
+  "fontCustomizeSection": "画面ごとにカスタマイズ",
+  "fontCustomizeScreenHint": "Choose a font for each text style. Unchanged styles use the app font above.",
+  "fontResetScreen": "Reset",
+  "fontUsesAppDefault": "Same as app font",
+  "fontCustomizeRolesCount": "{count} custom styles",
+  "fontCustomizeGroupCalls": "Calls & people",
+  "fontCustomizeGroupDialer": "Dialer",
+  "fontCustomizeGroupApp": "App & system",
+  "fontCustomizeEditScreens": "Edit per-screen fonts",
+  "fontCustomizeEditScreensSubtitle": "Tap a screen, then adjust text styles",
+  "fontCustomizeScreensCount": "{count} screens customized",
+  "fontRolePickerTitle": "Font for {role}",
+  "fontChipSystem": "System",
+  "fontChipNdot": "NDot",
+  "fontChipSerif": "Serif",
+  "fontChipNoto": "Noto",
+  "fontRolePageTitle": "ページタイトル",
+  "fontRoleSectionHeader": "セクションヘッダー",
+  "fontRolePrimary": "一次テキスト",
+  "fontRoleSecondary": "二次テキスト",
+  "fontRoleButton": "ボタン",
+  "fontRoleDialKey": "ダイヤルパッドのキー",
+  "fontSurfaceRecents": "最近",
+  "fontSurfaceContacts": "連絡先",
+  "fontSurfaceSettings": "設定",
+  "fontSurfaceDialpad": "ダイヤルパッド",
+  "fontSurfaceShell": "ナビゲーション",
+  "fontSurfaceDefaultDialer": "デフォルトのダイヤラプロンプト",
+  "fontSurfaceFavourites": "お気に入り",
+  "fontSurfaceBlocked": "ブロックされた番号",
+  "fontSurfaceContactDetail": "連絡先詳細",
+  "fontSurfaceCallHistory": "通話履歴",
+  "fontSurfaceSheets": "シートとピッカー",
+  "fontSurfaceInCall": "通話中画面",
+  "fontSubtitleEntireApp": "{font} — アプリ全体",
+  "fontSubtitleTitlesOnly": "{font} — タイトルのみ",
+  "fontSubtitleCustomize": "画面ごとのカスタム",
+  "background": "背景",
+  "accent": "アクセント",
+  "lightBackground": "明るい背景",
+  "lightAccent": "軽いアクセント",
+  "darkBackground": "暗い背景",
+  "darkAccent": "ダークアクセント",
+  "callBackground": "通話の背景",
+  "appIcon": "アプリアイコン",
+  "answerMethod": "回答方法",
+  "answerSlide": "スライドして答えてください",
+  "answerSlideSubtitle": "Google Phone のようにバーを左右にスワイプします",
+  "answerButton": "ボタンタップ",
+  "answerButtonSubtitle": "応答または拒否ボタンをタップします",
+  "answerHuawei": "ファーウェイスタイル",
+  "answerHuaweiSubtitle": "応答するには、円を緑色の電話にドラッグします。",
+  "answerHuaweiTileSubtitle": "Huawei — 緑/赤にドラッグします",
+  "calling": "電話をかける",
+  "defaultSim": "デフォルトSIM",
+  "simIconColor": "SIM icon colors",
+  "simIconColorFor": "{label} icon color",
+  "simIconColorSubtitle": "Badge on call history",
+  "simIconColorDefault": "Theme default",
+  "simIconStyleOutline": "Outline",
+  "simIconStyleFill": "Fill",
+  "simIconStyleSection": "Style",
+  "simIconBadgeColor": "Color",
+  "customSimIconColorPicker": "Custom SIM icon color",
+  "askEveryTime": "毎回尋ねる",
+  "askEveryTimeSubtitle": "各通話の前に SIM ピッカーを表示する",
+  "simSlot": "SIM {slot}",
+  "noSimCardsFound": "SIM カードが見つかりません",
+  "couldNotLoadSims": "SIM をロードできませんでした: {error}",
+  "allFavourites": "すべてのお気に入り",
+  "allFavouritesSubtitle": "連絡先の並べ替え、削除、追加",
+  "blockedNumbers": "ブロックされた番号",
+  "blockedNumbersSubtitle": "番号の表示とブロック解除",
+  "soundsAndVibration": "音と振動",
+  "soundsAndVibrationSubtitle": "着信音、バイブレーション、ダイヤルパッド音",
+  "couldNotOpenSettings": "設定を開けませんでした: {error}",
+  "frequentlyContacted": "よく連絡する",
+  "numberOfRecords": "レコード数",
+  "timePeriod": "期間",
+  "periodLast24Hours": "過去 24 時間",
+  "periodLast24HoursSubtitle": "過去 1 日からの電話",
+  "periodLast7Days": "過去 7 日間",
+  "periodLast7DaysSubtitle": "過去 1 週間の電話",
+  "periodLast30Days": "過去 30 日間",
+  "periodLast30DaysSubtitle": "先月からの電話",
+  "periodLast12Months": "過去 12 か月",
+  "periodLast12MonthsSubtitle": "過去 1 年間の電話",
+  "periodAllTime": "ずっと",
+  "periodAllTimeSubtitle": "通話履歴全体",
+  "frequentMaxOff": "オフ",
+  "frequentMaxCount": "{count} 連絡先",
+  "torchBlink": "トーチブリンク",
+  "torchIncomingCall": "着信ランプ",
+  "torchOutgoingCall": "発信通話トーチ",
+  "torchOngoingCall": "継続通話トーチ",
+  "torchIncomingInterval": "着信まばたき間隔",
+  "torchOutgoingInterval": "発信点滅間隔",
+  "torchOngoingInterval": "継続的な点滅間隔",
+  "torchOff": "オフ",
+  "torchOffIncomingSubtitle": "呼び出し音が鳴っている間は懐中電灯が点灯しません",
+  "torchOffOutgoingSubtitle": "ダイヤル中に懐中電灯が点灯しない",
+  "torchOffOngoingSubtitle": "通話中はトーチがありません",
+  "torchFixedInterval": "一定間隔",
+  "torchFixedIntervalSubtitle": "設定した速度で点滅する",
+  "torchIntervalSeconds": "{seconds}秒",
+  "torchIntervalBlink": "{seconds} 点滅",
+  "flashlightUnavailable": "このデバイスでは懐中電灯は利用できません",
+  "glyphLights": "グリフライト",
+  "glyphCallingAnimation": "グリフ呼び出しアニメーション",
+  "glyphOngoingAnimation": "グリフ通話中のアニメーション",
+  "glyphNone": "なし",
+  "glyphNoneOutgoingSubtitle": "発信通話のグリフ ライトを無効にする",
+  "glyphNoneInCallSubtitle": "通話中は Glyph ライトを無効にする",
+  "glyphBreathProgress": "呼吸と進歩",
+  "glyphBreathProgressSubtitle": "ラインが 65 秒以上満たされる間、ライトは呼吸します",
+  "glyphAccumulate": "蓄積する",
+  "glyphAccumulateSubtitle": "ライト C1 ～ C4 のアニメーションを蓄積する",
+  "glyphSingle": "シングル",
+  "glyphSingleSubtitle": "C1-C4 を移動する単一のライト",
+  "glyphBreath": "呼吸",
+  "glyphBreathSubtitle": "ライトと速度を選択してください",
+  "glyphSteady": "安定した",
+  "glyphSteadySubtitle": "選択したライトは点灯したままになります",
+  "breathSettings": "ブレス設定",
+  "activeLights": "アクティブライト",
+  "lightsCount": "{count} ライト",
+  "speedSettings": "速度設定",
+  "speedSettingsDelay": "{ms}ms遅延",
+  "durationAndSpeed": "持続時間と速度",
+  "durationSpeedSummary": "{duration}秒の持続時間、{interval}ミリ秒の間隔",
+  "cancel": "キャンセル",
+  "done": "終わり",
+  "save": "保存",
+  "block": "ブロック",
+  "delete": "消去",
+  "recents": "履歴",
+  "contacts": "連絡先",
+  "hideFavouritesOnRecents": "最近のお気に入りを非表示にする",
+  "showFavouritesOnRecents": "最近でお気に入りを表示",
+  "ongoingCall": "通話中",
+  "setAsDefaultTitle": "として設定\nデフォルト",
+  "setAsDefaultBody": "Nothing Dialer を使用するには、Nothing Dialer をデフォルトの電話アプリとして設定する必要があります。これにより、通話の管理、履歴の表示、グリフ アニメーションの使用が可能になります。",
+  "setAsDefaultButton": "デフォルトとして設定",
+  "nothingDialerBrand": "何もありません ダイヤラー 1",
+  "favourites": "お気に入り",
+  "addFavourite": "お気に入りを追加",
+  "favouritesDrawerHint": "メニューを使用して連絡先を追加します。引き出しの外側をタップするか、スワイプして閉じます。詳細から連絡先にスターを付けるか、[最近] で通話を長押しします。",
+  "menu": "メニュー",
+  "noFavouritesYet": "まだお気に入りはありません。\nメニューを開いて連絡先を追加するか、連絡先にスターを付けます。",
+  "contactsPermissionNeeded": "連絡先の許可が必要です",
+  "chooseContact": "連絡先を選択してください",
+  "noPhone": "電話なし",
+  "pickNumber": "ピック番号",
+  "contactHasNoPhone": "この連絡先には電話番号がありません",
+  "blockNumber": "ブロック番号",
+  "enterPhoneNumber": "電話番号を入力してください",
+  "unblockedDisplay": "ブロック解除されました {display}",
+  "couldNotUnblockNumber": "番号のブロックを解除できませんでした",
+  "blockedSummary": "{blocked} ブロックされました • {matched} が一致しました",
+  "contactsPermissionMissing": "連絡先の権限がありません。タップして修正します。",
+  "noBlockedNumbers": "ブロックされた番号はありません",
+  "unknownContact": "不明な連絡先",
+  "unblock": "ブロックを解除する",
+  "permissionNeeded": "許可が必要です",
+  "grantPhonePermission": "通話履歴を表示する権限を電話に付与します。",
+  "grantContactsPermission": "連絡先にアドレス帳を表示する許可を与えます。",
+  "openSettings": "設定を開く",
+  "tryAgain": "もう一度やり直してください",
+  "couldNotLoadContacts": "連絡先をロードできませんでした",
+  "contactsLoadError": "アドレス帳の読み取り中に問題が発生しました。",
+  "noContactsFound": "連絡先が見つかりませんでした",
+  "contactsEmptySubtitle": "デバイスの連絡先がここに表示されます。",
+  "searchContacts": "連絡先を検索…",
+  "searchRecentCalls": "最近の通話を検索する",
+  "fromContacts": "連絡先から",
+  "recentsSearchSection": "最近の検索",
+  "recentsSearchShowContacts": "検索で連絡先を表示する",
+  "recentsSearchShowContactsSubtitle": "[最近] を検索しているときに、通話履歴の結果の下にアドレス帳にある一致するユーザーも表示されます。",
+  "voiceSearch": "音声検索",
+  "createNewContact": "新しい連絡先を作成する",
+  "callError": "通話エラー: {error}",
+  "noRecentCalls": "最近の通話はありません",
+  "callHistoryEmpty": "ここに通話履歴が表示されます。",
+  "loadMore": "さらにロードする",
+  "frequentlyContactedHeader": "よく連絡する",
+  "recentHistory": "最近の履歴",
+  "noFavouritesRecentsHint": "まだお気に入りはありません。連絡先にスターを付けるか、通話を長押しするか、[お気に入り] タブを使用します。",
+  "copyNumber": "コピー番号",
+  "editNumberBeforeCall": "電話をかける前に番号を編集する",
+  "removeFromFavourites": "お気に入りから削除",
+  "addToFavourites": "お気に入りに追加",
+  "blockNumberQuestion": "ブロック番号?",
+  "blockNumberConfirm": "{number} からの電話やテキストメッセージは受信できなくなります。",
+  "blocked": "ブロックされました",
+  "couldNotBlock": "ブロックできませんでした",
+  "contactNotOnDevice": "連絡先がこのデバイスに保存されていません",
+  "unblocked": "ブロック解除されました",
+  "numberCopied": "コピーされた番号",
+  "showLess": "表示を少なくする",
+  "showAllTimes": "すべての時間を表示",
+  "mostRecent": "最新 · {time}",
+  "videoCall": "ビデオ通話",
+  "couldNotPlaceVideoCall": "ビデオ通話を発信できませんでした",
+  "message": "メッセージ",
+  "couldNotOpenMessaging": "メッセージアプリを開けませんでした",
+  "history": "歴史",
+  "viewContact": "連絡先を表示",
+  "addToContact": "連絡先に追加",
+  "callTypeMissed": "逃した",
+  "callTypeRejected": "拒否されました",
+  "callTypeIncoming": "着信",
+  "callTypeOutgoing": "発信",
+  "today": "今日",
+  "yesterday": "昨日",
+  "justNow": "たった今",
+  "minutesAgo": "{count} 分前",
+  "hoursAgo": "{count} 時間前",
+  "filterAll": "全て",
+  "filterMissed": "逃した",
+  "filterContacts": "連絡先",
+  "filterNonContacts": "非接触型",
+  "iconUpdated": "アイコンが更新されました。ホーム画面が更新されるまでに少し時間がかかる場合があります。",
+  "iconSavedRelease": "選択が保存されました。ホーム画面のアイコンはリリース ビルドで更新されます。",
+  "couldNotChangeIcon": "アイコンを変更できませんでした: {error}",
+  "launcherClassicBlack": "クラシック（ブラック）",
+  "launcherLight": "ライト",
+  "launcherNothingRed": "何も赤くない",
+  "launcherDarkGrey": "ダークグレー",
+  "launcherCream": "クリーム",
+  "launcherRetroPhone": "レトロな電話",
+  "launcherRetroPhoneLight": "レトロ電話（ライト）",
+  "voiceSearchUnavailable": "このデバイスでは音声検索は利用できません。",
+  "voiceSearchFailed": "音声検索に失敗しました: {error}",
+  "customColor": "カスタム",
+  "selectColor": "色を選択してください",
+  "reset": "リセット",
+  "simPickerTitle": "SIMを選ぶ",
+  "simChooseForCall": "この通話用の SIM を選択してください",
+  "defaultSimAsk": "毎回尋ねる",
+  "defaultSimFixed": "SIM {slot}",
+  "contactDetails": "連絡先詳細",
+  "call": "電話",
+  "share": "共有",
+  "favourite": "お気に入り",
+  "unfavourite": "気に入らない",
+  "blockContact": "連絡先をブロックする",
+  "unblockContact": "連絡先のブロックを解除する",
+  "deleteContact": "連絡先を削除する",
+  "phone": "電話",
+  "email": "電子メール",
+  "ringtone": "着信音",
+  "defaultRingtone": "デフォルト",
+  "simForContact": "この連絡先の SIM",
+  "callHistoryTitle": "通話履歴",
+  "noCallsWithNumber": "この番号では通話できません",
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "durationSeconds": "{seconds}s",
+  "glyphAnimationStyle": "グリフアニメーション",
+  "inCallGlyphAnimationStyle": "通話中のグリフ アニメーション",
+  "recordsOff": "オフ",
+  "recordsCount": "{count}",
+  "pickDefaultSim": "デフォルトSIM",
+  "nothingPhoneOnly": "なし 電話のみ",
+  "nothingPhoneOnlySubtitle": "Glyph 機能には Nothing Phone が必要です",
+  "custom": "カスタム",
+  "presetColorHex": "プリセット · {hex}",
+  "customColorHex": "カスタム · {hex}",
+  "oneContact": "1 連絡先",
+  "upToContacts": "最大 {count} の連絡先",
+  "answerButtonTapSubtitle": "ボタンをタップして応答します",
+  "filterCalls": "通話のフィルタリング",
+  "filterTooltip": "フィルター",
+  "settingsTooltip": "設定",
+  "filterAllSubtitle": "通話履歴全体",
+  "filterMissedSubtitle": "見逃して拒否されました",
+  "filterContactsSubtitle": "保存された連絡先に一致する通話",
+  "filterNonContactsSubtitle": "アドレス帳にない番号",
+  "ongoingCallWithDetail": "通話中: {detail}",
+  "defaultSimForCalls": "通話用のデフォルトSIM",
+  "blinkInterval": "点滅間隔",
+  "close": "近い",
+  "frequentlyContactedInfoBody": "選択した期間内に各番号で着信、発信、不在着信、または拒否された通話の数に基づいて、最もよく通話した電話番号が [最近] タブの上部に表示されます。\n\nレコード数: これをオフにするには、0 に設定します。その数の上位連絡先を表示するには、1 ～ 20 を使用します。\n\n期間は、少なくとも 1 つの連絡先が表示されている場合にのみ適用されます。",
+  "breathSettingsSpeedSummary": "{count} ライト、{ms} ミリ秒の速度",
+  "deleteContactQuestion": "連絡先を削除しますか?",
+  "deleteContactBody": "この連絡先はデバイスから完全に削除されます。",
+  "blockContactQuestion": "連絡先をブロックしますか？",
+  "unblockContactQuestion": "連絡先のブロックを解除しますか?",
+  "blockContactBody": "この連絡先からの電話やテキストメッセージは受信されなくなります。",
+  "unblockContactBody": "この連絡先からの電話やテキストメッセージの受信が開始されます。",
+  "contactBlocked": "連絡先がブロックされました",
+  "contactUnblocked": "連絡先のブロックが解除されました",
+  "noPhoneNumbersToBlock": "ブロックする電話番号はありません",
+  "simSameAsSystem": "システムと同じ",
+  "simSameAsSystemSubtitle": "設定でデフォルトの SIM に従います",
+  "simAskEveryTimeForContact": "この連絡先に対して SIM ピッカーを常に表示する",
+  "ringtoneSetForContact": "この連絡先にグローバルに設定された着信音",
+  "ringtoneClearedForContact": "Contact ringtone reset to default",
+  "ringtoneSilent": "Silent",
+  "failedPickRingtone": "着信音の選択に失敗しました: {error}",
+  "failedSetRingtone": "Failed to set ringtone: {error}",
+  "genericError": "エラー: {error}",
+  "noCallHistoryFound": "通話履歴が見つかりません",
+  "speedDialVoicemail": "短縮ダイヤル: ボイスメール",
+  "shareContactSubject": "連絡先: {name}",
+  "contactInfo": "連絡先情報",
+  "dontAskAgainSim": "二度と聞かないでください",
+  "simDontAskAgainSubtitle": "この SIM をデフォルトとして使用します (設定で変更)",
+  "addContact": "連絡先を追加",
+  "createContact": "連絡先の作成",
+  "paste": "ペースト",
+  "clear": "クリア",
+  "returnToCall": "通話に戻る",
+  "numberOfRecordsTitle": "レコード数",
+  "recordsPickerSubtitle": "表示する頻繁に連絡されるエントリの数 (0 = オフ)",
+  "torchInfoTitle": "トーチブリンク",
+  "torchInfoBody": "着信中、発信中、通話中にカメラのフラッシュを点滅させます。グリフ ライトから独立しています。",
+  "glyphMapTitle": "グリフのレイアウト",
+  "glyphMapBody": "電話機 1 のグリフ LED ゾーンは何もありません。発信および通話中のアニメーションはこれらのチャネルを使用します。",
+  "answerMethodTitle": "回答方法",
+  "glyphOutgoingCallStyleTitle": "発信通話スタイル",
+  "glyphInCallAnimationTitle": "グリフ通話中のアニメーション",
+  "themePickerTitle": "テーマ",
+  "torchIncomingTitle": "着信ランプ",
+  "torchOutgoingTitle": "発信通話トーチ",
+  "torchOngoingTitle": "継続通話トーチ",
+  "timePeriodTitle": "期間",
+  "ok": "わかりました ・",
+  "confirmDeleteCall": "この通話を履歴から削除しますか?",
+  "confirmDeleteAllCalls": "この番号との通話をすべて削除しますか?",
+  "whatsapp": "ワッツアップ",
+  "sendMessage": "メッセージを送信する",
+  "addToExistingContactAction": "連絡先に追加",
+  "mobileLabel": "携帯",
+  "callingSimForContactTitle": "この連絡先の通話 SIM",
+  "contactSettings": "連絡先設定",
+  "setCallingSim": "通話SIMを設定する",
+  "contactRingtone": "連絡先の着信音",
+  "shareContact": "連絡先を共有する",
+  "blockNumbers": "ブロック番号",
+  "unblockNumbers": "番号のブロックを解除する",
+  "connectedApps": "接続されたアプリ",
+  "simNotSet": "未設定",
+  "ringtoneDefault": "デフォルト",
+  "customRingtone": "カスタム",
+  "aboutSection": "このアプリについて",
+  "aboutFeedbackSection": "概要とフィードバック",
+  "aboutDescription": "Nothing Dialer はオープンソースです。開発者の方はコードを確認し、貢献していただけます。",
+  "aboutViewSource": "GitHub で見る",
+  "aboutRepositoryHost": "github.com/rkvishwa/Nothing-Dialer-1",
+  "aboutCouldNotOpenLink": "リンクを開けませんでした",
+  "reviewSection": "レビュー",
+  "reviewDescription": "Nothing Dialer を気に入っていただけましたか？Google Play の評価は他のユーザーの参考になります。",
+  "reviewRateOnPlay": "Google Play で評価",
+  "reviewRateOnPlaySubtitle": "アプリを離れずに評価する",
+  "reviewCouldNotOpen": "Google Play を開けませんでした",
+  "breathSpeed": "呼吸速度",
+  "breathSpeedBlinkHint": "低い = まばたき、高い = ゆっくりとした呼吸",
+  "speedSliderHint": "低い = 速く、高い = 遅い",
+  "swatchDefault": "デフォルト",
+  "customAccentColorPicker": "カスタムアクセントカラー",
+  "customLightBackgroundPicker": "カスタムの明るい背景",
+  "customDarkBackgroundPicker": "カスタムの暗い背景",
+  "customCallBackgroundPicker": "カスタム通話背景",
+  "ongoingCallStyleTitle": "継続的な通話スタイル",
+  "glyphMapUnavailable": "グリフマップは使用できません",
+  "animationDelayRange": "アニメーションの遅延 (1 秒 - 10 秒)",
+  "animationDelayRangeSingle": "アニメーション遅延 (0.1 秒 - 10 秒)",
+  "inCallMute": "ミュート",
+  "inCallKeypad": "キーパッド",
+  "inCallSpeaker": "スピーカー",
+  "inCallMore": "その他",
+  "inCallBluetooth": "Bluetooth",
+  "inCallPhone": "電話",
+  "inCallAddCall": "通話を追加",
+  "inCallChangeSim": "SIMを変更",
+  "inCallDecline": "拒否",
+  "inCallAnswer": "応答",
+  "inCallMessage": "メッセージ",
+  "inCallCalling": "発信中…",
+  "inCallIncoming": "着信",
+  "inCallSelectSim": "SIMを選択…",
+  "inCallSwitchingSim": "SIMを切り替え中…",
+  "inCallCallEnded": "通話終了",
+  "inCallCallingVia": "{sim}で発信中",
+  "inCallCallingViaHtml": "<b>{sim}</b>で発信中",
+  "inCallChooseSim": "この通話のSIMを選択",
+  "inCallDragAnswerDecline": "右にスワイプで応答 · 左で拒否",
+  "inCallMobileNumber": "モバイル {number}",
+  "inCallAudioRouteCurrent": "{label}（使用中）",
+  "inCallCallViaFrom": "<b>{sim}</b>からの通話",
+  "inCallCallFrom": "発信者",
+  "inCallUnknown": "不明",
+  "selectContactRingtone": "連絡先の着信音を選択",
+  "speakToSearchPrompt": "話して検索",
+  "phonePermissionRequired": "電話の権限が必要です",
+  "callFailed": "通話に失敗しました: {error}",
+  "callPermissionDenied": "通話の権限が拒否されました",
+  "alreadyDefaultDialer": "すでにデフォルトの電話アプリです",
+  "resetCustomization": "Reset customization",
+  "resetCustomizationSubtitle": "Restore selected settings to defaults",
+  "resetCustomizationInfoTitle": "What gets reset",
+  "resetCustomizationInfoBody": "These return to their defaults:\n\n• Language (device default)\n• Theme, background, accent, and call background colors\n• Fonts and app icon\n• SIM badge colors and styles\n• Answer method\n• Torch blink during calls\n• Glyph calling and in-call animations\n• Frequently contacted (count and time period)\n\nNot changed: default SIM, blocked numbers, recents search, and favourites.",
+  "resetCustomizationConfirmTitle": "Reset customization?",
+  "resetCustomizationConfirmBody": "Selected settings will return to their defaults. Default SIM, blocked numbers, recents, and favourites stay as they are.",
+  "resetCustomizationDone": "Settings reset to defaults",
+  "@fontCustomizeRolesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontCustomizeScreensCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontRolePickerTitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleEntireApp": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@fontSubtitleTitlesOnly": {
+    "placeholders": {
+      "font": {
+        "type": "String"
+      }
+    }
+  },
+  "@simIconColorFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@simSlot": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotLoadSims": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@couldNotOpenSettings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@frequentMaxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@torchIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@torchIntervalBlink": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "@lightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@speedSettingsDelay": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSpeedSummary": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "@unblockedDisplay": {
+    "placeholders": {
+      "display": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockedSummary": {
+    "placeholders": {
+      "blocked": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      }
+    }
+  },
+  "@callError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@blockNumberConfirm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@mostRecent": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@couldNotChangeIcon": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@voiceSearchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@defaultSimFixed": {
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@presetColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@customColorHex": {
+    "placeholders": {
+      "hex": {
+        "type": "String"
+      }
+    }
+  },
+  "@upToContacts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ongoingCallWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@breathSettingsSpeedSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedPickRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSetRingtone": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@genericError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareContactSubject": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingVia": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallingViaHtml": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallMobileNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallAudioRouteCurrent": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@inCallCallViaFrom": {
+    "placeholders": {
+      "sim": {
+        "type": "String"
+      }
+    }
+  },
+  "@callFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_call_mute">Səssiz</string>
+    <string name="in_call_keypad">Klaviatura</string>
+    <string name="in_call_speaker">Natiq</string>
+    <string name="in_call_more">Daha çox</string>
+    <string name="in_call_bluetooth">Bluetooth</string>
+    <string name="in_call_phone">Telefon</string>
+    <string name="in_call_add_call">Zəng əlavə edin</string>
+    <string name="in_call_change_sim">SIM dəyişdirin</string>
+    <string name="in_call_decline">Rədd olun</string>
+    <string name="in_call_answer">Cavab verin</string>
+    <string name="in_call_message">Mesaj</string>
+    <string name="in_call_calling">Zəng edilir...</string>
+    <string name="in_call_incoming">Gələn zəng</string>
+    <string name="in_call_select_sim">SIM seçin...</string>
+    <string name="in_call_switching_sim">SIM dəyişdirilir...</string>
+    <string name="in_call_call_ended">Zəng bitdi</string>
+    <string name="in_call_calling_via">%1$s vasitəsilə zəng</string>
+    <string name="in_call_calling_via_html">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; vasitəsilə zəng</string>
+    <string name="in_call_choose_sim">Bu zəng üçün SIM seçin</string>
+    <string name="in_call_drag_answer_decline">Cavab vermək üçün sağa sürüşdürün · Rədd etmək üçün sola çəkin</string>
+    <string name="in_call_mobile_number">Mobil %1$s</string>
+    <string name="in_call_audio_route_current">%1$s (Cari)</string>
+    <string name="in_call_call_via_from">&amp;lt;b&amp;gt;%1$s&amp;lt;/b&amp;gt; vasitəsilə zəng edin</string>
+    <string name="in_call_call_from">-dan zəng edin</string>
+    <string name="in_call_unknown">Naməlum</string>
+    <string name="in_call_sim_slot">SIM %1$d</string>
+    <string name="native_select_contact_ringtone">Əlaqə zəng melodiyasını seçin</string>
+    <string name="native_speak_to_search">Axtarmaq üçün danışın</string>
+    <string name="native_phone_permission_required">Telefon icazəsi tələb olunur</string>
+    <string name="native_call_failed">Zəng alınmadı: %1$s</string>
+    <string name="native_call_permission_denied">Zəng icazəsi rədd edildi</string>
+    <string name="native_already_default_dialer">Artıq defolt zəng edən kimi təyin edilib</string>
+</resources>
