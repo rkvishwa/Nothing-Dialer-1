@@ -306,6 +306,20 @@ flutter build appbundle --release
 
 Most contributors only need debug builds.
 
+### Nothing Glyph API key
+
+The committed manifest uses the placeholder **`test`** (Nothing’s debug value). Clones and CI builds work without a real key; Glyph on **Nothing Phone (1)** production builds may need the key Nothing issued for your app.
+
+For local development on hardware, add to **`android/local.properties`** (already gitignored):
+
+```properties
+nothing.glyph.key=YOUR_KEY_FROM_NOTHING
+```
+
+See **`android/local.properties.example`**. You can instead set **`nothingGlyphKey=...`** in **`android/key.properties`** if you already use that file for release signing.
+
+Rebuild after changing either file (`flutter run` / clean build if the manifest looks stale).
+
 ---
 
 ## Pull request workflow

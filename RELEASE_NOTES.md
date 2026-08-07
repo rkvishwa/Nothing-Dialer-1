@@ -4,7 +4,82 @@
 
 ---
 
+## v1.5.0 (build 11)
+
+Current release in `pubspec.yaml`. This build ships the full **v1.0.2** feature set (see below) plus the fixes and polish from recent development and closed testing.
+
+### Highlights
+
+- **Glyph Steady:** new animation style that keeps selected Glyph channels lit for the duration of a call (outgoing or in-call profile).
+- **Huawei-style answer mode (refined):** drag the **center handle** toward fixed answer/decline targets (side buttons stay put); dotted lane animation from the center; larger handle; **bold handset** answer/decline icons; spacing tuned for clearer targets.
+- **In-call shell UX:** customizable **call background** color (default pitch black, edge-to-edge native UI); **ongoing-call banner** on Recents, Contacts, and **Settings**; suppress the in-app incoming call chip when full-screen in-call UI is already shown or when the user is inside the app (banner visible).
+- **Contacts on OEM Android:** `includeNonVisibleOnAndroid` so address books that hide contacts from third-party apps (e.g. some dual-SIM / legacy ROMs) still load; **ContactsCache** concurrency fix when Recents and Contacts load at once.
+- **Recents:** **Show contacts in search** toggle (Settings → Recents); matching address-book rows below call results; **solid** background on long-press context menus.
+- **SIM icon colors (unified):** per-SIM fill/outline badges with separate light/dark colors; same styling on Recents, SIM picker, contact detail, and native in-call SIM sheets (`SimIconColors`).
+- **Fonts & deep customization:**
+  - Bundled **Nothing Ndot** (**Ndot 55 Caps** for titles/headers, **Ndot 55** for body text) plus **Roboto Serif** and optional downloadable **Noto** for broad language coverage.
+  - **Settings → Font:** choose system default, Ndot, Serif, or Noto; apply to the **entire app**, **titles & headers only**, or **Customize** per screen (Recents, Contacts, dialpad, Settings, in-call, and more) and per role (page title, section header, primary/secondary text, buttons, dial keys).
+  - Font previews always render in their own typeface; native **in-call labels** follow the same font config (`DialerTypefaces`).
+  - Redesigned font picker (card layout) with optional Noto download progress and info dialog.
+- **Typography & language UI:** font and language pickers use shared **Settings** sheet design; **80+ languages** with device default or explicit locale in Settings.
+- **Reset customization:** confirmed restore for theme, fonts, colors, call background, SIM badges, app icon, **language**, **answer method**, **torch**, **Glyph / in-call animations**, and **frequently contacted** (does **not** reset default SIM, blocked numbers, favourites, or recents filters).
+
+### Fixes and polish
+
+- **Ringtone:** contact-level vs global assignment hardened (`RingtoneHelper`, bundled silent tone); avoids overwriting the phone-wide default when setting a contact ringtone.
+- **Font pickers:** each font preview stays in its own typeface; per-surface overrides apply correctly (including **system default** on page titles, keypad, and buttons).
+- **Settings sheets:** font and language drawers dismiss on outside tap; torch blink rows use consistent spacing; recents search toggle alignment and subtitle moved into info dialog where applicable.
+- **Localization tooling:** Android `values-*` resource fixes (e.g. `es-r419` → valid qualifiers); locale resolution hardening for unsupported BCP-47 tags; expanded l10n for new settings and info strings.
+- **Release launcher icons:** `activity-alias` switching so changing the app icon does not leave a second launcher entry on release builds.
+
+### Platform
+
+- Version **1.5.0+11** in `pubspec.yaml`; Dart **^3.11.0**.
+- Bundled fonts: `assets/fonts/` (Ndot 55, Roboto Serif); `google_fonts` for Noto when downloaded.
+
+### Short "What's New" for v1.5.0 (store listing, ≤ 500 chars)
+
+```
+What's new in 1.5.0
+
+• Glyph Steady — hold selected Glyph lights during calls
+• Refined Huawei-style answer (drag center handle, bold icons)
+• Custom in-call background; ongoing-call banner on all tabs
+• Nothing Ndot (titles + body), Serif or system — per screen or app-wide; optional Noto
+• Better contacts on more Android & dual-SIM phones
+• SIM badge colors synced on Recents, picker & in-call
+• 80+ languages; themes & app icons; reset customization
+• Ringtone fixes, voice search & torch blink
+```
+
+(498 characters including line breaks.)
+
+### Play Store release notes (full, user-facing)
+
+**What's new in 1.5.0**
+
+**Calls & Glyph**
+- **Glyph Steady** — hold selected Glyph lights during outgoing and in-call animations
+- **Refined Huawei-style answer** — drag the center handle; bold answer/decline icons; slide and button modes also available
+- **Custom in-call background** (pitch black default); **ongoing-call banner** on Recents, Contacts, and Settings
+
+**Fonts & look**
+- **Nothing Ndot** built in — **Ndot 55 Caps** on titles, **Ndot 55** on body text
+- **System**, **Ndot**, **Roboto Serif**, or downloadable **Noto**
+- Apply to the **whole app**, **titles only**, or **customize** per screen and text role (Recents, Contacts, dialpad, Settings, in-call, buttons, keypad)
+- **SIM badge colors** synced on Recents, SIM picker, contact detail, and in-call
+- **80+ languages**; light/dark themes, accent & background colors, **app icon** variants
+- **Reset customization** (theme, fonts, Glyph, torch, and more — keeps blocked numbers & favourites)
+
+**Recents & contacts**
+- Better **contact loading** on more Android and dual-SIM phones
+- Filters, favourites, frequently contacted, **voice search**, ringtone fixes, **torch blink**
+
+---
+
 ## v1.0.2 (build 10)
+
+Feature baseline included in **v1.5.0** (build 11); kept here for detail.
 
 ### Highlights
 

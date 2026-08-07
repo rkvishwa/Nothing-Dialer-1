@@ -4,7 +4,7 @@ A full replacement dialer built for **Nothing Phone (1)**. It combines a clean, 
 
 **Device support today:** Nothing Phone (1) is the only model we actively develop and test against. If you use another Nothing phone (Phone (2), Phone (2a), Phone (3), or later), the app may install and partially work, but Glyph layout, hardware detection, and call behavior are not guaranteed. **We welcome contributions** from owners of other Nothing devices to add and maintain support for those models. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Current version:** 1.0.2+10 (see `pubspec.yaml`). **Release notes / changelog:** [RELEASE_NOTES.md](RELEASE_NOTES.md)
+**Current version:** 1.5.0+11 (see `pubspec.yaml`). **Release notes / changelog:** [RELEASE_NOTES.md](RELEASE_NOTES.md)
 
 **Source:** [github.com/rkvishwa/Nothing-Dialer-1](https://github.com/rkvishwa/Nothing-Dialer-1)
 

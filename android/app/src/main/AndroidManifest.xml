@@ -38,11 +38,11 @@
         android:roundIcon="@mipmap/launcher_icon_default"
         android:name="${applicationName}">
 
-        <!-- ─── Nothing Glyph API Key (use "test" for local debug) ─── -->
+        <!-- Nothing Glyph API Key: defaults to "test"; set nothing.glyph.key in android/local.properties -->
         <meta-data
             android:name="NothingKey"
             tools:replace="android:value"
-            android:value="cbaf5e96-0d1c42a6b8fa508669d7acbb" />
+            android:value="${nothingGlyphKey}" />
 
         <activity
             android:name="com.rkkvishva.nothing_dialer.MainActivity"

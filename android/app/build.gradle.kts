@@ -14,6 +14,24 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(keystorePropertiesFile.inputStream())
 }
 
+/** Nothing Glyph SDK key: "test" in repo; override in gitignored android/local.properties */
+fun readNothingGlyphKey(): String {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        val local = Properties()
+        localPropertiesFile.inputStream().use { local.load(it) }
+        local.getProperty("nothing.glyph.key")?.trim()?.takeIf { it.isNotEmpty() }?.let {
+            return it
+        }
+    }
+    keystoreProperties.getProperty("nothingGlyphKey")?.trim()?.takeIf { it.isNotEmpty() }?.let {
+        return it
+    }
+    return "test"
+}
+
+val nothingGlyphKey = readNothingGlyphKey()
+
 android {
     namespace = "com.rkkvishva.nothing_dialer"
     compileSdk = flutter.compileSdkVersion
@@ -34,6 +52,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["nothingGlyphKey"] = nothingGlyphKey
     }
 
     signingConfigs {

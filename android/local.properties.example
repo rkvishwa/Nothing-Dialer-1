@@ -1,0 +1,7 @@
+# Copy to android/local.properties (gitignored) and keep your real Glyph key local.
+# Flutter may already have created local.properties with flutter.sdk=...
+#
+# Optional — production Glyph key from Nothing (Phone (1) / GDK):
+nothing.glyph.key=test
+
+# Alternative: add nothingGlyphKey=... to android/key.properties instead.
