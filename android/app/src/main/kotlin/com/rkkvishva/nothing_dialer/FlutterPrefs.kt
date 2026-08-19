@@ -36,6 +36,32 @@ object FlutterPrefs {
         return v.toString()
     }
 
+    fun getBool(context: Context, key: String): Boolean? {
+        val p = prefs(context)
+        val fullKey = prefKey(key)
+        if (p.contains(fullKey)) {
+            try {
+                return p.getBoolean(fullKey, false)
+            } catch (_: ClassCastException) {
+                // Fall through to long / string decoding.
+            }
+            try {
+                val longVal = p.getLong(fullKey, 0L)
+                return longVal != 0L
+            } catch (_: ClassCastException) {
+                // Fall through.
+            }
+        }
+        val v = decode(rawString(context, key)) ?: return null
+        return when (v) {
+            is Boolean -> v
+            is Int -> v != 0
+            is Long -> v != 0L
+            is Double -> v != 0.0
+            else -> v.toString().equals("true", ignoreCase = true)
+        }
+    }
+
     fun getInt(context: Context, key: String): Int? {
         val p = prefs(context)
         val fullKey = prefKey(key)

@@ -24,6 +24,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get general => 'General';
 
   @override
+  String get appearanceSection => 'Appearance';
+
+  @override
+  String get inCallScreenSection => 'In-call screen';
+
+  @override
+  String get simAndCallsSection => 'SIM & calls';
+
+  @override
+  String get callListsSection => 'Call lists';
+
+  @override
+  String get contactsAndRecentsSection => 'Contacts & recents';
+
+  @override
+  String get glyphCallingSection => 'Glyph — calling';
+
+  @override
+  String get glyphOngoingSection => 'Glyph — during call';
+
+  @override
+  String get torchIncomingGroup => 'Incoming';
+
+  @override
+  String get torchOutgoingGroup => 'Outgoing';
+
+  @override
+  String get torchDuringCallGroup => 'During call';
+
+  @override
   String get theme => 'Theme';
 
   @override
@@ -273,6 +303,122 @@ class AppLocalizationsEn extends AppLocalizations {
   String get callBackground => 'Call background';
 
   @override
+  String get contactPhotos => 'Contact photos';
+
+  @override
+  String get contactPhotoDisplayMode => 'Display mode';
+
+  @override
+  String get contactPhotoModeOff => 'Off';
+
+  @override
+  String get contactPhotoModeOffSubtitle =>
+      'Show initials only, no contact photos';
+
+  @override
+  String get contactPhotoModeAvatar => 'Avatar';
+
+  @override
+  String get contactPhotoModeAvatarSubtitle =>
+      'Show photos clipped to a shape in lists and calls';
+
+  @override
+  String get contactPhotoModeFullscreen => 'Full screen';
+
+  @override
+  String get contactPhotoModeFullscreenSubtitle =>
+      'Use contact photo as background on detail and in-call screens';
+
+  @override
+  String get contactAvatarShape => 'Avatar shape';
+
+  @override
+  String get contactAvatarShapeSubtitle =>
+      'Shape used for avatars in contacts, favourites, and on the call screen';
+
+  @override
+  String get contactAvatarShapeCircle => 'Circle';
+
+  @override
+  String get contactAvatarShapeRoundedSquare => 'Rounded square';
+
+  @override
+  String get contactAvatarShapeSquircle => 'Squircle';
+
+  @override
+  String get contactAvatarShapeDiamond => 'Diamond';
+
+  @override
+  String get contactAvatarShapeHexagon => 'Hexagon';
+
+  @override
+  String get contactAvatarShapeOctagon => 'Octagon';
+
+  @override
+  String get contactAvatarShapeStar => 'Star';
+
+  @override
+  String get contactAvatarShapeShield => 'Shield';
+
+  @override
+  String get contactAvatarShapePentagon => 'Pentagon';
+
+  @override
+  String get recentsContactPhotosSection => 'Recents';
+
+  @override
+  String get recentsShowContactPhotos => 'Show photos in Recents';
+
+  @override
+  String get recentsShowContactPhotosSubtitle =>
+      'Display contact photos on the Recents screen. Off by default.';
+
+  @override
+  String get recentsAvatarShape => 'Recents avatar shape';
+
+  @override
+  String get recentsAvatarShapeSubtitle =>
+      'Shape used for avatars on the Recents screen only';
+
+  @override
+  String get contactPhotoPreviewContacts => 'Contacts';
+
+  @override
+  String get contactPhotoPreviewRecents => 'Recents';
+
+  @override
+  String get contactPhotoPreviewBothOn =>
+      'Photos shown in contacts and Recents';
+
+  @override
+  String get contactPhotoPreviewRecentsOff =>
+      'Photos in contacts only — Recents shows initials';
+
+  @override
+  String get contactPhotoPickFromGallery => 'Choose from gallery';
+
+  @override
+  String get contactPhotoRemove => 'Remove photo';
+
+  @override
+  String get contactPhotoUpdated => 'Contact photo updated';
+
+  @override
+  String get contactPhotoRemoved => 'Contact photo removed';
+
+  @override
+  String get contactPhotoPickError => 'Could not update contact photo';
+
+  @override
+  String get contactPhotoCropTitle => 'Crop photo';
+
+  @override
+  String get contactPhotoCropDone => 'Done';
+
+  @override
+  String get contactPhotoCropCancel => 'Cancel';
+
+  @override
   String get appIcon => 'App icon';
 
   @override
@@ -303,6 +449,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calling => 'Calling';
+
+  @override
+  String get callDisplay => 'Call display';
+
+  @override
+  String get callDisplaySubtitleDefault => 'Show name and number';
+
+  @override
+  String get callDisplaySubtitleNameOnlyIncoming => 'Name only on incoming';
+
+  @override
+  String get callDisplaySubtitleNameOnlyOutgoing => 'Name only on outgoing';
+
+  @override
+  String get callDisplaySubtitleNameOnlyInCall => 'Name only during call';
+
+  @override
+  String get callDisplaySubtitleSimHiddenIncoming => 'SIM hidden on incoming';
+
+  @override
+  String get callDisplaySubtitleSimHiddenOutgoing => 'SIM hidden on outgoing';
+
+  @override
+  String get callDisplaySubtitleSimHiddenInCall => 'SIM hidden during call';
+
+  @override
+  String get callDisplaySheetTitle => 'Call display';
+
+  @override
+  String get callDisplayHideNumberSection => 'Hide number';
+
+  @override
+  String get callDisplayHideNumberSectionSubtitle =>
+      'For saved contacts only. Unknown numbers still show the number.';
+
+  @override
+  String get callDisplayHideSimSection => 'Hide calling SIM';
+
+  @override
+  String get callDisplayHideNumberIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideNumberOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideNumberInCall => 'During call';
+
+  @override
+  String get callDisplayHideSimIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideSimOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideSimInCall => 'During call';
 
   @override
   String get defaultSim => 'Default SIM';
@@ -1060,7 +1261,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get frequentlyContactedInfoBody =>
-      'Shows your most-called phone numbers at the top of the Recents tab, based on how many incoming, outgoing, missed, or rejected calls you had with each number in the time period you choose.\n\nNumber of records: set to 0 to turn this off. Use 1–20 to show that many top contacts.\n\nTime period applies only when at least one contact is shown.';
+      'Shows your most-called phone numbers at the top of the Recents tab, based on how many incoming, outgoing, missed, or rejected calls you had with each number in the time period you choose.\n\nFrequently contacted: set to 0 to turn this off. Use 1–20 to show that many top contacts.\n\nTime period applies only when at least one contact is shown.';
 
   @override
   String breathSettingsSpeedSummary(int count, int ms) {
@@ -1168,7 +1369,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get returnToCall => 'Return to call';
 
   @override
-  String get numberOfRecordsTitle => 'Number of records';
+  String get numberOfRecordsTitle => 'Frequently contacted';
 
   @override
   String get recordsPickerSubtitle =>
@@ -1296,8 +1497,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewRateOnPlay => 'Rate on Google Play';
 
   @override
-  String get reviewRateOnPlaySubtitle =>
-      'Leave a rating without leaving the app';
+  String get reviewRateOnPlaySubtitle => 'Opens the Play Store listing';
 
   @override
   String get reviewCouldNotOpen => 'Could not open Google Play';
@@ -1489,6 +1689,36 @@ class AppLocalizationsEnAu extends AppLocalizationsEn {
   String get general => 'General';
 
   @override
+  String get appearanceSection => 'Appearance';
+
+  @override
+  String get inCallScreenSection => 'In-call screen';
+
+  @override
+  String get simAndCallsSection => 'SIM & calls';
+
+  @override
+  String get callListsSection => 'Call lists';
+
+  @override
+  String get contactsAndRecentsSection => 'Contacts & recents';
+
+  @override
+  String get glyphCallingSection => 'Glyph — calling';
+
+  @override
+  String get glyphOngoingSection => 'Glyph — during call';
+
+  @override
+  String get torchIncomingGroup => 'Incoming';
+
+  @override
+  String get torchOutgoingGroup => 'Outgoing';
+
+  @override
+  String get torchDuringCallGroup => 'During call';
+
+  @override
   String get theme => 'Theme';
 
   @override
@@ -1738,6 +1968,122 @@ class AppLocalizationsEnAu extends AppLocalizationsEn {
   String get callBackground => 'Call background';
 
   @override
+  String get contactPhotos => 'Contact photos';
+
+  @override
+  String get contactPhotoDisplayMode => 'Display mode';
+
+  @override
+  String get contactPhotoModeOff => 'Off';
+
+  @override
+  String get contactPhotoModeOffSubtitle =>
+      'Show initials only, no contact photos';
+
+  @override
+  String get contactPhotoModeAvatar => 'Avatar';
+
+  @override
+  String get contactPhotoModeAvatarSubtitle =>
+      'Show photos clipped to a shape in lists and calls';
+
+  @override
+  String get contactPhotoModeFullscreen => 'Full screen';
+
+  @override
+  String get contactPhotoModeFullscreenSubtitle =>
+      'Use contact photo as background on detail and in-call screens';
+
+  @override
+  String get contactAvatarShape => 'Avatar shape';
+
+  @override
+  String get contactAvatarShapeSubtitle =>
+      'Shape used for avatars in contacts, favourites, and on the call screen';
+
+  @override
+  String get contactAvatarShapeCircle => 'Circle';
+
+  @override
+  String get contactAvatarShapeRoundedSquare => 'Rounded square';
+
+  @override
+  String get contactAvatarShapeSquircle => 'Squircle';
+
+  @override
+  String get contactAvatarShapeDiamond => 'Diamond';
+
+  @override
+  String get contactAvatarShapeHexagon => 'Hexagon';
+
+  @override
+  String get contactAvatarShapeOctagon => 'Octagon';
+
+  @override
+  String get contactAvatarShapeStar => 'Star';
+
+  @override
+  String get contactAvatarShapeShield => 'Shield';
+
+  @override
+  String get contactAvatarShapePentagon => 'Pentagon';
+
+  @override
+  String get recentsContactPhotosSection => 'Recents';
+
+  @override
+  String get recentsShowContactPhotos => 'Show photos in Recents';
+
+  @override
+  String get recentsShowContactPhotosSubtitle =>
+      'Display contact photos on the Recents screen. Off by default.';
+
+  @override
+  String get recentsAvatarShape => 'Recents avatar shape';
+
+  @override
+  String get recentsAvatarShapeSubtitle =>
+      'Shape used for avatars on the Recents screen only';
+
+  @override
+  String get contactPhotoPreviewContacts => 'Contacts';
+
+  @override
+  String get contactPhotoPreviewRecents => 'Recents';
+
+  @override
+  String get contactPhotoPreviewBothOn =>
+      'Photos shown in contacts and Recents';
+
+  @override
+  String get contactPhotoPreviewRecentsOff =>
+      'Photos in contacts only — Recents shows initials';
+
+  @override
+  String get contactPhotoPickFromGallery => 'Choose from gallery';
+
+  @override
+  String get contactPhotoRemove => 'Remove photo';
+
+  @override
+  String get contactPhotoUpdated => 'Contact photo updated';
+
+  @override
+  String get contactPhotoRemoved => 'Contact photo removed';
+
+  @override
+  String get contactPhotoPickError => 'Could not update contact photo';
+
+  @override
+  String get contactPhotoCropTitle => 'Crop photo';
+
+  @override
+  String get contactPhotoCropDone => 'Done';
+
+  @override
+  String get contactPhotoCropCancel => 'Cancel';
+
+  @override
   String get appIcon => 'App icon';
 
   @override
@@ -1768,6 +2114,61 @@ class AppLocalizationsEnAu extends AppLocalizationsEn {
 
   @override
   String get calling => 'Calling';
+
+  @override
+  String get callDisplay => 'Call display';
+
+  @override
+  String get callDisplaySubtitleDefault => 'Show name and number';
+
+  @override
+  String get callDisplaySubtitleNameOnlyIncoming => 'Name only on incoming';
+
+  @override
+  String get callDisplaySubtitleNameOnlyOutgoing => 'Name only on outgoing';
+
+  @override
+  String get callDisplaySubtitleNameOnlyInCall => 'Name only during call';
+
+  @override
+  String get callDisplaySubtitleSimHiddenIncoming => 'SIM hidden on incoming';
+
+  @override
+  String get callDisplaySubtitleSimHiddenOutgoing => 'SIM hidden on outgoing';
+
+  @override
+  String get callDisplaySubtitleSimHiddenInCall => 'SIM hidden during call';
+
+  @override
+  String get callDisplaySheetTitle => 'Call display';
+
+  @override
+  String get callDisplayHideNumberSection => 'Hide number';
+
+  @override
+  String get callDisplayHideNumberSectionSubtitle =>
+      'For saved contacts only. Unknown numbers still show the number.';
+
+  @override
+  String get callDisplayHideSimSection => 'Hide calling SIM';
+
+  @override
+  String get callDisplayHideNumberIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideNumberOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideNumberInCall => 'During call';
+
+  @override
+  String get callDisplayHideSimIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideSimOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideSimInCall => 'During call';
 
   @override
   String get defaultSim => 'Default SIM';
@@ -2761,8 +3162,7 @@ class AppLocalizationsEnAu extends AppLocalizationsEn {
   String get reviewRateOnPlay => 'Rate on Google Play';
 
   @override
-  String get reviewRateOnPlaySubtitle =>
-      'Leave a rating without leaving the app';
+  String get reviewRateOnPlaySubtitle => 'Opens the Play Store listing';
 
   @override
   String get reviewCouldNotOpen => 'Could not open Google Play';
@@ -2954,6 +3354,36 @@ class AppLocalizationsEnCa extends AppLocalizationsEn {
   String get general => 'General';
 
   @override
+  String get appearanceSection => 'Appearance';
+
+  @override
+  String get inCallScreenSection => 'In-call screen';
+
+  @override
+  String get simAndCallsSection => 'SIM & calls';
+
+  @override
+  String get callListsSection => 'Call lists';
+
+  @override
+  String get contactsAndRecentsSection => 'Contacts & recents';
+
+  @override
+  String get glyphCallingSection => 'Glyph — calling';
+
+  @override
+  String get glyphOngoingSection => 'Glyph — during call';
+
+  @override
+  String get torchIncomingGroup => 'Incoming';
+
+  @override
+  String get torchOutgoingGroup => 'Outgoing';
+
+  @override
+  String get torchDuringCallGroup => 'During call';
+
+  @override
   String get theme => 'Theme';
 
   @override
@@ -3203,6 +3633,122 @@ class AppLocalizationsEnCa extends AppLocalizationsEn {
   String get callBackground => 'Call background';
 
   @override
+  String get contactPhotos => 'Contact photos';
+
+  @override
+  String get contactPhotoDisplayMode => 'Display mode';
+
+  @override
+  String get contactPhotoModeOff => 'Off';
+
+  @override
+  String get contactPhotoModeOffSubtitle =>
+      'Show initials only, no contact photos';
+
+  @override
+  String get contactPhotoModeAvatar => 'Avatar';
+
+  @override
+  String get contactPhotoModeAvatarSubtitle =>
+      'Show photos clipped to a shape in lists and calls';
+
+  @override
+  String get contactPhotoModeFullscreen => 'Full screen';
+
+  @override
+  String get contactPhotoModeFullscreenSubtitle =>
+      'Use contact photo as background on detail and in-call screens';
+
+  @override
+  String get contactAvatarShape => 'Avatar shape';
+
+  @override
+  String get contactAvatarShapeSubtitle =>
+      'Shape used for avatars in contacts, favourites, and on the call screen';
+
+  @override
+  String get contactAvatarShapeCircle => 'Circle';
+
+  @override
+  String get contactAvatarShapeRoundedSquare => 'Rounded square';
+
+  @override
+  String get contactAvatarShapeSquircle => 'Squircle';
+
+  @override
+  String get contactAvatarShapeDiamond => 'Diamond';
+
+  @override
+  String get contactAvatarShapeHexagon => 'Hexagon';
+
+  @override
+  String get contactAvatarShapeOctagon => 'Octagon';
+
+  @override
+  String get contactAvatarShapeStar => 'Star';
+
+  @override
+  String get contactAvatarShapeShield => 'Shield';
+
+  @override
+  String get contactAvatarShapePentagon => 'Pentagon';
+
+  @override
+  String get recentsContactPhotosSection => 'Recents';
+
+  @override
+  String get recentsShowContactPhotos => 'Show photos in Recents';
+
+  @override
+  String get recentsShowContactPhotosSubtitle =>
+      'Display contact photos on the Recents screen. Off by default.';
+
+  @override
+  String get recentsAvatarShape => 'Recents avatar shape';
+
+  @override
+  String get recentsAvatarShapeSubtitle =>
+      'Shape used for avatars on the Recents screen only';
+
+  @override
+  String get contactPhotoPreviewContacts => 'Contacts';
+
+  @override
+  String get contactPhotoPreviewRecents => 'Recents';
+
+  @override
+  String get contactPhotoPreviewBothOn =>
+      'Photos shown in contacts and Recents';
+
+  @override
+  String get contactPhotoPreviewRecentsOff =>
+      'Photos in contacts only — Recents shows initials';
+
+  @override
+  String get contactPhotoPickFromGallery => 'Choose from gallery';
+
+  @override
+  String get contactPhotoRemove => 'Remove photo';
+
+  @override
+  String get contactPhotoUpdated => 'Contact photo updated';
+
+  @override
+  String get contactPhotoRemoved => 'Contact photo removed';
+
+  @override
+  String get contactPhotoPickError => 'Could not update contact photo';
+
+  @override
+  String get contactPhotoCropTitle => 'Crop photo';
+
+  @override
+  String get contactPhotoCropDone => 'Done';
+
+  @override
+  String get contactPhotoCropCancel => 'Cancel';
+
+  @override
   String get appIcon => 'App icon';
 
   @override
@@ -3233,6 +3779,61 @@ class AppLocalizationsEnCa extends AppLocalizationsEn {
 
   @override
   String get calling => 'Calling';
+
+  @override
+  String get callDisplay => 'Call display';
+
+  @override
+  String get callDisplaySubtitleDefault => 'Show name and number';
+
+  @override
+  String get callDisplaySubtitleNameOnlyIncoming => 'Name only on incoming';
+
+  @override
+  String get callDisplaySubtitleNameOnlyOutgoing => 'Name only on outgoing';
+
+  @override
+  String get callDisplaySubtitleNameOnlyInCall => 'Name only during call';
+
+  @override
+  String get callDisplaySubtitleSimHiddenIncoming => 'SIM hidden on incoming';
+
+  @override
+  String get callDisplaySubtitleSimHiddenOutgoing => 'SIM hidden on outgoing';
+
+  @override
+  String get callDisplaySubtitleSimHiddenInCall => 'SIM hidden during call';
+
+  @override
+  String get callDisplaySheetTitle => 'Call display';
+
+  @override
+  String get callDisplayHideNumberSection => 'Hide number';
+
+  @override
+  String get callDisplayHideNumberSectionSubtitle =>
+      'For saved contacts only. Unknown numbers still show the number.';
+
+  @override
+  String get callDisplayHideSimSection => 'Hide calling SIM';
+
+  @override
+  String get callDisplayHideNumberIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideNumberOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideNumberInCall => 'During call';
+
+  @override
+  String get callDisplayHideSimIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideSimOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideSimInCall => 'During call';
 
   @override
   String get defaultSim => 'Default SIM';
@@ -4226,8 +4827,7 @@ class AppLocalizationsEnCa extends AppLocalizationsEn {
   String get reviewRateOnPlay => 'Rate on Google Play';
 
   @override
-  String get reviewRateOnPlaySubtitle =>
-      'Leave a rating without leaving the app';
+  String get reviewRateOnPlaySubtitle => 'Opens the Play Store listing';
 
   @override
   String get reviewCouldNotOpen => 'Could not open Google Play';
@@ -4419,6 +5019,36 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get general => 'General';
 
   @override
+  String get appearanceSection => 'Appearance';
+
+  @override
+  String get inCallScreenSection => 'In-call screen';
+
+  @override
+  String get simAndCallsSection => 'SIM & calls';
+
+  @override
+  String get callListsSection => 'Call lists';
+
+  @override
+  String get contactsAndRecentsSection => 'Contacts & recents';
+
+  @override
+  String get glyphCallingSection => 'Glyph — calling';
+
+  @override
+  String get glyphOngoingSection => 'Glyph — during call';
+
+  @override
+  String get torchIncomingGroup => 'Incoming';
+
+  @override
+  String get torchOutgoingGroup => 'Outgoing';
+
+  @override
+  String get torchDuringCallGroup => 'During call';
+
+  @override
   String get theme => 'Theme';
 
   @override
@@ -4668,6 +5298,122 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get callBackground => 'Call background';
 
   @override
+  String get contactPhotos => 'Contact photos';
+
+  @override
+  String get contactPhotoDisplayMode => 'Display mode';
+
+  @override
+  String get contactPhotoModeOff => 'Off';
+
+  @override
+  String get contactPhotoModeOffSubtitle =>
+      'Show initials only, no contact photos';
+
+  @override
+  String get contactPhotoModeAvatar => 'Avatar';
+
+  @override
+  String get contactPhotoModeAvatarSubtitle =>
+      'Show photos clipped to a shape in lists and calls';
+
+  @override
+  String get contactPhotoModeFullscreen => 'Full screen';
+
+  @override
+  String get contactPhotoModeFullscreenSubtitle =>
+      'Use contact photo as background on detail and in-call screens';
+
+  @override
+  String get contactAvatarShape => 'Avatar shape';
+
+  @override
+  String get contactAvatarShapeSubtitle =>
+      'Shape used for avatars in contacts, favourites, and on the call screen';
+
+  @override
+  String get contactAvatarShapeCircle => 'Circle';
+
+  @override
+  String get contactAvatarShapeRoundedSquare => 'Rounded square';
+
+  @override
+  String get contactAvatarShapeSquircle => 'Squircle';
+
+  @override
+  String get contactAvatarShapeDiamond => 'Diamond';
+
+  @override
+  String get contactAvatarShapeHexagon => 'Hexagon';
+
+  @override
+  String get contactAvatarShapeOctagon => 'Octagon';
+
+  @override
+  String get contactAvatarShapeStar => 'Star';
+
+  @override
+  String get contactAvatarShapeShield => 'Shield';
+
+  @override
+  String get contactAvatarShapePentagon => 'Pentagon';
+
+  @override
+  String get recentsContactPhotosSection => 'Recents';
+
+  @override
+  String get recentsShowContactPhotos => 'Show photos in Recents';
+
+  @override
+  String get recentsShowContactPhotosSubtitle =>
+      'Display contact photos on the Recents screen. Off by default.';
+
+  @override
+  String get recentsAvatarShape => 'Recents avatar shape';
+
+  @override
+  String get recentsAvatarShapeSubtitle =>
+      'Shape used for avatars on the Recents screen only';
+
+  @override
+  String get contactPhotoPreviewContacts => 'Contacts';
+
+  @override
+  String get contactPhotoPreviewRecents => 'Recents';
+
+  @override
+  String get contactPhotoPreviewBothOn =>
+      'Photos shown in contacts and Recents';
+
+  @override
+  String get contactPhotoPreviewRecentsOff =>
+      'Photos in contacts only — Recents shows initials';
+
+  @override
+  String get contactPhotoPickFromGallery => 'Choose from gallery';
+
+  @override
+  String get contactPhotoRemove => 'Remove photo';
+
+  @override
+  String get contactPhotoUpdated => 'Contact photo updated';
+
+  @override
+  String get contactPhotoRemoved => 'Contact photo removed';
+
+  @override
+  String get contactPhotoPickError => 'Could not update contact photo';
+
+  @override
+  String get contactPhotoCropTitle => 'Crop photo';
+
+  @override
+  String get contactPhotoCropDone => 'Done';
+
+  @override
+  String get contactPhotoCropCancel => 'Cancel';
+
+  @override
   String get appIcon => 'App icon';
 
   @override
@@ -4698,6 +5444,61 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get calling => 'Calling';
+
+  @override
+  String get callDisplay => 'Call display';
+
+  @override
+  String get callDisplaySubtitleDefault => 'Show name and number';
+
+  @override
+  String get callDisplaySubtitleNameOnlyIncoming => 'Name only on incoming';
+
+  @override
+  String get callDisplaySubtitleNameOnlyOutgoing => 'Name only on outgoing';
+
+  @override
+  String get callDisplaySubtitleNameOnlyInCall => 'Name only during call';
+
+  @override
+  String get callDisplaySubtitleSimHiddenIncoming => 'SIM hidden on incoming';
+
+  @override
+  String get callDisplaySubtitleSimHiddenOutgoing => 'SIM hidden on outgoing';
+
+  @override
+  String get callDisplaySubtitleSimHiddenInCall => 'SIM hidden during call';
+
+  @override
+  String get callDisplaySheetTitle => 'Call display';
+
+  @override
+  String get callDisplayHideNumberSection => 'Hide number';
+
+  @override
+  String get callDisplayHideNumberSectionSubtitle =>
+      'For saved contacts only. Unknown numbers still show the number.';
+
+  @override
+  String get callDisplayHideSimSection => 'Hide calling SIM';
+
+  @override
+  String get callDisplayHideNumberIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideNumberOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideNumberInCall => 'During call';
+
+  @override
+  String get callDisplayHideSimIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideSimOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideSimInCall => 'During call';
 
   @override
   String get defaultSim => 'Default SIM';
@@ -5691,8 +6492,7 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get reviewRateOnPlay => 'Rate on Google Play';
 
   @override
-  String get reviewRateOnPlaySubtitle =>
-      'Leave a rating without leaving the app';
+  String get reviewRateOnPlaySubtitle => 'Opens the Play Store listing';
 
   @override
   String get reviewCouldNotOpen => 'Could not open Google Play';
@@ -5884,6 +6684,36 @@ class AppLocalizationsEnIn extends AppLocalizationsEn {
   String get general => 'General';
 
   @override
+  String get appearanceSection => 'Appearance';
+
+  @override
+  String get inCallScreenSection => 'In-call screen';
+
+  @override
+  String get simAndCallsSection => 'SIM & calls';
+
+  @override
+  String get callListsSection => 'Call lists';
+
+  @override
+  String get contactsAndRecentsSection => 'Contacts & recents';
+
+  @override
+  String get glyphCallingSection => 'Glyph — calling';
+
+  @override
+  String get glyphOngoingSection => 'Glyph — during call';
+
+  @override
+  String get torchIncomingGroup => 'Incoming';
+
+  @override
+  String get torchOutgoingGroup => 'Outgoing';
+
+  @override
+  String get torchDuringCallGroup => 'During call';
+
+  @override
   String get theme => 'Theme';
 
   @override
@@ -6133,6 +6963,122 @@ class AppLocalizationsEnIn extends AppLocalizationsEn {
   String get callBackground => 'Call background';
 
   @override
+  String get contactPhotos => 'Contact photos';
+
+  @override
+  String get contactPhotoDisplayMode => 'Display mode';
+
+  @override
+  String get contactPhotoModeOff => 'Off';
+
+  @override
+  String get contactPhotoModeOffSubtitle =>
+      'Show initials only, no contact photos';
+
+  @override
+  String get contactPhotoModeAvatar => 'Avatar';
+
+  @override
+  String get contactPhotoModeAvatarSubtitle =>
+      'Show photos clipped to a shape in lists and calls';
+
+  @override
+  String get contactPhotoModeFullscreen => 'Full screen';
+
+  @override
+  String get contactPhotoModeFullscreenSubtitle =>
+      'Use contact photo as background on detail and in-call screens';
+
+  @override
+  String get contactAvatarShape => 'Avatar shape';
+
+  @override
+  String get contactAvatarShapeSubtitle =>
+      'Shape used for avatars in contacts, favourites, and on the call screen';
+
+  @override
+  String get contactAvatarShapeCircle => 'Circle';
+
+  @override
+  String get contactAvatarShapeRoundedSquare => 'Rounded square';
+
+  @override
+  String get contactAvatarShapeSquircle => 'Squircle';
+
+  @override
+  String get contactAvatarShapeDiamond => 'Diamond';
+
+  @override
+  String get contactAvatarShapeHexagon => 'Hexagon';
+
+  @override
+  String get contactAvatarShapeOctagon => 'Octagon';
+
+  @override
+  String get contactAvatarShapeStar => 'Star';
+
+  @override
+  String get contactAvatarShapeShield => 'Shield';
+
+  @override
+  String get contactAvatarShapePentagon => 'Pentagon';
+
+  @override
+  String get recentsContactPhotosSection => 'Recents';
+
+  @override
+  String get recentsShowContactPhotos => 'Show photos in Recents';
+
+  @override
+  String get recentsShowContactPhotosSubtitle =>
+      'Display contact photos on the Recents screen. Off by default.';
+
+  @override
+  String get recentsAvatarShape => 'Recents avatar shape';
+
+  @override
+  String get recentsAvatarShapeSubtitle =>
+      'Shape used for avatars on the Recents screen only';
+
+  @override
+  String get contactPhotoPreviewContacts => 'Contacts';
+
+  @override
+  String get contactPhotoPreviewRecents => 'Recents';
+
+  @override
+  String get contactPhotoPreviewBothOn =>
+      'Photos shown in contacts and Recents';
+
+  @override
+  String get contactPhotoPreviewRecentsOff =>
+      'Photos in contacts only — Recents shows initials';
+
+  @override
+  String get contactPhotoPickFromGallery => 'Choose from gallery';
+
+  @override
+  String get contactPhotoRemove => 'Remove photo';
+
+  @override
+  String get contactPhotoUpdated => 'Contact photo updated';
+
+  @override
+  String get contactPhotoRemoved => 'Contact photo removed';
+
+  @override
+  String get contactPhotoPickError => 'Could not update contact photo';
+
+  @override
+  String get contactPhotoCropTitle => 'Crop photo';
+
+  @override
+  String get contactPhotoCropDone => 'Done';
+
+  @override
+  String get contactPhotoCropCancel => 'Cancel';
+
+  @override
   String get appIcon => 'App icon';
 
   @override
@@ -6163,6 +7109,61 @@ class AppLocalizationsEnIn extends AppLocalizationsEn {
 
   @override
   String get calling => 'Calling';
+
+  @override
+  String get callDisplay => 'Call display';
+
+  @override
+  String get callDisplaySubtitleDefault => 'Show name and number';
+
+  @override
+  String get callDisplaySubtitleNameOnlyIncoming => 'Name only on incoming';
+
+  @override
+  String get callDisplaySubtitleNameOnlyOutgoing => 'Name only on outgoing';
+
+  @override
+  String get callDisplaySubtitleNameOnlyInCall => 'Name only during call';
+
+  @override
+  String get callDisplaySubtitleSimHiddenIncoming => 'SIM hidden on incoming';
+
+  @override
+  String get callDisplaySubtitleSimHiddenOutgoing => 'SIM hidden on outgoing';
+
+  @override
+  String get callDisplaySubtitleSimHiddenInCall => 'SIM hidden during call';
+
+  @override
+  String get callDisplaySheetTitle => 'Call display';
+
+  @override
+  String get callDisplayHideNumberSection => 'Hide number';
+
+  @override
+  String get callDisplayHideNumberSectionSubtitle =>
+      'For saved contacts only. Unknown numbers still show the number.';
+
+  @override
+  String get callDisplayHideSimSection => 'Hide calling SIM';
+
+  @override
+  String get callDisplayHideNumberIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideNumberOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideNumberInCall => 'During call';
+
+  @override
+  String get callDisplayHideSimIncoming => 'Incoming calls';
+
+  @override
+  String get callDisplayHideSimOutgoing => 'Outgoing calls';
+
+  @override
+  String get callDisplayHideSimInCall => 'During call';
 
   @override
   String get defaultSim => 'Default SIM';
@@ -7156,8 +8157,7 @@ class AppLocalizationsEnIn extends AppLocalizationsEn {
   String get reviewRateOnPlay => 'Rate on Google Play';
 
   @override
-  String get reviewRateOnPlaySubtitle =>
-      'Leave a rating without leaving the app';
+  String get reviewRateOnPlaySubtitle => 'Opens the Play Store listing';
 
   @override
   String get reviewCouldNotOpen => 'Could not open Google Play';

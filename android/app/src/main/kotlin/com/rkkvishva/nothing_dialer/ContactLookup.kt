@@ -47,4 +47,8 @@ object ContactLookup {
         }
         return null
     }
+
+    /** Returns the contact photo URI for [phoneNumber], if available. */
+    fun getContactPhotoUri(context: Context, phoneNumber: String): Uri? =
+        ContactPhotoHelper.loadContactPhotoUri(context, phoneNumber)
 }

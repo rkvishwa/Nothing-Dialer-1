@@ -115,7 +115,7 @@
             android:targetActivity=".MainActivity"
             android:exported="true"
             android:enabled="false"
-            android:icon="@mipmap/launcher_icon_light"
+            android:icon="@mipmap/launcher_icon_default"
             android:roundIcon="@mipmap/launcher_icon_light"
             android:label="Nothing Dialer">
             <meta-data
@@ -131,7 +131,7 @@
             android:targetActivity=".MainActivity"
             android:exported="true"
             android:enabled="false"
-            android:icon="@mipmap/launcher_icon_red"
+            android:icon="@mipmap/launcher_icon_default"
             android:roundIcon="@mipmap/launcher_icon_red"
             android:label="Nothing Dialer">
             <meta-data
@@ -147,7 +147,7 @@
             android:targetActivity=".MainActivity"
             android:exported="true"
             android:enabled="false"
-            android:icon="@mipmap/launcher_icon_grey"
+            android:icon="@mipmap/launcher_icon_default"
             android:roundIcon="@mipmap/launcher_icon_grey"
             android:label="Nothing Dialer">
             <meta-data
@@ -163,7 +163,7 @@
             android:targetActivity=".MainActivity"
             android:exported="true"
             android:enabled="false"
-            android:icon="@mipmap/launcher_icon_cream"
+            android:icon="@mipmap/launcher_icon_default"
             android:roundIcon="@mipmap/launcher_icon_cream"
             android:label="Nothing Dialer">
             <meta-data
@@ -179,7 +179,7 @@
             android:targetActivity=".MainActivity"
             android:exported="true"
             android:enabled="false"
-            android:icon="@mipmap/launcher_icon_old_phone"
+            android:icon="@mipmap/launcher_icon_default"
             android:roundIcon="@mipmap/launcher_icon_old_phone"
             android:label="Nothing Dialer">
             <meta-data
@@ -195,7 +195,7 @@
             android:targetActivity=".MainActivity"
             android:exported="true"
             android:enabled="false"
-            android:icon="@mipmap/launcher_icon_old_phone_light"
+            android:icon="@mipmap/launcher_icon_default"
             android:roundIcon="@mipmap/launcher_icon_old_phone_light"
             android:label="Nothing Dialer">
             <meta-data
@@ -218,7 +218,7 @@
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:excludeFromRecents="true"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@style/InCallTheme" />
 
         <!-- ─── Glyph InCallService ─── -->
         <!-- This service is granted access to Call.State.DIALING vs ACTIVE

@@ -2,7 +2,7 @@ name: nothing_dialer
 description: "Nothing Phone 1 Outgoing Call Glyph Trigger – triggers Glyph lights during dialing."
 publish_to: 'none'
 
-version: 1.5.0+11
+version: 1.5.6+13
 
 environment:
   sdk: ^3.11.0
@@ -19,7 +19,7 @@ dependencies:
   nothing_glyph_interface: 
     git:
       url: https://github.com/rkvishwa/flutter-nothing-glyph-interface.git
-      ref: fix-display-progress-and-toggle
+      ref: e2048f7a23abb5c683eca34bb7fc72e70e106501
   # Runtime permission handling
   permission_handler: ^11.3.1
   # Phone contacts (synced with system)
@@ -34,6 +34,9 @@ dependencies:
   in_app_review: ^2.0.10
   share_plus: ^7.2.2
   path_provider: ^2.1.2
+  image_picker: ^1.1.2
+  image: ^4.8.0
+  crop_your_image: ^2.0.0
 
   flutter_launcher_icons: ^0.13.1
   google_fonts: ^8.2.1

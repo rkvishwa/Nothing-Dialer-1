@@ -82,19 +82,27 @@ object LauncherIconManager {
         if (!launcherAliasesInstalled(context)) {
             return VARIANT_DEFAULT
         }
-        val pm = context.packageManager
-        for (variant in ORDERED_VARIANTS) {
-            val cn = componentName(context, variant)
-            val state = pm.getComponentEnabledSetting(cn)
-            if (isEffectivelyEnabled(state, MANIFEST_ENABLED_BY_VARIANT[variant] == true)) {
-                return variant
-            }
+        return enabledVariant(context) ?: VARIANT_DEFAULT
+    }
+
+    /**
+     * If every launcher alias is disabled (can happen after an app update on
+     * Android 16), re-enable [VARIANT_DEFAULT] so the home-screen icon works.
+     */
+    fun ensureLauncherEntry(context: Context): Boolean {
+        if (!launcherAliasesInstalled(context)) {
+            return false
         }
-        return VARIANT_DEFAULT
+        if (enabledVariant(context) != null) {
+            return true
+        }
+        return setVariant(context, VARIANT_DEFAULT)
     }
 
     /**
      * Enables [variant]'s alias and disables all others.
+     *
+     * Enables the target first so a crash or kill cannot leave zero launchers.
      *
      * @return false when this build has no launcher [activity-alias] nodes (debug/profile); true if applied.
      */
@@ -107,16 +115,32 @@ object LauncherIconManager {
         }
         val pm = context.packageManager
         val flag = PackageManager.DONT_KILL_APP
+        pm.setComponentEnabledSetting(
+            componentName(context, variant),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            flag,
+        )
         for (v in ORDERED_VARIANTS) {
-            val cn = componentName(context, v)
-            val newState = if (v == variant) {
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-            } else {
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-            }
-            pm.setComponentEnabledSetting(cn, newState, flag)
+            if (v == variant) continue
+            pm.setComponentEnabledSetting(
+                componentName(context, v),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                flag,
+            )
         }
         return true
+    }
+
+    private fun enabledVariant(context: Context): String? {
+        val pm = context.packageManager
+        for (variant in ORDERED_VARIANTS) {
+            val cn = componentName(context, variant)
+            val state = pm.getComponentEnabledSetting(cn)
+            if (isEffectivelyEnabled(state, MANIFEST_ENABLED_BY_VARIANT[variant] == true)) {
+                return variant
+            }
+        }
+        return null
     }
 
     private fun isEffectivelyEnabled(state: Int, manifestEnabled: Boolean): Boolean {

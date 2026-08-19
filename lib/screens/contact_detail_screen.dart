@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -7,7 +8,6 @@ import '../services/blocking_manager.dart';
 import '../services/favourites_manager.dart';
 import 'sim_picker_sheet.dart';
 import '../widgets/sim_badge.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:nothing_dialer/l10n/app_localizations.dart';
 
@@ -16,7 +16,17 @@ import 'package:share_plus/share_plus.dart';
 
 import '../extensions/dialer_text_style.dart';
 import '../services/app_font_config.dart';
+import '../services/contact_photo_account.dart';
+import '../services/contact_photo_cache.dart';
+import '../services/contact_photo_picker_recovery.dart';
+import '../services/contact_photo_processor.dart';
+import '../services/contact_photo_visibility.dart';
+import '../services/contact_photo_writer.dart';
+import '../main.dart' as main_app;
+import '../widgets/contact_avatar.dart';
 import '../widgets/dialer_font_scope.dart';
+import 'contact_photo_crop_screen.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ContactDetailScreen extends StatefulWidget {
   final Contact contact;
@@ -28,13 +38,16 @@ class ContactDetailScreen extends StatefulWidget {
 
 class _ContactDetailScreenState extends State<ContactDetailScreen> {
   late Contact _contact;
-  bool _loading = false;
+
   /// Per-contact SIM: `system` (use global default / picker rules), `ask`, or `fixed`.
   String _callingSimMode = 'system';
+
   /// 0-based index when [_callingSimMode] is `fixed`.
   int? _preferredSim;
+
   /// Display label for the contact ringtone tile (null → Default).
   String? _customRingtoneName;
+
   /// `default` | `silent` | `ringtone`
   String _ringtoneSelection = 'default';
   String? _ringtoneUri;
@@ -128,7 +141,10 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         selection = 'ringtone';
         uri = cached;
         try {
-          title = await _channel.invokeMethod<String>('getRingtoneTitle', cached);
+          title = await _channel.invokeMethod<String>(
+            'getRingtoneTitle',
+            cached,
+          );
         } catch (_) {}
       }
     }
@@ -163,12 +179,186 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   }
 
   Future<void> _refreshContact() async {
-    final fullContact = await FlutterContacts.getContact(_contact.id);
+    final fullContact = await FlutterContacts.getContact(
+      _contact.id,
+      withProperties: true,
+      withThumbnail: true,
+      withPhoto: true,
+      withAccounts: true,
+    );
     if (fullContact != null && mounted) {
-      setState(() {
-        _contact = fullContact;
-      });
+      setState(() => _contact = fullContact);
     }
+  }
+
+  Future<void> _showPhotoOptions() async {
+    final l10n = AppLocalizations.of(context);
+    final hasPhoto = _contact.photo != null || _contact.thumbnail != null;
+
+    final action = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        final scheme = Theme.of(ctx).colorScheme;
+        return Container(
+          decoration: BoxDecoration(
+            color: scheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.photo_library_outlined),
+                  title: Text(l10n.contactPhotoPickFromGallery),
+                  onTap: () => Navigator.pop(ctx, 'pick'),
+                ),
+                if (hasPhoto)
+                  ListTile(
+                    leading: Icon(Icons.delete_outline, color: scheme.error),
+                    title: Text(
+                      l10n.contactPhotoRemove,
+                      style: TextStyle(color: scheme.error),
+                    ),
+                    onTap: () => Navigator.pop(ctx, 'remove'),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (!mounted || action == null) return;
+
+    if (action == 'pick') {
+      await _pickContactPhotoFromGallery();
+    } else if (action == 'remove') {
+      await _removeContactPhoto();
+    }
+  }
+
+  Future<void> _pickContactPhotoFromGallery() async {
+    try {
+      await ContactPhotoPickerRecovery.markPending(_contact.id);
+      final picker = ImagePicker();
+      final file = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 2048,
+        maxHeight: 2048,
+        imageQuality: 90,
+      );
+      if (file == null || !mounted) {
+        await ContactPhotoPickerRecovery.clearPending();
+        return;
+      }
+
+      final imageBytes = await file.readAsBytes();
+      if (!mounted) {
+        await ContactPhotoPickerRecovery.clearPending();
+        return;
+      }
+      final croppedBytes = await showContactPhotoCropScreen(
+        context,
+        imageBytes: imageBytes,
+      );
+      if (croppedBytes == null || !mounted) {
+        await ContactPhotoPickerRecovery.clearPending();
+        return;
+      }
+
+      await _savePickedContactPhoto(croppedBytes);
+      await ContactPhotoPickerRecovery.clearPending();
+    } catch (_) {
+      await ContactPhotoPickerRecovery.clearPending();
+      _showContactPhotoError();
+    }
+  }
+
+  Future<void> _savePickedContactPhoto(Uint8List croppedBytes) async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      final bytes = await normalizeContactPhotoBytesAsync(croppedBytes);
+      final full = await FlutterContacts.getContact(
+        _contact.id,
+        withProperties: true,
+        withThumbnail: true,
+        withPhoto: true,
+        withAccounts: true,
+      );
+      if (full == null || !mounted) return;
+
+      final savedDirectly = await ContactPhotoWriter.save(_contact.id, bytes);
+      late final Contact updated;
+      if (savedDirectly) {
+        full.photo = bytes;
+        full.thumbnail = bytes;
+        updated = full;
+      } else {
+        prioritizePhotoAccount(full);
+        full.photo = bytes;
+        updated = await full.update();
+        if (updated.photo == null && updated.thumbnail == null) {
+          throw StateError('Contacts provider did not persist the photo');
+        }
+      }
+      if (updated.displayName.isEmpty) {
+        updated.displayName = full.displayName;
+      }
+
+      ContactPhotoCache.replace(_contact.id, bytes);
+      setState(() {
+        _contact = updated;
+      });
+
+      await ensureContactPhotosVisible();
+
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.contactPhotoUpdated)));
+      }
+    } catch (_) {
+      _showContactPhotoError();
+    }
+  }
+
+  Future<void> _removeContactPhoto() async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      final full = await FlutterContacts.getContact(
+        _contact.id,
+        withProperties: true,
+        withThumbnail: true,
+        withPhoto: true,
+        withAccounts: true,
+      );
+      if (full == null || !mounted) return;
+
+      prioritizePhotoAccount(full);
+      full.photo = null;
+      full.thumbnail = null;
+      await full.update();
+      ContactPhotoCache.invalidate(_contact.id);
+      await _refreshContact();
+
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.contactPhotoRemoved)));
+      }
+    } catch (_) {
+      _showContactPhotoError();
+    }
+  }
+
+  void _showContactPhotoError() {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.contactPhotoPickError)));
   }
 
   static const _channel = MethodChannel('nothing_dialer/control');
@@ -180,9 +370,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     switch (_callingSimMode) {
       case 'fixed':
         simIndex = _preferredSim;
-        if (simIndex == null) {
-          simIndex = await showSimPicker(context, rememberChoice: false);
-        }
+        simIndex ??= await showSimPicker(context, rememberChoice: false);
         break;
       case 'ask':
         simIndex = await showSimPicker(context, rememberChoice: false);
@@ -221,16 +409,17 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     } on PlatformException catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.genericError(e.message ?? ''))));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.genericError(e.message ?? ''))),
+        );
       }
     }
   }
 
   Future<void> _editContact() async {
     await FlutterContacts.openExternalEdit(_contact.id);
-    _refreshContact();
+    ContactPhotoCache.invalidate(_contact.id);
+    await _refreshContact();
   }
 
   Future<void> _setCallingSim() async {
@@ -239,9 +428,9 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       final raw = await _channel.invokeMethod<List<dynamic>>('getSimCards');
       if (!mounted) return;
       if (raw == null || raw.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.noSimCardsFound)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.noSimCardsFound)));
         return;
       }
       final sims = raw.cast<Map<dynamic, dynamic>>();
@@ -320,7 +509,10 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
                   onTap: () async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.remove('pref_sim_${_contact.id}');
-                    await prefs.setString('pref_sim_mode_${_contact.id}', 'ask');
+                    await prefs.setString(
+                      'pref_sim_mode_${_contact.id}',
+                      'ask',
+                    );
                     if (mounted) {
                       setState(() {
                         _callingSimMode = 'ask';
@@ -333,7 +525,8 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
                 ...sims.asMap().entries.map((e) {
                   final idx = e.key;
                   final sim = e.value;
-                  final label = sim['label'] as String? ?? l10n.simSlot(idx + 1);
+                  final label =
+                      sim['label'] as String? ?? l10n.simSlot(idx + 1);
                   final slot = (sim['slot'] as int?) ?? (idx + 1);
                   final simIndex = (sim['index'] as num?)?.toInt() ?? idx;
                   return ListTile(
@@ -441,15 +634,11 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
 
       final raw = await _channel.invokeMethod<Map<dynamic, dynamic>>(
         'setContactRingtone',
-        {
-          'contactId': _contact.id,
-          'ringtoneUri': ringtoneUri,
-        },
+        {'contactId': _contact.id, 'ringtoneUri': ringtoneUri},
       );
 
       final prefs = await SharedPreferences.getInstance();
-      final appliedSelection =
-          (raw?['selection'] as String?) ?? selection;
+      final appliedSelection = (raw?['selection'] as String?) ?? selection;
       final appliedUri = raw?['uri'] as String?;
       final appliedTitle = raw?['title'] as String?;
 
@@ -475,8 +664,8 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
       setState(() {
         _ringtoneSelection =
             appliedSelection == 'ringtone' || appliedSelection == 'silent'
-                ? appliedSelection
-                : 'default';
+            ? appliedSelection
+            : 'default';
         _ringtoneUri = appliedUri;
         _customRingtoneName = displayTitle;
       });
@@ -563,9 +752,9 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     final l10n = AppLocalizations.of(context);
     final phoneNumbers = _contact.phones.map((p) => p.number).toList();
     if (phoneNumbers.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.noPhoneNumbersToBlock)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.noPhoneNumbersToBlock)));
       return;
     }
 
@@ -633,9 +822,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(l10n.genericError(e.toString()))),
           );
         }
@@ -649,82 +836,151 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
     return DialerFontScope(
       surface: DialerFontSurface.contactDetail,
       child: Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          ValueListenableBuilder<List<FavouriteEntry>>(
-            valueListenable: FavouritesManager.favouritesNotifier,
-            builder: (context, _, __) {
-              final phones = _contact.phones;
-              if (phones.isEmpty) return const SizedBox(width: 0);
-              final num = phones.first.number;
-              final fav = FavouritesManager.isFavourite(num);
-              return IconButton(
-                icon: Icon(
-                  fav ? Icons.star_rounded : Icons.star_outline_rounded,
-                  color: fav
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.onSurface,
-                ),
-                onPressed: () async {
-                  if (fav) {
-                    await FavouritesManager.removeFavourite(num);
-                  } else {
-                    await FavouritesManager.addFavourite(
-                      FavouriteEntry(
-                        id: _contact.id,
-                        number: num,
-                        name: _contact.displayName,
-                      ),
-                    );
-                  }
-                  if (mounted) setState(() {});
-                },
-              );
-            },
-          ),
-          IconButton(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0,
+          leading: IconButton(
             icon: Icon(
-              Icons.edit_outlined,
+              Icons.arrow_back,
               color: Theme.of(context).colorScheme.onSurface,
             ),
-            onPressed: _editContact,
+            onPressed: () => Navigator.pop(context),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            _buildHeader(),
-            const SizedBox(height: 32),
-            _buildPhoneSection(),
-            const SizedBox(height: 24),
-            _buildConnectedAppsSection(l10n),
-            const SizedBox(height: 24),
-            _buildSettingsSection(l10n),
-            const SizedBox(height: 40),
+          actions: [
+            ValueListenableBuilder<List<FavouriteEntry>>(
+              valueListenable: FavouritesManager.favouritesNotifier,
+              builder: (context, _, __) {
+                final phones = _contact.phones;
+                if (phones.isEmpty) return const SizedBox(width: 0);
+                final num = phones.first.number;
+                final fav = FavouritesManager.isFavourite(num);
+                return IconButton(
+                  icon: Icon(
+                    fav ? Icons.star_rounded : Icons.star_outline_rounded,
+                    color: fav
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.onSurface,
+                  ),
+                  onPressed: () async {
+                    if (fav) {
+                      await FavouritesManager.removeFavourite(num);
+                    } else {
+                      await FavouritesManager.addFavourite(
+                        FavouriteEntry(
+                          id: _contact.id,
+                          number: num,
+                          name: _contact.displayName,
+                        ),
+                      );
+                    }
+                    if (mounted) setState(() {});
+                  },
+                );
+              },
+            ),
+            IconButton(
+              tooltip: l10n.contactPhotoPickFromGallery,
+              icon: Icon(
+                Icons.add_photo_alternate_outlined,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              onPressed: _showPhotoOptions,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.edit_outlined,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              onPressed: _editContact,
+            ),
           ],
         ),
-      ),
+        body: ListenableBuilder(
+          listenable: main_app.contactPhotoModeNotifier,
+          builder: (context, _) {
+            final fullscreen = main_app
+                .contactPhotoModeNotifier
+                .value
+                .usesFullscreenBackground;
+            final photoBytes = _contact.photo ?? _contact.thumbnail;
+            final overlayBase = Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Colors.white;
+
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                if (fullscreen && photoBytes != null)
+                  Positioned.fill(
+                    child: Image.memory(
+                      photoBytes,
+                      fit: BoxFit.cover,
+                      gaplessPlayback: true,
+                      cacheWidth:
+                          (MediaQuery.sizeOf(context).width *
+                                  MediaQuery.devicePixelRatioOf(context))
+                              .round()
+                              .clamp(1, 2048)
+                              .toInt(),
+                    ),
+                  ),
+                if (fullscreen && photoBytes != null)
+                  Positioned.fill(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            overlayBase.withValues(alpha: 0.58),
+                            overlayBase.withValues(alpha: 0.42),
+                            overlayBase.withValues(alpha: 0.68),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      _buildHeader(
+                        hideAvatar: fullscreen && photoBytes != null,
+                      ),
+                      const SizedBox(height: 32),
+                      _buildPhoneSection(),
+                      const SizedBox(height: 24),
+                      _buildConnectedAppsSection(l10n),
+                      const SizedBox(height: 24),
+                      _buildSettingsSection(l10n),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader({bool hideAvatar = false}) {
     return Column(
       children: [
-        _Avatar(contact: _contact, size: 100),
-        SizedBox(height: 16),
+        if (!hideAvatar)
+          ContactAvatar(
+            contactId: _contact.id,
+            displayName: _contact.displayName,
+            size: 100,
+            thumbnail: _contact.thumbnail,
+            photo: _contact.photo,
+            preferFullPhoto: true,
+            fontSizeFactor: 0.35,
+            onTap: _showPhotoOptions,
+          ),
+        SizedBox(height: hideAvatar ? 0 : 16),
         Text(
           _contact.displayName,
           style: context.dialerTextStyle(
@@ -903,8 +1159,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
   Widget _buildSettingsSection(AppLocalizations l10n) {
     final String simText = switch (_callingSimMode) {
       'ask' => l10n.askEveryTime,
-      'fixed' when _preferredSim != null =>
-        l10n.simSlot(_preferredSim! + 1),
+      'fixed' when _preferredSim != null => l10n.simSlot(_preferredSim! + 1),
       'fixed' => l10n.simNotSet,
       _ => l10n.simSameAsSystem,
     };
@@ -1056,63 +1311,6 @@ extension StringExtension on String {
   String capitalize() {
     if (isEmpty) return this;
     return "${this[0].toUpperCase()}${substring(1)}";
-  }
-}
-
-class _Avatar extends StatelessWidget {
-  final Contact contact;
-  final double size;
-  const _Avatar({required this.contact, required this.size});
-
-  @override
-  Widget build(BuildContext context) {
-    final outlineColor = Theme.of(context).colorScheme.outlineVariant;
-    final circleShape = CircleBorder(
-      side: BorderSide(color: outlineColor, width: 1.5),
-    );
-    if (contact.photo != null) {
-      return Material(
-        color: Colors.transparent,
-        shape: circleShape,
-        clipBehavior: Clip.antiAlias,
-        child: SizedBox(
-          width: size,
-          height: size,
-          child: CircleAvatar(
-            radius: size / 2,
-            backgroundImage: MemoryImage(contact.photo!),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
-      );
-    }
-    final initials = _initials(contact.displayName);
-    return Material(
-      color: Colors.transparent,
-      shape: circleShape,
-      clipBehavior: Clip.antiAlias,
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: Center(
-          child: Text(
-            initials,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: size * 0.35,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _initials(String name) {
-    final parts = name.trim().split(' ');
-    if (parts.isEmpty || parts.first.isEmpty) return '?';
-    if (parts.length == 1) return parts[0][0].toUpperCase();
-    return '${parts[0][0]}${parts.last[0]}'.toUpperCase();
   }
 }
 

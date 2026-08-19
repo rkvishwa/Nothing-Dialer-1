@@ -361,7 +361,6 @@
   "reviewSection": "评价",
   "reviewDescription": "喜欢 Nothing Dialer 吗？在 Google Play 上的评分可以帮助其他人发现这款应用。",
   "reviewRateOnPlay": "在 Google Play 上评分",
-  "reviewRateOnPlaySubtitle": "无需离开应用即可评分",
   "reviewCouldNotOpen": "无法打开 Google Play",
   "breathSpeed": "呼吸速度",
   "breathSpeedBlinkHint": "较低=眨眼，较高=缓慢呼吸",
@@ -407,5 +406,6 @@
   "callPermissionDenied": "已拒绝通话权限",
   "alreadyDefaultDialer": "已是默认拨号应用",
   "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
-  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device."
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "reviewRateOnPlaySubtitle": "打开 Google Play 应用详情页"
 }

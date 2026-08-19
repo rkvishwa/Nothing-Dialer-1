@@ -4,9 +4,11 @@ import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.KeyguardManager
 import android.graphics.Canvas
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -102,6 +104,10 @@ class InCallActivity : Activity() {
     private lateinit var keypadContainer: LinearLayout
 
     private lateinit var avatarText: TextView
+    private lateinit var avatarContainer: FrameLayout
+    private lateinit var avatarImageView: ImageView
+    private lateinit var callPhotoBackgroundView: ImageView
+    private lateinit var callPhotoScrimView: View
     private lateinit var nameText: TextView
     private lateinit var numberText: TextView
     private lateinit var simLabel: TextView
@@ -132,6 +138,13 @@ class InCallActivity : Activity() {
     // Incoming call overlay
     private lateinit var incomingOverlay: FrameLayout
     private lateinit var incomingContent: LinearLayout
+    private var incomingHeaderText: TextView? = null
+    private var incomingNumberText: TextView? = null
+    private var incomingAvatarContainer: FrameLayout? = null
+    private var incomingAvatarImageView: ImageView? = null
+    private var incomingAvatarText: TextView? = null
+    private var incomingPhotoBackgroundView: ImageView? = null
+    private var incomingPhotoScrimView: View? = null
     private var isIncoming = false
     private var btnDeclineLayout: LinearLayout? = null
     private var btnAnswerLayout: LinearLayout? = null
@@ -148,6 +161,11 @@ class InCallActivity : Activity() {
     private var selectedSimLabel: String? = null
     private var isChangingSim = false
     private var boundCall: Call? = null
+    @Volatile private var contactPhotoLoadGeneration = 0
+    private var loadingContactPhotoKey: String? = null
+    private var loadedContactPhotoKey: String? = null
+    private var loadedContactPhoto: Bitmap? = null
+    private var loadedContactPhotoSyncGeneration: Long = -1L
 
     private val audioStateListener: (CallAudioState) -> Unit = { audioState ->
         runOnUiThread {
@@ -214,6 +232,8 @@ class InCallActivity : Activity() {
         buildUI(themeColors)
         buildIncomingOverlay(themeColors)
         applyCallScreenInsets()
+        applyEdgeToEdge(themeColors)
+        ViewCompat.requestApplyInsets(rootLayout)
         initProximitySensor()
 
         if (GlyphInCallService.currentCall == null) {
@@ -269,6 +289,207 @@ class InCallActivity : Activity() {
         return try { tm.getPhoneAccount(accountHandle)?.label?.toString() } catch (_: Exception) { null }
     }
 
+    private enum class CallDisplayPhase { INCOMING, OUTGOING, INCALL }
+
+    private fun callDisplayPhase(state: Int): CallDisplayPhase = when (state) {
+        Call.STATE_RINGING -> CallDisplayPhase.INCOMING
+        Call.STATE_CONNECTING, Call.STATE_DIALING, Call.STATE_SELECT_PHONE_ACCOUNT -> CallDisplayPhase.OUTGOING
+        else -> CallDisplayPhase.INCALL
+    }
+
+    private fun shouldHideContactNumber(phase: CallDisplayPhase): Boolean = when (phase) {
+        CallDisplayPhase.INCOMING -> FlutterPrefs.getBool(this, "hide_contact_number_incoming") == true
+        CallDisplayPhase.OUTGOING -> FlutterPrefs.getBool(this, "hide_contact_number_outgoing") == true
+        CallDisplayPhase.INCALL -> FlutterPrefs.getBool(this, "hide_contact_number_incall") == true
+    }
+
+    private fun shouldHideCallingSim(phase: CallDisplayPhase): Boolean = when (phase) {
+        CallDisplayPhase.INCOMING -> FlutterPrefs.getBool(this, "hide_calling_sim_incoming") == true
+        CallDisplayPhase.OUTGOING -> FlutterPrefs.getBool(this, "hide_calling_sim_outgoing") == true
+        CallDisplayPhase.INCALL -> FlutterPrefs.getBool(this, "hide_calling_sim_incall") == true
+    }
+
+    private fun applyCallDisplayPrivacy(state: Int) {
+        val phase = callDisplayPhase(state)
+        val call = boundCall ?: GlyphInCallService.currentCall
+        val number = call?.details?.handle?.schemeSpecificPart ?: getString(R.string.in_call_unknown)
+        val contactName = getContactName(number)
+
+        if (contactName != null) {
+            nameText.text = contactName
+            numberText.text = number
+            numberText.visibility =
+                if (shouldHideContactNumber(phase)) View.GONE else View.VISIBLE
+            avatarText.text = contactName.first().uppercase()
+        } else {
+            nameText.text = number
+            numberText.visibility = View.GONE
+            avatarText.text = if (number.isNotEmpty()) number.first().toString() else "?"
+        }
+
+        if (selectedSimLabel != null && !shouldHideCallingSim(phase)) {
+            simLabel.text = formatSimLabel(selectedSimLabel!!)
+            simLabel.visibility = View.VISIBLE
+        } else {
+            simLabel.visibility = View.GONE
+        }
+
+        applyIncomingOverlayPrivacy(state, number, contactName)
+        applyContactPhotoUi(number, contactName)
+    }
+
+    private fun applyContactPhotoUi(number: String, contactName: String?) {
+        val shape = ContactPhotoHelper.getAvatarShape(this)
+        val style = ContactPhotoHelper.getAvatarStyle(this)
+        val mode = ContactPhotoHelper.getPhotoMode(this)
+        val initial = if (contactName?.isNotEmpty() == true) {
+            contactName.first().uppercase()
+        } else if (number.isNotEmpty()) {
+            number.first().toString()
+        } else {
+            "?"
+        }
+        incomingAvatarText?.text = initial
+        applyAvatarClipToAllAvatars(shape, style)
+
+        if (mode == ContactPhotoHelper.MODE_OFF) {
+            contactPhotoLoadGeneration++
+            loadingContactPhotoKey = null
+            loadedContactPhotoKey = null
+            loadedContactPhoto = null
+            loadedContactPhotoSyncGeneration = -1L
+            showContactPhotoFallback()
+            return
+        }
+
+        val key = "$number|$mode|$shape|$style"
+        val syncGeneration = ContactsSyncState.generation
+        if (loadedContactPhotoKey == key &&
+            loadedContactPhotoSyncGeneration == syncGeneration) {
+            applyLoadedContactPhoto(loadedContactPhoto, mode, shape, style)
+            return
+        }
+        if (loadingContactPhotoKey == key) return
+
+        showContactPhotoFallback()
+        loadingContactPhotoKey = key
+        val generation = ++contactPhotoLoadGeneration
+        Thread {
+            val bitmap = ContactLookup.getContactPhotoUri(this, number)?.let {
+                ContactPhotoHelper.loadBitmap(this, it)
+            }
+            runOnUiThread {
+                if (isDestroyed || generation != contactPhotoLoadGeneration) {
+                    return@runOnUiThread
+                }
+                loadingContactPhotoKey = null
+                loadedContactPhotoKey = key
+                loadedContactPhoto = bitmap
+                loadedContactPhotoSyncGeneration = syncGeneration
+                applyLoadedContactPhoto(bitmap, mode, shape, style)
+            }
+        }.start()
+
+    }
+
+    private fun applyAvatarClipToAllAvatars(shape: String, style: String) {
+        if (::avatarContainer.isInitialized) {
+            avatarContainer.post {
+                ContactPhotoHelper.applyAvatarClip(avatarContainer, shape, style)
+            }
+        }
+        incomingAvatarContainer?.post {
+            incomingAvatarContainer?.let {
+                ContactPhotoHelper.applyAvatarClip(it, shape, style)
+            }
+        }
+    }
+
+    private fun showContactPhotoFallback() {
+        callPhotoBackgroundView.setImageDrawable(null)
+        callPhotoBackgroundView.visibility = View.GONE
+        callPhotoScrimView.visibility = View.GONE
+        avatarContainer.visibility = View.VISIBLE
+        avatarImageView.setImageDrawable(null)
+        avatarImageView.visibility = View.GONE
+        avatarText.visibility = View.VISIBLE
+
+        incomingPhotoBackgroundView?.setImageDrawable(null)
+        incomingPhotoBackgroundView?.visibility = View.GONE
+        incomingPhotoScrimView?.visibility = View.GONE
+        incomingAvatarContainer?.visibility = View.VISIBLE
+        incomingAvatarImageView?.setImageDrawable(null)
+        incomingAvatarImageView?.visibility = View.GONE
+        incomingAvatarText?.visibility = View.VISIBLE
+    }
+
+    private fun applyLoadedContactPhoto(
+        bitmap: Bitmap?,
+        mode: String,
+        shape: String,
+        style: String,
+    ) {
+        if (bitmap == null) {
+            showContactPhotoFallback()
+            return
+        }
+
+        if (mode == ContactPhotoHelper.MODE_FULLSCREEN) {
+            callPhotoBackgroundView.setImageBitmap(bitmap)
+            callPhotoBackgroundView.visibility = View.VISIBLE
+            callPhotoScrimView.visibility = View.VISIBLE
+            avatarContainer.visibility = View.GONE
+
+            incomingPhotoBackgroundView?.setImageBitmap(bitmap)
+            incomingPhotoBackgroundView?.visibility = View.VISIBLE
+            incomingPhotoScrimView?.visibility = View.VISIBLE
+            incomingAvatarContainer?.visibility = View.GONE
+            return
+        }
+
+        callPhotoBackgroundView.visibility = View.GONE
+        callPhotoScrimView.visibility = View.GONE
+        avatarContainer.visibility = View.VISIBLE
+        avatarImageView.setImageBitmap(bitmap)
+        avatarImageView.visibility = View.VISIBLE
+        avatarText.visibility = View.GONE
+
+        incomingPhotoBackgroundView?.visibility = View.GONE
+        incomingPhotoScrimView?.visibility = View.GONE
+        incomingAvatarContainer?.visibility = View.VISIBLE
+        incomingAvatarImageView?.setImageBitmap(bitmap)
+        incomingAvatarImageView?.visibility = View.VISIBLE
+        incomingAvatarText?.visibility = View.GONE
+        applyAvatarClipToAllAvatars(shape, style)
+    }
+
+    private fun applyIncomingOverlayPrivacy(
+        state: Int,
+        number: String,
+        contactName: String?,
+    ) {
+        val phase = callDisplayPhase(state)
+        incomingHeaderText?.let { header ->
+            val headerText = if (shouldHideCallingSim(phase) || selectedSimLabel == null) {
+                getString(R.string.in_call_call_from)
+            } else {
+                getString(R.string.in_call_call_via_from, selectedSimLabel)
+            }
+            header.text = android.text.Html.fromHtml(
+                headerText,
+                android.text.Html.FROM_HTML_MODE_LEGACY,
+            )
+        }
+        incomingNumberText?.let { numView ->
+            if (contactName != null && !shouldHideContactNumber(phase)) {
+                numView.text = getString(R.string.in_call_mobile_number, number)
+                numView.visibility = View.VISIBLE
+            } else {
+                numView.visibility = View.GONE
+            }
+        }
+    }
+
     private fun bindToCurrentCall(call: Call?) {
         if (boundCall === call) {
             return
@@ -284,33 +505,13 @@ class InCallActivity : Activity() {
         }
         call.registerCallback(callCallback)
 
-        val handle = call.details?.handle
-        val number = handle?.schemeSpecificPart ?: getString(R.string.in_call_unknown)
-        val contactName = getContactName(number)
-
-        if (contactName != null) {
-            nameText.text = contactName
-            numberText.text = number
-            numberText.visibility = View.VISIBLE
-            avatarText.text = contactName.first().uppercase()
-        } else {
-            nameText.text = number
-            numberText.visibility = View.GONE
-            avatarText.text = if (number.isNotEmpty()) number.first().toString() else "?"
-        }
-
         selectedSimLabel = getSimLabelForCall(call)
-        if (selectedSimLabel != null) {
-            simLabel.text = formatSimLabel(selectedSimLabel!!)
-        } else {
-            simLabel.text = ""
-        }
-        simLabel.visibility = if (selectedSimLabel != null) View.VISIBLE else View.GONE
 
         val audioState = GlyphInCallService.latestAudioState ?: GlyphInCallService.instance?.callAudioState
         isMuted = audioState?.isMuted ?: false
         currentRoute = audioState?.route ?: CallAudioState.ROUTE_EARPIECE
         updateControlStates()
+        applyCallDisplayPrivacy(call.state)
         updateUI(call.state)
     }
 
@@ -407,6 +608,7 @@ class InCallActivity : Activity() {
                 }
             }
         }
+        applyCallDisplayPrivacy(state)
         updateProximityWakeLock(state)
     }
 
@@ -425,8 +627,7 @@ class InCallActivity : Activity() {
         showStyledSimSheet(getString(R.string.in_call_choose_sim), labels) { which ->
             call.phoneAccountSelected(accounts[which], false)
             selectedSimLabel = labels[which]
-            simLabel.text = formatSimLabel(labels[which])
-            simLabel.visibility = View.VISIBLE
+            applyCallDisplayPrivacy(call.state)
         }
     }
 
@@ -678,6 +879,11 @@ class InCallActivity : Activity() {
     }
 
     override fun onDestroy() {
+        contactPhotoLoadGeneration++
+        loadingContactPhotoKey = null
+        loadedContactPhotoKey = null
+        loadedContactPhoto = null
+        loadedContactPhotoSyncGeneration = -1L
         if (activeInstance === this) activeInstance = null
         if (!isChangingConfigurations) {
             expectingUi = false
@@ -720,6 +926,16 @@ class InCallActivity : Activity() {
         }
         // Full-screen UI is up — drop the incoming CallStyle heads-up card.
         GlyphInCallService.instance?.refreshForegroundNotification()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus && ::themeColors.isInitialized) {
+            applyEdgeToEdge(themeColors)
+            if (::rootLayout.isInitialized) {
+                ViewCompat.requestApplyInsets(rootLayout)
+            }
+        }
     }
 
 
@@ -765,6 +981,27 @@ class InCallActivity : Activity() {
             isClickable = true  // consume touch events
         }
 
+        incomingPhotoBackgroundView = ImageView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+            )
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            visibility = View.GONE
+        }
+        incomingPhotoScrimView = View(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+            )
+            setBackgroundColor(
+                Color.parseColor(if (theme.isLight) "#99FFFFFF" else "#99000000")
+            )
+            visibility = View.GONE
+        }
+        incomingOverlay.addView(incomingPhotoBackgroundView)
+        incomingOverlay.addView(incomingPhotoScrimView)
+
         val content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
@@ -774,29 +1011,41 @@ class InCallActivity : Activity() {
         val call = GlyphInCallService.currentCall
         val number = call?.details?.handle?.schemeSpecificPart ?: getString(R.string.in_call_unknown)
         val contactName = getContactName(number)
-        val selectedSimLabel = call?.let { getSimLabelForCall(it) }
-        
+        selectedSimLabel = call?.let { getSimLabelForCall(it) }
+
         val headerText = if (selectedSimLabel != null) {
             getString(R.string.in_call_call_via_from, selectedSimLabel)
         } else {
             getString(R.string.in_call_call_from)
         }
-        
-        content.addView(TextView(this).apply {
+
+        incomingHeaderText = TextView(this).apply {
             text = android.text.Html.fromHtml(headerText, android.text.Html.FROM_HTML_MODE_LEGACY)
             setTextColor(theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
             gravity = Gravity.CENTER
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        })
+        }
+        content.addView(incomingHeaderText)
 
         // ── Avatar ──
         val avatarSize = dp(110)
-        val avatarBg = FrameLayout(this).apply {
-            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(theme.surfaceContainerHigh) }
+        incomingAvatarContainer = ContactAvatarFrameLayout(this).apply {
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                setColor(theme.surfaceContainerHigh)
+            }
             layoutParams = LinearLayout.LayoutParams(avatarSize, avatarSize).apply { gravity = Gravity.CENTER_HORIZONTAL; topMargin = dp(24) }
         }
-        val avText = TextView(this).apply {
+        incomingAvatarImageView = ImageView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+            )
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            visibility = View.GONE
+        }
+        incomingAvatarText = TextView(this).apply {
             text = if (contactName?.isNotEmpty() == true) contactName.first().uppercase() else if (number.isNotEmpty()) number.first().toString() else "?"
             setTextColor(theme.onSurface)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 46f)
@@ -804,8 +1053,9 @@ class InCallActivity : Activity() {
             gravity = Gravity.CENTER
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         }
-        avatarBg.addView(avText)
-        content.addView(avatarBg)
+        incomingAvatarContainer?.addView(incomingAvatarImageView)
+        incomingAvatarContainer?.addView(incomingAvatarText)
+        content.addView(incomingAvatarContainer)
 
         // Amma (Name)
         content.addView(TextView(this).apply {
@@ -817,15 +1067,16 @@ class InCallActivity : Activity() {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(16) }
         })
 
-        // Mobile 077 049 9787
-        content.addView(TextView(this).apply {
+        // Mobile number subtitle (saved contacts only)
+        incomingNumberText = TextView(this).apply {
             text = if (contactName != null) getString(R.string.in_call_mobile_number, number) else ""
             setTextColor(theme.onSurfaceVariant)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER
             visibility = if (contactName != null) View.VISIBLE else View.GONE
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(4) }
-        })
+        }
+        content.addView(incomingNumberText)
 
         // Spacer pushes controls to bottom
         content.addView(View(this).apply { layoutParams = LinearLayout.LayoutParams(0, 0, 1f) })
@@ -869,6 +1120,8 @@ class InCallActivity : Activity() {
         rootLayout.addView(incomingOverlay, FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT
         ))
+
+        applyCallDisplayPrivacy(Call.STATE_RINGING)
     }
 
     private fun showQuickResponseDialog(theme: ThemeColors) {
@@ -1348,7 +1601,10 @@ class InCallActivity : Activity() {
     }
 
     private fun showIncomingOverlay() {
-        if (::incomingOverlay.isInitialized) incomingOverlay.visibility = View.VISIBLE
+        if (::incomingOverlay.isInitialized) {
+            applyCallDisplayPrivacy(Call.STATE_RINGING)
+            incomingOverlay.visibility = View.VISIBLE
+        }
     }
 
     private fun hideIncomingOverlay() {
@@ -1470,6 +1726,27 @@ class InCallActivity : Activity() {
     private fun buildUI(theme: ThemeColors) {
         rootLayout = FrameLayout(this).apply { setBackgroundColor(theme.background) }
 
+        callPhotoBackgroundView = ImageView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+            )
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            visibility = View.GONE
+        }
+        callPhotoScrimView = View(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+            )
+            setBackgroundColor(
+                Color.parseColor(if (theme.isLight) "#99FFFFFF" else "#99000000")
+            )
+            visibility = View.GONE
+        }
+        rootLayout.addView(callPhotoBackgroundView)
+        rootLayout.addView(callPhotoScrimView)
+
         mainContent = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
@@ -1491,15 +1768,27 @@ class InCallActivity : Activity() {
 
         // Avatar
         val avatarSize = dp(110)
-        val avatarContainer = FrameLayout(this).apply {
-            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(theme.surfaceContainerHigh) }
+        avatarContainer = ContactAvatarFrameLayout(this).apply {
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                setColor(theme.surfaceContainerHigh)
+            }
             layoutParams = LinearLayout.LayoutParams(avatarSize, avatarSize).apply { gravity = Gravity.CENTER_HORIZONTAL; topMargin = dp(24) }
+        }
+        avatarImageView = ImageView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+            )
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            visibility = View.GONE
         }
         avatarText = TextView(this).apply {
             setTextColor(theme.onSurface); setTextSize(TypedValue.COMPLEX_UNIT_SP, 46f)
             DialerTypefaces.apply(this, DialerTypefaces.Role.primary); gravity = Gravity.CENTER
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         }
+        avatarContainer.addView(avatarImageView)
         avatarContainer.addView(avatarText)
         topSection.addView(avatarContainer)
 
@@ -1709,11 +1998,18 @@ class InCallActivity : Activity() {
     }
 
     private fun applyEdgeToEdge(theme: ThemeColors) {
-        // Fullscreen theme can hide the status bar; clear it so we draw edge-to-edge
-        // with visible system bars over a solid call background.
+        // Draw edge-to-edge with visible system bars over a solid call background.
         @Suppress("DEPRECATION")
-        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.apply {
+            clearFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN or
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
+            )
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        }
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.setBackgroundDrawable(ColorDrawable(theme.background))
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -1743,7 +2039,7 @@ class InCallActivity : Activity() {
             if (::incomingContent.isInitialized) {
                 incomingContent.setPadding(0, bars.top, 0, bars.bottom + bottomExtra)
             }
-            insets
+            WindowInsetsCompat.CONSUMED
         }
         ViewCompat.requestApplyInsets(rootLayout)
     }

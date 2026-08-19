@@ -4,9 +4,44 @@
 
 ---
 
+## v1.5.6 (build 12)
+
+Current release in `pubspec.yaml`.
+
+### Highlights
+
+- **Contact Photos:** Set custom images for contacts from the gallery. Customize avatar shapes (circle, rounded square, etc.), use full-screen backgrounds, or disable photos completely. Choose to show contact photos in the Recents screen with a dedicated shape setting.
+- **Call Display Privacy:** Hide phone numbers of saved contacts (showing only the name) for incoming, outgoing, and saved contacts. Option to hide the calling SIM indicator at the top of the screen.
+- **Settings Reorganization:** Redesigned and reorganized the Settings page to break up crowded sections into a clearer, flatter layout. Redesigned the Contact Photos settings sheet for a cleaner look.
+
+### Fixes and polish
+
+- **Android 16 Support:** Fixed a launch crash on Android 16 caused by native Glyph SDK initialization timing and release-launcher activity aliases.
+- **Samsung Edge-to-Edge:** Fixed in-call edge-to-edge display issues (status-bar insets and waterdrop notch) on Samsung devices running Android 14 (e.g., Galaxy A04s).
+- **In-App Review:** Fixed the "Rate on Google Play" button in Settings not doing anything in production by opening the Play Store listing directly.
+- **App Icon:** Fixed an issue causing a cross-bar overlay when changing the app icon.
+
+### Platform
+
+- Version **1.5.6+12** in `pubspec.yaml`.
+
+### Play Store release notes (paste into Play Console)
+
+```
+What's new in 1.5.6
+
+• Contact photos — gallery, shapes, full-screen, or off; optional in Recents
+• Call privacy — hide saved contact numbers and SIM label
+• Cleaner Settings layout
+• Android 16 launch fix; Samsung in-call edge-to-edge fix
+• App icon and Play Store rating fixes
+```
+
+---
+
 ## v1.5.0 (build 11)
 
-Current release in `pubspec.yaml`. This build ships the full **v1.0.2** feature set (see below) plus the fixes and polish from recent development and closed testing.
+Previous release. This build ships the full **v1.0.2** feature set (see below) plus the fixes and polish from recent development and closed testing.
 
 ### Highlights
 

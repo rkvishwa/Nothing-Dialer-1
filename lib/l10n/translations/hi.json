@@ -361,7 +361,6 @@
   "reviewSection": "रेटिंग",
   "reviewDescription": "Nothing Dialer पसंद आ रहा है? Google Play पर आपकी रेटिंग दूसरों को ऐप खोजने में मदद करती है।",
   "reviewRateOnPlay": "Google Play पर रेट करें",
-  "reviewRateOnPlaySubtitle": "ऐप छोड़े बिना रेटिंग दें",
   "reviewCouldNotOpen": "Google Play नहीं खोल सके",
   "breathSpeed": "सांस की गति",
   "breathSpeedBlinkHint": "निचला = पलक झपकना, उच्चतर = धीमी सांस",
@@ -407,5 +406,6 @@
   "callPermissionDenied": "कॉल अनुमति अस्वीकृत",
   "alreadyDefaultDialer": "पहले से डिफ़ॉल्ट डायलर है",
   "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
-  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device."
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "reviewRateOnPlaySubtitle": "Google Play सूची खोलता है"
 }

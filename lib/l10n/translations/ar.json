@@ -361,7 +361,6 @@
   "reviewSection": "التقييم",
   "reviewDescription": "هل تستمتع بـ Nothing Dialer؟ تقييمك على Google Play يساعد الآخرين على اكتشاف التطبيق.",
   "reviewRateOnPlay": "قيّم على Google Play",
-  "reviewRateOnPlaySubtitle": "قيّم دون مغادرة التطبيق",
   "reviewCouldNotOpen": "تعذّر فتح Google Play",
   "breathSpeed": "سرعة التنفس",
   "breathSpeedBlinkHint": "أقل = وميض، أعلى = نفس بطيء",
@@ -407,5 +406,6 @@
   "callPermissionDenied": "تم رفض إذن المكالمة",
   "alreadyDefaultDialer": "مُعيَّن بالفعل كتطبيق الهاتف الافتراضي",
   "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
-  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device."
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "reviewRateOnPlaySubtitle": "يفتح صفحة التطبيق في Google Play"
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -5,8 +7,12 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:nothing_dialer/l10n/app_localizations.dart';
 
 import '../extensions/dialer_text_style.dart';
+import '../main.dart' as main_app;
 import '../services/favourites_manager.dart';
 import '../services/app_font_config.dart';
+import '../services/contact_by_phone.dart';
+import '../services/contacts_cache.dart';
+import '../widgets/contact_avatar.dart';
 import '../widgets/dialer_font_scope.dart';
 
 /// Manage favourite contacts: reorder, remove, add from address book.
@@ -21,186 +27,201 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    super.initState();
+    unawaited(_warmContactCache());
+  }
+
+  Future<void> _warmContactCache() async {
+    if (!main_app.contactPhotoModeNotifier.value.showsPhotos ||
+        ContactsCache.hasData) {
+      return;
+    }
+    final status = await Permission.contacts.request();
+    if (!status.isGranted) return;
+    try {
+      await ContactsCache.load(
+        fetch: () => FlutterContacts.getContacts(
+          withProperties: true,
+          withThumbnail: false,
+        ),
+      );
+      if (mounted) setState(() {});
+    } catch (_) {
+      // Favourites remains usable with initials when contacts are unavailable.
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final cs = Theme.of(context).colorScheme;
     return DialerFontScope(
       surface: DialerFontSurface.favourites,
       child: Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      drawer: Drawer(
-        backgroundColor: cs.surface,
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
-                child: Text(
-                  l10n.favourites,
-                  style: context.dialerTextStyle(
-                    DialerFontRole.pageTitle,
-                    TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w400,
-                      color: cs.onSurface,
-                    ),
-                  ),
-                ),
-              ),
-              const Divider(height: 1),
-              ListTile(
-                leading: Icon(
-                  Icons.person_add_outlined,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                title: Text(
-                  l10n.addFavourite,
-                  style: context.dialerTextStyle(
-                    DialerFontRole.primary,
-                    TextStyle(
-                      color: cs.onSurface,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickContactToAdd();
-                },
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: Text(
-                  l10n.favouritesDrawerHint,
-                  style: context.dialerTextStyle(
-                    DialerFontRole.secondary,
-                    TextStyle(
-                      fontSize: 13,
-                      color: cs.onSurfaceVariant,
-                      height: 1.35,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      appBar: AppBar(
+        key: _scaffoldKey,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.menu_rounded,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-          tooltip: l10n.menu,
-        ),
-        title: Text(
-          l10n.favourites,
-          style: context.dialerTextStyle(
-            DialerFontRole.pageTitle,
-            TextStyle(
-              color: cs.onSurface,
-              fontWeight: FontWeight.w300,
-              fontSize: 22,
+        drawer: Drawer(
+          backgroundColor: cs.surface,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                  child: Text(
+                    l10n.favourites,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.pageTitle,
+                      TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w400,
+                        color: cs.onSurface,
+                      ),
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: Icon(
+                    Icons.person_add_outlined,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  title: Text(
+                    l10n.addFavourite,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.primary,
+                      TextStyle(
+                        color: cs.onSurface,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickContactToAdd();
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  child: Text(
+                    l10n.favouritesDrawerHint,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.secondary,
+                      TextStyle(
+                        fontSize: 13,
+                        color: cs.onSurfaceVariant,
+                        height: 1.35,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-        foregroundColor: cs.onSurface,
-      ),
-      body: ValueListenableBuilder<List<FavouriteEntry>>(
-        valueListenable: FavouritesManager.favouritesNotifier,
-        builder: (context, list, _) {
-          if (list.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Text(
-                  l10n.noFavouritesYet,
-                  textAlign: TextAlign.center,
-                  style: context.dialerTextStyle(
-                    DialerFontRole.secondary,
-                    TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontSize: 15,
-                      height: 1.4,
-                    ),
-                  ),
-                ),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.menu_rounded,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+            tooltip: l10n.menu,
+          ),
+          title: Text(
+            l10n.favourites,
+            style: context.dialerTextStyle(
+              DialerFontRole.pageTitle,
+              TextStyle(
+                color: cs.onSurface,
+                fontWeight: FontWeight.w300,
+                fontSize: 22,
               ),
-            );
-          }
-          return ReorderableListView.builder(
-            padding: const EdgeInsets.only(bottom: 24),
-            itemCount: list.length,
-            onReorder: (oldIndex, newIndex) {
-              FavouritesManager.reorder(oldIndex, newIndex);
-            },
-            itemBuilder: (context, index) {
-              final e = list[index];
-              return ListTile(
-                key: ValueKey('${e.number}_$index'),
-                leading: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.outlineVariant,
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        e.name.isNotEmpty ? e.name[0].toUpperCase() : '?',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 18,
-                        ),
+            ),
+          ),
+          foregroundColor: cs.onSurface,
+        ),
+        body: ValueListenableBuilder<List<FavouriteEntry>>(
+          valueListenable: FavouritesManager.favouritesNotifier,
+          builder: (context, list, _) {
+            if (list.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Text(
+                    l10n.noFavouritesYet,
+                    textAlign: TextAlign.center,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.secondary,
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 15,
+                        height: 1.4,
                       ),
                     ),
                   ),
-                ),
-                title: Text(
-                  e.name.isNotEmpty ? e.name : e.number,
-                  style: context.dialerTextStyle(
-                    DialerFontRole.primary,
-                    TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                ),
-                subtitle: Text(
-                  e.number,
-                  style: context.dialerTextStyle(
-                    DialerFontRole.secondary,
-                    TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-                trailing: IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                  onPressed: () =>
-                      FavouritesManager.removeFavourite(e.number),
                 ),
               );
-            },
-          );
-        },
+            }
+            return ReorderableListView.builder(
+              padding: const EdgeInsets.only(bottom: 24),
+              itemCount: list.length,
+              onReorder: (oldIndex, newIndex) {
+                FavouritesManager.reorder(oldIndex, newIndex);
+              },
+              itemBuilder: (context, index) {
+                final e = list[index];
+                final matchedContact = findContactByPhone(e.number);
+                return ListTile(
+                  key: ValueKey('${e.number}_$index'),
+                  leading: ContactAvatar(
+                    contactId: e.id.isNotEmpty
+                        ? e.id
+                        : (matchedContact?.id ?? ''),
+                    displayName: e.name.isNotEmpty ? e.name : e.number,
+                    size: 40,
+                    thumbnail: matchedContact?.thumbnail,
+                    photo: matchedContact?.photo,
+                    fontSizeFactor: 0.42,
+                  ),
+                  title: Text(
+                    e.name.isNotEmpty ? e.name : e.number,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.primary,
+                      TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                  ),
+                  subtitle: Text(
+                    e.number,
+                    style: context.dialerTextStyle(
+                      DialerFontRole.secondary,
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+                    onPressed: () =>
+                        FavouritesManager.removeFavourite(e.number),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
-    ),
     );
   }
 
@@ -209,9 +230,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     if (!status.isGranted) {
       if (mounted) {
         final l10n = AppLocalizations.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.contactsPermissionNeeded)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.contactsPermissionNeeded)));
       }
       return;
     }
@@ -230,106 +251,104 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
       builder: (ctx) => DialerFontScope(
         surface: DialerFontSurface.sheets,
         child: DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        minChildSize: 0.4,
-        maxChildSize: 0.95,
-        builder: (_, scrollController) => Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          ),
-          child: Column(
-            children: [
-              const SizedBox(height: 12),
-              Container(
-                width: 32,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.outlineVariant,
-                  borderRadius: BorderRadius.circular(2),
-                ),
+          initialChildSize: 0.7,
+          minChildSize: 0.4,
+          maxChildSize: 0.95,
+          builder: (_, scrollController) => Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  l10n.chooseContact,
-                  style: ctx.dialerTextStyle(
-                    DialerFontRole.pageTitle,
-                    TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(ctx).colorScheme.onSurface,
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 12),
+                Container(
+                  width: 32,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    l10n.chooseContact,
+                    style: ctx.dialerTextStyle(
+                      DialerFontRole.pageTitle,
+                      TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(ctx).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: contacts.length,
-                  itemBuilder: (context, i) {
-                    final c = contacts[i];
-                    return ListTile(
-                      title: Text(
-                        c.displayName,
-                        style: context.dialerTextStyle(
-                          DialerFontRole.primary,
-                          TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: contacts.length,
+                    itemBuilder: (context, i) {
+                      final c = contacts[i];
+                      return ListTile(
+                        title: Text(
+                          c.displayName,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.primary,
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
                           ),
                         ),
-                      ),
-                      subtitle: c.phones.isEmpty
-                          ? Text(
-                              l10n.noPhone,
-                              style: context.dialerTextStyle(
-                                DialerFontRole.secondary,
-                                TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
+                        subtitle: c.phones.isEmpty
+                            ? Text(
+                                l10n.noPhone,
+                                style: context.dialerTextStyle(
+                                  DialerFontRole.secondary,
+                                  TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              )
+                            : Text(
+                                c.phones.first.number,
+                                style: context.dialerTextStyle(
+                                  DialerFontRole.secondary,
+                                  TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
                                 ),
                               ),
-                            )
-                          : Text(
-                              c.phones.first.number,
-                              style: context.dialerTextStyle(
-                                DialerFontRole.secondary,
-                                TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                                ),
-                              ),
-                            ),
-                      onTap: () => Navigator.pop(ctx, c),
-                    );
-                  },
+                        onTap: () => Navigator.pop(ctx, c),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
 
     if (picked == null || !mounted) return;
 
     if (picked.phones.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.contactHasNoPhone)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.contactHasNoPhone)));
       return;
     }
 
     if (picked.phones.length == 1) {
       final p = picked.phones.first.number;
       await FavouritesManager.addFavourite(
-        FavouriteEntry(
-          id: picked.id,
-          number: p,
-          name: picked.displayName,
-        ),
+        FavouriteEntry(id: picked.id, number: p, name: picked.displayName),
       );
       return;
     }
@@ -340,63 +359,57 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
       builder: (ctx) => DialerFontScope(
         surface: DialerFontSurface.sheets,
         child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 12),
-              Text(
-                l10n.pickNumber,
-                style: ctx.dialerTextStyle(
-                  DialerFontRole.pageTitle,
-                  TextStyle(
-                    fontSize: 18,
-                    color: Theme.of(ctx).colorScheme.onSurface,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              ...picked.phones.map(
-                (phone) => ListTile(
-                  title: Text(
-                    phone.number,
-                    style: ctx.dialerTextStyle(
-                      DialerFontRole.primary,
-                      TextStyle(
-                        color: Theme.of(ctx).colorScheme.onSurface,
-                      ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 12),
+                Text(
+                  l10n.pickNumber,
+                  style: ctx.dialerTextStyle(
+                    DialerFontRole.pageTitle,
+                    TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(ctx).colorScheme.onSurface,
                     ),
                   ),
-                  subtitle: Text(
-                    phone.label.toString(),
-                    style: ctx.dialerTextStyle(
-                      DialerFontRole.secondary,
-                      TextStyle(
-                        color: Theme.of(ctx).colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(height: 8),
+                ...picked.phones.map(
+                  (phone) => ListTile(
+                    title: Text(
+                      phone.number,
+                      style: ctx.dialerTextStyle(
+                        DialerFontRole.primary,
+                        TextStyle(color: Theme.of(ctx).colorScheme.onSurface),
                       ),
                     ),
+                    subtitle: Text(
+                      phone.label.toString(),
+                      style: ctx.dialerTextStyle(
+                        DialerFontRole.secondary,
+                        TextStyle(
+                          color: Theme.of(ctx).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                    onTap: () => Navigator.pop(ctx, phone.number),
                   ),
-                  onTap: () => Navigator.pop(ctx, phone.number),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
 
     if (number != null && mounted) {
       await FavouritesManager.addFavourite(
-        FavouriteEntry(
-          id: picked.id,
-          number: number,
-          name: picked.displayName,
-        ),
+        FavouriteEntry(id: picked.id, number: number, name: picked.displayName),
       );
     }
   }

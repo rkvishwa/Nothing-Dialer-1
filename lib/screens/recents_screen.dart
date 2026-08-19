@@ -10,6 +10,8 @@ import 'package:permission_handler/permission_handler.dart';
 import '../services/blocking_manager.dart';
 import '../services/contacts_cache.dart';
 import '../services/contacts_compute.dart';
+import '../services/contact_by_phone.dart';
+import '../services/contact_photo_style.dart';
 import '../services/favourites_manager.dart';
 import '../services/recents_compute.dart';
 import '../services/l10n_format.dart';
@@ -24,6 +26,7 @@ import '../extensions/dialer_text_style.dart';
 import '../services/app_font_config.dart';
 import '../services/sim_icon_colors.dart';
 import '../widgets/dialer_font_scope.dart';
+import '../widgets/contact_avatar.dart';
 import '../widgets/sim_badge.dart';
 
 // ─── Grouped call model ──────────────────────────────────────────────────────
@@ -91,10 +94,8 @@ class _RecentsScreenState extends State<RecentsScreen>
   @override
   bool get wantKeepAlive => true;
 
-  Widget _fontScoped(Widget child) => DialerFontScope(
-        surface: DialerFontSurface.recents,
-        child: child,
-      );
+  Widget _fontScoped(Widget child) =>
+      DialerFontScope(surface: DialerFontSurface.recents, child: child);
 
   List<CallLogEntry> _entries = [];
   List<Object> _flatItems = [];
@@ -143,6 +144,10 @@ class _RecentsScreenState extends State<RecentsScreen>
     main_app.recentsSearchShowContactsNotifier.addListener(
       _onRecentsSearchContactsPrefChanged,
     );
+    main_app.contactPhotoModeNotifier.addListener(_onContactPhotoModeChanged);
+    main_app.recentsShowContactPhotosNotifier.addListener(
+      _onContactPhotoModeChanged,
+    );
   }
 
   void _onRecentsSearchContactsPrefChanged() {
@@ -153,6 +158,39 @@ class _RecentsScreenState extends State<RecentsScreen>
       unawaited(_scheduleContactSearch());
     } else {
       setState(() {});
+    }
+  }
+
+  void _onContactPhotoModeChanged() {
+    if (!mounted) return;
+    if (main_app.contactPhotoModeNotifier.value.showsPhotos &&
+        main_app.recentsShowContactPhotosNotifier.value) {
+      unawaited(_warmContactCacheForPhotos());
+    } else {
+      setState(() {});
+    }
+  }
+
+  Future<void> _warmContactCacheForPhotos() async {
+    if (!main_app.contactPhotoModeNotifier.value.showsPhotos) return;
+    if (!main_app.recentsShowContactPhotosNotifier.value) return;
+    if (ContactsCache.hasData) {
+      if (mounted) setState(() {});
+      return;
+    }
+
+    final status = await Permission.contacts.request();
+    if (!status.isGranted) return;
+    try {
+      await ContactsCache.load(
+        fetch: () => FlutterContacts.getContacts(
+          withProperties: true,
+          withThumbnail: false,
+        ),
+      );
+      if (mounted) setState(() {});
+    } catch (_) {
+      // Recents remains usable with initials when contacts are unavailable.
     }
   }
 
@@ -197,6 +235,12 @@ class _RecentsScreenState extends State<RecentsScreen>
     );
     main_app.recentsSearchShowContactsNotifier.removeListener(
       _onRecentsSearchContactsPrefChanged,
+    );
+    main_app.contactPhotoModeNotifier.removeListener(
+      _onContactPhotoModeChanged,
+    );
+    main_app.recentsShowContactPhotosNotifier.removeListener(
+      _onContactPhotoModeChanged,
     );
     main_app.recentsSearchActiveNotifier.value = false;
     _listScrollController.dispose();
@@ -277,6 +321,7 @@ class _RecentsScreenState extends State<RecentsScreen>
       _entries = list;
       _lastMaxTimestampMs = list.isEmpty ? null : list.first.timestamp;
       await _scheduleRebuild();
+      unawaited(_warmContactCacheForPhotos());
       if (!mounted || loadSerial != _callLogLoadSerial) return;
       setState(() => _loading = false);
     } catch (e, st) {
@@ -287,7 +332,9 @@ class _RecentsScreenState extends State<RecentsScreen>
     }
   }
 
-  RecentsComputeArgs _recentsComputeArgs(List<Map<String, dynamic>> serialized) {
+  RecentsComputeArgs _recentsComputeArgs(
+    List<Map<String, dynamic>> serialized,
+  ) {
     final nowMs = DateTime.now().millisecondsSinceEpoch;
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
@@ -390,13 +437,12 @@ class _RecentsScreenState extends State<RecentsScreen>
       );
       if (!mounted || generation != _contactSearchGeneration) return;
 
-      final contacts =
-          allContacts.where((c) => c.phones.isNotEmpty).toList();
+      final contacts = allContacts.where((c) => c.phones.isNotEmpty).toList();
       final sorted = [...contacts]
         ..sort(
           (a, b) => a.displayName.toLowerCase().compareTo(
-                b.displayName.toLowerCase(),
-              ),
+            b.displayName.toLowerCase(),
+          ),
         );
       final rows = sorted
           .map(
@@ -430,17 +476,12 @@ class _RecentsScreenState extends State<RecentsScreen>
   void _openContactDetail(Contact contact) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => ContactDetailScreen(contact: contact),
-      ),
+      MaterialPageRoute(builder: (_) => ContactDetailScreen(contact: contact)),
     );
   }
 
   Widget _buildContactSearchRow(Contact contact) {
     final phone = contact.phones.isNotEmpty ? contact.phones.first.number : '';
-    final initial = contact.displayName.isNotEmpty
-        ? contact.displayName.characters.first.toUpperCase()
-        : '?';
 
     return InkWell(
       onTap: () => _openContactDetail(contact),
@@ -448,20 +489,14 @@ class _RecentsScreenState extends State<RecentsScreen>
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: [
-            CircleAvatar(
-              radius: 22,
-              backgroundColor:
-                  Theme.of(context).colorScheme.surfaceContainerHighest,
-              child: Text(
-                initial,
-                style: context.dialerTextStyle(
-                  DialerFontRole.primary,
-                  TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+            ContactAvatar(
+              contactId: contact.id,
+              displayName: contact.displayName,
+              size: 44,
+              thumbnail: contact.thumbnail,
+              photo: contact.photo,
+              fontSizeFactor: 0.36,
+              surface: ContactAvatarSurface.recents,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -498,9 +533,7 @@ class _RecentsScreenState extends State<RecentsScreen>
                 constraints: const BoxConstraints(),
                 onPressed: () => _call(contact.phones.first.number),
                 icon: Icon(
-                  contact.phones.length > 1
-                      ? Icons.call
-                      : Icons.call_outlined,
+                  contact.phones.length > 1 ? Icons.call : Icons.call_outlined,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 20,
                 ),
@@ -570,7 +603,7 @@ class _RecentsScreenState extends State<RecentsScreen>
   Widget _buildSearchResultsList(AppLocalizations l10n) {
     final showContacts =
         main_app.recentsSearchShowContactsNotifier.value &&
-            _contactSearchHits.isNotEmpty;
+        _contactSearchHits.isNotEmpty;
 
     return ListView(
       controller: _listScrollController,
@@ -748,8 +781,8 @@ class _RecentsScreenState extends State<RecentsScreen>
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                child: Text(
-                  l10n.favourites,
+                  child: Text(
+                    l10n.favourites,
                     style: context.dialerTextStyle(
                       DialerFontRole.sectionHeader,
                       TextStyle(
@@ -809,9 +842,7 @@ class _RecentsScreenState extends State<RecentsScreen>
                   itemBuilder: (context, i) {
                     final e = favs[i];
                     final display = e.name.isNotEmpty ? e.name : e.number;
-                    final initial = display.isNotEmpty
-                        ? display[0].toUpperCase()
-                        : '?';
+                    final matchedContact = findContactByPhone(e.number);
                     final syn = _GroupedCall(
                       name: e.name,
                       number: e.number,
@@ -842,24 +873,16 @@ class _RecentsScreenState extends State<RecentsScreen>
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                SizedBox(
-                                  width: 56,
-                                  height: 56,
-                                  child: Center(
-                                    child: Text(
-                                      initial,
-                                      style: context.dialerTextStyle(
-                                        DialerFontRole.primary,
-                                        TextStyle(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.primary,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                ContactAvatar(
+                                  contactId: e.id.isNotEmpty
+                                      ? e.id
+                                      : (matchedContact?.id ?? ''),
+                                  displayName: display,
+                                  size: 56,
+                                  thumbnail: matchedContact?.thumbnail,
+                                  photo: matchedContact?.photo,
+                                  fontSizeFactor: 0.38,
+                                  surface: ContactAvatarSurface.recents,
                                 ),
                                 const SizedBox(height: 6),
                                 Text(
@@ -984,8 +1007,7 @@ class _RecentsScreenState extends State<RecentsScreen>
     final overlay =
         Overlay.of(context).context.findRenderObject()! as RenderBox;
     // Sit just under the row so the menu doesn’t cover the pressed number.
-    final anchor =
-        overlay.globalToLocal(globalPosition) + const Offset(0, 14);
+    final anchor = overlay.globalToLocal(globalPosition) + const Offset(0, 14);
 
     showGeneralDialog<String>(
       context: context,
@@ -1061,8 +1083,8 @@ class _RecentsScreenState extends State<RecentsScreen>
                                     Icon(
                                       spec.icon,
                                       size: 18,
-                                      color: spec.iconColor ??
-                                          dialogCs.onSurface,
+                                      color:
+                                          spec.iconColor ?? dialogCs.onSurface,
                                     ),
                                     const SizedBox(width: 14),
                                     Expanded(
@@ -1071,7 +1093,8 @@ class _RecentsScreenState extends State<RecentsScreen>
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          color: spec.textColor ??
+                                          color:
+                                              spec.textColor ??
                                               dialogCs.onSurface,
                                           fontSize: 14,
                                           height: 1.25,
@@ -1117,8 +1140,13 @@ class _RecentsScreenState extends State<RecentsScreen>
       } else if (value == 'remove_favourite') {
         FavouritesManager.removeFavourite(group.number);
       } else if (value == 'add_favourite_recents') {
+        final contact = findContactByPhone(group.number);
         FavouritesManager.addFavourite(
-          FavouriteEntry(id: '', number: group.number, name: group.name),
+          FavouriteEntry(
+            id: contact?.id ?? '',
+            number: group.number,
+            name: group.name,
+          ),
         );
       } else if (value == 'remove_favourite_recents') {
         FavouritesManager.removeFavourite(group.number);
@@ -1417,139 +1445,139 @@ class _RecentsScreenState extends State<RecentsScreen>
 
     return _fontScoped(
       Column(
-      children: [
-        // Search bar
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 8, 0, 4),
-          child: TextField(
-            controller: _searchController,
-            onChanged: (v) {
-              setState(() {
-                _searchQuery = v;
-                main_app.recentsSearchActiveNotifier.value = v.isNotEmpty;
-                if (v.isEmpty) _contactSearchHits = [];
-              });
-              unawaited(_scheduleRebuild());
-              unawaited(_scheduleContactSearch());
-              if (v.isEmpty) _scheduleResetScrollToTop();
-            },
-            style: context.dialerTextStyle(
-              DialerFontRole.primary,
-              TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 16,
-              ),
-            ),
-            decoration: InputDecoration(
-              hintText: l10n.searchRecentCalls,
-              hintStyle: context.dialerTextStyle(
-                DialerFontRole.secondary,
+        children: [
+          // Search bar
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 8, 0, 4),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (v) {
+                setState(() {
+                  _searchQuery = v;
+                  main_app.recentsSearchActiveNotifier.value = v.isNotEmpty;
+                  if (v.isEmpty) _contactSearchHits = [];
+                });
+                unawaited(_scheduleRebuild());
+                unawaited(_scheduleContactSearch());
+                if (v.isEmpty) _scheduleResetScrollToTop();
+              },
+              style: context.dialerTextStyle(
+                DialerFontRole.primary,
                 TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 16,
                 ),
               ),
-              prefixIcon: Icon(
-                Icons.search,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-              suffixIcon: _searchQuery.isNotEmpty
-                  ? IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        size: 20,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _searchController.clear();
-                          _searchQuery = '';
-                          _contactSearchHits = [];
-                          main_app.recentsSearchActiveNotifier.value = false;
-                        });
-                        _contactSearchGeneration++;
-                        unawaited(_scheduleRebuild());
-                        _scheduleResetScrollToTop();
-                      },
-                    )
-                  : IconButton(
-                      icon: Icon(
-                        Icons.mic_none,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        size: 22,
-                      ),
-                      tooltip: l10n.voiceSearch,
-                      onPressed: () async {
-                        final spoken = await VoiceSearch.listenWithFeedback(
-                          context,
-                        );
-                        if (spoken == null || !mounted) return;
-                        setState(() {
-                          _searchController.text = spoken;
-                          _searchController.selection =
-                              TextSelection.fromPosition(
-                                TextPosition(offset: spoken.length),
-                              );
-                          _searchQuery = spoken;
-                          main_app.recentsSearchActiveNotifier.value = true;
-                        });
-                        unawaited(_scheduleRebuild());
-                        unawaited(_scheduleContactSearch());
-                      },
-                    ),
-              filled: false,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 12),
-            ),
-          ),
-        ),
-
-        // Call list
-        Expanded(
-          child: RefreshIndicator(
-            color: Theme.of(context).colorScheme.onSurface,
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            onRefresh: _loadCallLog,
-            child: ValueListenableBuilder<List<String>>(
-              valueListenable: BlockingManager.blockedNumbersNotifier,
-              builder: (context, _, __) {
-                return ListenableBuilder(
-                  listenable: main_app.recentsSearchShowContactsNotifier,
-                  builder: (context, ___) {
-                    if (_searchQuery.isNotEmpty) {
-                      return _buildSearchResultsList(l10n);
-                    }
-                    if (_flatItems.isEmpty) {
-                      return SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.45,
-                          child: _EmptyState(
-                            icon: Icons.history,
-                            title: l10n.noRecentCalls,
-                            subtitle: l10n.callHistoryEmpty,
-                          ),
+              decoration: InputDecoration(
+                hintText: l10n.searchRecentCalls,
+                hintStyle: context.dialerTextStyle(
+                  DialerFontRole.secondary,
+                  TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 16,
+                  ),
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                suffixIcon: _searchQuery.isNotEmpty
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          size: 20,
                         ),
-                      );
-                    }
-                    return ListView.builder(
-                      controller: _listScrollController,
-                      padding: const EdgeInsets.only(top: 8, bottom: 120),
-                      itemCount: _flatItems.length,
-                      itemBuilder: (context, idx) =>
-                          _buildFlatItem(context, l10n, _flatItems[idx]),
-                    );
-                  },
-                );
-              },
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                            _searchQuery = '';
+                            _contactSearchHits = [];
+                            main_app.recentsSearchActiveNotifier.value = false;
+                          });
+                          _contactSearchGeneration++;
+                          unawaited(_scheduleRebuild());
+                          _scheduleResetScrollToTop();
+                        },
+                      )
+                    : IconButton(
+                        icon: Icon(
+                          Icons.mic_none,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          size: 22,
+                        ),
+                        tooltip: l10n.voiceSearch,
+                        onPressed: () async {
+                          final spoken = await VoiceSearch.listenWithFeedback(
+                            context,
+                          );
+                          if (spoken == null || !mounted) return;
+                          setState(() {
+                            _searchController.text = spoken;
+                            _searchController.selection =
+                                TextSelection.fromPosition(
+                                  TextPosition(offset: spoken.length),
+                                );
+                            _searchQuery = spoken;
+                            main_app.recentsSearchActiveNotifier.value = true;
+                          });
+                          unawaited(_scheduleRebuild());
+                          unawaited(_scheduleContactSearch());
+                        },
+                      ),
+                filled: false,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(28),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(vertical: 12),
+              ),
             ),
           ),
-        ),
-      ],
-    ),
+
+          // Call list
+          Expanded(
+            child: RefreshIndicator(
+              color: Theme.of(context).colorScheme.onSurface,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              onRefresh: _loadCallLog,
+              child: ValueListenableBuilder<List<String>>(
+                valueListenable: BlockingManager.blockedNumbersNotifier,
+                builder: (context, _, __) {
+                  return ListenableBuilder(
+                    listenable: main_app.recentsSearchShowContactsNotifier,
+                    builder: (context, ___) {
+                      if (_searchQuery.isNotEmpty) {
+                        return _buildSearchResultsList(l10n);
+                      }
+                      if (_flatItems.isEmpty) {
+                        return SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.45,
+                            child: _EmptyState(
+                              icon: Icons.history,
+                              title: l10n.noRecentCalls,
+                              subtitle: l10n.callHistoryEmpty,
+                            ),
+                          ),
+                        );
+                      }
+                      return ListView.builder(
+                        controller: _listScrollController,
+                        padding: const EdgeInsets.only(top: 8, bottom: 120),
+                        itemCount: _flatItems.length,
+                        itemBuilder: (context, idx) =>
+                            _buildFlatItem(context, l10n, _flatItems[idx]),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -1654,6 +1682,7 @@ class _CallTileState extends State<_CallTile>
     final group = widget.group;
     final l10n = AppLocalizations.of(context);
     final displayName = group.name.isNotEmpty ? group.name : group.number;
+    final matchedContact = findContactByPhone(group.number);
     final isMissed =
         group.callType == CallType.missed ||
         group.callType == CallType.rejected;
@@ -1684,23 +1713,23 @@ class _CallTileState extends State<_CallTile>
                   SizedBox(
                     width: 48,
                     height: 48,
-                    child: Center(
-                      child: widget.isBlocked
-                          ? Icon(Icons.block, color: Color(0xFFFF453A), size: 24)
-                          : Text(
-                              displayName.isNotEmpty
-                                  ? displayName[0].toUpperCase()
-                                  : '?',
-                              style: context.dialerTextStyle(
-                                DialerFontRole.primary,
-                                TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                    child: widget.isBlocked
+                        ? Center(
+                            child: Icon(
+                              Icons.block,
+                              color: Color(0xFFFF453A),
+                              size: 24,
                             ),
-                    ),
+                          )
+                        : ContactAvatar(
+                            contactId: matchedContact?.id ?? '',
+                            displayName: displayName,
+                            size: 48,
+                            thumbnail: matchedContact?.thumbnail,
+                            photo: matchedContact?.photo,
+                            fontSizeFactor: 0.4,
+                            surface: ContactAvatarSurface.recents,
+                          ),
                   ),
                   const SizedBox(width: 16),
 
@@ -1719,7 +1748,9 @@ class _CallTileState extends State<_CallTile>
                                   TextStyle(
                                     color: isMissed
                                         ? Color(0xFFFF453A)
-                                        : Theme.of(context).colorScheme.onSurface,
+                                        : Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -1823,10 +1854,7 @@ class _CallTileState extends State<_CallTile>
                                   group.simDisplayName!,
                                   style: context.dialerTextStyle(
                                     DialerFontRole.secondary,
-                                    TextStyle(
-                                      color: outline,
-                                      fontSize: 10,
-                                    ),
+                                    TextStyle(color: outline, fontSize: 10),
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -1980,7 +2008,9 @@ class _CallTileState extends State<_CallTile>
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 13,
                           ),
                         ),
@@ -2286,4 +2316,3 @@ class _EmptyState extends StatelessWidget {
     );
   }
 }
-

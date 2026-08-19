@@ -8,6 +8,7 @@ import 'contacts_screen.dart';
 import 'settings_screen.dart';
 import 'floating_dialpad.dart';
 import '../services/blocking_manager.dart';
+import '../services/contact_sync_listener.dart';
 import '../services/favourites_manager.dart';
 import '../main.dart' as main_app;
 import 'package:nothing_dialer/l10n/app_localizations.dart';
@@ -100,6 +101,7 @@ class _DialerShellState extends State<DialerShell>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       unawaited(_syncCallStateFromNative());
+      ContactSyncListener.onAppResumed();
     }
   }
 

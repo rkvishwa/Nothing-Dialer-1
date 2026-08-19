@@ -7,7 +7,7 @@
     "reviewSection": "रेटिंग",
     "reviewDescription": "Nothing Dialer पसंद आ रहा है? Google Play पर आपकी रेटिंग दूसरों को ऐप खोजने में मदद करती है।",
     "reviewRateOnPlay": "Google Play पर रेट करें",
-    "reviewRateOnPlaySubtitle": "ऐप छोड़े बिना रेटिंग दें",
+    "reviewRateOnPlaySubtitle": "Google Play सूची खोलता है",
     "reviewCouldNotOpen": "Google Play नहीं खोल सके",
     "custom": "कस्टम"
   },
@@ -19,7 +19,7 @@
     "reviewSection": "Bewertung",
     "reviewDescription": "Gefällt dir Nothing Dialer? Deine Bewertung bei Google Play hilft anderen, die App zu finden.",
     "reviewRateOnPlay": "Bei Google Play bewerten",
-    "reviewRateOnPlaySubtitle": "Bewerten, ohne die App zu verlassen",
+    "reviewRateOnPlaySubtitle": "Öffnet den Play Store-Eintrag",
     "reviewCouldNotOpen": "Google Play konnte nicht geöffnet werden",
     "custom": "Benutzerdefiniert"
   },
@@ -31,7 +31,7 @@
     "reviewSection": "Valoración",
     "reviewDescription": "¿Te gusta Nothing Dialer? Tu valoración en Google Play ayuda a otros a encontrar la app.",
     "reviewRateOnPlay": "Valorar en Google Play",
-    "reviewRateOnPlaySubtitle": "Deja una valoración sin salir de la app",
+    "reviewRateOnPlaySubtitle": "Abre la ficha de Google Play",
     "reviewCouldNotOpen": "No se pudo abrir Google Play",
     "custom": "Personalizado"
   },
@@ -43,7 +43,7 @@
     "reviewSection": "Avis",
     "reviewDescription": "Vous aimez Nothing Dialer ? Votre note sur Google Play aide les autres à découvrir l'application.",
     "reviewRateOnPlay": "Noter sur Google Play",
-    "reviewRateOnPlaySubtitle": "Noter sans quitter l'application",
+    "reviewRateOnPlaySubtitle": "Ouvre la fiche Google Play",
     "reviewCouldNotOpen": "Impossible d'ouvrir Google Play",
     "custom": "Personnalisé"
   },
@@ -55,7 +55,7 @@
     "reviewSection": "レビュー",
     "reviewDescription": "Nothing Dialer を気に入っていただけましたか？Google Play の評価は他のユーザーの参考になります。",
     "reviewRateOnPlay": "Google Play で評価",
-    "reviewRateOnPlaySubtitle": "アプリを離れずに評価する",
+    "reviewRateOnPlaySubtitle": "Google Play のストアページを開く",
     "reviewCouldNotOpen": "Google Play を開けませんでした",
     "custom": "カスタム"
   },
@@ -67,7 +67,7 @@
     "reviewSection": "评价",
     "reviewDescription": "喜欢 Nothing Dialer 吗？在 Google Play 上的评分可以帮助其他人发现这款应用。",
     "reviewRateOnPlay": "在 Google Play 上评分",
-    "reviewRateOnPlaySubtitle": "无需离开应用即可评分",
+    "reviewRateOnPlaySubtitle": "打开 Google Play 应用详情页",
     "reviewCouldNotOpen": "无法打开 Google Play",
     "custom": "自定义"
   },
@@ -79,7 +79,7 @@
     "reviewSection": "التقييم",
     "reviewDescription": "هل تستمتع بـ Nothing Dialer؟ تقييمك على Google Play يساعد الآخرين على اكتشاف التطبيق.",
     "reviewRateOnPlay": "قيّم على Google Play",
-    "reviewRateOnPlaySubtitle": "قيّم دون مغادرة التطبيق",
+    "reviewRateOnPlaySubtitle": "يفتح صفحة التطبيق في Google Play",
     "reviewCouldNotOpen": "تعذّر فتح Google Play",
     "custom": "مخصص"
   },
@@ -91,7 +91,7 @@
     "reviewSection": "Avaliação",
     "reviewDescription": "Gostando do Nothing Dialer? Sua avaliação no Google Play ajuda outras pessoas a encontrar o app.",
     "reviewRateOnPlay": "Avaliar no Google Play",
-    "reviewRateOnPlaySubtitle": "Avalie sem sair do app",
+    "reviewRateOnPlaySubtitle": "Abre a página do app na Google Play",
     "reviewCouldNotOpen": "Não foi possível abrir o Google Play",
     "custom": "Personalizado"
   },
@@ -103,7 +103,7 @@
     "reviewSection": "Отзыв",
     "reviewDescription": "Нравится Nothing Dialer? Оценка в Google Play помогает другим найти приложение.",
     "reviewRateOnPlay": "Оценить в Google Play",
-    "reviewRateOnPlaySubtitle": "Оценить, не выходя из приложения",
+    "reviewRateOnPlaySubtitle": "Открывает страницу приложения в Google Play",
     "reviewCouldNotOpen": "Не удалось открыть Google Play",
     "custom": "Своё"
   }

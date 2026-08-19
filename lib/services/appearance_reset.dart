@@ -3,7 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart' as main_app;
 import 'app_font_config.dart';
+import 'call_display_prefs.dart';
 import 'app_locale.dart';
+import 'contact_photo_style.dart';
 import 'launcher_icon_manager.dart';
 import 'sim_icon_colors.dart';
 import 'theme_colors.dart';
@@ -28,6 +30,15 @@ Future<void> resetAppearanceCustomizationToDefaults({
   await prefs.remove(kAppLocalePrefKey);
 
   await prefs.remove('answer_method');
+
+  await clearCallDisplaySettingsPrefs(prefs);
+
+  await prefs.remove(kContactPhotoModePrefKey);
+  await prefs.remove(kContactAvatarShapePrefKey);
+  await prefs.remove(kContactAvatarStylePrefKey);
+  await prefs.remove(kRecentsShowContactPhotosPrefKey);
+  await prefs.remove(kRecentsContactAvatarShapePrefKey);
+  await prefs.remove(kRecentsContactAvatarStylePrefKey);
 
   await prefs.remove('frequent_contacts_period');
   await prefs.remove('frequent_contacts_max');
@@ -68,6 +79,15 @@ Future<void> resetAppearanceCustomizationToDefaults({
   main_app.darkAccentColorNotifier.value = kDefaultDarkAccent;
   main_app.fontConfigNotifier.value = AppFontConfig.defaults;
   main_app.localeNotifier.value = kAppLocaleSystem;
+  main_app.contactPhotoModeNotifier.value = kDefaultContactPhotoMode;
+  main_app.contactAvatarShapeNotifier.value = kDefaultContactAvatarShape;
+  main_app.contactAvatarStyleNotifier.value = kDefaultContactAvatarStyle;
+  main_app.recentsShowContactPhotosNotifier.value =
+      kDefaultRecentsShowContactPhotos;
+  main_app.recentsContactAvatarShapeNotifier.value =
+      kDefaultRecentsContactAvatarShape;
+  main_app.recentsContactAvatarStyleNotifier.value =
+      kDefaultRecentsContactAvatarStyle;
 
   main_app.frequentContactsPeriodNotifier.value = 'year';
   main_app.frequentContactsMaxNotifier.value = 5;
@@ -75,16 +95,18 @@ Future<void> resetAppearanceCustomizationToDefaults({
   main_app.glyphAnimationStyleNotifier.value = _defaultGlyphStyle;
   main_app.glyphC1C4IntervalNotifier.value = 1000;
   main_app.glyphCustomIntervalNotifier.value = 1500;
-  main_app.glyphCustomChannelsNotifier.value =
-      List<String>.from(_defaultGlyphChannels);
+  main_app.glyphCustomChannelsNotifier.value = List<String>.from(
+    _defaultGlyphChannels,
+  );
   main_app.glyphBreathProgressDurationNotifier.value = 65000;
   main_app.glyphBreathProgressIntervalNotifier.value = 100;
 
   main_app.inCallAnimationStyleNotifier.value = _defaultGlyphStyle;
   main_app.inCallC1C4IntervalNotifier.value = 1000;
   main_app.inCallCustomIntervalNotifier.value = 1500;
-  main_app.inCallCustomChannelsNotifier.value =
-      List<String>.from(_defaultGlyphChannels);
+  main_app.inCallCustomChannelsNotifier.value = List<String>.from(
+    _defaultGlyphChannels,
+  );
   main_app.inCallBreathProgressDurationNotifier.value = 65000;
   main_app.inCallBreathProgressIntervalNotifier.value = 100;
 
@@ -102,8 +124,9 @@ Future<void> resetAppearanceCustomizationToDefaults({
   );
 
   try {
-    await const MethodChannel('nothing_dialer/control')
-        .invokeMethod<void>('notifyAnswerMethodChanged');
+    await const MethodChannel(
+      'nothing_dialer/control',
+    ).invokeMethod<void>('notifyAnswerMethodChanged');
   } on PlatformException {
     // Native call UI may not be active.
   }

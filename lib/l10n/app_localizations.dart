@@ -288,6 +288,66 @@ abstract class AppLocalizations {
   /// **'General'**
   String get general;
 
+  /// No description provided for @appearanceSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceSection;
+
+  /// No description provided for @inCallScreenSection.
+  ///
+  /// In en, this message translates to:
+  /// **'In-call screen'**
+  String get inCallScreenSection;
+
+  /// No description provided for @simAndCallsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM & calls'**
+  String get simAndCallsSection;
+
+  /// No description provided for @callListsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Call lists'**
+  String get callListsSection;
+
+  /// No description provided for @contactsAndRecentsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts & recents'**
+  String get contactsAndRecentsSection;
+
+  /// No description provided for @glyphCallingSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Glyph — calling'**
+  String get glyphCallingSection;
+
+  /// No description provided for @glyphOngoingSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Glyph — during call'**
+  String get glyphOngoingSection;
+
+  /// No description provided for @torchIncomingGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming'**
+  String get torchIncomingGroup;
+
+  /// No description provided for @torchOutgoingGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Outgoing'**
+  String get torchOutgoingGroup;
+
+  /// No description provided for @torchDuringCallGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'During call'**
+  String get torchDuringCallGroup;
+
   /// No description provided for @theme.
   ///
   /// In en, this message translates to:
@@ -750,6 +810,222 @@ abstract class AppLocalizations {
   /// **'Call background'**
   String get callBackground;
 
+  /// No description provided for @contactPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact photos'**
+  String get contactPhotos;
+
+  /// No description provided for @contactPhotoDisplayMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Display mode'**
+  String get contactPhotoDisplayMode;
+
+  /// No description provided for @contactPhotoModeOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get contactPhotoModeOff;
+
+  /// No description provided for @contactPhotoModeOffSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show initials only, no contact photos'**
+  String get contactPhotoModeOffSubtitle;
+
+  /// No description provided for @contactPhotoModeAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar'**
+  String get contactPhotoModeAvatar;
+
+  /// No description provided for @contactPhotoModeAvatarSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show photos clipped to a shape in lists and calls'**
+  String get contactPhotoModeAvatarSubtitle;
+
+  /// No description provided for @contactPhotoModeFullscreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Full screen'**
+  String get contactPhotoModeFullscreen;
+
+  /// No description provided for @contactPhotoModeFullscreenSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use contact photo as background on detail and in-call screens'**
+  String get contactPhotoModeFullscreenSubtitle;
+
+  /// No description provided for @contactAvatarShape.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar shape'**
+  String get contactAvatarShape;
+
+  /// No description provided for @contactAvatarShapeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shape used for avatars in contacts, favourites, and on the call screen'**
+  String get contactAvatarShapeSubtitle;
+
+  /// No description provided for @contactAvatarShapeCircle.
+  ///
+  /// In en, this message translates to:
+  /// **'Circle'**
+  String get contactAvatarShapeCircle;
+
+  /// No description provided for @contactAvatarShapeRoundedSquare.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounded square'**
+  String get contactAvatarShapeRoundedSquare;
+
+  /// No description provided for @contactAvatarShapeSquircle.
+  ///
+  /// In en, this message translates to:
+  /// **'Squircle'**
+  String get contactAvatarShapeSquircle;
+
+  /// No description provided for @contactAvatarShapeDiamond.
+  ///
+  /// In en, this message translates to:
+  /// **'Diamond'**
+  String get contactAvatarShapeDiamond;
+
+  /// No description provided for @contactAvatarShapeHexagon.
+  ///
+  /// In en, this message translates to:
+  /// **'Hexagon'**
+  String get contactAvatarShapeHexagon;
+
+  /// No description provided for @contactAvatarShapeOctagon.
+  ///
+  /// In en, this message translates to:
+  /// **'Octagon'**
+  String get contactAvatarShapeOctagon;
+
+  /// No description provided for @contactAvatarShapeStar.
+  ///
+  /// In en, this message translates to:
+  /// **'Star'**
+  String get contactAvatarShapeStar;
+
+  /// No description provided for @contactAvatarShapeShield.
+  ///
+  /// In en, this message translates to:
+  /// **'Shield'**
+  String get contactAvatarShapeShield;
+
+  /// No description provided for @contactAvatarShapePentagon.
+  ///
+  /// In en, this message translates to:
+  /// **'Pentagon'**
+  String get contactAvatarShapePentagon;
+
+  /// No description provided for @recentsContactPhotosSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Recents'**
+  String get recentsContactPhotosSection;
+
+  /// No description provided for @recentsShowContactPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Show photos in Recents'**
+  String get recentsShowContactPhotos;
+
+  /// No description provided for @recentsShowContactPhotosSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Display contact photos on the Recents screen. Off by default.'**
+  String get recentsShowContactPhotosSubtitle;
+
+  /// No description provided for @recentsAvatarShape.
+  ///
+  /// In en, this message translates to:
+  /// **'Recents avatar shape'**
+  String get recentsAvatarShape;
+
+  /// No description provided for @recentsAvatarShapeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shape used for avatars on the Recents screen only'**
+  String get recentsAvatarShapeSubtitle;
+
+  /// No description provided for @contactPhotoPreviewContacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts'**
+  String get contactPhotoPreviewContacts;
+
+  /// No description provided for @contactPhotoPreviewRecents.
+  ///
+  /// In en, this message translates to:
+  /// **'Recents'**
+  String get contactPhotoPreviewRecents;
+
+  /// No description provided for @contactPhotoPreviewBothOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos shown in contacts and Recents'**
+  String get contactPhotoPreviewBothOn;
+
+  /// No description provided for @contactPhotoPreviewRecentsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos in contacts only — Recents shows initials'**
+  String get contactPhotoPreviewRecentsOff;
+
+  /// No description provided for @contactPhotoPickFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get contactPhotoPickFromGallery;
+
+  /// No description provided for @contactPhotoRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get contactPhotoRemove;
+
+  /// No description provided for @contactPhotoUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact photo updated'**
+  String get contactPhotoUpdated;
+
+  /// No description provided for @contactPhotoRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact photo removed'**
+  String get contactPhotoRemoved;
+
+  /// No description provided for @contactPhotoPickError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update contact photo'**
+  String get contactPhotoPickError;
+
+  /// No description provided for @contactPhotoCropTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop photo'**
+  String get contactPhotoCropTitle;
+
+  /// No description provided for @contactPhotoCropDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get contactPhotoCropDone;
+
+  /// No description provided for @contactPhotoCropCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get contactPhotoCropCancel;
+
   /// No description provided for @appIcon.
   ///
   /// In en, this message translates to:
@@ -809,6 +1085,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Calling'**
   String get calling;
+
+  /// No description provided for @callDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Call display'**
+  String get callDisplay;
+
+  /// No description provided for @callDisplaySubtitleDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Show name and number'**
+  String get callDisplaySubtitleDefault;
+
+  /// No description provided for @callDisplaySubtitleNameOnlyIncoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Name only on incoming'**
+  String get callDisplaySubtitleNameOnlyIncoming;
+
+  /// No description provided for @callDisplaySubtitleNameOnlyOutgoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Name only on outgoing'**
+  String get callDisplaySubtitleNameOnlyOutgoing;
+
+  /// No description provided for @callDisplaySubtitleNameOnlyInCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Name only during call'**
+  String get callDisplaySubtitleNameOnlyInCall;
+
+  /// No description provided for @callDisplaySubtitleSimHiddenIncoming.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM hidden on incoming'**
+  String get callDisplaySubtitleSimHiddenIncoming;
+
+  /// No description provided for @callDisplaySubtitleSimHiddenOutgoing.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM hidden on outgoing'**
+  String get callDisplaySubtitleSimHiddenOutgoing;
+
+  /// No description provided for @callDisplaySubtitleSimHiddenInCall.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM hidden during call'**
+  String get callDisplaySubtitleSimHiddenInCall;
+
+  /// No description provided for @callDisplaySheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Call display'**
+  String get callDisplaySheetTitle;
+
+  /// No description provided for @callDisplayHideNumberSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide number'**
+  String get callDisplayHideNumberSection;
+
+  /// No description provided for @callDisplayHideNumberSectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'For saved contacts only. Unknown numbers still show the number.'**
+  String get callDisplayHideNumberSectionSubtitle;
+
+  /// No description provided for @callDisplayHideSimSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide calling SIM'**
+  String get callDisplayHideSimSection;
+
+  /// No description provided for @callDisplayHideNumberIncoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming calls'**
+  String get callDisplayHideNumberIncoming;
+
+  /// No description provided for @callDisplayHideNumberOutgoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Outgoing calls'**
+  String get callDisplayHideNumberOutgoing;
+
+  /// No description provided for @callDisplayHideNumberInCall.
+  ///
+  /// In en, this message translates to:
+  /// **'During call'**
+  String get callDisplayHideNumberInCall;
+
+  /// No description provided for @callDisplayHideSimIncoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming calls'**
+  String get callDisplayHideSimIncoming;
+
+  /// No description provided for @callDisplayHideSimOutgoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Outgoing calls'**
+  String get callDisplayHideSimOutgoing;
+
+  /// No description provided for @callDisplayHideSimInCall.
+  ///
+  /// In en, this message translates to:
+  /// **'During call'**
+  String get callDisplayHideSimInCall;
 
   /// No description provided for @defaultSim.
   ///
@@ -2175,7 +2559,7 @@ abstract class AppLocalizations {
   /// No description provided for @frequentlyContactedInfoBody.
   ///
   /// In en, this message translates to:
-  /// **'Shows your most-called phone numbers at the top of the Recents tab, based on how many incoming, outgoing, missed, or rejected calls you had with each number in the time period you choose.\n\nNumber of records: set to 0 to turn this off. Use 1–20 to show that many top contacts.\n\nTime period applies only when at least one contact is shown.'**
+  /// **'Shows your most-called phone numbers at the top of the Recents tab, based on how many incoming, outgoing, missed, or rejected calls you had with each number in the time period you choose.\n\nFrequently contacted: set to 0 to turn this off. Use 1–20 to show that many top contacts.\n\nTime period applies only when at least one contact is shown.'**
   String get frequentlyContactedInfoBody;
 
   /// No description provided for @breathSettingsSpeedSummary.
@@ -2361,7 +2745,7 @@ abstract class AppLocalizations {
   /// No description provided for @numberOfRecordsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Number of records'**
+  /// **'Frequently contacted'**
   String get numberOfRecordsTitle;
 
   /// No description provided for @recordsPickerSubtitle.
@@ -2607,7 +2991,7 @@ abstract class AppLocalizations {
   /// No description provided for @reviewRateOnPlaySubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Leave a rating without leaving the app'**
+  /// **'Opens the Play Store listing'**
   String get reviewRateOnPlaySubtitle;
 
   /// No description provided for @reviewCouldNotOpen.

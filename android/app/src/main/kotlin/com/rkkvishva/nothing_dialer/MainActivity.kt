@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import io.flutter.embedding.android.FlutterActivity
 import java.util.Locale
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
@@ -56,6 +57,11 @@ class MainActivity : FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        try {
+            LauncherIconManager.ensureLauncherEntry(this)
+        } catch (e: Exception) {
+            Log.w(TAG, "Launcher alias repair failed: ${e.message}")
+        }
         extractLaunchExtras(intent)
         handleDialpadIntent(intent)
     }
@@ -108,6 +114,11 @@ class MainActivity : FlutterActivity() {
                 else -> result.notImplemented()
             }
         }
+
+        EventChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            "nothing_dialer/contacts",
+        ).setStreamHandler(ContactsChangeStreamHandler(this))
 
         methodChannel!!.setMethodCallHandler { call, result ->
             when (call.method) {
@@ -295,6 +306,38 @@ class MainActivity : FlutterActivity() {
                         }
                     } else {
                         result.error("INVALID_NUMBER", "Number is empty", null)
+                    }
+                }
+                "setContactPhoto" -> {
+                    val args = call.arguments as? Map<*, *>
+                    val contactId = args?.get("contactId") as? String
+                    val bytes = args?.get("bytes") as? ByteArray
+                    if (contactId.isNullOrBlank() || bytes == null || bytes.isEmpty()) {
+                        result.error("INVALID_ARGS", "Missing contact ID or photo bytes", null)
+                    } else {
+                        result.success(
+                            ContactPhotoHelper.saveContactPhoto(
+                                this@MainActivity,
+                                contactId,
+                                bytes,
+                            ),
+                        )
+                    }
+                }
+                "getContactPhoto" -> {
+                    val args = call.arguments as? Map<*, *>
+                    val contactId = args?.get("contactId") as? String
+                    val preferFullPhoto = args?.get("preferFullPhoto") as? Boolean ?: false
+                    if (contactId.isNullOrBlank()) {
+                        result.error("INVALID_ARGS", "Missing contact ID", null)
+                    } else {
+                        result.success(
+                            ContactPhotoHelper.loadContactPhotoBytes(
+                                this@MainActivity,
+                                contactId,
+                                preferFullPhoto,
+                            ),
+                        )
                     }
                 }
                 "listRingtones" -> {

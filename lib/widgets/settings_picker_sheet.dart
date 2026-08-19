@@ -194,6 +194,86 @@ class SettingsPickerOption extends StatelessWidget {
   }
 }
 
+/// Toggle row for settings bottom sheets.
+class SettingsPickerSwitchRow extends StatelessWidget {
+  const SettingsPickerSwitchRow({
+    super.key,
+    required this.icon,
+    required this.label,
+    this.subtitle = '',
+    required this.value,
+    required this.onChanged,
+  });
+
+  final IconData icon;
+  final String label;
+  final String subtitle;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => onChanged(!value),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Icon(icon, color: scheme.onSurface, size: 22),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label,
+                        style: context.dialerTextStyle(
+                          DialerFontRole.primary,
+                          TextStyle(
+                            color: scheme.onSurface,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      if (subtitle.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle,
+                          style: context.dialerTextStyle(
+                            DialerFontRole.secondary,
+                            TextStyle(
+                              color: scheme.onSurfaceVariant,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                Switch.adaptive(
+                  value: value,
+                  onChanged: onChanged,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Tappable row that opens a nested picker (chevron, no selection highlight).
 class SettingsPickerNavRow extends StatelessWidget {
   const SettingsPickerNavRow({

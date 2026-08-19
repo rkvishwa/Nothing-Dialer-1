@@ -14,6 +14,9 @@ import 'screens/default_dialer_screen.dart';
 import 'services/app_locale.dart';
 import 'services/app_font_config.dart';
 import 'services/app_fonts.dart';
+import 'services/contact_photo_picker_recovery.dart';
+import 'services/contact_photo_style.dart';
+import 'services/contact_sync_listener.dart';
 import 'services/favourites_manager.dart';
 import 'services/noto_font_pack.dart';
 import 'services/sim_icon_colors.dart';
@@ -33,14 +36,18 @@ final ValueNotifier<bool> isPhone1Notifier = ValueNotifier(false);
 
 /// Glyph settings controlled from HomeScreen.
 final ValueNotifier<String> themeModeNotifier = ValueNotifier('system');
-final ValueNotifier<Color> lightBgColorNotifier =
-    ValueNotifier<Color>(kDefaultLightBg);
-final ValueNotifier<Color> darkBgColorNotifier =
-    ValueNotifier<Color>(kDefaultDarkBg);
-final ValueNotifier<Color> lightAccentColorNotifier =
-    ValueNotifier<Color>(kDefaultLightAccent);
-final ValueNotifier<Color> darkAccentColorNotifier =
-    ValueNotifier<Color>(kDefaultDarkAccent);
+final ValueNotifier<Color> lightBgColorNotifier = ValueNotifier<Color>(
+  kDefaultLightBg,
+);
+final ValueNotifier<Color> darkBgColorNotifier = ValueNotifier<Color>(
+  kDefaultDarkBg,
+);
+final ValueNotifier<Color> lightAccentColorNotifier = ValueNotifier<Color>(
+  kDefaultLightAccent,
+);
+final ValueNotifier<Color> darkAccentColorNotifier = ValueNotifier<Color>(
+  kDefaultDarkAccent,
+);
 
 /// Per-SIM badge fills on Recents (light/dark); missing color keeps outline.
 final ValueNotifier<SimIconColorsState> simIconColorsNotifier =
@@ -95,22 +102,25 @@ final ValueNotifier<Map<dynamic, dynamic>?> dialerCallStateNotifier =
 
 final ValueNotifier<String?> openDialpadRequestNotifier = ValueNotifier(null);
 final ValueNotifier<int> recentsRefreshTickNotifier = ValueNotifier(0);
+final ValueNotifier<int> contactsRefreshTickNotifier = ValueNotifier(0);
 final ValueNotifier<int> clearRecentsSearchTickNotifier = ValueNotifier(0);
 final ValueNotifier<int> clearContactsSearchTickNotifier = ValueNotifier(0);
 final ValueNotifier<bool> recentsSearchActiveNotifier = ValueNotifier(false);
 final ValueNotifier<bool> contactsSearchActiveNotifier = ValueNotifier(false);
 
 /// Recents "Frequently contacted" section (max 0 = off)
-final ValueNotifier<String> frequentContactsPeriodNotifier =
-    ValueNotifier('year');
+final ValueNotifier<String> frequentContactsPeriodNotifier = ValueNotifier(
+  'year',
+);
 final ValueNotifier<int> frequentContactsMaxNotifier = ValueNotifier(5);
 
 /// Recents filter: `all` | `missed` | `contacts` | `non_contacts`
 final ValueNotifier<String> recentsFilterNotifier = ValueNotifier('all');
 
 /// When true, Recents search also shows matching address-book contacts below call results.
-final ValueNotifier<bool> recentsSearchShowContactsNotifier =
-    ValueNotifier(true);
+final ValueNotifier<bool> recentsSearchShowContactsNotifier = ValueNotifier(
+  true,
+);
 
 /// Torch blink (independent of Glyph): `off` | `interval`
 final ValueNotifier<String> torchIncomingModeNotifier = ValueNotifier('off');
@@ -125,6 +135,30 @@ final ValueNotifier<String> localeNotifier = ValueNotifier(kAppLocaleSystem);
 
 final ValueNotifier<AppFontConfig> fontConfigNotifier =
     ValueNotifier<AppFontConfig>(AppFontConfig.defaults);
+
+/// Contact photo display: off | avatar | fullscreen.
+final ValueNotifier<ContactPhotoMode> contactPhotoModeNotifier =
+    ValueNotifier<ContactPhotoMode>(kDefaultContactPhotoMode);
+
+/// Avatar clip shape when photos are shown.
+final ValueNotifier<ContactAvatarShape> contactAvatarShapeNotifier =
+    ValueNotifier<ContactAvatarShape>(kDefaultContactAvatarShape);
+
+/// Avatar visual style (normal vs pixelated).
+final ValueNotifier<ContactAvatarStyle> contactAvatarStyleNotifier =
+    ValueNotifier<ContactAvatarStyle>(kDefaultContactAvatarStyle);
+
+/// Whether Recents shows contact photos (requires global photos on).
+final ValueNotifier<bool> recentsShowContactPhotosNotifier =
+    ValueNotifier<bool>(kDefaultRecentsShowContactPhotos);
+
+/// Avatar clip shape on Recents when photos are enabled there.
+final ValueNotifier<ContactAvatarShape> recentsContactAvatarShapeNotifier =
+    ValueNotifier<ContactAvatarShape>(kDefaultRecentsContactAvatarShape);
+
+/// Avatar visual style on Recents when photos are enabled there.
+final ValueNotifier<ContactAvatarStyle> recentsContactAvatarStyleNotifier =
+    ValueNotifier<ContactAvatarStyle>(kDefaultRecentsContactAvatarStyle);
 
 bool get _glyphConnected => glyphConnectedNotifier.value;
 bool get _isPhone1 => isPhone1Notifier.value;
@@ -176,8 +210,7 @@ Future<void> loadAppSettingsFromPrefs() async {
   );
   glyphAnimationStyleNotifier.value =
       prefs.getString('glyph_animation_style') ?? 'Breath & Progress';
-  glyphC1C4IntervalNotifier.value =
-      prefs.getInt('glyph_c1c4_interval') ?? 1000;
+  glyphC1C4IntervalNotifier.value = prefs.getInt('glyph_c1c4_interval') ?? 1000;
   glyphCustomIntervalNotifier.value =
       prefs.getInt('glyph_custom_interval') ?? 1500;
   glyphCustomChannelsNotifier.value =
@@ -238,6 +271,26 @@ Future<void> loadAppSettingsFromPrefs() async {
   fontConfigNotifier.value = AppFontConfig.fromPrefString(
     prefs.getString(kFontConfigPrefKey),
   );
+
+  contactPhotoModeNotifier.value = ContactPhotoMode.fromPref(
+    prefs.getString(kContactPhotoModePrefKey),
+  );
+  contactAvatarShapeNotifier.value = ContactAvatarShape.fromPref(
+    prefs.getString(kContactAvatarShapePrefKey),
+  );
+  contactAvatarStyleNotifier.value = ContactAvatarStyle.fromPref(
+    prefs.getString(kContactAvatarStylePrefKey),
+  );
+  recentsShowContactPhotosNotifier.value =
+      prefs.getBool(kRecentsShowContactPhotosPrefKey) ??
+      kDefaultRecentsShowContactPhotos;
+  recentsContactAvatarShapeNotifier.value = ContactAvatarShape.fromPref(
+    prefs.getString(kRecentsContactAvatarShapePrefKey),
+  );
+  recentsContactAvatarStyleNotifier.value = ContactAvatarStyle.fromPref(
+    prefs.getString(kRecentsContactAvatarStylePrefKey),
+  );
+
   await NotoFontPack.loadReadyFlag();
   if (NotoFontPack.ready.value ||
       fontConfigNotifier.value.defaultChoice == DialerFontChoice.noto) {
@@ -297,9 +350,11 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
   void initState() {
     super.initState();
     _listenForGlyphCommands();
+    ContactSyncListener.start();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       unawaited(_initGlyphService());
       unawaited(refreshSimIconColorSims());
+      unawaited(ContactPhotoPickerRecovery.recoverLostSelection());
     });
   }
 
@@ -330,9 +385,20 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
       return;
     }
 
-    isPhone1Notifier.value = await _glyph.is20111() ?? false;
+    try {
+      isPhone1Notifier.value = await _glyph.is20111() ?? false;
+    } catch (e) {
+      debugPrint('Glyph is20111 check failed: $e');
+      isPhone1Notifier.value = false;
+    }
 
-    await _glyph.init();
+    try {
+      await _glyph.init();
+    } catch (e) {
+      debugPrint('Glyph init failed: $e');
+      glyphConnectedNotifier.value = false;
+      return;
+    }
 
     _glyphSubscription = _glyph.onServiceConnection.listen((bool connected) {
       glyphConnectedNotifier.value = connected;
@@ -385,6 +451,7 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
   @override
   void dispose() {
     _glyphSubscription?.cancel();
+    ContactSyncListener.stop();
     super.dispose();
   }
 
@@ -431,10 +498,14 @@ class _NothingDialerAppState extends State<NothingDialerApp> {
         );
 
         final fontConfig = fontConfigNotifier.value;
-        final lightBase = ThemeData(useMaterial3: true, colorScheme: lightScheme)
-            .textTheme;
-        final darkBase = ThemeData(useMaterial3: true, colorScheme: darkScheme)
-            .textTheme;
+        final lightBase = ThemeData(
+          useMaterial3: true,
+          colorScheme: lightScheme,
+        ).textTheme;
+        final darkBase = ThemeData(
+          useMaterial3: true,
+          colorScheme: darkScheme,
+        ).textTheme;
 
         final platformLocale =
             WidgetsBinding.instance.platformDispatcher.locale;
@@ -770,12 +841,8 @@ void _applyCustomChannelsToBuilder(
   }
 }
 
-Future<void> _runSteadyHoldLoop(
-  int seqId, {
-  bool isActiveCall = false,
-}) async {
-  final channels =
-      isActiveCall ? _inCallCustomChannels : _glyphCustomChannels;
+Future<void> _runSteadyHoldLoop(int seqId, {bool isActiveCall = false}) async {
+  final channels = isActiveCall ? _inCallCustomChannels : _glyphCustomChannels;
 
   if (channels.isEmpty) {
     await _glyph.turnOff();

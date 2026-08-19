@@ -361,7 +361,6 @@
   "reviewSection": "Отзыв",
   "reviewDescription": "Нравится Nothing Dialer? Оценка в Google Play помогает другим найти приложение.",
   "reviewRateOnPlay": "Оценить в Google Play",
-  "reviewRateOnPlaySubtitle": "Оценить, не выходя из приложения",
   "reviewCouldNotOpen": "Не удалось открыть Google Play",
   "breathSpeed": "Скорость дыхания",
   "breathSpeedBlinkHint": "Ниже = моргание, выше = медленное дыхание",
@@ -407,5 +406,6 @@
   "callPermissionDenied": "В разрешении на вызов отказано",
   "alreadyDefaultDialer": "Уже приложение для звонков по умолчанию",
   "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
-  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device."
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "reviewRateOnPlaySubtitle": "Открывает страницу приложения в Google Play"
 }

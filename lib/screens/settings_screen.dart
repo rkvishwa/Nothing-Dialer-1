@@ -28,6 +28,10 @@ import '../widgets/ongoing_call_banner.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/play_store_review.dart';
 import '../services/appearance_reset.dart';
+import '../services/call_display_prefs.dart';
+import '../services/contact_photo_style.dart';
+import 'call_display_settings_sheet.dart';
+import 'contact_photo_settings_sheet.dart';
 
 enum _ColorSlot { background, accent }
 
@@ -55,6 +59,14 @@ class _SettingsScreenState extends State<SettingsScreen>
   Color _lightAccentColor = kDefaultLightAccent;
   Color _darkAccentColor = kDefaultDarkAccent;
   Color _callBgColor = kDefaultCallBg;
+  ContactPhotoMode _contactPhotoMode = kDefaultContactPhotoMode;
+  ContactAvatarShape _contactAvatarShape = kDefaultContactAvatarShape;
+  ContactAvatarStyle _contactAvatarStyle = kDefaultContactAvatarStyle;
+  bool _recentsShowContactPhotos = kDefaultRecentsShowContactPhotos;
+  ContactAvatarShape _recentsContactAvatarShape =
+      kDefaultRecentsContactAvatarShape;
+  ContactAvatarStyle _recentsContactAvatarStyle =
+      kDefaultRecentsContactAvatarStyle;
 
   String _glyphAnimationStyle = 'Breath & Progress';
   int _customInterval = 1500;
@@ -87,6 +99,8 @@ class _SettingsScreenState extends State<SettingsScreen>
   int _torchOutgoingInterval = 500;
   String _torchOngoingMode = 'off';
   int _torchOngoingInterval = 500;
+
+  CallDisplaySettings _callDisplaySettings = const CallDisplaySettings();
 
   bool _searchOpen = false;
   final TextEditingController _searchController = TextEditingController();
@@ -202,7 +216,8 @@ class _SettingsScreenState extends State<SettingsScreen>
         prefs.getInt('dark_bg_color') ?? colorToArgb32(kDefaultDarkBg),
       );
       _lightAccentColor = Color(
-        prefs.getInt('light_accent_color') ?? colorToArgb32(kDefaultLightAccent),
+        prefs.getInt('light_accent_color') ??
+            colorToArgb32(kDefaultLightAccent),
       );
       _darkAccentColor = Color(
         prefs.getInt('dark_accent_color') ?? colorToArgb32(kDefaultDarkAccent),
@@ -242,21 +257,41 @@ class _SettingsScreenState extends State<SettingsScreen>
       _recentsSearchShowContacts =
           prefs.getBool('recents_search_show_contacts') ?? true;
 
-      _defaultSimMode = prefs.getString(kDefaultSimModeKey) ?? kDefaultSimModeAsk;
+      _defaultSimMode =
+          prefs.getString(kDefaultSimModeKey) ?? kDefaultSimModeAsk;
       _defaultSimIndex = prefs.getInt(kDefaultSimIndexKey);
       _simCards = simCards;
       _simIconColors = simIconColors;
+      _callDisplaySettings = loadCallDisplaySettingsFromPrefs(prefs);
+      _contactPhotoMode = ContactPhotoMode.fromPref(
+        prefs.getString(kContactPhotoModePrefKey),
+      );
+      _contactAvatarShape = ContactAvatarShape.fromPref(
+        prefs.getString(kContactAvatarShapePrefKey),
+      );
+      _contactAvatarStyle = ContactAvatarStyle.fromPref(
+        prefs.getString(kContactAvatarStylePrefKey),
+      );
+      _recentsShowContactPhotos =
+          prefs.getBool(kRecentsShowContactPhotosPrefKey) ??
+          kDefaultRecentsShowContactPhotos;
+      _recentsContactAvatarShape = ContactAvatarShape.fromPref(
+        prefs.getString(kRecentsContactAvatarShapePrefKey),
+      );
+      _recentsContactAvatarStyle = ContactAvatarStyle.fromPref(
+        prefs.getString(kRecentsContactAvatarStylePrefKey),
+      );
 
       _torchHasFlash = torchFlash;
       _torchIncomingMode = torchIncomingMode;
-      _torchIncomingInterval =
-          (prefs.getInt('torch_incoming_interval') ?? 500).clamp(100, 3000);
+      _torchIncomingInterval = (prefs.getInt('torch_incoming_interval') ?? 500)
+          .clamp(100, 3000);
       _torchOutgoingMode = prefs.getString('torch_outgoing_mode') ?? 'off';
-      _torchOutgoingInterval =
-          (prefs.getInt('torch_outgoing_interval') ?? 500).clamp(100, 3000);
+      _torchOutgoingInterval = (prefs.getInt('torch_outgoing_interval') ?? 500)
+          .clamp(100, 3000);
       _torchOngoingMode = prefs.getString('torch_ongoing_mode') ?? 'off';
-      _torchOngoingInterval =
-          (prefs.getInt('torch_ongoing_interval') ?? 500).clamp(100, 3000);
+      _torchOngoingInterval = (prefs.getInt('torch_ongoing_interval') ?? 500)
+          .clamp(100, 3000);
     });
     try {
       final lid = await LauncherIconManager.getCurrentId();
@@ -371,20 +406,21 @@ class _SettingsScreenState extends State<SettingsScreen>
       sims: _simCards,
       colors: _simIconColors,
       isDark: isDark,
-      onChanged: ({
-        required int index,
-        required SimIconBadgeStyle? style,
-        required Color? color,
-        required bool reset,
-      }) {
-        return _saveSimIconCustomization(
-          index: index,
-          isDark: isDark,
-          style: style,
-          color: color,
-          reset: reset,
-        );
-      },
+      onChanged:
+          ({
+            required int index,
+            required SimIconBadgeStyle? style,
+            required Color? color,
+            required bool reset,
+          }) {
+            return _saveSimIconCustomization(
+              index: index,
+              isDark: isDark,
+              style: style,
+              color: color,
+              reset: reset,
+            );
+          },
     );
   }
 
@@ -394,6 +430,37 @@ class _SettingsScreenState extends State<SettingsScreen>
     if (!mounted) return;
     setState(() => _recentsSearchShowContacts = value);
     main_app.recentsSearchShowContactsNotifier.value = value;
+  }
+
+  Future<void> _saveCallDisplaySettings(CallDisplaySettings settings) async {
+    final prefs = await SharedPreferences.getInstance();
+    await saveCallDisplaySettingsToPrefs(prefs, settings);
+    if (!mounted) return;
+    setState(() => _callDisplaySettings = settings);
+  }
+
+  void _showCallDisplaySettingsSheet() {
+    showCallDisplaySettingsSheet(
+      context,
+      initial: _callDisplaySettings,
+      onSave: _saveCallDisplaySettings,
+    );
+  }
+
+  Future<void> _showContactPhotoSettingsSheet() async {
+    await showContactPhotoSettingsSheet(context);
+    if (!mounted) return;
+    setState(() {
+      _contactPhotoMode = main_app.contactPhotoModeNotifier.value;
+      _contactAvatarShape = main_app.contactAvatarShapeNotifier.value;
+      _contactAvatarStyle = main_app.contactAvatarStyleNotifier.value;
+      _recentsShowContactPhotos =
+          main_app.recentsShowContactPhotosNotifier.value;
+      _recentsContactAvatarShape =
+          main_app.recentsContactAvatarShapeNotifier.value;
+      _recentsContactAvatarStyle =
+          main_app.recentsContactAvatarStyleNotifier.value;
+    });
   }
 
   String _defaultSimSubtitle(AppLocalizations l10n) {
@@ -513,9 +580,9 @@ class _SettingsScreenState extends State<SettingsScreen>
       ).invokeMethod<List<dynamic>>('getSimCards');
       if (!mounted) return;
       if (raw == null || raw.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.noSimCardsFound)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.noSimCardsFound)));
         return;
       }
       final sims = raw.cast<Map<dynamic, dynamic>>();
@@ -526,7 +593,9 @@ class _SettingsScreenState extends State<SettingsScreen>
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(sheetContext).colorScheme.surface,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
             ),
             child: SafeArea(
               child: Column(
@@ -579,8 +648,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                       style: sheetContext.dialerTextStyle(
                         DialerFontRole.secondary,
                         TextStyle(
-                          color:
-                              Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+                          color: Theme.of(
+                            sheetContext,
+                          ).colorScheme.onSurfaceVariant,
                           fontSize: 13,
                         ),
                       ),
@@ -597,7 +667,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         sim['label'] as String? ?? l10n.simSlot(idx + 1);
                     final slot = (sim['slot'] as int?) ?? (idx + 1);
                     return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                      ),
                       title: Text(
                         label,
                         style: sheetContext.dialerTextStyle(
@@ -613,9 +685,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         style: sheetContext.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color: Theme.of(sheetContext)
-                                .colorScheme
-                                .onSurfaceVariant,
+                            color: Theme.of(
+                              sheetContext,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 13,
                           ),
                         ),
@@ -726,7 +798,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                       width: 32,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        color: Theme.of(
+                          sheetContext,
+                        ).colorScheme.outlineVariant,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -799,7 +873,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                       width: 32,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        color: Theme.of(
+                          sheetContext,
+                        ).colorScheme.outlineVariant,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -822,33 +898,33 @@ class _SettingsScreenState extends State<SettingsScreen>
                 SettingsPickerOption(
                   icon: Icons.block_rounded,
                   label: l10n.torchOff,
-                subtitle: torchModePickerSubtitle(
-                  l10n,
-                  'off',
-                  incoming: incoming,
-                  ongoing: ongoing,
+                  subtitle: torchModePickerSubtitle(
+                    l10n,
+                    'off',
+                    incoming: incoming,
+                    ongoing: ongoing,
+                  ),
+                  selected: currentMode == 'off',
+                  onTap: () async {
+                    await save('off');
+                    if (sheetContext.mounted) Navigator.pop(sheetContext);
+                  },
                 ),
-                selected: currentMode == 'off',
-                onTap: () async {
-                  await save('off');
-                  if (sheetContext.mounted) Navigator.pop(sheetContext);
-                },
-              ),
-              SettingsPickerOption(
-                icon: Icons.timer_rounded,
-                label: l10n.torchFixedInterval,
-                subtitle: l10n.torchFixedIntervalSubtitle,
-                selected: currentMode == 'interval',
-                onTap: () async {
-                  await save('interval');
-                  if (sheetContext.mounted) Navigator.pop(sheetContext);
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
+                SettingsPickerOption(
+                  icon: Icons.timer_rounded,
+                  label: l10n.torchFixedInterval,
+                  subtitle: l10n.torchFixedIntervalSubtitle,
+                  selected: currentMode == 'interval',
+                  onTap: () async {
+                    await save('interval');
+                    if (sheetContext.mounted) Navigator.pop(sheetContext);
+                  },
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -876,7 +952,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                       width: 32,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        color: Theme.of(
+                          sheetContext,
+                        ).colorScheme.outlineVariant,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -971,8 +1049,10 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               child: SafeArea(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1005,8 +1085,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 14,
                           ),
                         ),
@@ -1016,14 +1097,16 @@ class _SettingsScreenState extends State<SettingsScreen>
                         children: [
                           Expanded(
                             child: Slider(
-                              value: _frequentContactsMax
-                                  .toDouble()
-                                  .clamp(0, 20),
+                              value: _frequentContactsMax.toDouble().clamp(
+                                0,
+                                20,
+                              ),
                               min: 0,
                               max: 20,
                               divisions: 20,
-                              activeColor:
-                                  Theme.of(context).colorScheme.primary,
+                              activeColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
                               onChanged: (val) {
                                 setModalState(
                                   () => _frequentContactsMax = val.toInt(),
@@ -1085,8 +1168,9 @@ class _SettingsScreenState extends State<SettingsScreen>
     await prefs.setString('answer_method', value);
     setState(() => _answerMethod = value);
     try {
-      await const MethodChannel('nothing_dialer/control')
-          .invokeMethod<void>('notifyAnswerMethodChanged');
+      await const MethodChannel(
+        'nothing_dialer/control',
+      ).invokeMethod<void>('notifyAnswerMethodChanged');
     } on PlatformException {
       // Native call UI may not be active.
     }
@@ -1171,7 +1255,9 @@ class _SettingsScreenState extends State<SettingsScreen>
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(sheetContext).colorScheme.surface,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
             ),
             child: SafeArea(
               child: SingleChildScrollView(
@@ -1205,39 +1291,39 @@ class _SettingsScreenState extends State<SettingsScreen>
                           ),
                         ),
                       ),
-                    const SizedBox(height: 20),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
-                      children: [
-                        for (var i = 0; i < presets.length; i++)
-                          _ColorSwatchButton(
-                            color: presets[i],
-                            selected: colorsEqual(presets[i], selectedColor),
-                            label: firstSwatchLabel != null && i == 0
-                                ? firstSwatchLabel
-                                : null,
+                      const SizedBox(height: 20),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          for (var i = 0; i < presets.length; i++)
+                            _ColorSwatchButton(
+                              color: presets[i],
+                              selected: colorsEqual(presets[i], selectedColor),
+                              label: firstSwatchLabel != null && i == 0
+                                  ? firstSwatchLabel
+                                  : null,
+                              onTap: () async {
+                                await onPresetChosen(presets[i]);
+                                if (sheetContext.mounted) {
+                                  Navigator.pop(sheetContext);
+                                }
+                              },
+                            ),
+                          _CustomColorSwatchButton(
                             onTap: () async {
-                              await onPresetChosen(presets[i]);
-                              if (sheetContext.mounted) {
-                                Navigator.pop(sheetContext);
-                              }
+                              Navigator.pop(sheetContext);
+                              if (!mounted) return;
+                              await openCustomDialog();
                             },
                           ),
-                        _CustomColorSwatchButton(
-                          onTap: () async {
-                            Navigator.pop(sheetContext);
-                            if (!mounted) return;
-                            await openCustomDialog();
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
           ),
         );
       },
@@ -1251,9 +1337,8 @@ class _SettingsScreenState extends State<SettingsScreen>
       presets: kLightPresets,
       selectedColor: _lightBgColor,
       onPresetChosen: _saveLightBgColor,
-      openCustomDialog: () => _showCustomLightColorDialog(
-        target: _ColorSlot.background,
-      ),
+      openCustomDialog: () =>
+          _showCustomLightColorDialog(target: _ColorSlot.background),
       firstSwatchLabel: l10n.swatchDefault,
     );
   }
@@ -1265,9 +1350,8 @@ class _SettingsScreenState extends State<SettingsScreen>
       presets: kAccentPresets,
       selectedColor: _lightAccentColor,
       onPresetChosen: _saveLightAccentColor,
-      openCustomDialog: () => _showCustomLightColorDialog(
-        target: _ColorSlot.accent,
-      ),
+      openCustomDialog: () =>
+          _showCustomLightColorDialog(target: _ColorSlot.accent),
     );
   }
 
@@ -1278,9 +1362,8 @@ class _SettingsScreenState extends State<SettingsScreen>
       presets: kDarkPresets,
       selectedColor: _darkBgColor,
       onPresetChosen: _saveDarkBgColor,
-      openCustomDialog: () => _showCustomDarkColorDialog(
-        target: _ColorSlot.background,
-      ),
+      openCustomDialog: () =>
+          _showCustomDarkColorDialog(target: _ColorSlot.background),
       firstSwatchLabel: l10n.swatchDefault,
     );
   }
@@ -1292,9 +1375,8 @@ class _SettingsScreenState extends State<SettingsScreen>
       presets: kAccentPresets,
       selectedColor: _darkAccentColor,
       onPresetChosen: _saveDarkAccentColor,
-      openCustomDialog: () => _showCustomDarkColorDialog(
-        target: _ColorSlot.accent,
-      ),
+      openCustomDialog: () =>
+          _showCustomDarkColorDialog(target: _ColorSlot.accent),
     );
   }
 
@@ -1360,12 +1442,11 @@ class _SettingsScreenState extends State<SettingsScreen>
     }
   }
 
-  Future<void> _showCustomLightColorDialog({
-    required _ColorSlot target,
-  }) async {
+  Future<void> _showCustomLightColorDialog({required _ColorSlot target}) async {
     final l10n = AppLocalizations.of(context);
-    Color pickerColor =
-        target == _ColorSlot.accent ? _lightAccentColor : _lightBgColor;
+    Color pickerColor = target == _ColorSlot.accent
+        ? _lightAccentColor
+        : _lightBgColor;
     final result = await showDialog<Color>(
       context: context,
       builder: (ctx) {
@@ -1419,12 +1500,11 @@ class _SettingsScreenState extends State<SettingsScreen>
     }
   }
 
-  Future<void> _showCustomDarkColorDialog({
-    required _ColorSlot target,
-  }) async {
+  Future<void> _showCustomDarkColorDialog({required _ColorSlot target}) async {
     final l10n = AppLocalizations.of(context);
-    Color pickerColor =
-        target == _ColorSlot.accent ? _darkAccentColor : _darkBgColor;
+    Color pickerColor = target == _ColorSlot.accent
+        ? _darkAccentColor
+        : _darkBgColor;
     final result = await showDialog<Color>(
       context: context,
       builder: (ctx) {
@@ -1573,6 +1653,15 @@ class _SettingsScreenState extends State<SettingsScreen>
     final darkAccentSubtitle = _accentSubtitle(l10n, _darkAccentColor);
     final answerSubtitle = _answerMethodSubtitle(l10n);
     final callBgSubtitle = _bgSubtitle(l10n, _callBgColor, kCallBgPresets);
+    final contactPhotoSubtitle = contactPhotoSettingsSubtitle(
+      l10n,
+      _contactPhotoMode,
+      _contactAvatarShape,
+      _contactAvatarStyle,
+      recentsShowPhotos: _recentsShowContactPhotos,
+      recentsShape: _recentsContactAvatarShape,
+      recentsStyle: _recentsContactAvatarStyle,
+    );
     final defaultSimSubtitle = _defaultSimSubtitle(l10n);
     final frequentMaxSubtitle = _frequentMaxSubtitle(l10n);
     final frequentPeriodSubtitle = _frequentPeriodSubtitle(l10n);
@@ -1586,92 +1675,170 @@ class _SettingsScreenState extends State<SettingsScreen>
       l10n.language,
       languageSubtitle,
     ]);
-    final showFont = _showSettingsItem(l10n.general, [l10n.font, fontSubtitle]);
-    final showTheme = _showSettingsItem(l10n.general, [
+    final showFont = _showSettingsItem(l10n.appearanceSection, [
+      l10n.font,
+      fontSubtitle,
+      l10n.general,
+    ]);
+    final showTheme = _showSettingsItem(l10n.appearanceSection, [
       l10n.theme,
       themeSubtitle,
+      l10n.general,
     ]);
-    final showLightBg = _activeAppearanceIsLight(context) &&
-        _showSettingsItem(l10n.general, [l10n.background, lightBgSubtitle]);
-    final showLightAccent = _activeAppearanceIsLight(context) &&
-        _showSettingsItem(l10n.general, [l10n.accent, lightAccentSubtitle]);
-    final showDarkBg = !_activeAppearanceIsLight(context) &&
-        _showSettingsItem(l10n.general, [l10n.background, darkBgSubtitle]);
-    final showDarkAccent = !_activeAppearanceIsLight(context) &&
-        _showSettingsItem(l10n.general, [l10n.accent, darkAccentSubtitle]);
-    final showAppIcon = !kIsWeb &&
+    final showLightBg =
+        _activeAppearanceIsLight(context) &&
+        _showSettingsItem(l10n.appearanceSection, [
+          l10n.background,
+          lightBgSubtitle,
+          l10n.general,
+        ]);
+    final showLightAccent =
+        _activeAppearanceIsLight(context) &&
+        _showSettingsItem(l10n.appearanceSection, [
+          l10n.accent,
+          lightAccentSubtitle,
+          l10n.general,
+        ]);
+    final showDarkBg =
+        !_activeAppearanceIsLight(context) &&
+        _showSettingsItem(l10n.appearanceSection, [
+          l10n.background,
+          darkBgSubtitle,
+          l10n.general,
+        ]);
+    final showDarkAccent =
+        !_activeAppearanceIsLight(context) &&
+        _showSettingsItem(l10n.appearanceSection, [
+          l10n.accent,
+          darkAccentSubtitle,
+          l10n.general,
+        ]);
+    final showAppIcon =
+        !kIsWeb &&
         Platform.isAndroid &&
-        _showSettingsItem(l10n.general, [l10n.appIcon, _launcherIconLabel]);
-    final showAnswerMethod = _showSettingsItem(l10n.general, [
-      l10n.answerMethod,
-      answerSubtitle,
-    ]);
-    final showCallBackground = !kIsWeb &&
-        Platform.isAndroid &&
-        _showSettingsItem(l10n.general, [l10n.callBackground, callBgSubtitle]);
-    final showGeneral = showLanguage ||
+        _showSettingsItem(l10n.appearanceSection, [
+          l10n.appIcon,
+          _launcherIconLabel,
+          l10n.general,
+        ]);
+    final showAppearance =
         showFont ||
         showTheme ||
         showLightBg ||
         showLightAccent ||
         showDarkBg ||
         showDarkAccent ||
-        showAppIcon ||
-        showAnswerMethod ||
-        showCallBackground;
+        showAppIcon;
 
-    final showDefaultSim = _showSettingsItem(l10n.calling, [
+    final showAnswerMethod = _showSettingsItem(l10n.inCallScreenSection, [
+      l10n.answerMethod,
+      answerSubtitle,
+      l10n.general,
+    ]);
+    final showCallBackground =
+        !kIsWeb &&
+        Platform.isAndroid &&
+        _showSettingsItem(l10n.inCallScreenSection, [
+          l10n.callBackground,
+          callBgSubtitle,
+          l10n.general,
+        ]);
+    final callDisplaySubtitle = callDisplaySettingsSubtitle(
+      l10n,
+      _callDisplaySettings,
+    );
+    final showCallDisplay = _showSettingsItem(l10n.inCallScreenSection, [
+      l10n.callDisplay,
+      callDisplaySubtitle,
+      l10n.callDisplayHideNumberSection,
+      l10n.callDisplayHideSimSection,
+      l10n.callDisplayHideNumberIncoming,
+      l10n.callDisplayHideNumberOutgoing,
+      l10n.callDisplayHideNumberInCall,
+      l10n.callDisplayHideSimIncoming,
+      l10n.callDisplayHideSimOutgoing,
+      l10n.callDisplayHideSimInCall,
+      l10n.calling,
+      l10n.general,
+    ]);
+    final showContactPhotos = _showSettingsItem(l10n.inCallScreenSection, [
+      l10n.contactPhotos,
+      contactPhotoSubtitle,
+      l10n.general,
+    ]);
+    final showInCall =
+        showAnswerMethod ||
+        showCallBackground ||
+        showCallDisplay ||
+        showContactPhotos;
+
+    final showDefaultSim = _showSettingsItem(l10n.simAndCallsSection, [
       l10n.defaultSim,
       defaultSimSubtitle,
+      l10n.calling,
     ]);
     final simIconColorsSubtitle = _simIconColorsSubtitle(l10n);
-    final showSimIconColors = _simCards.length >= 2 &&
-        _showSettingsItem(l10n.calling, [
+    final showSimIconColors =
+        _simCards.length >= 2 &&
+        _showSettingsItem(l10n.simAndCallsSection, [
           l10n.simIconColor,
           simIconColorsSubtitle,
           l10n.simIconColorSubtitle,
           l10n.simIconStyleOutline,
           l10n.simIconStyleFill,
+          l10n.calling,
         ]);
-    final showFavourites = _showSettingsItem(l10n.calling, [
-      l10n.allFavourites,
-      l10n.allFavouritesSubtitle,
-    ]);
-    final showBlocked = _showSettingsItem(l10n.calling, [
-      l10n.blockedNumbers,
-      l10n.blockedNumbersSubtitle,
-    ]);
-    final showSounds = _showSettingsItem(l10n.calling, [
+    final showSounds = _showSettingsItem(l10n.simAndCallsSection, [
       l10n.soundsAndVibration,
       l10n.soundsAndVibrationSubtitle,
+      l10n.calling,
     ]);
-    final showCalling = showDefaultSim ||
-        showSimIconColors ||
-        showFavourites ||
-        showBlocked ||
-        showSounds;
+    final showSimAndCalls =
+        showDefaultSim || showSimIconColors || showSounds;
 
-    final showRecentsContacts = _showSettingsItem(l10n.recentsSearchSection, [
-      l10n.recentsSearchShowContacts,
-      l10n.recentsSearchShowContactsSubtitle,
+    final showFavourites = _showSettingsItem(l10n.callListsSection, [
+      l10n.allFavourites,
+      l10n.allFavouritesSubtitle,
+      l10n.calling,
     ]);
+    final showBlocked = _showSettingsItem(l10n.callListsSection, [
+      l10n.blockedNumbers,
+      l10n.blockedNumbersSubtitle,
+      l10n.calling,
+    ]);
+    final showCallLists = showFavourites || showBlocked;
 
-    final showFrequentMax = _showSettingsItem(l10n.frequentlyContacted, [
-      l10n.numberOfRecords,
+    final showRecentsContacts = _showSettingsItem(
+      l10n.contactsAndRecentsSection,
+      [
+        l10n.recentsSearchShowContacts,
+        l10n.recentsSearchShowContactsSubtitle,
+        l10n.recentsSearchSection,
+      ],
+    );
+
+    final showFrequentMax = _showSettingsItem(l10n.contactsAndRecentsSection, [
+      l10n.frequentlyContactedHeader,
       frequentMaxSubtitle,
+      l10n.frequentlyContacted,
+      l10n.numberOfRecords,
     ]);
-    final showFrequentPeriod = _frequentContactsMax > 0 &&
-        _showSettingsItem(l10n.frequentlyContacted, [
+    final showFrequentPeriod =
+        _frequentContactsMax > 0 &&
+        _showSettingsItem(l10n.contactsAndRecentsSection, [
           l10n.timePeriod,
           frequentPeriodSubtitle,
+          l10n.frequentlyContacted,
         ]);
-    final showFrequent = showFrequentMax || showFrequentPeriod;
+    final showContactsRecents =
+        showRecentsContacts || showFrequentMax || showFrequentPeriod;
 
     final showTorchIncoming = _showSettingsItem(l10n.torchBlink, [
       l10n.torchIncomingCall,
       torchIncomingSubtitle,
     ]);
-    final showTorchIncomingInterval = _torchHasFlash &&
+    final showTorchIncomingInterval =
+        _torchHasFlash &&
         _torchIncomingMode == 'interval' &&
         _showSettingsItem(l10n.torchBlink, [
           l10n.torchIncomingInterval,
@@ -1681,7 +1848,8 @@ class _SettingsScreenState extends State<SettingsScreen>
       l10n.torchOutgoingCall,
       torchOutgoingSubtitle,
     ]);
-    final showTorchOutgoingInterval = _torchHasFlash &&
+    final showTorchOutgoingInterval =
+        _torchHasFlash &&
         _torchOutgoingMode == 'interval' &&
         _showSettingsItem(l10n.torchBlink, [
           l10n.torchOutgoingInterval,
@@ -1691,13 +1859,15 @@ class _SettingsScreenState extends State<SettingsScreen>
       l10n.torchOngoingCall,
       torchOngoingSubtitle,
     ]);
-    final showTorchOngoingInterval = _torchHasFlash &&
+    final showTorchOngoingInterval =
+        _torchHasFlash &&
         _torchOngoingMode == 'interval' &&
         _showSettingsItem(l10n.torchBlink, [
           l10n.torchOngoingInterval,
           _torchIntervalSecondsLabel(_torchOngoingInterval),
         ]);
-    final showTorch = showTorchIncoming ||
+    final showTorch =
+        showTorchIncoming ||
         showTorchIncomingInterval ||
         showTorchOutgoing ||
         showTorchOutgoingInterval ||
@@ -1707,19 +1877,24 @@ class _SettingsScreenState extends State<SettingsScreen>
     final showGlyphCalling = _showSettingsItem(l10n.glyphLights, [
       l10n.glyphCallingAnimation,
       glyphCallingSubtitle,
+      l10n.glyphLights,
     ]);
-    final showGlyphBreath = _glyphAnimationStyle == 'Breath' &&
+    final showGlyphBreath =
+        _glyphAnimationStyle == 'Breath' &&
         _showSettingsItem(l10n.glyphLights, [
           l10n.breathSettings,
           l10n.breathSettingsSpeedSummary(
             _customChannels.length,
             _customInterval,
           ),
+          l10n.glyphLights,
         ]);
-    final showGlyphSteady = _glyphAnimationStyle == 'Steady' &&
+    final showGlyphSteady =
+        _glyphAnimationStyle == 'Steady' &&
         _showSettingsItem(l10n.glyphLights, [
           l10n.activeLights,
           l10n.lightsCount(_customChannels.length),
+          l10n.glyphLights,
         ]);
     final showGlyphSpeed =
         (_glyphAnimationStyle == 'Accumulate' ||
@@ -1727,31 +1902,39 @@ class _SettingsScreenState extends State<SettingsScreen>
         _showSettingsItem(l10n.glyphLights, [
           l10n.speedSettings,
           l10n.speedSettingsDelay(_glyphC1C4Interval),
+          l10n.glyphLights,
         ]);
-    final showGlyphDuration = _glyphAnimationStyle == 'Breath & Progress' &&
+    final showGlyphDuration =
+        _glyphAnimationStyle == 'Breath & Progress' &&
         _showSettingsItem(l10n.glyphLights, [
           l10n.durationAndSpeed,
           l10n.durationSpeedSummary(
             _glyphBreathProgressDuration ~/ 1000,
             _glyphBreathProgressInterval,
           ),
+          l10n.glyphLights,
         ]);
     final showGlyphOngoing = _showSettingsItem(l10n.glyphLights, [
       l10n.glyphOngoingAnimation,
       glyphOngoingSubtitle,
+      l10n.glyphLights,
     ]);
-    final showInCallBreath = _inCallAnimationStyle == 'Breath' &&
+    final showInCallBreath =
+        _inCallAnimationStyle == 'Breath' &&
         _showSettingsItem(l10n.glyphLights, [
           l10n.breathSettings,
           l10n.breathSettingsSpeedSummary(
             _inCallCustomChannels.length,
             _inCallCustomInterval,
           ),
+          l10n.glyphLights,
         ]);
-    final showInCallSteady = _inCallAnimationStyle == 'Steady' &&
+    final showInCallSteady =
+        _inCallAnimationStyle == 'Steady' &&
         _showSettingsItem(l10n.glyphLights, [
           l10n.activeLights,
           l10n.lightsCount(_inCallCustomChannels.length),
+          l10n.glyphLights,
         ]);
     final showInCallSpeed =
         (_inCallAnimationStyle == 'Accumulate' ||
@@ -1759,16 +1942,20 @@ class _SettingsScreenState extends State<SettingsScreen>
         _showSettingsItem(l10n.glyphLights, [
           l10n.speedSettings,
           l10n.speedSettingsDelay(_inCallC1C4Interval),
+          l10n.glyphLights,
         ]);
-    final showInCallDuration = _inCallAnimationStyle == 'Breath & Progress' &&
+    final showInCallDuration =
+        _inCallAnimationStyle == 'Breath & Progress' &&
         _showSettingsItem(l10n.glyphLights, [
           l10n.durationAndSpeed,
           l10n.durationSpeedSummary(
             _inCallBreathProgressDuration ~/ 1000,
             _inCallBreathProgressInterval,
           ),
+          l10n.glyphLights,
         ]);
-    final showGlyph = showGlyphCalling ||
+    final showGlyph =
+        showGlyphCalling ||
         showGlyphBreath ||
         showGlyphSteady ||
         showGlyphSpeed ||
@@ -1779,7 +1966,8 @@ class _SettingsScreenState extends State<SettingsScreen>
         showInCallSpeed ||
         showInCallDuration;
 
-    final showReviewTile = !kIsWeb &&
+    final showReviewTile =
+        !kIsWeb &&
         Platform.isAndroid &&
         _showSettingsItem(l10n.aboutFeedbackSection, [
           l10n.reviewRateOnPlay,
@@ -1805,12 +1993,19 @@ class _SettingsScreenState extends State<SettingsScreen>
       l10n.torchBlink,
       l10n.glyphLights,
       l10n.frequentlyContacted,
+      l10n.general,
+      l10n.appearanceSection,
+      l10n.inCallScreenSection,
+      l10n.contactsAndRecentsSection,
     ]);
 
-    final hasResults = showGeneral ||
-        showCalling ||
-        showRecentsContacts ||
-        showFrequent ||
+    final hasResults =
+        showLanguage ||
+        showAppearance ||
+        showInCall ||
+        showSimAndCalls ||
+        showCallLists ||
+        showContactsRecents ||
         showTorch ||
         showGlyph ||
         showResetCustomization ||
@@ -1832,7 +2027,9 @@ class _SettingsScreenState extends State<SettingsScreen>
             leading: _searchOpen
                 ? IconButton(
                     icon: const Icon(Icons.arrow_back_rounded),
-                    tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                    tooltip: MaterialLocalizations.of(
+                      context,
+                    ).backButtonTooltip,
                     onPressed: _closeSearch,
                   )
                 : null,
@@ -1844,20 +2041,14 @@ class _SettingsScreenState extends State<SettingsScreen>
                     textInputAction: TextInputAction.search,
                     style: context.dialerTextStyle(
                       DialerFontRole.primary,
-                      TextStyle(
-                        color: scheme.onSurface,
-                        fontSize: 18,
-                      ),
+                      TextStyle(color: scheme.onSurface, fontSize: 18),
                     ),
                     cursorColor: scheme.primary,
                     decoration: InputDecoration(
                       hintText: l10n.settingsSearchHint,
                       hintStyle: context.dialerTextStyle(
                         DialerFontRole.secondary,
-                        TextStyle(
-                          color: scheme.onSurfaceVariant,
-                          fontSize: 18,
-                        ),
+                        TextStyle(color: scheme.onSurfaceVariant, fontSize: 18),
                       ),
                       border: InputBorder.none,
                       isDense: true,
@@ -1867,16 +2058,18 @@ class _SettingsScreenState extends State<SettingsScreen>
                     l10n.settings,
                     style: context.dialerTextStyle(
                       DialerFontRole.pageTitle,
-                      Theme.of(context).textTheme.titleLarge!.copyWith(
-                            color: scheme.onSurface,
-                          ),
+                      Theme.of(
+                        context,
+                      ).textTheme.titleLarge!.copyWith(color: scheme.onSurface),
                     ),
                   ),
             actions: [
               if (_searchOpen && _searchQuery.isNotEmpty)
                 IconButton(
                   icon: const Icon(Icons.close_rounded),
-                  tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
+                  tooltip: MaterialLocalizations.of(
+                    context,
+                  ).deleteButtonTooltip,
                   onPressed: () {
                     _searchController.clear();
                     _searchFocusNode.requestFocus();
@@ -1896,471 +2089,497 @@ class _SettingsScreenState extends State<SettingsScreen>
               const OngoingCallBanner(),
               Expanded(
                 child: !hasResults && searching
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      l10n.settingsSearchNoResults,
-                      textAlign: TextAlign.center,
-                      style: context.dialerTextStyle(
-                        DialerFontRole.secondary,
-                        TextStyle(
-                          color: scheme.onSurfaceVariant,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              : ListView(
-                  children: [
-                    if (showGeneral) ...[
-                      _SectionHeader(title: l10n.general),
-                      if (showLanguage)
-                        ListenableBuilder(
-                          listenable: main_app.localeNotifier,
-                          builder: (context, _) {
-                            final pref = main_app.localeNotifier.value;
-                            final subtitle = pref == kAppLocaleSystem
-                                ? l10n.languageDeviceDefault
-                                : nativeLanguageName(pref);
-                            return _SettingsTile(
-                              icon: Icons.language_rounded,
-                              title: l10n.language,
-                              subtitle: subtitle,
-                              onTap: () => showLanguagePickerSheet(context),
-                            );
-                          },
-                        ),
-                      if (showFont)
-                        ListenableBuilder(
-                          listenable: main_app.fontConfigNotifier,
-                          builder: (context, _) {
-                            return _SettingsTile(
-                              icon: Icons.text_fields_rounded,
-                              title: l10n.font,
-                              subtitle: _fontSubtitle(context),
-                              onTap: () => showFontSettingsSheet(context),
-                            );
-                          },
-                        ),
-                      if (showTheme)
-                        _SettingsTile(
-                          icon: Icons.palette_rounded,
-                          title: l10n.theme,
-                          subtitle: themeSubtitle,
-                          onTap: () => _showThemeModePicker(),
-                        ),
-                      if (showLightBg)
-                        _SettingsTile(
-                          icon: Icons.light_mode_outlined,
-                          title: l10n.background,
-                          subtitle: lightBgSubtitle,
-                          previewColor: _lightBgColor,
-                          onTap: _showLightBgPicker,
-                        ),
-                      if (showLightAccent)
-                        _SettingsTile(
-                          icon: Icons.color_lens_outlined,
-                          title: l10n.accent,
-                          subtitle: lightAccentSubtitle,
-                          previewColor: _lightAccentColor,
-                          onTap: _showLightAccentPicker,
-                        ),
-                      if (showDarkBg)
-                        _SettingsTile(
-                          icon: Icons.dark_mode_outlined,
-                          title: l10n.background,
-                          subtitle: darkBgSubtitle,
-                          previewColor: _darkBgColor,
-                          onTap: _showDarkBgPicker,
-                        ),
-                      if (showDarkAccent)
-                        _SettingsTile(
-                          icon: Icons.color_lens_outlined,
-                          title: l10n.accent,
-                          subtitle: darkAccentSubtitle,
-                          previewColor: _darkAccentColor,
-                          onTap: _showDarkAccentPicker,
-                        ),
-                      if (showAppIcon)
-                        _SettingsTile(
-                          icon: Icons.apps_rounded,
-                          title: l10n.appIcon,
-                          subtitle: _launcherIconLabel,
-                          onTap: () async {
-                            await showLauncherIconPicker(context);
-                            if (context.mounted) await _loadSettings();
-                          },
-                        ),
-                      if (showAnswerMethod)
-                        _SettingsTile(
-                          icon: Icons.phone_callback_rounded,
-                          title: l10n.answerMethod,
-                          subtitle: answerSubtitle,
-                          onTap: () => _showAnswerMethodPicker(),
-                        ),
-                      if (showCallBackground)
-                        _SettingsTile(
-                          icon: Icons.phone_in_talk_rounded,
-                          title: l10n.callBackground,
-                          subtitle: callBgSubtitle,
-                          previewColor: _callBgColor,
-                          onTap: _showCallBgPicker,
-                        ),
-                    ],
-                    if (showCalling) ...[
-                      _SectionHeader(title: l10n.calling),
-                      if (showDefaultSim)
-                        _SettingsTile(
-                          icon: Icons.sim_card_rounded,
-                          title: l10n.defaultSim,
-                          subtitle: defaultSimSubtitle,
-                          onTap: _showDefaultSimPicker,
-                        ),
-                      if (showSimIconColors)
-                        _SettingsTile(
-                          icon: Icons.sim_card_outlined,
-                          title: l10n.simIconColor,
-                          subtitle: simIconColorsSubtitle,
-                          previewColor: _simIconColorFor(
-                            _simCards.first.index,
-                            isDark: !_activeAppearanceIsLight(context),
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32),
+                          child: Text(
+                            l10n.settingsSearchNoResults,
+                            textAlign: TextAlign.center,
+                            style: context.dialerTextStyle(
+                              DialerFontRole.secondary,
+                              TextStyle(
+                                color: scheme.onSurfaceVariant,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
-                          onTap: _showSimIconColorsPanel,
                         ),
-                      if (showFavourites)
-                        _SettingsTile(
-                          icon: Icons.star_rate_rounded,
-                          title: l10n.allFavourites,
-                          subtitle: l10n.allFavouritesSubtitle,
-                          onTap: () {
-                            Navigator.push<void>(
-                              context,
-                              MaterialPageRoute<void>(
-                                builder: (_) => const FavouritesScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      if (showBlocked)
-                        _SettingsTile(
-                          icon: Icons.block_rounded,
-                          title: l10n.blockedNumbers,
-                          subtitle: l10n.blockedNumbersSubtitle,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const BlockedNumbersScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      if (showSounds)
-                        _SettingsTile(
-                          icon: Icons.volume_up_rounded,
-                          title: l10n.soundsAndVibration,
-                          subtitle: l10n.soundsAndVibrationSubtitle,
-                          onTap: () async {
-                            try {
-                              await const MethodChannel(
-                                'nothing_dialer/control',
-                              ).invokeMethod<void>('openSoundSettings');
-                            } on PlatformException catch (e) {
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      l10n.couldNotOpenSettings(e.message ?? ''),
-                                    ),
-                                  ),
+                      )
+                    : ListView(
+                        children: [
+                          if (showLanguage) ...[
+                            _SectionHeader(title: l10n.general),
+                            ListenableBuilder(
+                              listenable: main_app.localeNotifier,
+                              builder: (context, _) {
+                                final pref = main_app.localeNotifier.value;
+                                final subtitle = pref == kAppLocaleSystem
+                                    ? l10n.languageDeviceDefault
+                                    : nativeLanguageName(pref);
+                                return _SettingsTile(
+                                  icon: Icons.language_rounded,
+                                  title: l10n.language,
+                                  subtitle: subtitle,
+                                  onTap: () =>
+                                      showLanguagePickerSheet(context),
                                 );
-                              }
-                            }
-                          },
-                        ),
-                    ],
-                    if (showRecentsContacts) ...[
-                      const SizedBox(height: 16),
-                      _SectionHeader(
-                        title: l10n.recentsSearchSection,
-                        trailing: GestureDetector(
-                          onTap: _showRecentsSearchContactsInfoDialog,
-                          child: Icon(
-                            Icons.info_outline_rounded,
-                            color: scheme.outline,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      _SettingsSwitchTile(
-                        icon: Icons.person_search_rounded,
-                        title: l10n.recentsSearchShowContacts,
-                        value: _recentsSearchShowContacts,
-                        onChanged: _saveRecentsSearchShowContacts,
-                      ),
-                    ],
-                    if (showFrequent) ...[
-                      const SizedBox(height: 16),
-                      _SectionHeader(
-                        title: l10n.frequentlyContacted,
-                        trailing: GestureDetector(
-                          onTap: _showFrequentlyContactedInfoDialog,
-                          child: Icon(
-                            Icons.info_outline_rounded,
-                            color: scheme.outline,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      if (showFrequentMax)
-                        _SettingsTile(
-                          icon: Icons.format_list_numbered_rounded,
-                          title: l10n.numberOfRecords,
-                          subtitle: frequentMaxSubtitle,
-                          onTap: _showFrequentMaxPicker,
-                        ),
-                      if (showFrequentPeriod)
-                        _SettingsTile(
-                          icon: Icons.date_range_rounded,
-                          title: l10n.timePeriod,
-                          subtitle: frequentPeriodSubtitle,
-                          onTap: _showFrequentPeriodPicker,
-                        ),
-                    ],
-                    if (showTorch) ...[
-                      const SizedBox(height: 16),
-                      _SectionHeader(
-                        title: l10n.torchBlink,
-                        trailing: GestureDetector(
-                          onTap: _showTorchInfoDialog,
-                          child: Icon(
-                            Icons.info_outline_rounded,
-                            color: scheme.outline,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      if (showTorchIncoming)
-                        _SettingsTile(
-                          icon: Icons.flashlight_on_rounded,
-                          title: l10n.torchIncomingCall,
-                          subtitle: torchIncomingSubtitle,
-                          onTap: _torchHasFlash
-                              ? _showTorchIncomingPicker
-                              : _noopTorch,
-                        ),
-                      if (showTorchIncomingInterval)
-                        _SettingsTile(
-                          icon: Icons.timer_rounded,
-                          title: l10n.torchIncomingInterval,
-                          subtitle: _torchIntervalSecondsLabel(
-                            _torchIncomingInterval,
-                          ),
-                          onTap: () => _showTorchIntervalPicker('incoming'),
-                        ),
-                      if (showTorchOutgoing)
-                        _SettingsTile(
-                          icon: Icons.call_made_rounded,
-                          title: l10n.torchOutgoingCall,
-                          subtitle: torchOutgoingSubtitle,
-                          onTap: _torchHasFlash
-                              ? _showTorchOutgoingPicker
-                              : _noopTorch,
-                        ),
-                      if (showTorchOutgoingInterval)
-                        _SettingsTile(
-                          icon: Icons.timer_rounded,
-                          title: l10n.torchOutgoingInterval,
-                          subtitle: _torchIntervalSecondsLabel(
-                            _torchOutgoingInterval,
-                          ),
-                          onTap: () => _showTorchIntervalPicker('outgoing'),
-                        ),
-                      if (showTorchOngoing)
-                        _SettingsTile(
-                          icon: Icons.phone_in_talk_rounded,
-                          title: l10n.torchOngoingCall,
-                          subtitle: torchOngoingSubtitle,
-                          onTap: _torchHasFlash
-                              ? _showTorchOngoingPicker
-                              : _noopTorch,
-                        ),
-                      if (showTorchOngoingInterval)
-                        _SettingsTile(
-                          icon: Icons.timer_rounded,
-                          title: l10n.torchOngoingInterval,
-                          subtitle: _torchIntervalSecondsLabel(
-                            _torchOngoingInterval,
-                          ),
-                          onTap: () => _showTorchIntervalPicker('ongoing'),
-                        ),
-                    ],
-                    if (showGlyph) ...[
-                      const SizedBox(height: 24),
-                      _SectionHeader(
-                        title: l10n.glyphLights,
-                        trailing: GestureDetector(
-                          onTap: () => _showGlyphMapDialog(),
-                          child: Icon(
-                            Icons.info_outline_rounded,
-                            color: scheme.outline,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      if (showGlyphCalling)
-                        _SettingsTile(
-                          icon: Icons.flare_rounded,
-                          title: l10n.glyphCallingAnimation,
-                          subtitle: glyphCallingSubtitle,
-                          onTap: () => _showGlyphAnimationStylePicker(),
-                        ),
-                      if (showGlyphBreath)
-                        _SettingsTile(
-                          icon: Icons.tune_rounded,
-                          title: l10n.breathSettings,
-                          subtitle: l10n.breathSettingsSpeedSummary(
-                            _customChannels.length,
-                            _customInterval,
-                          ),
-                          onTap: () => _showBreathSettingsPicker(),
-                        ),
-                      if (showGlyphSteady)
-                        _SettingsTile(
-                          icon: Icons.highlight_rounded,
-                          title: l10n.activeLights,
-                          subtitle: l10n.lightsCount(_customChannels.length),
-                          onTap: () =>
-                              _showActiveLightsPicker(isInCall: false),
-                        ),
-                      if (showGlyphSpeed)
-                        _SettingsTile(
-                          icon: Icons.timer_rounded,
-                          title: l10n.speedSettings,
-                          subtitle:
-                              l10n.speedSettingsDelay(_glyphC1C4Interval),
-                          onTap: () => _showC1C4SpeedPicker(
-                            isInCall: false,
-                            style: _glyphAnimationStyle,
-                          ),
-                        ),
-                      if (showGlyphDuration)
-                        _SettingsTile(
-                          icon: Icons.speed_rounded,
-                          title: l10n.durationAndSpeed,
-                          subtitle: l10n.durationSpeedSummary(
-                            _glyphBreathProgressDuration ~/ 1000,
-                            _glyphBreathProgressInterval,
-                          ),
-                          onTap: () =>
-                              _showBreathProgressSpeedPicker(isInCall: false),
-                        ),
-                      if (showGlyphOngoing) ...[
-                        const SizedBox(height: 24),
-                        _SettingsTile(
-                          icon: Icons.flare_rounded,
-                          title: l10n.glyphOngoingAnimation,
-                          subtitle: glyphOngoingSubtitle,
-                          onTap: () => _showInCallAnimationStylePicker(),
-                        ),
-                      ],
-                      if (showInCallBreath)
-                        _SettingsTile(
-                          icon: Icons.tune_rounded,
-                          title: l10n.breathSettings,
-                          subtitle: l10n.breathSettingsSpeedSummary(
-                            _inCallCustomChannels.length,
-                            _inCallCustomInterval,
-                          ),
-                          onTap: () => _showInCallBreathSettingsPicker(),
-                        ),
-                      if (showInCallSteady)
-                        _SettingsTile(
-                          icon: Icons.highlight_rounded,
-                          title: l10n.activeLights,
-                          subtitle:
-                              l10n.lightsCount(_inCallCustomChannels.length),
-                          onTap: () =>
-                              _showActiveLightsPicker(isInCall: true),
-                        ),
-                      if (showInCallSpeed)
-                        _SettingsTile(
-                          icon: Icons.timer_rounded,
-                          title: l10n.speedSettings,
-                          subtitle:
-                              l10n.speedSettingsDelay(_inCallC1C4Interval),
-                          onTap: () => _showC1C4SpeedPicker(
-                            isInCall: true,
-                            style: _inCallAnimationStyle,
-                          ),
-                        ),
-                      if (showInCallDuration)
-                        _SettingsTile(
-                          icon: Icons.speed_rounded,
-                          title: l10n.durationAndSpeed,
-                          subtitle: l10n.durationSpeedSummary(
-                            _inCallBreathProgressDuration ~/ 1000,
-                            _inCallBreathProgressInterval,
-                          ),
-                          onTap: () =>
-                              _showBreathProgressSpeedPicker(isInCall: true),
-                        ),
-                    ],
-                    if (showResetCustomization) ...[
-                      const SizedBox(height: 16),
-                      _SectionHeader(
-                        title: l10n.resetCustomization,
-                        trailing: GestureDetector(
-                          onTap: _showResetCustomizationInfoDialog,
-                          child: Icon(
-                            Icons.info_outline_rounded,
-                            color: scheme.outline,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      _SettingsTile(
-                        icon: Icons.restore_rounded,
-                        title: l10n.reset,
-                        subtitle: l10n.resetCustomizationSubtitle,
-                        onTap: _showResetCustomizationConfirmDialog,
-                      ),
-                    ],
-                    if (showAboutFeedback) ...[
-                      const SizedBox(height: 16),
-                      _SectionHeader(
-                        title: l10n.aboutFeedbackSection,
-                        trailing: showGithubTile
-                            ? GestureDetector(
-                                onTap: _showAboutContributionInfoDialog,
+                              },
+                            ),
+                          ],
+                          if (showAppearance) ...[
+                            _SectionHeader(title: l10n.appearanceSection),
+                            if (showTheme)
+                              _SettingsTile(
+                                icon: Icons.palette_rounded,
+                                title: l10n.theme,
+                                subtitle: themeSubtitle,
+                                onTap: () => _showThemeModePicker(),
+                              ),
+                            if (showFont)
+                              ListenableBuilder(
+                                listenable: main_app.fontConfigNotifier,
+                                builder: (context, _) {
+                                  return _SettingsTile(
+                                    icon: Icons.text_fields_rounded,
+                                    title: l10n.font,
+                                    subtitle: _fontSubtitle(context),
+                                    onTap: () =>
+                                        showFontSettingsSheet(context),
+                                  );
+                                },
+                              ),
+                            if (showLightBg)
+                              _SettingsTile(
+                                icon: Icons.light_mode_outlined,
+                                title: l10n.background,
+                                subtitle: lightBgSubtitle,
+                                previewColor: _lightBgColor,
+                                onTap: _showLightBgPicker,
+                              ),
+                            if (showLightAccent)
+                              _SettingsTile(
+                                icon: Icons.color_lens_outlined,
+                                title: l10n.accent,
+                                subtitle: lightAccentSubtitle,
+                                previewColor: _lightAccentColor,
+                                onTap: _showLightAccentPicker,
+                              ),
+                            if (showDarkBg)
+                              _SettingsTile(
+                                icon: Icons.dark_mode_outlined,
+                                title: l10n.background,
+                                subtitle: darkBgSubtitle,
+                                previewColor: _darkBgColor,
+                                onTap: _showDarkBgPicker,
+                              ),
+                            if (showDarkAccent)
+                              _SettingsTile(
+                                icon: Icons.color_lens_outlined,
+                                title: l10n.accent,
+                                subtitle: darkAccentSubtitle,
+                                previewColor: _darkAccentColor,
+                                onTap: _showDarkAccentPicker,
+                              ),
+                            if (showAppIcon)
+                              _SettingsTile(
+                                icon: Icons.apps_rounded,
+                                title: l10n.appIcon,
+                                subtitle: _launcherIconLabel,
+                                onTap: () async {
+                                  await showLauncherIconPicker(context);
+                                  if (context.mounted) await _loadSettings();
+                                },
+                              ),
+                          ],
+                          if (showInCall) ...[
+                            _SectionHeader(title: l10n.inCallScreenSection),
+                            if (showAnswerMethod)
+                              _SettingsTile(
+                                icon: Icons.phone_callback_rounded,
+                                title: l10n.answerMethod,
+                                subtitle: answerSubtitle,
+                                onTap: () => _showAnswerMethodPicker(),
+                              ),
+                            if (showCallBackground)
+                              _SettingsTile(
+                                icon: Icons.phone_in_talk_rounded,
+                                title: l10n.callBackground,
+                                subtitle: callBgSubtitle,
+                                previewColor: _callBgColor,
+                                onTap: _showCallBgPicker,
+                              ),
+                            if (showCallDisplay)
+                              _SettingsTile(
+                                icon: Icons.visibility_off_outlined,
+                                title: l10n.callDisplay,
+                                subtitle: callDisplaySubtitle,
+                                onTap: _showCallDisplaySettingsSheet,
+                              ),
+                            if (showContactPhotos)
+                              _SettingsTile(
+                                icon: Icons.account_circle_outlined,
+                                title: l10n.contactPhotos,
+                                subtitle: contactPhotoSubtitle,
+                                onTap: _showContactPhotoSettingsSheet,
+                              ),
+                          ],
+                          if (showSimAndCalls) ...[
+                            _SectionHeader(title: l10n.simAndCallsSection),
+                            if (showDefaultSim)
+                              _SettingsTile(
+                                icon: Icons.sim_card_rounded,
+                                title: l10n.defaultSim,
+                                subtitle: defaultSimSubtitle,
+                                onTap: _showDefaultSimPicker,
+                              ),
+                            if (showSimIconColors)
+                              _SettingsTile(
+                                icon: Icons.sim_card_outlined,
+                                title: l10n.simIconColor,
+                                subtitle: simIconColorsSubtitle,
+                                previewColor: _simIconColorFor(
+                                  _simCards.first.index,
+                                  isDark: !_activeAppearanceIsLight(context),
+                                ),
+                                onTap: _showSimIconColorsPanel,
+                              ),
+                            if (showSounds)
+                              _SettingsTile(
+                                icon: Icons.volume_up_rounded,
+                                title: l10n.soundsAndVibration,
+                                subtitle: l10n.soundsAndVibrationSubtitle,
+                                onTap: () async {
+                                  try {
+                                    await const MethodChannel(
+                                      'nothing_dialer/control',
+                                    ).invokeMethod<void>('openSoundSettings');
+                                  } on PlatformException catch (e) {
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            l10n.couldNotOpenSettings(
+                                              e.message ?? '',
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                              ),
+                          ],
+                          if (showCallLists) ...[
+                            _SectionHeader(title: l10n.callListsSection),
+                            if (showFavourites)
+                              _SettingsTile(
+                                icon: Icons.star_rate_rounded,
+                                title: l10n.allFavourites,
+                                subtitle: l10n.allFavouritesSubtitle,
+                                onTap: () {
+                                  Navigator.push<void>(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (_) => const FavouritesScreen(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            if (showBlocked)
+                              _SettingsTile(
+                                icon: Icons.block_rounded,
+                                title: l10n.blockedNumbers,
+                                subtitle: l10n.blockedNumbersSubtitle,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          const BlockedNumbersScreen(),
+                                    ),
+                                  );
+                                },
+                              ),
+                          ],
+                          if (showContactsRecents) ...[
+                            const SizedBox(height: 16),
+                            _SectionHeader(
+                              title: l10n.contactsAndRecentsSection,
+                              trailing: GestureDetector(
+                                onTap: _showContactsAndRecentsInfoDialog,
                                 child: Icon(
                                   Icons.info_outline_rounded,
                                   color: scheme.outline,
                                   size: 20,
                                 ),
-                              )
-                            : null,
+                              ),
+                            ),
+                            if (showRecentsContacts)
+                              _SettingsSwitchTile(
+                                icon: Icons.person_search_rounded,
+                                title: l10n.recentsSearchShowContacts,
+                                value: _recentsSearchShowContacts,
+                                onChanged: _saveRecentsSearchShowContacts,
+                              ),
+                            if (showFrequentMax)
+                              _SettingsTile(
+                                icon: Icons.format_list_numbered_rounded,
+                                title: l10n.frequentlyContactedHeader,
+                                subtitle: frequentMaxSubtitle,
+                                onTap: _showFrequentMaxPicker,
+                              ),
+                            if (showFrequentPeriod)
+                              _SettingsTile(
+                                icon: Icons.date_range_rounded,
+                                title: l10n.timePeriod,
+                                subtitle: frequentPeriodSubtitle,
+                                onTap: _showFrequentPeriodPicker,
+                              ),
+                          ],
+                          if (showTorch) ...[
+                            const SizedBox(height: 16),
+                            _SectionHeader(
+                              title: l10n.torchBlink,
+                              trailing: GestureDetector(
+                                onTap: _showTorchInfoDialog,
+                                child: Icon(
+                                  Icons.info_outline_rounded,
+                                  color: scheme.outline,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            if (showTorchIncoming)
+                              _SettingsTile(
+                                icon: Icons.flashlight_on_rounded,
+                                title: l10n.torchIncomingCall,
+                                subtitle: torchIncomingSubtitle,
+                                onTap: _torchHasFlash
+                                    ? _showTorchIncomingPicker
+                                    : _noopTorch,
+                              ),
+                            if (showTorchIncomingInterval)
+                              _SettingsTile(
+                                icon: Icons.timer_rounded,
+                                title: l10n.torchIncomingInterval,
+                                subtitle: _torchIntervalSecondsLabel(
+                                  _torchIncomingInterval,
+                                ),
+                                onTap: () =>
+                                    _showTorchIntervalPicker('incoming'),
+                              ),
+                            if (showTorchOutgoing)
+                              _SettingsTile(
+                                icon: Icons.call_made_rounded,
+                                title: l10n.torchOutgoingCall,
+                                subtitle: torchOutgoingSubtitle,
+                                onTap: _torchHasFlash
+                                    ? _showTorchOutgoingPicker
+                                    : _noopTorch,
+                              ),
+                            if (showTorchOutgoingInterval)
+                              _SettingsTile(
+                                icon: Icons.timer_rounded,
+                                title: l10n.torchOutgoingInterval,
+                                subtitle: _torchIntervalSecondsLabel(
+                                  _torchOutgoingInterval,
+                                ),
+                                onTap: () =>
+                                    _showTorchIntervalPicker('outgoing'),
+                              ),
+                            if (showTorchOngoing)
+                              _SettingsTile(
+                                icon: Icons.phone_in_talk_rounded,
+                                title: l10n.torchOngoingCall,
+                                subtitle: torchOngoingSubtitle,
+                                onTap: _torchHasFlash
+                                    ? _showTorchOngoingPicker
+                                    : _noopTorch,
+                              ),
+                            if (showTorchOngoingInterval)
+                              _SettingsTile(
+                                icon: Icons.timer_rounded,
+                                title: l10n.torchOngoingInterval,
+                                subtitle: _torchIntervalSecondsLabel(
+                                  _torchOngoingInterval,
+                                ),
+                                onTap: () =>
+                                    _showTorchIntervalPicker('ongoing'),
+                              ),
+                          ],
+                          if (showGlyph) ...[
+                            const SizedBox(height: 24),
+                            _SectionHeader(
+                              title: l10n.glyphLights,
+                              trailing: GestureDetector(
+                                onTap: () => _showGlyphMapDialog(),
+                                child: Icon(
+                                  Icons.info_outline_rounded,
+                                  color: scheme.outline,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            if (showGlyphCalling)
+                              _SettingsTile(
+                                icon: Icons.flare_rounded,
+                                title: l10n.glyphCallingAnimation,
+                                subtitle: glyphCallingSubtitle,
+                                onTap: () => _showGlyphAnimationStylePicker(),
+                              ),
+                            if (showGlyphBreath)
+                              _SettingsTile(
+                                icon: Icons.tune_rounded,
+                                title: l10n.breathSettings,
+                                subtitle: l10n.breathSettingsSpeedSummary(
+                                  _customChannels.length,
+                                  _customInterval,
+                                ),
+                                onTap: () => _showBreathSettingsPicker(),
+                              ),
+                            if (showGlyphSteady)
+                              _SettingsTile(
+                                icon: Icons.highlight_rounded,
+                                title: l10n.activeLights,
+                                subtitle: l10n.lightsCount(
+                                  _customChannels.length,
+                                ),
+                                onTap: () =>
+                                    _showActiveLightsPicker(isInCall: false),
+                              ),
+                            if (showGlyphSpeed)
+                              _SettingsTile(
+                                icon: Icons.timer_rounded,
+                                title: l10n.speedSettings,
+                                subtitle: l10n.speedSettingsDelay(
+                                  _glyphC1C4Interval,
+                                ),
+                                onTap: () => _showC1C4SpeedPicker(
+                                  isInCall: false,
+                                  style: _glyphAnimationStyle,
+                                ),
+                              ),
+                            if (showGlyphDuration)
+                              _SettingsTile(
+                                icon: Icons.speed_rounded,
+                                title: l10n.durationAndSpeed,
+                                subtitle: l10n.durationSpeedSummary(
+                                  _glyphBreathProgressDuration ~/ 1000,
+                                  _glyphBreathProgressInterval,
+                                ),
+                                onTap: () => _showBreathProgressSpeedPicker(
+                                  isInCall: false,
+                                ),
+                              ),
+                            if (showGlyphOngoing) ...[
+                              const SizedBox(height: 24),
+                              _SettingsTile(
+                                icon: Icons.flare_rounded,
+                                title: l10n.glyphOngoingAnimation,
+                                subtitle: glyphOngoingSubtitle,
+                                onTap: () => _showInCallAnimationStylePicker(),
+                              ),
+                            ],
+                            if (showInCallBreath)
+                              _SettingsTile(
+                                icon: Icons.tune_rounded,
+                                title: l10n.breathSettings,
+                                subtitle: l10n.breathSettingsSpeedSummary(
+                                  _inCallCustomChannels.length,
+                                  _inCallCustomInterval,
+                                ),
+                                onTap: () => _showInCallBreathSettingsPicker(),
+                              ),
+                            if (showInCallSteady)
+                              _SettingsTile(
+                                icon: Icons.highlight_rounded,
+                                title: l10n.activeLights,
+                                subtitle: l10n.lightsCount(
+                                  _inCallCustomChannels.length,
+                                ),
+                                onTap: () =>
+                                    _showActiveLightsPicker(isInCall: true),
+                              ),
+                            if (showInCallSpeed)
+                              _SettingsTile(
+                                icon: Icons.timer_rounded,
+                                title: l10n.speedSettings,
+                                subtitle: l10n.speedSettingsDelay(
+                                  _inCallC1C4Interval,
+                                ),
+                                onTap: () => _showC1C4SpeedPicker(
+                                  isInCall: true,
+                                  style: _inCallAnimationStyle,
+                                ),
+                              ),
+                            if (showInCallDuration)
+                              _SettingsTile(
+                                icon: Icons.speed_rounded,
+                                title: l10n.durationAndSpeed,
+                                subtitle: l10n.durationSpeedSummary(
+                                  _inCallBreathProgressDuration ~/ 1000,
+                                  _inCallBreathProgressInterval,
+                                ),
+                                onTap: () => _showBreathProgressSpeedPicker(
+                                  isInCall: true,
+                                ),
+                              ),
+                          ],
+                          if (showResetCustomization) ...[
+                            const SizedBox(height: 16),
+                            _SectionHeader(
+                              title: l10n.resetCustomization,
+                              trailing: GestureDetector(
+                                onTap: _showResetCustomizationInfoDialog,
+                                child: Icon(
+                                  Icons.info_outline_rounded,
+                                  color: scheme.outline,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            _SettingsTile(
+                              icon: Icons.restore_rounded,
+                              title: l10n.reset,
+                              subtitle: l10n.resetCustomizationSubtitle,
+                              onTap: _showResetCustomizationConfirmDialog,
+                            ),
+                          ],
+                          if (showAboutFeedback) ...[
+                            const SizedBox(height: 16),
+                            _SectionHeader(
+                              title: l10n.aboutFeedbackSection,
+                              trailing: showGithubTile
+                                  ? GestureDetector(
+                                      onTap: _showAboutContributionInfoDialog,
+                                      child: Icon(
+                                        Icons.info_outline_rounded,
+                                        color: scheme.outline,
+                                        size: 20,
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                            if (showReviewTile)
+                              _SettingsTile(
+                                icon: Icons.star_rate_rounded,
+                                title: l10n.reviewRateOnPlay,
+                                subtitle: l10n.reviewRateOnPlaySubtitle,
+                                onTap: () => _requestPlayStoreReview(l10n),
+                              ),
+                            if (showGithubTile)
+                              _SettingsTile(
+                                icon: Icons.code_rounded,
+                                title: l10n.aboutViewSource,
+                                subtitle: l10n.aboutRepositoryHost,
+                                onTap: () => _openAboutRepository(l10n),
+                              ),
+                          ],
+                          const SizedBox(height: 32),
+                        ],
                       ),
-                      if (showReviewTile)
-                        _SettingsTile(
-                          icon: Icons.star_rate_rounded,
-                          title: l10n.reviewRateOnPlay,
-                          subtitle: l10n.reviewRateOnPlaySubtitle,
-                          onTap: () => _requestPlayStoreReview(l10n),
-                        ),
-                      if (showGithubTile)
-                        _SettingsTile(
-                          icon: Icons.code_rounded,
-                          title: l10n.aboutViewSource,
-                          subtitle: l10n.aboutRepositoryHost,
-                          onTap: () => _openAboutRepository(l10n),
-                        ),
-                    ],
-                    const SizedBox(height: 32),
-                  ],
-                ),
               ),
             ],
           ),
@@ -2370,11 +2589,11 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Future<void> _requestPlayStoreReview(AppLocalizations l10n) async {
-    final ok = await PlayStoreReview.requestReviewWithFallback();
+    final ok = await PlayStoreReview.openStoreListing();
     if (!ok && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.reviewCouldNotOpen)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.reviewCouldNotOpen)));
     }
   }
 
@@ -2382,20 +2601,18 @@ class _SettingsScreenState extends State<SettingsScreen>
     final uri = Uri.parse(_kRepositoryUrl);
     final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!opened && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.aboutCouldNotOpenLink)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.aboutCouldNotOpenLink)));
     }
   }
 
   void _noopTorch() {
     if (!mounted) return;
     final l10n = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.flashlightUnavailable),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.flashlightUnavailable)));
   }
 
   void _showBreathSettingsPicker() {
@@ -2447,8 +2664,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -2463,8 +2681,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                               min: 100,
                               max: 3000,
                               divisions: 29,
-                              activeColor:
-                                  Theme.of(context).colorScheme.primary,
+                              activeColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
                               onChanged: (val) {
                                 setModalState(
                                   () => _customInterval = val.toInt(),
@@ -2478,8 +2697,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                                   'glyph_custom_interval',
                                   val.toInt(),
                                 );
-                                main_app.glyphCustomIntervalNotifier.value =
-                                    val.toInt();
+                                main_app.glyphCustomIntervalNotifier.value = val
+                                    .toInt();
                               },
                             ),
                           ),
@@ -2517,8 +2736,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -2540,20 +2760,23 @@ class _SettingsScreenState extends State<SettingsScreen>
                                 TextStyle(
                                   color: isSelected
                                       ? Theme.of(context).colorScheme.onPrimary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
+                                      : Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
                                   fontSize: 12,
                                 ),
                               ),
                             ),
                             selected: isSelected,
-                            checkmarkColor:
-                                Theme.of(context).colorScheme.onPrimary,
-                            selectedColor:
-                                Theme.of(context).colorScheme.primary,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.surfaceContainer,
+                            checkmarkColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            selectedColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainer,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -2601,8 +2824,7 @@ class _SettingsScreenState extends State<SettingsScreen>
         child: StatefulBuilder(
           builder: (context, setModalState) {
             final l10n = AppLocalizations.of(context);
-            final channels =
-                isInCall ? _inCallCustomChannels : _customChannels;
+            final channels = isInCall ? _inCallCustomChannels : _customChannels;
             return Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
@@ -2656,20 +2878,23 @@ class _SettingsScreenState extends State<SettingsScreen>
                                 TextStyle(
                                   color: isSelected
                                       ? Theme.of(context).colorScheme.onPrimary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
+                                      : Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
                                   fontSize: 12,
                                 ),
                               ),
                             ),
                             selected: isSelected,
-                            checkmarkColor:
-                                Theme.of(context).colorScheme.onPrimary,
-                            selectedColor:
-                                Theme.of(context).colorScheme.primary,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.surfaceContainer,
+                            checkmarkColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            selectedColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainer,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -2772,8 +2997,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -2788,8 +3014,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                               min: 100,
                               max: 3000,
                               divisions: 29,
-                              activeColor:
-                                  Theme.of(context).colorScheme.primary,
+                              activeColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
                               onChanged: (val) {
                                 setModalState(
                                   () => _inCallCustomInterval = val.toInt(),
@@ -2844,8 +3071,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -2869,20 +3097,23 @@ class _SettingsScreenState extends State<SettingsScreen>
                                 TextStyle(
                                   color: isSelected
                                       ? Theme.of(context).colorScheme.onPrimary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
+                                      : Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
                                   fontSize: 12,
                                 ),
                               ),
                             ),
                             selected: isSelected,
-                            checkmarkColor:
-                                Theme.of(context).colorScheme.onPrimary,
-                            selectedColor:
-                                Theme.of(context).colorScheme.primary,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.surfaceContainer,
+                            checkmarkColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            selectedColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainer,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -2945,7 +3176,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                       width: 32,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        color: Theme.of(
+                          sheetContext,
+                        ).colorScheme.outlineVariant,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -3079,8 +3312,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -3098,8 +3332,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                               min: 1000,
                               max: 10000,
                               divisions: 90,
-                              activeColor:
-                                  Theme.of(context).colorScheme.primary,
+                              activeColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
                               onChanged: (val) {
                                 setModalState(() {
                                   if (isInCall) {
@@ -3230,8 +3465,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -3249,8 +3485,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                               min: minInterval,
                               max: maxInterval,
                               divisions: divisions,
-                              activeColor:
-                                  Theme.of(context).colorScheme.primary,
+                              activeColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
                               onChanged: (val) {
                                 setModalState(() {
                                   if (isInCall) {
@@ -3347,7 +3584,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                       width: 32,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: Theme.of(sheetContext).colorScheme.outlineVariant,
+                        color: Theme.of(
+                          sheetContext,
+                        ).colorScheme.outlineVariant,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -3525,17 +3764,18 @@ class _SettingsScreenState extends State<SettingsScreen>
     if (!mounted) return;
     await _loadSettings();
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.resetCustomizationDone)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.resetCustomizationDone)));
   }
 
-  void _showRecentsSearchContactsInfoDialog() {
+  void _showContactsAndRecentsInfoDialog() {
     final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
     showDialog(
       context: context,
       builder: (context) => Dialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: scheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -3544,18 +3784,45 @@ class _SettingsScreenState extends State<SettingsScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                l10n.recentsSearchShowContacts,
+                l10n.contactsAndRecentsSection,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: scheme.onSurface,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
+              Text(
+                l10n.recentsSearchShowContacts,
+                style: TextStyle(
+                  color: scheme.onSurface,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
               Text(
                 l10n.recentsSearchShowContactsSubtitle,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  color: scheme.onSurfaceVariant,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                l10n.frequentlyContacted,
+                style: TextStyle(
+                  color: scheme.onSurface,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.frequentlyContactedInfoBody,
+                style: TextStyle(
+                  color: scheme.onSurfaceVariant,
                   fontSize: 15,
                   height: 1.4,
                 ),
@@ -3566,9 +3833,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     l10n.close,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                    style: TextStyle(color: scheme.primary),
                   ),
                 ),
               ),
@@ -3603,55 +3868,6 @@ class _SettingsScreenState extends State<SettingsScreen>
               const SizedBox(height: 12),
               Text(
                 l10n.aboutDescription,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontSize: 15,
-                  height: 1.4,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    l10n.close,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showFrequentlyContactedInfoDialog() {
-    final l10n = AppLocalizations.of(context);
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.frequentlyContacted,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                l10n.frequentlyContactedInfoBody,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 15,
@@ -3836,13 +4052,16 @@ class _SettingsScreenState extends State<SettingsScreen>
             return Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(28)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(28),
+                ),
               ),
               child: SafeArea(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -3878,11 +4097,14 @@ class _SettingsScreenState extends State<SettingsScreen>
                               min: 0.1,
                               max: 3.0,
                               divisions: 29,
-                              activeColor:
-                                  Theme.of(context).colorScheme.primary,
+                              activeColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
                               onChanged: (sec) {
-                                final ms =
-                                    (sec * 1000).round().clamp(100, 3000);
+                                final ms = (sec * 1000).round().clamp(
+                                  100,
+                                  3000,
+                                );
                                 setModalState(() => currentMs = ms);
                                 setState(() {
                                   if (kind == 'incoming') {
@@ -3895,8 +4117,10 @@ class _SettingsScreenState extends State<SettingsScreen>
                                 });
                               },
                               onChangeEnd: (sec) {
-                                final ms =
-                                    (sec * 1000).round().clamp(100, 3000);
+                                final ms = (sec * 1000).round().clamp(
+                                  100,
+                                  3000,
+                                );
                                 if (kind == 'incoming') {
                                   _saveTorchIncomingInterval(ms);
                                 } else if (kind == 'outgoing') {
@@ -4017,8 +4241,7 @@ class _SettingsTile extends StatelessWidget {
     final Color leadingIconColor;
     if (previewColor != null) {
       leadingIconColor =
-          ThemeData.estimateBrightnessForColor(previewColor!) ==
-              Brightness.dark
+          ThemeData.estimateBrightnessForColor(previewColor!) == Brightness.dark
           ? Colors.white.withValues(alpha: 0.92)
           : const Color(0xFF1C1B1F).withValues(alpha: 0.82);
     } else {
@@ -4032,21 +4255,13 @@ class _SettingsTile extends StatelessWidget {
               height: 40,
               color: previewColor,
               alignment: Alignment.center,
-              child: Icon(
-                icon,
-                color: leadingIconColor,
-                size: 20,
-              ),
+              child: Icon(icon, color: leadingIconColor, size: 20),
             ),
           )
         : SizedBox(
             width: 40,
             height: 40,
-            child: Icon(
-              icon,
-              color: leadingIconColor,
-              size: 22,
-            ),
+            child: Icon(icon, color: leadingIconColor, size: 22),
           );
 
     return Material(
@@ -4081,8 +4296,9 @@ class _SettingsTile extends StatelessWidget {
                         style: context.dialerTextStyle(
                           DialerFontRole.secondary,
                           TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 14,
                           ),
                         ),
@@ -4166,10 +4382,7 @@ class _SettingsSwitchTile extends StatelessWidget {
                   ],
                 ),
               ),
-              Switch.adaptive(
-                value: value,
-                onChanged: onChanged,
-              ),
+              Switch.adaptive(value: value, onChanged: onChanged),
             ],
           ),
         ),
@@ -4284,7 +4497,11 @@ class _CustomColorSwatchButton extends StatelessWidget {
                 width: 48,
                 height: 48,
                 child: Center(
-                  child: Icon(Icons.colorize_rounded, color: Colors.white, size: 22),
+                  child: Icon(
+                    Icons.colorize_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                 ),
               ),
             ),

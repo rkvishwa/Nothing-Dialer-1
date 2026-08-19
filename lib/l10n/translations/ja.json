@@ -361,7 +361,6 @@
   "reviewSection": "レビュー",
   "reviewDescription": "Nothing Dialer を気に入っていただけましたか？Google Play の評価は他のユーザーの参考になります。",
   "reviewRateOnPlay": "Google Play で評価",
-  "reviewRateOnPlaySubtitle": "アプリを離れずに評価する",
   "reviewCouldNotOpen": "Google Play を開けませんでした",
   "breathSpeed": "呼吸速度",
   "breathSpeedBlinkHint": "低い = まばたき、高い = ゆっくりとした呼吸",
@@ -407,5 +406,6 @@
   "callPermissionDenied": "通話の権限が拒否されました",
   "alreadyDefaultDialer": "すでにデフォルトの電話アプリです",
   "fontNotoInfo": "Some fonts don’t include every writing system. Download this pack so all languages display correctly.",
-  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device."
+  "fontNotoAlreadyDownloaded": "These fonts are already downloaded on this device.",
+  "reviewRateOnPlaySubtitle": "Google Play のストアページを開く"
 }
